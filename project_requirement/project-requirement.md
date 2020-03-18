@@ -21,11 +21,11 @@ One page overall introduction including sections 1.1 and 1.2.
 
 ### Client
 
-Identify the client and their contact details
+Andre Geldenhuis - andre.geldenhuis@vuw.ac.nz
 
 ### 1.1 Purpose
 
-One sentence describing the purpose of the system (9.5.1)
+Create a mission control software centre to display rocket metrics and determine if we are safe to launch.
 
 ### 1.2 Scope
 
