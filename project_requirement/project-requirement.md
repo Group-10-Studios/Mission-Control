@@ -41,6 +41,8 @@ Create a mission control software centre to display rocket metrics and determine
 - Unit testing?
 - Static Analysis
 - Logging
+- Robust communication channels with simluation and avionics
+- 
 
 
 The requirements of this project is to provide a graphical interface displaying real-time data provided from the rocket before and during flight. The real-time data will consist of, but is not limited to, current rocket state, rocket velocity, alitutude, and down range distance. In order to achieve this we will be required to implement robust communication channels with the rocket, being capable to recover from communication failures at any time.
