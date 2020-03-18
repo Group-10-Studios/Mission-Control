@@ -29,14 +29,14 @@ Create a mission control software centre to display rocket metrics and determine
 
 ### 1.2 Scope
 
-Alitutude
-Velocity
-Current rocket state (Waiting, primed, flying, parachute-deployed)
-Range distance
-GPS location
-Weather conditions
-Angle of attack
-Simulation output
+- Alitutude
+- Velocity
+- Current rocket state (Waiting, primed, flying, parachute-deployed)
+- Range distance
+- GPS location
+- Weather conditions
+- Angle of attack
+- Simulation output
 
 
 The requirements of this project is to provide a graphical interface displaying real-time data provided from the rocket before and during flight. The real-time data will consist of current rocket state, rocket velocity, alitutude, and down range distance. In order to achieve this we will be required to implement robust communication channels with the rocket, being capable to recover from communication failures at any time. The mission control software will also have to include communication channels with simulation in order to determine whether or not the rocket is safe to launch. In the case that the rocket is safe to launch the mission control software  
