@@ -1,5 +1,5 @@
 class Person {
-	constructor(name, age, school="Victoria") {
+	constructor(name, age, school="Victoria University of WELLINGTON") {
 		this.name = name;
 		this.age = age;
 		this.school = school;
