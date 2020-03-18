@@ -60,6 +60,8 @@ h) Site adaptation requirements.
 
 One page summary of the main functions of the product (9.5.4), briefly characterising the minimum viable product.
 
+Do we need to measure the weather data ourselves (using our own sensors) or do we collect data using web api's relying on accuracy for our current launch location.
+
 #### 1.3.3 User characteristics   
 
 One page identifying the main classes of users and their characteristics (9.5.5) 
