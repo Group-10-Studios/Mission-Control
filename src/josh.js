@@ -1,5 +1,5 @@
-class Person {
-	constructor(name, age, school="Victoria University of WELLINGTON") {
+class Josh {
+	constructor(name, age, school="Victoria") {
 		this.name = name;
 		this.age = age;
 		this.school = school;
@@ -10,8 +10,8 @@ class Person {
 	}
 }
 
-var p = new Person("jake", 25);
-p.addAge(4)
+var p = new Josh("jake", 21);
+p.addAge(2)
 
 console.log("SCHOOL: " + p.school);
 console.log("AGE: " + p.age);
