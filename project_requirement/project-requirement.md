@@ -12,7 +12,7 @@ All team members are expected to contribute equally to the document and list the
 
 <div style="page-break-after: always;"></div>
 
-# ENGR 301 Project *NN* Project Proposal and Requirements Document
+# ENGR 301 Project *10* Project Proposal and Requirements Document
 #### Author list, a comma-separated list of the names of each member of the team.
 
 ## 1. Introduction
@@ -21,14 +21,33 @@ One page overall introduction including sections 1.1 and 1.2.
 
 ### Client
 
-Identify the client and their contact details
+Andre Geldenhuis - andre.geldenhuis@vuw.ac.nz
 
 ### 1.1 Purpose
 
-One sentence describing the purpose of the system (9.5.1)
+Create a mission control software centre to display rocket metrics and determine if we are safe to launch.
 
 ### 1.2 Scope
 
+- Alitutude
+- Velocity
+- Current rocket state (Waiting, primed, flying, parachute-deployed)
+- Range distance
+- GPS location
+- Weather conditions
+- Angle of attack
+- Simulation output
+
+- Unit testing?
+- Static Analysis
+- Logging
+- Robust communication channels with simluation and avionics
+- 
+
+
+The requirements of this project is to provide a graphical interface displaying real-time data provided from the rocket before and during flight. The real-time data will consist of, but is not limited to, current rocket state, rocket velocity, alitutude, and down range distance. In order to achieve this we will be required to implement robust communication channels with the rocket, being capable to recover from communication failures at any time.
+
+The mission control software will also have to include communication channels with simulation in order to determine whether or not the rocket is safe to launch. In the case of the simulation returning with a ready-to-launch the mission control will notify the avionics to prime the booster and parachute charges. If the simulation determines that the launch is not safe then mission control can suggest changing the launch rod of the rocket angle to point in towards the wind.
 One paragraph describing the scope of the system (9.5.2)
 
 ### 1.3 Product overview 
