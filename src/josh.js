@@ -15,3 +15,6 @@ p.addAge(2)
 
 console.log("SCHOOL: " + p.school);
 console.log("AGE: " + p.age);
+
+
+//comment
