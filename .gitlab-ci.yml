@@ -8,18 +8,16 @@ build:
   tags:
     - Shell
   script:
-    - echo "static analysis"
-    - exit 1
-  allow_failure: true
+    - mvn compile
+  allow_failure: false
 
 unittest:
   stage: Test
   tags:
     - Shell
   script:
-    - echo "test"
-    - exit 1
-  allow_failure: true
+    - mvn test
+  allow_failure: false
 
 deploy:
   stage: Deploy
