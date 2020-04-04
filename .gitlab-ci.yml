@@ -6,7 +6,7 @@ stages:
 build:
   stage: Build
   tags:
-    - Shell
+    - shell
   script:
     - mvn compile
   allow_failure: false
@@ -14,7 +14,7 @@ build:
 unittest:
   stage: Test
   tags:
-    - Shell
+    - shell
   script:
     - mvn test
   allow_failure: false
@@ -22,7 +22,7 @@ unittest:
 deploy:
   stage: Deploy
   tags:
-    - Shell
+    - shell
   script:
     - echo "deploy"
     - exit 1
