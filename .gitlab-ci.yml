@@ -1,7 +1,7 @@
 stages:
   - Build
   - Test
-  - Deploy
+  # - Deploy
 
 build:
   stage: Build
@@ -19,11 +19,11 @@ unittest:
     - mvn test
   allow_failure: false
 
-deploy:
-  stage: Deploy
-  tags:
-    - shell
-  script:
-    - echo "deploy"
-    - exit 1
-  allow_failure: true
+# deploy:
+#   stage: Deploy
+#   tags:
+#     - shell
+#   script:
+#     - echo "deploy"
+#     - exit 1
+#   allow_failure: true
