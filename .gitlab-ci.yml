@@ -1,31 +1,29 @@
 stages:
   - Build
   - Test
-  - Deploy
+  # - Deploy
 
 build:
   stage: Build
   tags:
-    - Shell
+    - shell
   script:
-    - echo "static analysis"
-    - exit 1
-  allow_failure: true
+    - mvn compile
+  allow_failure: false
 
 unittest:
   stage: Test
   tags:
-    - Shell
+    - shell
   script:
-    - echo "test"
-    - exit 1
-  allow_failure: true
+    - mvn test
+  allow_failure: false
 
-deploy:
-  stage: Deploy
-  tags:
-    - Shell
-  script:
-    - echo "deploy"
-    - exit 1
-  allow_failure: true
+# deploy:
+#   stage: Deploy
+#   tags:
+#     - shell
+#   script:
+#     - echo "deploy"
+#     - exit 1
+#   allow_failure: true
