@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.weather.importers;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -22,8 +23,9 @@ public class WeatherImporter {
 	/**
 	 * Create a new WeatherImporter from the provided filename.
 	 * @param fileName File name which contains the required weather information.
+	 * @throws FileNotFoundException thrown if the filename doesn't lead to an expected file.
 	 */
-	public WeatherImporter(String fileName) {
+	public WeatherImporter(String fileName) throws FileNotFoundException {
 		JsonElement weatherInformation = JsonImporter.load(fileName);
 		
 		processWeather(weatherInformation);

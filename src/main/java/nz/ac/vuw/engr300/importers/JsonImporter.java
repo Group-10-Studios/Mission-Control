@@ -22,12 +22,13 @@ public class JsonImporter {
 	 * 
 	 * @param fileName String filename to import the JSON data from.
 	 * @return JsonElement with the contents of the file in Java JSON format.
+	 * @throws FileNotFoundException Exception can be thrown when the file can't be found.
 	 */
-	public static JsonElement load(String fileName) {
+	public static JsonElement load(String fileName) throws FileNotFoundException {
 		try (FileReader fr = new FileReader(new File(fileName))) {
 			return JsonParser.parseReader(fr);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw e;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
