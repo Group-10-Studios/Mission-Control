@@ -1,6 +1,8 @@
 package nz.ac.vuw.engr300.weather.importers;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -26,6 +28,7 @@ public class WeatherImporter {
 	 * @throws FileNotFoundException thrown if the filename doesn't lead to an expected file.
 	 */
 	public WeatherImporter(String fileName) throws FileNotFoundException {
+		this.weatherDetails = new ArrayList<WeatherData>();
 		JsonElement weatherInformation = JsonImporter.load(fileName);
 		
 		processWeather(weatherInformation);
@@ -38,18 +41,48 @@ public class WeatherImporter {
 	 * @param weatherInformation JsonElement containing all of the loaded weather data.
 	 */
 	private void processWeather(JsonElement weatherInformation) {
-		JsonArray weatherStuff = weatherInformation.getAsJsonArray();
+		JsonObject resContent = weatherInformation.getAsJsonObject();
+		JsonArray weatherStuff = resContent.get("list").getAsJsonArray();
 		
-		//TODO: Fix structure of data to match what it is saved to when importing.
 		for (JsonElement content : weatherStuff) {
 			JsonObject accessContent = content.getAsJsonObject();
 			long timestamp = accessContent.get("dt").getAsLong();
 			
 			JsonObject windData = accessContent.get("wind").getAsJsonObject();
 			double angle = windData.get("deg").getAsDouble();
-			double speed = windData.get("speeed").getAsDouble();
+			double speed = windData.get("speed").getAsDouble();
 			
-			this.weatherDetails.add(new WeatherData(timestamp, angle, speed));
+			this.weatherDetails.add(new WeatherData(timestamp, speed, angle));
 		}
+	}
+	
+	/**
+	 * Get the size of the data imported.
+	 * 
+	 * @return int value representing the number of data entries contained.
+	 */
+	public int size() {
+		return this.weatherDetails.size();
+	}
+	
+	/**
+	 * Get the weather data at the specified position.
+	 * 
+	 * @param position Position in the list to retrieve the weather data from.
+	 * @return WeatherData from the loaded information.
+	 */
+	public WeatherData getWeather(int position) {
+		if (position < 0 || position >= this.weatherDetails.size()) {
+			throw new IllegalArgumentException("The position " + position + " is not within the valid data range.");
+		}
+		return this.weatherDetails.get(position);
+	}
+	
+	
+	/**
+	 * Order the weather in order of the timestamp increasing.
+	 */
+	public void orderWeather() {
+		Collections.sort(this.weatherDetails);
 	}
 }

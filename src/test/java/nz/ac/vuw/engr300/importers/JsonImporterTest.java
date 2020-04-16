@@ -1,6 +1,3 @@
-/**
- * 
- */
 package nz.ac.vuw.engr300.importers;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +11,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 /**
- * Tests for JsonImporter importer class.
+ * Tests for JsonImporter importer class. Requires the files 'InvalidJsonFile.json' and
+ * 'WeatherTestFile.json' each containing valid/invalid json for testing the functionality
+ * of the class.
  * 
  * @author Nathan Duckett
  */
