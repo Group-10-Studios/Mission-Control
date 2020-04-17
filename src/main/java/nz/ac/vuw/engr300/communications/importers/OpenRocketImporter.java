@@ -13,33 +13,42 @@ import java.util.regex.Pattern;
 
 /**
  * Simple implementation of the template interface, used for importing and stream any of the dummy data files provided
+ * @author Tim Salisbury
  */
 public class OpenRocketImporter implements RocketDataImporter {
 
     private static final Pattern EVENT_REGEX = Pattern.compile("^# Event (\\w+) occurred at t=(\\d*\\.?\\d*?) seconds$");
-    private static final Pattern STATUS_REGEX = Pattern.compile("(\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)\\t(-?\\d*\\.?\\d*(e-?\\d*)?)");
+    private static final Pattern STATUS_REGEX = Pattern.compile("(\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)");
 //    private static final Pattern STATUS_REGEX = Pattern.compile("^(\\d*\\.?\\d*)(\\t-?\\d*\\.?\\d*(e-?\\d*)?){7}$");
 
-    private List<Consumer<RocketData>> observers;
-    private List<RocketData> data;
+    private final List<Consumer<RocketData>> observers = new ArrayList<>();
+    private final List<RocketData> data = new ArrayList<>();
 
-    public OpenRocketImporter(String filePath) throws IOException {
-        this.observers = new ArrayList<>();
-        this.data = new ArrayList<>();
-        importData(filePath);
+    public OpenRocketImporter() {
+
     }
 
     /**
      * Imports the data given in the file path and populates the data array with said data
      *
      * @param filePath  The path of the file to import data from
-     * @throws IOException  If the file is invalid
      */
-    private void importData(String filePath) throws IOException {
+    public void importData(String filePath) {
+        data.clear();
         File file = new File(filePath);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Invalid file name provided.", e);
+        }
         String line;
-        while((line = reader.readLine()) != null){
+        while(true){
+            try {
+                if ((line = reader.readLine()) == null) break;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             Matcher statusRegexMatcher = STATUS_REGEX.matcher(line);
             Matcher eventRegexMatcher = EVENT_REGEX.matcher(line);
 
@@ -61,7 +70,11 @@ public class OpenRocketImporter implements RocketDataImporter {
                 ));
             }
         }
-        reader.close();
+        try {
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<RocketData> getData() {
@@ -83,9 +96,8 @@ public class OpenRocketImporter implements RocketDataImporter {
                     previousTime = currentTime;
                 }
             }catch (InterruptedException e){
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
-            System.out.println("Completed in: " + (System.currentTimeMillis() - start));
         }).start();
     }
 

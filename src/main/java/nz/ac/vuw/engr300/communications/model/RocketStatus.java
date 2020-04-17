@@ -1,8 +1,12 @@
 package nz.ac.vuw.engr300.communications.model;
 
+import java.util.Objects;
+
 /**
  * Implementation of RocketData that defines incoming data as status updates, E.G. just providing information about
  * the different measured metrics such as altitude, vertical velocity and many others.
+ *
+ * @author Tim Salisbury
  */
 public class RocketStatus implements RocketData {
 
@@ -58,5 +62,25 @@ public class RocketStatus implements RocketData {
 
     public double getDistanceNorthOfLaunch() {
         return distanceNorthOfLaunch;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RocketStatus that = (RocketStatus) o;
+        return Double.compare(that.time, time) == 0 &&
+                Double.compare(that.altitude, altitude) == 0 &&
+                Double.compare(that.verticalVelocity, verticalVelocity) == 0 &&
+                Double.compare(that.verticalAcceleration, verticalAcceleration) == 0 &&
+                Double.compare(that.totalVelocity, totalVelocity) == 0 &&
+                Double.compare(that.totalAcceleration, totalAcceleration) == 0 &&
+                Double.compare(that.distanceEastOfLaunch, distanceEastOfLaunch) == 0 &&
+                Double.compare(that.distanceNorthOfLaunch, distanceNorthOfLaunch) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(time, altitude, verticalVelocity, verticalAcceleration, totalVelocity, totalAcceleration, distanceEastOfLaunch, distanceNorthOfLaunch);
     }
 }

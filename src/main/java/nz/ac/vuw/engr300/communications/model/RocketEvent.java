@@ -1,8 +1,12 @@
 package nz.ac.vuw.engr300.communications.model;
 
+import java.util.Objects;
+
 /**
  * Implementation of RocketData that defines incoming data as Events, such as launch, main engine burnout,
  * and parachute deployed.
+ *
+ * @author Tim Salisbury
  */
 public class RocketEvent implements RocketData {
 
@@ -39,5 +43,19 @@ public class RocketEvent implements RocketData {
      */
     public double getTime() {
         return time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RocketEvent that = (RocketEvent) o;
+        return Double.compare(that.time, time) == 0 &&
+                eventType == that.eventType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventType, time);
     }
 }
