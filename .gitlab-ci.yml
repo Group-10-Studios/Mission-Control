@@ -25,6 +25,9 @@ unittest:
 
 pages:
   stage: DeployPages
+  # Run this stage only on the master branch.
+  only:
+    - master
   tags:
     - shell
   dependencies:
