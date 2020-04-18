@@ -70,9 +70,10 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
-					<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-					<!-- Set view level to private docs scope -->
-					<show>private</show>
+					<!-- This javadocExecutable is not necessary while running on ecs shell runner - it is required locally though -->
+					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
+					<!-- Currently only works at public scope -->
+					<show>public</show>
 					<nohelp>true</nohelp>
 				</configuration>
 			</plugin>
