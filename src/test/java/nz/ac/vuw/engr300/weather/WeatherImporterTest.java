@@ -1,4 +1,4 @@
-package nz.ac.vuw.engr300.importers;
+package nz.ac.vuw.engr300.weather;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import nz.ac.vuw.engr300.importers.JsonImporter;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
