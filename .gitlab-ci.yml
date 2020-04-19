@@ -1,6 +1,7 @@
 stages:
   - Build
   - Test
+  - DeployPages
   # - Deploy
 
 build:
@@ -18,6 +19,29 @@ unittest:
   script:
     - mvn test
   allow_failure: false
+  artifacts:
+    paths:
+      - target/site/jacoco/
+
+pages:
+  stage: DeployPages
+  # Run this stage only on the master branch.
+  only:
+    - master
+  tags:
+    - shell
+  dependencies:
+    - unittest
+  script:
+    # First transfer generated testcoverage
+   - mkdir public
+   - mv target/site/jacoco public/jacoco/
+    # Generate javadoc and move to site after
+   - mvn javadoc:javadoc
+   - mv target/site/apidocs public/javadoc/
+  artifacts:
+    paths:
+      - public
 
 # deploy:
 #   stage: Deploy

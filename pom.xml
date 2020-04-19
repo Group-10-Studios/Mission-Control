@@ -45,6 +45,38 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.1</version>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<!-- This javadocExecutable is not necessary while running on ecs shell runner - it is required locally though -->
+					<!-- <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable> -->
+					<!-- Currently only works at public scope -->
+					<show>public</show>
+					<nohelp>true</nohelp>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
