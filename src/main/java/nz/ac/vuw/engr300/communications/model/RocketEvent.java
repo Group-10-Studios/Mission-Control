@@ -39,7 +39,7 @@ public class RocketEvent implements RocketData {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public double getTime() {
         return time;
