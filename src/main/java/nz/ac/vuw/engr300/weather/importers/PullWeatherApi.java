@@ -1,3 +1,5 @@
+package nz.ac.vuw.engr300.weather.importers;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,7 +23,7 @@ public class PullWeatherApi {
             returnedData += bReader.readLine();
 
             // Write data to json
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./output.json")); //Nathan: feel free to modify the output file location.
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.json"));
             writer.write(returnedData);
 
             writer.close();
