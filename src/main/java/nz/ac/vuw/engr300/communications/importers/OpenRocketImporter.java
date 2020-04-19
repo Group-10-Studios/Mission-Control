@@ -102,7 +102,7 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public void subscribeObserver(Consumer<RocketData> observer) {
