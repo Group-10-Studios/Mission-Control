@@ -1,0 +1,61 @@
+package nz.ac.vuw.engr300.communications.model;
+
+import java.util.Objects;
+
+/**
+ * Implementation of RocketData that defines incoming data as Events, such as launch, main engine burnout,
+ * and parachute deployed.
+ *
+ * @author Tim Salisbury
+ */
+public class RocketEvent implements RocketData {
+
+    /**
+     * Defines the different types of events that can occur
+     */
+    public enum EventType{
+        LAUNCH,
+        IGNITION,
+        LIFTOFF,
+        LAUNCHROD,
+        BURNOUT,
+        APOGEE,
+        EJECTION_CHARGE,
+        RECOVERY_DEVICE_DEPLOYMENT,
+        GROUND_HIT,
+        SIMULATION_END
+    }
+
+    private final EventType eventType;
+    private final double time;
+
+    public RocketEvent(EventType eventType, double time) {
+        this.eventType = eventType;
+        this.time = time;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public double getTime() {
+        return time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RocketEvent that = (RocketEvent) o;
+        return Double.compare(that.time, time) == 0 &&
+                eventType == that.eventType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventType, time);
+    }
+}

@@ -1,31 +1,53 @@
 stages:
   - Build
   - Test
-  - Deploy
+  - DeployPages
+  # - Deploy
 
 build:
   stage: Build
   tags:
-    - Shell
+    - shell
   script:
-    - echo "static analysis"
-    - exit 1
-  allow_failure: true
+    - mvn compile
+  allow_failure: false
 
 unittest:
   stage: Test
   tags:
-    - Shell
+    - shell
   script:
-    - echo "test"
-    - exit 1
-  allow_failure: true
+    - mvn test
+  allow_failure: false
+  artifacts:
+    paths:
+      - target/site/jacoco/
 
-deploy:
-  stage: Deploy
+pages:
+  stage: DeployPages
+  # Run this stage only on the master branch.
+  only:
+    - master
   tags:
-    - Shell
+    - shell
+  dependencies:
+    - unittest
   script:
-    - echo "deploy"
-    - exit 1
-  allow_failure: true
+    # First transfer generated testcoverage
+   - mkdir public
+   - mv target/site/jacoco public/jacoco/
+    # Generate javadoc and move to site after
+   - mvn javadoc:javadoc
+   - mv target/site/apidocs public/javadoc/
+  artifacts:
+    paths:
+      - public
+
+# deploy:
+#   stage: Deploy
+#   tags:
+#     - shell
+#   script:
+#     - echo "deploy"
+#     - exit 1
+#   allow_failure: true
