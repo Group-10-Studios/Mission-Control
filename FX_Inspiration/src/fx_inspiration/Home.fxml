@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="486.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx_inspiration.HomeController">
+<AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="486.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx_inspiration.HomeController">
    <children>
-      <Pane prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
+      <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
          <children>
-            <Label layoutX="864.0" layoutY="11.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="lblHeader" layoutX="864.0" layoutY="11.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Arial" size="22.0" />
                </font>
@@ -25,16 +25,16 @@
             <DropShadow color="#00000080" />
          </effect>
       </Pane>
-      <AnchorPane layoutX="294.0" layoutY="50.0" prefHeight="1055.0" prefWidth="1386.0">
+      <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" prefHeight="1055.0" prefWidth="1386.0">
          <children>
-            <Pane layoutX="18.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnAltitude" layoutX="18.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Altitude">
+                  <Label fx:id="lblAltHead" layoutX="14.0" layoutY="14.0" text="Altitude">
                      <font>
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <LineChart layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
+                  <LineChart fx:id="lineChardAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>
@@ -44,14 +44,14 @@
                   </LineChart>
                </children>
             </Pane>
-            <Pane layoutX="721.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnVelocity" layoutX="721.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Velocity">
+                  <Label fx:id="lblVelHead" layoutX="14.0" layoutY="14.0" text="Velocity">
                      <font>
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <LineChart layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
+                  <LineChart fx:id="lineChardVel" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
                      <xAxis>
                         <CategoryAxis side="BOTTOM" />
                      </xAxis>
@@ -61,14 +61,14 @@
                   </LineChart>
                </children>
             </Pane>
-            <Pane layoutX="18.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnRangeDist" layoutX="18.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Range Distance">
+                  <Label fx:id="lblRangeDistHead" layoutX="14.0" layoutY="14.0" text="Range Distance">
                      <font>
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <LineChart layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
+                  <LineChart fx:id="lineChartRangeDist" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -78,14 +78,14 @@
                   </LineChart>
                </children>
             </Pane>
-            <Pane layoutX="721.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnAngleOfAttack" layoutX="721.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="Angle of Attack">
+                  <Label fx:id="lblAngleOfAttackHead" layoutX="14.0" layoutY="14.0" text="Angle of Attack">
                      <font>
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <PieChart layoutX="42.0" layoutY="61.0" prefHeight="288.0" prefWidth="562.0" />
+                  <PieChart fx:id="PieChartAngleOfAttack" layoutX="42.0" layoutY="61.0" prefHeight="288.0" prefWidth="562.0" />
                </children>
             </Pane>
             <Label layoutX="17.0" layoutY="14.0" text="REAL-TIME FLIGHT INFO">
@@ -98,33 +98,33 @@
             <DropShadow color="#00000051" />
          </effect>
       </AnchorPane>
-      <AnchorPane layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
+      <AnchorPane fx:id="apNav" layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
          <children>
-            <Pane layoutX="14.0" layoutY="938.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnExtras" layoutX="14.0" layoutY="938.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="218.0" text="Past Flights" />
-                  <Button layoutX="23.0" layoutY="57.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="218.0" text="Run Simulation" />
+                  <Button fx:id="btnPastFlights" layoutX="23.0" layoutY="13.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="218.0" text="Past Flights" />
+                  <Button fx:id="btnRunSim" layoutX="23.0" layoutY="57.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="218.0" text="Run Simulation" />
                </children>
             </Pane>
-            <Pane layoutX="14.0" layoutY="14.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnDetails" layoutX="14.0" layoutY="14.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
                <children>
                   <Label layoutX="60.0" layoutY="5.0" text="Rocket: " />
-                  <Label layoutX="107.0" layoutY="6.0" text="***************" />
+                  <Label fx:id="lblRocketID" layoutX="107.0" layoutY="6.0" text="***************" />
                   <Label layoutX="87.0" layoutY="24.0" text="Current State" />
-                  <Label layoutX="87.0" layoutY="43.0" text="**************" />
+                  <Label fx:id="lblState" layoutX="87.0" layoutY="43.0" text="**************" />
                   <Label layoutX="78.0" layoutY="52.0" text="Weather Condition" />
-                  <Label layoutX="89.0" layoutY="69.0" text="*************" />
+                  <Label fx:id="lblWeather" layoutX="89.0" layoutY="69.0" text="*************" />
                </children>
             </Pane>
-            <Pane layoutX="14.0" layoutY="136.0" prefHeight="782.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;" />
+            <Pane fx:id="pnNav" layoutX="14.0" layoutY="136.0" prefHeight="782.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;" />
          </children>
          <effect>
             <DropShadow color="#00000051" />
          </effect>
       </AnchorPane>
-      <AnchorPane layoutX="1680.0" layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
+      <AnchorPane fx:id="apWarnings" layoutX="1680.0" layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
          <children>
-            <Pane layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
                <children>
                   <Label layoutX="10.0" layoutY="4.0" text="Warnings" />
                </children>
