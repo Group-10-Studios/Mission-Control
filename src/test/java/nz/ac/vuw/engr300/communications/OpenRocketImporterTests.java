@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests to ensure that the OpenRocketImporter class works as expected, these tests require
- * that two files are present in the tests resource directory, that being "RocketDataTestFile1.csv",
- * and "RocketDataTestFile2.csv"
+ * that two files are present in the tests resource directory, that being "TestDataWithExtraAttributes.csv",
+ * and "FullyCorrectTestData.csv"
  *
  * @author Tim Salisbury
  */
@@ -27,7 +27,22 @@ public class OpenRocketImporterTests {
     @Test
     public void test_basic_import(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("RocketDataTestFile1.csv").getPath());
+        importer.importData(getClass().getClassLoader().getResource("FullyCorrectRocketData.csv").getPath());
+    }
+
+    /**
+     * Tests that the importer can account for extra attributes exported with the data
+     */
+    @Test
+    public void test_extra_attribute_import(){
+        OpenRocketImporter importer = new OpenRocketImporter();
+        importer.importData(getClass().getClassLoader().getResource("RocketDataWithExtraAttributes.csv").getPath());
+    }
+
+    @Test
+    public void test_missing_attribute_import(){
+        OpenRocketImporter importer = new OpenRocketImporter();
+        assertThrows(IllegalArgumentException.class, ()-> importer.importData(getClass().getClassLoader().getResource("RocketDataMissingAttributes.csv").getPath()));
     }
 
     /**
@@ -35,18 +50,9 @@ public class OpenRocketImporterTests {
      */
     @Test
     public void test_import_data_sizes(){
-        OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("RocketDataTestFile1.csv").getPath());
-        assertEquals(425, importer.getData().size());
-
-        int numOfEvents = (int) importer.getData().stream()
-                .filter(rocketData -> rocketData instanceof RocketEvent).count();
-
-        int numOfStatuses = (int) importer.getData().stream()
-                .filter(rocketData -> rocketData instanceof RocketStatus).count();
-
-        assertEquals(416, numOfStatuses);
-        assertEquals(9, numOfEvents);
+        ClassLoader loader = getClass().getClassLoader();
+        testRocketDataSize(loader.getResource("FullyCorrectRocketData.csv").getPath(), 10, 172);
+        testRocketDataSize(loader.getResource("RocketDataWithExtraAttributes.csv").getPath(), 10, 168);
     }
 
     /**
@@ -55,15 +61,15 @@ public class OpenRocketImporterTests {
     @Test
     public void test_import_data_values(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("RocketDataTestFile2.csv").getPath());
+        importer.importData(getClass().getClassLoader().getResource("FullyCorrectTestData.csv").getPath());
         List<RocketData> data = importer.getData();
 
-        testRocketEvent(data.get(0), 0.25, RocketEvent.EventType.LAUNCH);
-        testRocketStatus(data.get(1), 0.375, 1.1, 1.2, 1.3 ,1.4, 1.5, 1.6);
-        testRocketEvent(data.get(2), 0.5, RocketEvent.EventType.IGNITION);
-        testRocketStatus(data.get(3), 0.625, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6);
-        testRocketEvent(data.get(4), 0.75, RocketEvent.EventType.LIFTOFF);
-        testRocketStatus(data.get(5), 0.875, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6);
+        testRocketEvent(data.get(0), 0.1, RocketEvent.EventType.LAUNCH);
+        testRocketStatus(data.get(1), 0.11, 1.2, 1.3, 1.4,1.5, 1.6, 1.7);
+        testRocketEvent(data.get(2), 0.2, RocketEvent.EventType.LIFTOFF);
+        testRocketStatus(data.get(3), 0.22, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7);
+        testRocketEvent(data.get(4), 0.3, RocketEvent.EventType.LAUNCHROD);
+        testRocketStatus(data.get(5), 0.33, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7);
 
     }
 
@@ -82,7 +88,7 @@ public class OpenRocketImporterTests {
     @Test
     public void test_call_back(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("RocketDataTestFile2.csv").getPath());
+        importer.importData(getClass().getClassLoader().getResource("FullyCorrectTestData.csv").getPath());
         List<RocketData> callBackData = new ArrayList<>();
         importer.subscribeObserver(callBackData::add);
         importer.start();
@@ -120,5 +126,20 @@ public class OpenRocketImporterTests {
         assertEquals(latitude, status.getLatitude());
         assertEquals(longitude, status.getLongitude());
         assertEquals(angleOfAttack, status.getAngleOfAttack());
+    }
+
+    public void testRocketDataSize(String file, int eventSize, int statusSize){
+        OpenRocketImporter importer = new OpenRocketImporter();
+        importer.importData(file);
+        assertEquals(eventSize + statusSize, importer.getData().size());
+
+        int numOfEvents = (int) importer.getData().stream()
+                .filter(rocketData -> rocketData instanceof RocketEvent).count();
+
+        int numOfStatuses = (int) importer.getData().stream()
+                .filter(rocketData -> rocketData instanceof RocketStatus).count();
+
+        assertEquals(statusSize, numOfStatuses);
+        assertEquals(eventSize, numOfEvents);
     }
 }

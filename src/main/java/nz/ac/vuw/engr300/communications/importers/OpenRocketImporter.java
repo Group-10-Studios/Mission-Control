@@ -83,7 +83,7 @@ public class OpenRocketImporter implements RocketDataImporter {
             Matcher eventRegexMatcher = EVENT_REGEX.matcher(line);
 
             if(statusRegexMatcher.find()){
-                double[] values = Arrays.stream(line.split("\t")).map(Double::parseDouble).mapToDouble(Double::doubleValue).toArray();
+                double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble).mapToDouble(Double::doubleValue).toArray();
                 data.add(new RocketStatus(
                         values[parameterIndices[0]],
                         values[parameterIndices[1]],
