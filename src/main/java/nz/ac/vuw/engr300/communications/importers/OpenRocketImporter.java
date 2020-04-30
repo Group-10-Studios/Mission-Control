@@ -18,8 +18,34 @@ import java.util.regex.Pattern;
 public class OpenRocketImporter implements RocketDataImporter {
 
     private static final Pattern EVENT_REGEX = Pattern.compile("^# Event (\\w+) occurred at t=(\\d*\\.?\\d*?) seconds$");
-    private static final Pattern STATUS_REGEX = Pattern.compile("(\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)\\s+(-?\\d*\\.?\\d*(e-?\\d*)?)");
-//    private static final Pattern STATUS_REGEX = Pattern.compile("^(\\d*\\.?\\d*)(\\t-?\\d*\\.?\\d*(e-?\\d*)?){7}$");
+    private static final Pattern STATUS_REGEX = Pattern.compile("^(((-?\\d*\\.?\\d*(e-?\\d*)?)\\s*)|NaN)+$");
+//    private static final Pattern HEADER_REGEX = Pattern.compile("#.*Time \\(s\\).*Altitude \\(m\\).*Total velocity \\(m/s\\).*Total acceleration \\(m/s²\\).*Latitude \\(°\\).*Longitude \\(°\\).*Angle of attack \\(°\\)\\n");
+    private static final List<String> REQUIRED_VALUES = Arrays.asList(
+        "Time (s)",
+        "Altitude (m)",
+        "Total velocity (m/s)",
+        "Total acceleration (m/s²)",
+        "Latitude (°)",
+        "Longitude (°)",
+        "Angle of attack (°)"
+    );
+
+    private static final Pattern HEADER_REGEX;
+
+    static{
+        StringBuilder headerlineBuilder = new StringBuilder();
+        headerlineBuilder.append("#.*");
+        REQUIRED_VALUES.forEach(value->{
+            headerlineBuilder.append(value).append(".*");
+        });
+
+//        headerlineBuilder.append("\\n");
+
+        String pattern = headerlineBuilder.toString();
+        pattern = pattern.replaceAll("\\(","\\\\(");
+        pattern = pattern.replaceAll("\\)","\\\\)");
+        HEADER_REGEX = Pattern.compile(pattern);
+    }
 
     private final List<Consumer<RocketData>> observers = new ArrayList<>();
     private final List<RocketData> data = new ArrayList<>();
@@ -42,26 +68,30 @@ public class OpenRocketImporter implements RocketDataImporter {
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Invalid file name provided.", e);
         }
+        int[] parameterIndices = getParameterIndicesFromHeader(reader);
         String line;
         while(true){
             try {
-                if ((line = reader.readLine()) == null) break;
+                if ((line = reader.readLine()) == null){
+                    break;
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             Matcher statusRegexMatcher = STATUS_REGEX.matcher(line);
             Matcher eventRegexMatcher = EVENT_REGEX.matcher(line);
 
             if(statusRegexMatcher.find()){
+                double[] values = Arrays.stream(line.split("\t")).map(Double::parseDouble).mapToDouble(Double::doubleValue).toArray();
                 data.add(new RocketStatus(
-                        Double.parseDouble(statusRegexMatcher.group(1)),    //Time (s)
-                        Double.parseDouble(statusRegexMatcher.group(3)),    //Altitude (m)
-                        Double.parseDouble(statusRegexMatcher.group(5)),    //Vertical Velocity (m/s)
-                        Double.parseDouble(statusRegexMatcher.group(7)),    //Vertical Acceleration (m/s^2)
-                        Double.parseDouble(statusRegexMatcher.group(9)),    //Total Velocity (m/s)
-                        Double.parseDouble(statusRegexMatcher.group(11)),    //Total Acceleration (m/s^2)
-                        Double.parseDouble(statusRegexMatcher.group(13)),    //Distance east of launch (m)
-                        Double.parseDouble(statusRegexMatcher.group(15))     //Distance north of launch (m)
+                        values[parameterIndices[0]],
+                        values[parameterIndices[1]],
+                        values[parameterIndices[2]],
+                        values[parameterIndices[3]],
+                        values[parameterIndices[4]],
+                        values[parameterIndices[5]],
+                        Double.isNaN(values[parameterIndices[6]]) ? 0 : values[parameterIndices[6]]
                 ));
             }else if(eventRegexMatcher.find()){
                 data.add(new RocketEvent(
@@ -75,6 +105,34 @@ public class OpenRocketImporter implements RocketDataImporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Finds the header line from the given reader, then extracts the indices of the columns in the CSV of the
+     * attributes that Mission Control requires.
+     *
+     * @param reader    The buffered reader to find the header line in
+     * @return          The indices of the attributes that mission control requires
+     */
+    private int[] getParameterIndicesFromHeader(BufferedReader reader){
+        String line;
+        while(true){
+            try{
+                if((line = reader.readLine()) == null) break;
+            }catch (IOException e){
+                break;
+            }
+
+            Matcher headerlineMatcher = HEADER_REGEX.matcher(line);
+
+            if(headerlineMatcher.find()){
+                String[] splitValues = line.toLowerCase().substring(2).split("\t");
+                return REQUIRED_VALUES.stream().map(value-> Arrays.asList(splitValues).indexOf(value.toLowerCase())).mapToInt(Integer::intValue).toArray();
+            }
+
+        }
+
+        throw new IllegalArgumentException("File provided does not contain a header line!");
     }
 
     public List<RocketData> getData() {

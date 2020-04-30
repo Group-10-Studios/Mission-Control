@@ -59,11 +59,11 @@ public class OpenRocketImporterTests {
         List<RocketData> data = importer.getData();
 
         testRocketEvent(data.get(0), 0.25, RocketEvent.EventType.LAUNCH);
-        testRocketStatus(data.get(1), 0.375, 1.1, 1.2, 1.3 ,1.4, 1.5, 1.6, 1.7);
+        testRocketStatus(data.get(1), 0.375, 1.1, 1.2, 1.3 ,1.4, 1.5, 1.6);
         testRocketEvent(data.get(2), 0.5, RocketEvent.EventType.IGNITION);
-        testRocketStatus(data.get(3), 0.625, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7);
+        testRocketStatus(data.get(3), 0.625, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6);
         testRocketEvent(data.get(4), 0.75, RocketEvent.EventType.LIFTOFF);
-        testRocketStatus(data.get(5), 0.875, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7);
+        testRocketStatus(data.get(5), 0.875, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6);
 
     }
 
@@ -108,19 +108,17 @@ public class OpenRocketImporterTests {
     /**
      * Tests a RocketData instance against the values provided
      */
-    public void testRocketStatus(RocketData data, double time, double altitude, double verticalVelocity, double verticalAcceleration,
-                                 double totalVelocity, double totalAcceleration, double distanceEastOfLaunch,
-                                 double distanceNorthOfLaunch){
+    public void testRocketStatus(RocketData data, double time, double altitude, double totalVelocity, double totalAcceleration,
+                                 double latitude, double longitude, double angleOfAttack){
 
         assertTrue(data instanceof RocketStatus);
         RocketStatus status = (RocketStatus)data;
         assertEquals(time, status.getTime());
         assertEquals(altitude, status.getAltitude());
-        assertEquals(verticalVelocity, status.getVerticalVelocity());
-        assertEquals(verticalAcceleration, status.getVerticalAcceleration());
         assertEquals(totalVelocity, status.getTotalVelocity());
         assertEquals(totalAcceleration, status.getTotalAcceleration());
-        assertEquals(distanceEastOfLaunch, status.getDistanceEastOfLaunch());
-        assertEquals(distanceNorthOfLaunch, status.getDistanceNorthOfLaunch());
+        assertEquals(latitude, status.getLatitude());
+        assertEquals(longitude, status.getLongitude());
+        assertEquals(angleOfAttack, status.getAngleOfAttack());
     }
 }
