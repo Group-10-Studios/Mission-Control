@@ -29,26 +29,11 @@ Create a mission control software centre to display rocket metrics and determine
 
 ### 1.2 Scope
 
-- Alitutude
-- Velocity
-- Current rocket state (Waiting, primed, flying, parachute-deployed)
-- Range distance
-- GPS location
-- Weather conditions
-- Angle of attack
-- Simulation output
+The requirements of this project is to provide a graphical interface displaying real-time data provided from the rocket before and during flight. The real-time data will consist of but is not limited to, current rocket state, rocket velocity, altitude, location, and downrange distance. To achieve this we will be required to implement robust communication channels with the rocket, being capable to recover from communication failures at any time.
 
-- Unit testing?
-- Static Analysis
-- Logging
-- Robust communication channels with simluation and avionics
-- 
+The mission control software will also have to include communication channels with simulation software (OpenRocket) to display Monte Carlo simulation output. This will be used to determine if the rocket is safe to launch from the destined launch site. Simulation communication channels will also be needed to run simulations at the launch site, with more up-to-date weather conditions. In the case of the simulation returning with a ready-to-launch the mission control will notify the avionics to prime the booster and parachute charges. If the simulation determines that the launch is not safe then mission control can suggest changing the launch rod of the rocket angle to point in towards the wind.
 
-
-The requirements of this project is to provide a graphical interface displaying real-time data provided from the rocket before and during flight. The real-time data will consist of, but is not limited to, current rocket state, rocket velocity, alitutude, and down range distance. In order to achieve this we will be required to implement robust communication channels with the rocket, being capable to recover from communication failures at any time.
-
-The mission control software will also have to include communication channels with simulation in order to determine whether or not the rocket is safe to launch. In the case of the simulation returning with a ready-to-launch the mission control will notify the avionics to prime the booster and parachute charges. If the simulation determines that the launch is not safe then mission control can suggest changing the launch rod of the rocket angle to point in towards the wind.
-One paragraph describing the scope of the system (9.5.2)
+Along with these functionalities mission control should record and log all incoming data from the rocket, this is for debugging and for the capability to replay launches as if they were live.
 
 ### 1.3 Product overview 
 #### 1.3.1 Product perspective
