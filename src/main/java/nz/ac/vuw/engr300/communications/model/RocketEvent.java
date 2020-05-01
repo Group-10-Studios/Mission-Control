@@ -44,18 +44,4 @@ public class RocketEvent implements RocketData {
     public double getTime() {
         return time;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RocketEvent that = (RocketEvent) o;
-        return Double.compare(that.time, time) == 0 &&
-                eventType == that.eventType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(eventType, time);
-    }
 }

@@ -12,40 +12,29 @@ public class RocketStatus implements RocketData {
 
     private final double time;
     private final double altitude;
-    private final double verticalVelocity;
-    private final double verticalAcceleration;
     private final double totalVelocity;
     private final double totalAcceleration;
-    private final double distanceEastOfLaunch;
-    private final double distanceNorthOfLaunch;
+    private final double latitude;
+    private final double longitude;
+    private final double angleOfAttack;
 
-    public RocketStatus(double time, double altitude, double verticalVelocity, double verticalAcceleration,
-                        double totalVelocity, double totalAcceleration, double distanceEastOfLaunch,
-                        double distanceNorthOfLaunch) {
+    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude, double longitude, double angleOfAttack) {
         this.time = time;
         this.altitude = altitude;
-        this.verticalVelocity = verticalVelocity;
-        this.verticalAcceleration = verticalAcceleration;
         this.totalVelocity = totalVelocity;
         this.totalAcceleration = totalAcceleration;
-        this.distanceEastOfLaunch = distanceEastOfLaunch;
-        this.distanceNorthOfLaunch = distanceNorthOfLaunch;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.angleOfAttack = angleOfAttack;
     }
 
+    @Override
     public double getTime() {
         return time;
     }
 
     public double getAltitude() {
         return altitude;
-    }
-
-    public double getVerticalVelocity() {
-        return verticalVelocity;
-    }
-
-    public double getVerticalAcceleration() {
-        return verticalAcceleration;
     }
 
     public double getTotalVelocity() {
@@ -56,31 +45,15 @@ public class RocketStatus implements RocketData {
         return totalAcceleration;
     }
 
-    public double getDistanceEastOfLaunch() {
-        return distanceEastOfLaunch;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public double getDistanceNorthOfLaunch() {
-        return distanceNorthOfLaunch;
+    public double getLongitude() {
+        return longitude;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RocketStatus that = (RocketStatus) o;
-        return Double.compare(that.time, time) == 0 &&
-                Double.compare(that.altitude, altitude) == 0 &&
-                Double.compare(that.verticalVelocity, verticalVelocity) == 0 &&
-                Double.compare(that.verticalAcceleration, verticalAcceleration) == 0 &&
-                Double.compare(that.totalVelocity, totalVelocity) == 0 &&
-                Double.compare(that.totalAcceleration, totalAcceleration) == 0 &&
-                Double.compare(that.distanceEastOfLaunch, distanceEastOfLaunch) == 0 &&
-                Double.compare(that.distanceNorthOfLaunch, distanceNorthOfLaunch) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(time, altitude, verticalVelocity, verticalAcceleration, totalVelocity, totalAcceleration, distanceEastOfLaunch, distanceNorthOfLaunch);
+    public double getAngleOfAttack() {
+        return angleOfAttack;
     }
 }
