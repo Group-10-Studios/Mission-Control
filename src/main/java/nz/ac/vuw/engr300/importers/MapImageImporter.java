@@ -1,4 +1,4 @@
-package nz.ac.vuw.engr300.communications.importers;
+package nz.ac.vuw.engr300.importers;
 
 import java.io.*;
 import java.net.URL;
@@ -30,7 +30,8 @@ public class MapImageImporter {
             out.close();
             in.close();
             byte[] response = out.toByteArray();
-            FileOutputStream fos = new FileOutputStream("src/main/java/nz/ac/vuw/engr300/communications/importers/output.png");
+            String filename = latitude+"-"+longitude+"-map_image.png";
+            FileOutputStream fos = new FileOutputStream("src/main/resources/map-data/"+filename);
             fos.write(response);
             fos.close();
         } catch (IOException e) {

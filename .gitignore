@@ -359,5 +359,8 @@ dist/
 nbdist/
 .nb-gradle/
 
+### TomTom image output ###
+*-map_image.png
+
 # End of https://www.gitignore.io/api/macos,intellij,netbeans
 
