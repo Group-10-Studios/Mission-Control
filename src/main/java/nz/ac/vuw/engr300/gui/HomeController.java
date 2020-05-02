@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fx_inspiration;
+package nz.ac.vuw.engr300.gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
