@@ -38,27 +38,26 @@ Along with these functionalities mission control should record and log all incom
 ### 1.3 Product overview 
 #### 1.3.1 Product perspective
 
-One page defining the system's relationship to other related products
-(9.5.3. but not the subsections in the standard.)
+The requirements of this project involve mission control being able to relay data between multiple sources. The mission control is one component within this larger system.
+The main purpose of our mission control software is to transmit and receive data between the rocket and our software for visualisation and management during the rocket flight.
+Another requirement is that our software is able to communicate with the simulation software developed by other teams to be able to determine if the rocket is safe to launch which can be used as a protection method before launch is allowed.
 
-> **9.5.3 Product perspective** <br>
-> Define the system's relationship to other related products. 
-> 
-> If the product is an element of a larger system, then relate the requirements of that larger system to the functionality of the product covered by the software requirements specification.
-> 
-> If the product is an element of a larger system, then identify the interfaces between the product covered by the software requirements specification and the larger system of which the product is an element. 
->
-> A block diagram showing the major elements of the larger system, interconnections, and external interfaces can be helpful.
-> 
-> Describe how the software operates within the following constraints:  
-a) System interfaces;  
-b) User interfaces;  
-c) Hardware interfaces;  
-d) Software interfaces;  
-e) Communications interfaces;  
-f) Memory;  
-g) Operations;  
-h) Site adaptation requirements.
+![Perspective Diagram](assets/1.3.1.Perspective.png)
+
+In this diagram it shows our ideal communication structure between the different components of the Project.
+Using the specified communication methods we can provide a standardized communication method between each project.
+
+Both aspects of communication are expected to be handled by our `communications` package which includes methods to communicate using the different interfaces. This module can be easily replaced and is designed to handle our integrations with the other work.
+
+**Rocket Communication:**
+
+The rocket communication is expected to be performed using a Hardware interface. This includes using a USB serial device which contains a LoRa WAN radio which will communicate with the rocket. This radio hardware is expected to provide us with the long range ability to both send and receive data with the rocket component.
+The expectation is that our software provides an interface to interact with this hardware which can interpret incoming messages and provide an interface to send a message through the hardware interface.
+
+**Simulation Communication:**
+
+The simulation communication is expected to be performed using a Software interface. In our research we have found that this could be possible using SimulationListeners inside OpenRocket. Their project is expected to be built on top of OpenRocket which already has support for this feature. This will provide us with a message path so that we can receive data from the simulations to verify that launching the rocket is safe.
+
 
 #### 1.3.2 Product functions
 
