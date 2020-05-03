@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.ac.vuw.engr300.gui;
+package nz.ac.vuw.engr300.gui.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 /**
+ * Represents the controller for the Home application view.
  *
  * @author Nalin
  */

@@ -3,29 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.ac.vuw.engr300.gui.fx_inspiration;
+package nz.ac.vuw.engr300.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.views.HomeView;
 
 /**
+ * Runs the main GUI application for Mission Control. This defaults to a HomeView start.
  *
  * @author Nalin
  */
-public class FX_Inspiration extends Application {
+public class GUI extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Home.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        
-        stage.show();
+        new HomeView(stage);
     }
 
     /**
