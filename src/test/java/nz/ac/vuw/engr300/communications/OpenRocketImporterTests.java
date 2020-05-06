@@ -27,7 +27,7 @@ public class OpenRocketImporterTests {
     @Test
     public void test_basic_import(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("FullyCorrectRocketData.csv").getPath());
+        importer.importData("src/test/resources/FullyCorrectRocketData.csv");
     }
 
     /**
@@ -36,13 +36,13 @@ public class OpenRocketImporterTests {
     @Test
     public void test_extra_attribute_import(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("RocketDataWithExtraAttributes.csv").getPath());
+        importer.importData("src/test/resources/RocketDataWithExtraAttributes.csv");
     }
 
     @Test
     public void test_missing_attribute_import(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        assertThrows(IllegalArgumentException.class, ()-> importer.importData(getClass().getClassLoader().getResource("RocketDataMissingAttributes.csv").getPath()));
+        assertThrows(IllegalArgumentException.class, ()-> importer.importData("src/test/resources/RocketDataMissingAttributes.csv"));
     }
 
     /**
@@ -50,9 +50,8 @@ public class OpenRocketImporterTests {
      */
     @Test
     public void test_import_data_sizes(){
-        ClassLoader loader = getClass().getClassLoader();
-        testRocketDataSize(loader.getResource("FullyCorrectRocketData.csv").getPath(), 10, 172);
-        testRocketDataSize(loader.getResource("RocketDataWithExtraAttributes.csv").getPath(), 10, 168);
+        testRocketDataSize("src/test/resources/FullyCorrectRocketData.csv", 10, 172);
+        testRocketDataSize("src/test/resources/RocketDataWithExtraAttributes.csv", 10, 168);
     }
 
     /**
@@ -61,7 +60,7 @@ public class OpenRocketImporterTests {
     @Test
     public void test_import_data_values(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("FullyCorrectTestData.csv").getPath());
+        importer.importData("src/test/resources/FullyCorrectTestData.csv");
         List<RocketData> data = importer.getData();
 
         testRocketEvent(data.get(0), 0.1, RocketEvent.EventType.LAUNCH);
@@ -88,7 +87,7 @@ public class OpenRocketImporterTests {
     @Test
     public void test_call_back(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("FullyCorrectTestData.csv").getPath());
+        importer.importData("src/test/resources/FullyCorrectTestData.csv");
         List<RocketData> callBackData = new ArrayList<>();
         importer.subscribeObserver(callBackData::add);
         importer.start();
