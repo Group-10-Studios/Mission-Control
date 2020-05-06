@@ -76,6 +76,9 @@ _minted*
 # Prevent uploading downloaded weather data into version control
 src/main/resources/output.json
 src/main/resources/WeatherData.json
+src/main/resources/keys.json
+
+**/*keys.json
 
 # Created by https://www.gitignore.io/api/java,linux,maven,windows,eclipse
 # Edit at https://www.gitignore.io/?templates=java,linux,maven,windows,eclipse
