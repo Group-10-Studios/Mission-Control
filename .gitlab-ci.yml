@@ -12,7 +12,9 @@ build:
     - need java
     - java -version
     - which java
+    - echo $JAVA_HOME
     - export JAVA_HOME=$(which java)
+    - echo $JAVA_HOME
     - mvn --version
     - mvn compile
   allow_failure: false
