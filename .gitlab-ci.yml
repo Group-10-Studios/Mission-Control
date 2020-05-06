@@ -2,7 +2,7 @@ stages:
   - Build
   - Test
   - DeployPages
-  # - Deploy
+  - BuildPackage
 
 build:
   stage: Build
@@ -43,11 +43,13 @@ pages:
     paths:
       - public
 
-# deploy:
-#   stage: Deploy
-#   tags:
-#     - shell
-#   script:
-#     - echo "deploy"
-#     - exit 1
-#   allow_failure: true
+package:
+  stage: BuildPackage
+  tags:
+    - shell
+  script:
+    - mvn clean package
+  artifacts:
+    paths:
+      # Only add the full mission-control jar wildcard the version
+      - target/mission-control-*.jar
