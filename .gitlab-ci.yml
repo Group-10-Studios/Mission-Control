@@ -10,6 +10,8 @@ build:
     - shell
   script:
     - need java
+    - java -version
+    - mvn --version
     - mvn compile
   allow_failure: false
 
