@@ -9,11 +9,10 @@ build:
   tags:
     - shell
   script:
+    - echo $JAVA_HOME
     - need java
     - java -version
     - which java
-    - echo $JAVA_HOME
-    - export JAVA_HOME=$(which java)
     - echo $JAVA_HOME
     - mvn --version
     - mvn compile
