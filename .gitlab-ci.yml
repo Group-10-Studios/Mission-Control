@@ -10,7 +10,7 @@ build:
     - shell
   script:
     - echo $JAVA_HOME
-    - need java
+    # - need java
     - java -version
     - which java
     - echo $JAVA_HOME
