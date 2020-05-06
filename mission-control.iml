@@ -13,7 +13,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/FX_Inspiration/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -26,5 +25,13 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:13" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:linux:13" level="project" />
   </component>
 </module>
