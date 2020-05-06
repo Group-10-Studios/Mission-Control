@@ -6,7 +6,7 @@ import java.net.URL;
 public class MapImageImporter {
 
     public static void main(String[] args) {
-        String apiKey = "UmsFbZYavOGUd59jYOU9kvnc5jvgY2FG";
+        String apiKey = KeyImporter.getKey("maps");
         double latitude = -41.300442;
         double longitude = 174.780319;
         int zoomLevel = 17; //Number between 0-22
