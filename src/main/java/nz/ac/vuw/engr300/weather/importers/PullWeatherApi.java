@@ -5,11 +5,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import nz.ac.vuw.engr300.importers.KeyImporter;
+
 
 public class PullWeatherApi {
 
     public static void main(String[] args) throws MalformedURLException {
-       String apiKey = "cc5a7a7ec97d0a02e950717c0e632548";
+       String apiKey = KeyImporter.getKey("weather");
        String cityID = "2179538"; //Wellington
        String returnedData = "";
 
