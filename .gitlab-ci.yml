@@ -9,6 +9,7 @@ build:
   tags:
     - shell
   script:
+    - need java
     - mvn compile
   allow_failure: false
 
@@ -17,6 +18,7 @@ unittest:
   tags:
     - shell
   script:
+    - need java
     - mvn test
   allow_failure: false
   artifacts:
@@ -33,12 +35,13 @@ pages:
   dependencies:
     - unittest
   script:
+    - need java
     # First transfer generated testcoverage
-   - mkdir public
-   - mv target/site/jacoco public/jacoco/
+    - mkdir public
+    - mv target/site/jacoco public/jacoco/
     # Generate javadoc and move to site after
-   - mvn javadoc:javadoc
-   - mv target/site/apidocs public/javadoc/
+    - mvn javadoc:javadoc
+    - mv target/site/apidocs public/javadoc/
   artifacts:
     paths:
       - public
@@ -48,6 +51,7 @@ package:
   tags:
     - shell
   script:
+    - need java
     - mvn clean package
   artifacts:
     paths:
