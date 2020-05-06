@@ -27,7 +27,7 @@ public class OpenRocketImporterTests {
     @Test
     public void test_basic_import(){
         OpenRocketImporter importer = new OpenRocketImporter();
-        importer.importData(getClass().getClassLoader().getResource("FullyCorrectRocketData.csv").getPath());
+        importer.importData("src/test/resources/FullyCorrectRocketData.csv");
     }
 
     /**
