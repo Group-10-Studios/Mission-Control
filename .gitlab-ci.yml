@@ -11,7 +11,7 @@ build:
   script:
     - need java
     - java -version
-    - EXPORT JAVA_HOME=$(which java)
+    - export JAVA_HOME=$(which java)
     - mvn --version
     - mvn compile
   allow_failure: false
