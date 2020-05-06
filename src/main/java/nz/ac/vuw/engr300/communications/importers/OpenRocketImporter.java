@@ -144,7 +144,6 @@ public class OpenRocketImporter implements RocketDataImporter {
      */
     public void start(){
         new Thread(()->{
-            long start = System.currentTimeMillis();
             try{
                 long previousTime = 0;
                 for (RocketData data : this.data) {
