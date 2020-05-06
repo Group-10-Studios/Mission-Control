@@ -60,23 +60,21 @@ The simulation communication is expected to be performed using a Software interf
 
 
 #### 1.3.2 Product functions
-
-One page summary of the main functions of the product (9.5.4), briefly characterising the minimum viable product.
-##### What is the product?
+##### What is the product?**
 The product that we are creating is a Mission Control Software for rocket simulations. Our product will be portable, and accessible offline, so that we are able to access it while launching rockets on a field.
 The software will display real time data of a flight simulation if it is taking place, as well as details of previous flight simulations. This data is crucial for flight simulations as is explained further. 
-##### Individual characteristics
-###### “Go/No Go” functionality
+##### Individual characteristics**
+**“Go/No Go” functionality**
 The “Go/No” go functionality takes all the details available before a launch and makes a decision on whether or not the rocket is safe to launch. The main data we would take into condition would be the local current weather conditions. This would look at the current weather forecast, and decide if it is still safe to launch. I.e it is not raining, hailing, snowing or too windy to launch. These details are highlighted further.
-###### Current software state
+**Current software state**
 Our product will show the current software state, which shows what the rocket is currently doing. The software will also need to show if the rocket is about to launch so that the avionics can arm the parachute ejection charges. It will show the current altitude of the rocket in real time to show how high the rocket gets. 
-###### GPS 
+**GPS **
 As we said before, as an extension we may like to use the wind speed and the monte-carlo simulation to determine an upward trajectory so that we do not veer too far away from the launch site. For this we would also use a GPS tracker for the rocket to determine its location during a real time flight and calculate if we need to make any changes to our calculations. 
-###### Adding local current weather conditions
+**Adding local current weather conditions**
 For our rocket launch we would need to take the local current weather conditions into consideration. This does not only include the forecast and checking if it is raining for the “Go/No Go” functionality, but also heavily looks at the wind speed, and how this would affect the in flight calculations. 
 Our software could potentially go a step further using its wind speed. We expect to use this wind speed into our calculations, so that the rocket does not veer too far away from the exact spot it was launched from. We also expect to use the Monte Carlo Simulation, to determine an upward trajectory, which will be discussed later on. 
 We will be looking at the weather using OpenWeatherMap, and their free 3hour API. This means that we can only access the weather every 3 hours.
-###### Monte Carlo Rocket Simulation 
+**Monte Carlo Rocket Simulation **
 We will be integrating with the Monte Carlo Rocket Simulation. This will run multiple simulations of a rocket launch with slightly different parameters to get an idea of how safe a launch would be. These simulations run as sort of tests for the program to consider if it would be safe to launch considering the current conditions. We would expect a certain percentage of these simulations to pass in order for us to give the “Go” decision for a rocket launch. These simulations could also be used to determine an upward trajectory, or suggest changing the launch rod angle, after taking the wind into consideration. 
 
 
