@@ -34,11 +34,11 @@ pages:
     - unittest
   script:
     # First transfer generated testcoverage
-   - mkdir public
-   - mv target/site/jacoco public/jacoco/
+    - mkdir public
+    - mv target/site/jacoco public/jacoco/
     # Generate javadoc and move to site after
-   - mvn javadoc:javadoc
-   - mv target/site/apidocs public/javadoc/
+    - mvn javadoc:javadoc
+    - mv target/site/apidocs public/javadoc/
   artifacts:
     paths:
       - public
