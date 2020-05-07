@@ -3,11 +3,16 @@ package nz.ac.vuw.engr300.importers;
 import java.io.*;
 import java.net.URL;
 
+/**
+ * Returns and saves an image from TomTom's API.
+ * Requires a longitude and latitude, as well the desired exported image's width and height and zoom level.
+ * @author Ahad Rahman
+ */
 public class MapImageImporter {
 
     public static void main(String[] args) {
         String apiKey = KeyImporter.getKey("maps");
-        double latitude = -41.300442;
+        double latitude = -141.300442;
         double longitude = 174.780319;
         int zoomLevel = 17; //Number between 0-22
         int imageWidth = 512; //Width of the output file
@@ -15,7 +20,8 @@ public class MapImageImporter {
         importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight);
     }
 
-    private static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
+    public static boolean importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
+        boolean success = false;
         try {
             String apiCall = "https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&key="+apiKey+"&zoom="+zoomLevel+"&center="+longitude+","+latitude+"&width="+imageWidth+"&height="+imageHeight+"&viewUnified&language=NGT";
             URL imageURL = new URL(apiCall);
@@ -34,8 +40,10 @@ public class MapImageImporter {
             FileOutputStream fos = new FileOutputStream("src/main/resources/map-data/"+filename);
             fos.write(response);
             fos.close();
+            success = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return success;
     }
 }
