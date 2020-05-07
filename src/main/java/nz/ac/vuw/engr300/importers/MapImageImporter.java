@@ -12,7 +12,7 @@ public class MapImageImporter {
 
     public static void main(String[] args) {
         String apiKey = KeyImporter.getKey("maps");
-        double latitude = -141.300442;
+        double latitude = -41.300442;
         double longitude = 174.780319;
         int zoomLevel = 17; //Number between 0-22
         int imageWidth = 512; //Width of the output file
