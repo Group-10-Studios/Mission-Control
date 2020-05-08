@@ -1,4 +1,5 @@
 construct_keys:
+  stage: .pre
   script:
     # Build keys.json first
     - |
