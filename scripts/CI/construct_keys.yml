@@ -1,5 +1,7 @@
 construct_keys:
   stage: .pre
+  tags:
+    - shell
   script:
     # Build keys.json first
     - |
