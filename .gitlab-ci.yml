@@ -19,7 +19,6 @@ unittest:
   tags:
     - shell
   script:
-    - construct_keys
     - mvn test
   allow_failure: false
   artifacts:
@@ -51,7 +50,6 @@ package:
   tags:
     - shell
   script:
-    - construct_keys
     - mvn clean package
   artifacts:
     paths:
