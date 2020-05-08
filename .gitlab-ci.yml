@@ -17,6 +17,14 @@ unittest:
   tags:
     - shell
   script:
+    # Build keys.json first
+    - |
+      cat > src/main/resources/keys.json << EOF
+      {
+        "weather": $weather_api_key,
+        "maps": $map_api_key
+      }
+      EOF
     - mvn test
   allow_failure: false
   artifacts:
