@@ -4,6 +4,8 @@ stages:
   - DeployPages
   - BuildPackage
 
+include: 'scripts/CI/construct_keys.yml'
+
 build:
   stage: Build
   tags:
@@ -17,14 +19,7 @@ unittest:
   tags:
     - shell
   script:
-    # Build keys.json first
-    - |
-      cat > src/main/resources/keys.json << EOF
-      {
-        "weather": $weather_api_key,
-        "maps": $map_api_key
-      }
-      EOF
+    - construct_keys
     - mvn test
   allow_failure: false
   artifacts:
@@ -56,6 +51,7 @@ package:
   tags:
     - shell
   script:
+    - construct_keys
     - mvn clean package
   artifacts:
     paths:
