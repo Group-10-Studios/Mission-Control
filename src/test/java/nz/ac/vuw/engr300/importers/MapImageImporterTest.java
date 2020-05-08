@@ -54,7 +54,13 @@ public class MapImageImporterTest {
         int zoomLevel = 16; //Number between 0-22
         int imageWidth = 300; //Width of the output file
         int imageHeight = 300; //Height of the output file
-        assertEquals(false, MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight));
+        try {
+            MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            fail();
+        } catch (Error e) {
+
+        }
+        //assertEquals(false, MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight));
     }
 
     @Test
@@ -64,7 +70,12 @@ public class MapImageImporterTest {
         int zoomLevel = 16; //Number between 0-22
         int imageWidth = 300; //Width of the output file
         int imageHeight = 300; //Height of the output file
-        assertEquals(false, MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight));
+        try {
+            MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            fail();
+        } catch (Error e) {
+
+        }
     }
 
     @Test
@@ -74,7 +85,11 @@ public class MapImageImporterTest {
         int zoomLevel = 25; //Number between 0-22
         int imageWidth = 300; //Width of the output file
         int imageHeight = 300; //Height of the output file
-        assertEquals(false, MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight));
+        try {
+            MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+        } catch (Error e) {
+
+        }
     }
 
 }

@@ -20,8 +20,7 @@ public class MapImageImporter {
         importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight);
     }
 
-    public static boolean importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
-        boolean success = false;
+    public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
         try {
             String apiCall = "https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&key="+apiKey+"&zoom="+zoomLevel+"&center="+longitude+","+latitude+"&width="+imageWidth+"&height="+imageHeight+"&viewUnified&language=NGT";
             URL imageURL = new URL(apiCall);
@@ -40,10 +39,8 @@ public class MapImageImporter {
             FileOutputStream fos = new FileOutputStream("src/main/resources/map-data/"+filename);
             fos.write(response);
             fos.close();
-            success = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new Error("API request to TomTom failed");
         }
-        return success;
     }
 }
