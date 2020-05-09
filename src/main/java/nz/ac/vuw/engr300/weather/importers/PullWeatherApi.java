@@ -10,13 +10,18 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
 
 public class PullWeatherApi {
 
-    public static void main(String[] args) throws MalformedURLException {
-       String apiKey = KeyImporter.getKey("weather");
-       String cityID = "2179538"; //Wellington
-       String returnedData = "";
+    public static void main(String[] args) {
+        String apiKey = KeyImporter.getKey("weather");
+        double latitude = -141.300442;
+        double longitude = 174.780319;
+        importWeatherData(apiKey, latitude, longitude);
+    }
 
-       try{
-            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?id="+cityID+"&appid="+apiKey;
+    public static void importWeatherData(String apiKey, double latitude, double longitude) {
+        String returnedData = "";
+        try {
+
+            String apiCall = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+apiKey;
 
             // Fetch data
             URL useThisURL = new URL(apiCall);
@@ -25,14 +30,16 @@ public class PullWeatherApi {
             returnedData += bReader.readLine();
 
             // Write data to json
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.json"));
+            String filename = latitude+"-"+longitude+"-weather.json";
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/weather-data/"+filename));
             writer.write(returnedData);
 
             writer.close();
             bReader.close();
 
-       } catch (IOException e){
-           System.out.println("Error "+ e);
-       }
+        } catch (IOException e){
+            throw new Error("API request to OpenWeather failed");
+        }
+
     }
 }

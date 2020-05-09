@@ -365,5 +365,8 @@ nbdist/
 ### TomTom image output ###
 *-map_image.png
 
+### OpenWeather JSON output ###
+*-weather.json
+
 # End of https://www.gitignore.io/api/macos,intellij,netbeans
 
