@@ -117,8 +117,8 @@ The field laptop then consists of three main artifacts which are executed on the
  The below diagram demonstrates how the physical components are connected. The avionics system will be developed
 separately, by an independent hardware team. The field laptop will communicate with the avionics system via
 LoRa WAN radio signals. This is made possible though the LoRa WAN module broadcasting radio signals on the avionics 
-system which will be picked up by the USB LoRa dongle connected to the field computer, and vice versa. The mission 
-control software will read and send signals through USB serial to the LoRa Dongle. 
+system which will be picked up by the USB LoRa dongle connected to the field computer, and vice versa. To make this
+possible the mission control software will read and send information through USB serial to the LoRa Dongle. 
 
 Rocket simulation software will also run concurrently to the mission control software on the field laptop. The 
 simulation software (OpenRocket) will be launched with our provided SimulationListener.jar included in its classpath
