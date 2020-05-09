@@ -5,6 +5,8 @@ import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Consumer;
@@ -64,9 +66,11 @@ public class OpenRocketImporter implements RocketDataImporter {
         File file = new File(filePath);
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Invalid file name provided.", e);
+        }catch (IOException e){
+            throw new IllegalArgumentException("Invalid encoding.", e);
         }
         int[] parameterIndices = getParameterIndicesFromHeader(reader);
         String line;
