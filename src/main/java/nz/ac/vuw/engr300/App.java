@@ -14,30 +14,35 @@ import nz.ac.vuw.engr300.gui.GUI;
 public class App {
 	private static final Logger LOGGER = Logger.getLogger(App.class);
 
-    /**
-     * Main application to start the GUI.
-     */
-    public static void main(String[] args) {
-        try {
-        	GUI.main(args);
-        } catch (Error e) {
-        	showError("An unhandled error has ocurred in the application. Please view the logs to find what caused this.");
-        	// Dump entire error message into log files.
-        	LOGGER.error(e.getMessage());
-        	System.exit(1);
-        } catch (RuntimeException e) {
-        	showError("An unhandled RuntimeException has ocurred in the application. Please view the logs to find what caused this.");
-        	// Dump entire error message into log files.
-        	LOGGER.error(e.getMessage());
-        	System.exit(1);
-        }
-    }
-    
-    /**
-     * Opens a JOptionPane to display the error message. This must be done using Java swing, as
-     * it helps show the 
-     */
-    private static void showError(String errorMessage) {
-    	JOptionPane.showMessageDialog(null, errorMessage, "Mission-Control Error", JOptionPane.INFORMATION_MESSAGE);
-    }
+	/**
+	 * Main application to start the GUI.
+	 */
+	public static void main(String[] args) {
+		try {
+			GUI.main(args);
+		} catch (Error e) {
+			showError("error");
+			// Dump entire error message into log files.
+			LOGGER.error(e.getMessage());
+			System.exit(1);
+		} catch (RuntimeException e) {
+			showError("RuntimeException");
+			// Dump entire error message into log files.
+			LOGGER.error(e.getMessage());
+			System.exit(1);
+		}
+	}
+
+	/**
+	 * Opens a JOptionPane to display the error message. This must be done using
+	 * Java swing, as it helps show the panel no matter if JavaFX has failed (Known bug).
+	 * 
+	 * @param type Error type to refer in the pop-up message to send to the user.
+	 */
+	private static void showError(String type) {
+		JOptionPane.showMessageDialog(null,
+				"An unhandled " + type
+						+ " has occurred in the application. Please view the logs to find what caused this.",
+				"Mission-Control Error", JOptionPane.INFORMATION_MESSAGE);
+	}
 }
