@@ -23,7 +23,7 @@ All team members are expected to contribute equally to the document and list the
 
 ---
 
-# ENGR 301 Project *Project 10* Architectural Design and Proof-of-Concept
+# ENGR 301 *Project 10* Architectural Design and Proof-of-Concept
 
 **Authors:** Nathan Duckett, Timothy Salisbury, Ahad Rahman, Joshua Harwood, Nalin Aswani, Jake (Quang) Mai.
 
