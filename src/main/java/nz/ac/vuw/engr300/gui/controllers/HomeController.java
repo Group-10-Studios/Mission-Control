@@ -21,7 +21,18 @@ public class HomeController implements Initializable {
     
     @FXML
     private Label label;
-    
+    @FXML private Label weatherLabel;
+    private String weather;
+
+    /**
+     * This method will update the weather data label with the weather received from the API.
+     * @param weatherRecieved
+     */
+    public void initWeatherData(String weatherRecieved) {
+        weather = weatherRecieved;
+        weatherLabel.setText(weather);
+    }
+
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -31,12 +42,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-//        Node [] nodes = new Node[15];
-        
-//        for(int i = 0; i<15; i++){
-//            nodes[i]=(Node)FXMLLoader.load(getclass().getResource("Item.fxmk"));
-//        }        
-    //testing commit
-    }    
+        initWeatherData("Weather Stats");
+    }
     
 }
