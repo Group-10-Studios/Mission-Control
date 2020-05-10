@@ -23,29 +23,38 @@ All team members are expected to contribute equally to the document and list the
 
 ---
 
-# ENGR 301 Project *NN* Architectural Design and Proof-of-Concept
+# ENGR 301 Project *Project 10* Architectural Design and Proof-of-Concept
 
-**Authors:** a comma-separated list of the names of each member of the team.
+**Authors:** Nathan Duckett, Timothy Salisbury, Ahad Rahman, Joshua Harwood, Nalin Aswani, Jake (Quang) Mai.
 
 ## 1. Introduction
 
-One page overall introduction including sections 1.1 and 1.2 (ISO/IEC/IEEE 42010:2011(E) clause 5.2)
+Hobby rockets are very common worldwide, they are typically flown with off the shelf rocket motors with widely available propellant reloads. These hobby rockets can reach the altitude between 30 meters and 760 meters, with velocity exceeds the speed of sound. Uncontrolled rockets are stable based on passive aerodynamic features.
+While passively stable rockets are reasonably less complex and reliable if well designed, they are susceptible to a variety of disturbances and come with a high rate of failure after the launching stage/early flight. This is due to unexpected wind, flexibililty in the launch tower/rail, miscalculated thrust vector and a lot more factors.
+This project will be focused on a controlled rocket, the rocket hardware is designed and built upon the idea of self-stabilization from the Avionics and Control team. The Mission Control software will consider external environmental factors potentially affect the launch such as wind speed, temperature, humidity, rain to decide whether it is safe to launch. In addition, the simulation software component will be able to statistically predict the rockets flight and the control parameters for the avionics.
+
 
 ### Client
 
-Identify the client and their contact details.
+The client for this project is Andre Geldenhuis. He is a rocket enthusiast and a member of the New Zealand Rocketry Association.
+Contact email: andre.geldenhuis@vuw.ac.nz
 
 ### 1.1 Purpose
 
-One sentence describing the purpose of the system.
+The purpose of the system is to create a mission control software centre to collect and display rocket metrics and determine if we are safe to launch based on gather information about weather conditions.
 
 ### 1.2 Scope
 
-One paragraph describing the scope of the system.
+The mission control software will:
+* Provide a GUI (Graphical User Interface) to display real-time data from the rocket pre-flight as well as during flight.
+* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to determine the launch status (Go/No Go).
+* If a Go is given, communication will be made with the Avionics to fire the thruster and charge the parachute.
+* If a No Go is given, changes will be suggested by the software to align with the current weather condition (changing the launch rod of the rocket angle to point in towards the wind).
+* Record and log all incoming data from the rocket.
 
 ### 1.3 Changes to requirements
 
-If the requirement have changed significantly since the requirements document, outline the changes here. Changes must be justified and supported by evidences, i.e., they must be substantiated. (max one page, only if required)
+N/A
 
 ## 2. References
 
