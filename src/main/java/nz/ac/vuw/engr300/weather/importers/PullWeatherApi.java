@@ -1,7 +1,6 @@
 package nz.ac.vuw.engr300.weather.importers;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -20,10 +19,10 @@ public class PullWeatherApi {
 
     public static void importWeatherData(String apiKey, double latitude, double longitude, String filepath) {
         if (latitude < -85.0 || latitude > 85.0){
-            throw new Error("Invalid latitude");
+            throw new IllegalArgumentException("Invalid latitude");
         }
         if (longitude < -180.0 || longitude > 180.0) {
-            throw new Error("Invalid longitude");
+            throw new IllegalArgumentException("Invalid longitude");
         }
         String returnedData = "";
         try {

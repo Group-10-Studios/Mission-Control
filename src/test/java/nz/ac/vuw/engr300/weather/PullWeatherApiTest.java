@@ -22,8 +22,6 @@ public class PullWeatherApiTest {
         }
     }
 
-
-
     @Test
     public void test_InvalidLongitude() {
         double latitude = -64.378432; //Latitude should be between -85 and 85
@@ -31,8 +29,8 @@ public class PullWeatherApiTest {
         try {
             PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
             fail();
-        } catch (Error e) {
-
+        } catch (IllegalArgumentException e) {
+            assert(true);
         }
     }
 
@@ -43,8 +41,8 @@ public class PullWeatherApiTest {
         try {
             PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
             fail();
-        } catch (Error e) {
-
+        } catch (IllegalArgumentException e) {
+            assert(true);
         }
     }
 
