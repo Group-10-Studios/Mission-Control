@@ -103,7 +103,29 @@ Each architectural view should include at least one architectural model. If arch
 ...
 
 ### 4.4 Physical 
-...
+The physical topology of our Mission Control software consists of 4 primary components, these are:
+* Field Laptop
+* USB LoRa Dongle
+* LoRa WAN Module
+* Avionics </ul>
+
+The field laptop then consists of three main artifacts which are executed on the laptop, these consist of: 
+* Mission-Control.jar
+* SimulationListener.jar
+* OpenRocket.jar </ul>
+
+ The below diagram demonstrates how the physical components are connected. The avionics system will be developed
+separately, by an independent hardware team. The field laptop will communicate with the avionics system via
+LoRa WAN radio signals. This is made possible though the LoRa WAN module broadcasting radio signals on the avionics 
+system which will be picked up by the USB LoRa dongle connected to the field computer, and vice versa. To make this
+possible the mission control software will read and send information through USB serial to the LoRa Dongle. 
+
+Rocket simulation software will also run concurrently to the mission control software on the field laptop. The 
+simulation software (OpenRocket) will be launched with our provided SimulationListener.jar included in its classpath
+to allow integration of the two components. The simulation listener will communicate directly with the mission control
+ software over TCP to facilitate the mission controls safety functions.  
+
+![Deployment Diagram](assets/deployment_diagram.png)
 
 ### 4.5 Scenarios
 ...
