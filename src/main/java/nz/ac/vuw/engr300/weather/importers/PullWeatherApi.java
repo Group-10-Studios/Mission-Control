@@ -12,12 +12,19 @@ public class PullWeatherApi {
 
     public static void main(String[] args) {
         String apiKey = KeyImporter.getKey("weather");
-        double latitude = -141.300442;
+        double latitude = -41.300442;
         double longitude = 174.780319;
-        importWeatherData(apiKey, latitude, longitude);
+        String filepath = "src/test/resources/test-weather-data";
+        importWeatherData(apiKey, latitude, longitude, filepath);
     }
 
-    public static void importWeatherData(String apiKey, double latitude, double longitude) {
+    public static void importWeatherData(String apiKey, double latitude, double longitude, String filepath) {
+        if (latitude < -85.0 || latitude > 85.0){
+            throw new Error("Invalid latitude");
+        }
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new Error("Invalid longitude");
+        }
         String returnedData = "";
         try {
 
@@ -31,7 +38,7 @@ public class PullWeatherApi {
 
             // Write data to json
             String filename = latitude+"-"+longitude+"-weather.json";
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/weather-data/"+filename));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath+"/"+filename));
             writer.write(returnedData);
 
             writer.close();
