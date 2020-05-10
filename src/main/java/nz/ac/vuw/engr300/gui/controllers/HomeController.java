@@ -18,9 +18,6 @@ import javafx.scene.control.Label;
  * @author Nalin
  */
 public class HomeController implements Initializable {
-    
-    @FXML
-    private Label label;
     @FXML private Label weatherLabel;
     private String weather;
 
@@ -41,8 +38,7 @@ public class HomeController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         initWeatherData("Weather Stats");
     }
-    
+
 }
