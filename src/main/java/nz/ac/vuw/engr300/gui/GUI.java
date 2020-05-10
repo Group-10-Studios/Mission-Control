@@ -21,6 +21,7 @@ public class GUI extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
+        stage.setTitle("ENGR301-Group10-Mission Control Software System");
         new HomeView(stage);
     }
 

@@ -22,31 +22,16 @@ import javafx.util.Duration;
 /**
  * Represents the controller for the Home application view.
  *
- * @author Nalin
+ * @author Nalin Aswani,
  */
 public class HomeController implements Initializable {
     @FXML private Label weatherLabel;
-    @FXML private Label label;
-    private String weather;
+
 
     /**
      * This method will update the weather data label with the weather received from the API.
-     * @param weatherRecieved
      */
-    public void updateWeatherData(String weatherRecieved) {
-        String weather = weatherRecieved;
-        weatherLabel.setText(weather);
-    }
-
-//    @FXML private void handleButtonAction(ActionEvent event) {
-//        System.out.println("You clicked me!");
-//        label.setText("Hello World!");
-//    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-//        initWeatherData("Weather Stats");
-        weatherLabel.setText("Started");
+    private void updateDataRealTime() {
         final IntegerProperty i = new SimpleIntegerProperty(0);
         Timeline timeline = new Timeline(
                 new KeyFrame(
@@ -61,6 +46,8 @@ public class HomeController implements Initializable {
         timeline.play();
     }
 
-
-
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        updateDataRealTime();
+    }
 }
