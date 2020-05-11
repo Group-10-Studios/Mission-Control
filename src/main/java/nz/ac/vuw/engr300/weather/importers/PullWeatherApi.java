@@ -27,7 +27,7 @@ public class PullWeatherApi {
         String returnedData = "";
         try {
 
-            String apiCall = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+apiKey;
+            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?lat="+latitude+"&lon="+longitude+"&appid="+apiKey;
 
             // Fetch data
             URL useThisURL = new URL(apiCall);
