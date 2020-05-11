@@ -3,6 +3,11 @@ package nz.ac.vuw.engr300.importers;
 import java.io.*;
 import java.net.URL;
 
+/**
+ * Returns and saves an image from TomTom's API.
+ * Requires a longitude and latitude, as well the desired exported image's width and height and zoom level.
+ * @author Ahad Rahman
+ */
 public class MapImageImporter {
 
     public static void main(String[] args) {
@@ -15,7 +20,7 @@ public class MapImageImporter {
         importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight);
     }
 
-    private static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
+    public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
         try {
             String apiCall = "https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&key="+apiKey+"&zoom="+zoomLevel+"&center="+longitude+","+latitude+"&width="+imageWidth+"&height="+imageHeight+"&viewUnified&language=NGT";
             URL imageURL = new URL(apiCall);
@@ -35,7 +40,7 @@ public class MapImageImporter {
             fos.write(response);
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new Error("API request to TomTom failed");
         }
     }
 }

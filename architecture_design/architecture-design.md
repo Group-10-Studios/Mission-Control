@@ -23,29 +23,37 @@ All team members are expected to contribute equally to the document and list the
 
 ---
 
-# ENGR 301 Project *NN* Architectural Design and Proof-of-Concept
+# ENGR 301 *Project 10* Architectural Design and Proof-of-Concept
 
-**Authors:** a comma-separated list of the names of each member of the team.
+**Authors:** Nathan Duckett, Timothy Salisbury, Ahad Rahman, Joshua Harwood, Nalin Aswani, Jake (Quang) Mai.
 
 ## 1. Introduction
 
-One page overall introduction including sections 1.1 and 1.2 (ISO/IEC/IEEE 42010:2011(E) clause 5.2)
+Hobby rockets are very common worldwide, they are typically flown with off the shelf rocket motors with widely available propellant reloads. These hobby rockets can reach the altitude between 30 meters and 760 meters, with velocities exceeding the speed of sound. Uncontrolled rockets are stable based on passive aerodynamic features.
+This project will however focus on a controlled rocket, primarily the Mission Control software system. The rocket hardware is designed and built upon the idea of self-stabilization from the Avionics and Control team. The Mission Control software will consider external environmental factors potentially affect the launch such as wind speed, temperature, humidity, rain to decide whether it is safe to launch. On top of that, the simulation software component will be able to statistically predict the rockets flight and the control parameters for the avionics.
+The mission control software will run on a laptop at the launch site, display the current software state as well as other associated data with the rocket and the launch. The software also requires a Go/No Go functionality, when a Go signal is given, avionics will be notified in order to start the launch sequence. With the local weather data collected, the mission control software will integrate with the Monte-Carlo rocket simulation to determine if the rocket will land within the defined bounds of the landing area. If not, the software can suggest changing the launch rod angle into the wind to ensure the rocket will land in a permitted landing zone.
+
 
 ### Client
 
-Identify the client and their contact details.
+The client for this project is Andre Geldenhuis. He is a rocket enthusiast and a member of the New Zealand Rocketry Association.
+Contact email: andre.geldenhuis@vuw.ac.nz
 
 ### 1.1 Purpose
 
-One sentence describing the purpose of the system.
+The purpose of the system is to create a mission control software centre to collect and display rocket metrics and determine if we are safe to launch based on gather information about weather conditions.
 
 ### 1.2 Scope
 
-One paragraph describing the scope of the system.
+The Mission Control software will:
+* Provide a GUI (Graphical User Interface) to display real-time data from the rocket pre-flight as well as during flight.
+* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to determine the launch status (Go/No Go).
+* If a Go is given, communication will be made with the Avionics to fire the thruster and charge the parachute.
+* Record and log all incoming data from the rocket.
 
 ### 1.3 Changes to requirements
 
-If the requirement have changed significantly since the requirements document, outline the changes here. Changes must be justified and supported by evidences, i.e., they must be substantiated. (max one page, only if required)
+N/A
 
 ## 2. References
 
@@ -103,7 +111,29 @@ Each architectural view should include at least one architectural model. If arch
 ...
 
 ### 4.4 Physical 
-...
+The physical topology of our Mission Control software consists of 4 primary components, these are:
+* Field Laptop
+* USB LoRa Dongle
+* LoRa WAN Module
+* Avionics </ul>
+
+The field laptop then consists of three main artifacts which are executed on the laptop, these consist of: 
+* Mission-Control.jar
+* SimulationListener.jar
+* OpenRocket.jar </ul>
+
+ The below diagram demonstrates how the physical components are connected. The avionics system will be developed
+separately, by an independent hardware team. The field laptop will communicate with the avionics system via
+LoRa WAN radio signals. This is made possible though the LoRa WAN module broadcasting radio signals on the avionics 
+system which will be picked up by the USB LoRa dongle connected to the field computer, and vice versa. To make this
+possible the mission control software will read and send information through USB serial to the LoRa Dongle. 
+
+Rocket simulation software will also run concurrently to the mission control software on the field laptop. The 
+simulation software (OpenRocket) will be launched with our provided SimulationListener.jar included in its classpath
+to allow integration of the two components. The simulation listener will communicate directly with the mission control
+ software over TCP to facilitate the mission controls safety functions.  
+
+![Deployment Diagram](assets/deployment_diagram.png)
 
 ### 4.5 Scenarios
 ...
