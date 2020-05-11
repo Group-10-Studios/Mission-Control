@@ -28,8 +28,12 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Jake Mai
  */
 public class HomeController implements Initializable {
+    
     @FXML Label weatherLabel;
 
+    /**
+    * This is the initialize method that is called to build the root before starting the javafx project.
+    */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(weatherLabel);
