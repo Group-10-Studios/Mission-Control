@@ -1,7 +1,6 @@
 package nz.ac.vuw.engr300.weather.importers;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -10,21 +9,30 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
 /**
  * PullWeatherAPI connects to OpenWeatherAPI and pulls down the weather forecast data. Data can be pulled every 3 hours.
  * @author Jake Mai
+ * @author Ahad Rahman
  */
 
 public class PullWeatherApi {
 
-    public static void main(String[] args) throws MalformedURLException {
-       String apiKey = KeyImporter.getKey("weather");
-       String cityID = "2179538"; //Wellington
-       String returnedData = "";
+    public static void main(String[] args) {
+        String apiKey = KeyImporter.getKey("weather");
+        double latitude = -41.300442;
+        double longitude = 174.780319;
+        String filepath = "src/main/resources/weather-data";
+        importWeatherData(apiKey, latitude, longitude, filepath);
+    }
 
-        /**
-         * Make the API call with the cityID for Wellington and API Key
-         * Write the weather data into output.json at src/main/resources/
-         */
-        try{
-            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?id="+cityID+"&appid="+apiKey;
+    public static void importWeatherData(String apiKey, double latitude, double longitude, String filepath) {
+        if (latitude < -85.0 || latitude > 85.0){
+            throw new IllegalArgumentException("Invalid latitude");
+        }
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new IllegalArgumentException("Invalid longitude");
+        }
+        String returnedData = "";
+        try {
+
+            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
 
             // Fetch data
             URL useThisURL = new URL(apiCall);
@@ -33,14 +41,17 @@ public class PullWeatherApi {
             returnedData += bReader.readLine();
 
             // Write data to json
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/output.json"));
+            String filename = latitude + "-" + longitude + "-weather.json";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename));
             writer.write(returnedData);
 
             writer.close();
             bReader.close();
 
-       } catch (IOException e){
-           System.out.println("Error " + e);
-       }
+        } catch (FileNotFoundException e) {
+            throw new Error("Filepath not valid");
+        } catch (IOException e){
+            throw new Error("API request to OpenWeather failed");
+        }
     }
 }
