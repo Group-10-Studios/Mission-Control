@@ -27,7 +27,7 @@ public class PullWeatherApi {
         String returnedData = "";
         try {
 
-            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?lat="+latitude+"&lon="+longitude+"&appid="+apiKey;
+            String apiCall = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
 
             // Fetch data
             URL useThisURL = new URL(apiCall);
@@ -36,13 +36,15 @@ public class PullWeatherApi {
             returnedData += bReader.readLine();
 
             // Write data to json
-            String filename = latitude+"-"+longitude+"-weather.json";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath+"/"+filename));
+            String filename = latitude + "-" + longitude + "-weather.json";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename));
             writer.write(returnedData);
 
             writer.close();
             bReader.close();
 
+        }catch (FileNotFoundException e) {
+            throw new Error("Filepath not valid");
         } catch (IOException e){
             throw new Error("API request to OpenWeather failed");
         }

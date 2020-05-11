@@ -4,6 +4,8 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PullWeatherApiTest {
@@ -42,6 +44,18 @@ public class PullWeatherApiTest {
             PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
             fail();
         } catch (IllegalArgumentException e) {
+            assert(true);
+        }
+    }
+
+    @Test
+    public void test_InvalidFilepath() {
+        double latitude = -64.378432; //Latitude should be between -85 and 85
+        double longitude = 165.764319; //Latitude should be between -180 and 180
+        try {
+            PullWeatherApi.importWeatherData("invalid/filepath", latitude, longitude, FILEPATH);
+            fail();
+        } catch (Error e) {
             assert(true);
         }
     }
