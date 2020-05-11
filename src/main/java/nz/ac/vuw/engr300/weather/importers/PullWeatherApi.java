@@ -13,7 +13,7 @@ public class PullWeatherApi {
         String apiKey = KeyImporter.getKey("weather");
         double latitude = -41.300442;
         double longitude = 174.780319;
-        String filepath = "src/test/resources/test-weather-data";
+        String filepath = "src/main/resources/weather-data";
         importWeatherData(apiKey, latitude, longitude, filepath);
     }
 
