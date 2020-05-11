@@ -5,6 +5,7 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,11 +14,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
+import nz.ac.vuw.engr300.weather.model.WeatherData;
 
 /**
  * Represents the controller for the Home application view.
@@ -48,6 +50,14 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        updateDataRealTime();
+//        updateDataRealTime();
+
+        try {
+            WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
+            WeatherData w = wi.getWeather(0);
+            weatherLabel.setText("" + w.getWindSpeed());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
