@@ -27,11 +27,16 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Nalin Aswani,
  */
 public class HomeController implements Initializable {
-    @FXML private Label weatherLabel;
+    @FXML Label weatherLabel;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        WeatherController wc = new WeatherController(weatherLabel);
+        wc.updateWindSpeed();
+    }
 
     /**
-     * This method will update the weather data label with the weather received from the API.
+     * TODO This method will update the weather data label with the weather received from the API.
      */
     private void updateDataRealTime() {
         final IntegerProperty i = new SimpleIntegerProperty(0);
@@ -46,17 +51,5 @@ public class HomeController implements Initializable {
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-//        updateDataRealTime();
-        try {
-            WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
-            WeatherData w = wi.getWeather(0);
-            weatherLabel.setText("Windspeed: " + w.getWindSpeed());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }
