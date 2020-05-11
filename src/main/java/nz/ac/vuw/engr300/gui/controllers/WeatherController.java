@@ -14,20 +14,32 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 import java.io.FileNotFoundException;
 
 public class WeatherController {
+
+    /**
+     * Represents a separate weather controller in the GUI
+     * @author: Nalin Aswani
+     * @author: Jake Mai.
+     */
     @FXML private Label weatherLabel;
+
     public WeatherController(Label wl) {
         this.weatherLabel = wl;
     }
 
+    /**
+     * updateWindSpeed creates a new instance of WeatherImporter, process the information from
+     * output.json and creates a new instance of Weather Data to grab the specific weather condition date (windspeed)
+     * the windspeed data will be converted to metric and displayed on the GUI.
+     */
     public void updateWindSpeed(){
         try {
             WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
             WeatherData w = wi.getWeather(0);
-            weatherLabel.setText("Windspeed: " + w.getWindSpeed());
+            Double winSpeedMetric =(double) Math.round(w.getWindSpeed()*3.6);
+            weatherLabel.setText("Windspeed: " + winSpeedMetric + " km/h");
         } catch (
                 FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 }

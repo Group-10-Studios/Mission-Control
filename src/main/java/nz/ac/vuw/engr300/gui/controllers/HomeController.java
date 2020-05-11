@@ -24,7 +24,8 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 /**
  * Represents the controller for the Home application view.
  *
- * @author Nalin Aswani,
+ * @author Nalin Aswani
+ * @author Jake Mai
  */
 public class HomeController implements Initializable {
     @FXML Label weatherLabel;
