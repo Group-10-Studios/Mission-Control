@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="486.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
+<AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="486.0" prefWidth="766.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
    <children>
       <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
          <children>
@@ -81,7 +81,7 @@
             </Pane>
             <Pane fx:id="pnAngleOfAttack" layoutX="694.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
-                  <Label fx:id="lblAngleOfAttackHead" layoutX="14.0" layoutY="14.0" text="Angle of Attack">
+                  <Label fx:id="weatherLabel" layoutX="14.0" layoutY="14.0" text="Testing">
                      <font>
                         <Font name="Segoe UI" size="32.0" />
                      </font>

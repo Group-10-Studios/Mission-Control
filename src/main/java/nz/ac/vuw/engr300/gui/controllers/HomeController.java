@@ -5,38 +5,56 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
+import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
+import nz.ac.vuw.engr300.weather.model.WeatherData;
 
 /**
  * Represents the controller for the Home application view.
  *
- * @author Nalin
+ * @author Nalin Aswani
+ * @author Jake Mai
  */
 public class HomeController implements Initializable {
     
-    @FXML
-    private Label label;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
-    
+    @FXML Label weatherLabel;
+
+    /**
+    * This is the initialize method that is called to build the root before starting the javafx project.
+    */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-//        Node [] nodes = new Node[15];
-        
-//        for(int i = 0; i<15; i++){
-//            nodes[i]=(Node)FXMLLoader.load(getclass().getResource("Item.fxmk"));
-//        }        
-    //testing commit
-    }    
-    
+        WeatherController wc = new WeatherController(weatherLabel);
+        wc.updateWindSpeed();
+    }
+
+    /**
+     * TODO This method will update the weather data label with the weather received from the API.
+     */
+    private void updateDataRealTime() {
+        final IntegerProperty i = new SimpleIntegerProperty(0);
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(1),
+                        event -> {
+                            i.set(i.get() + 1);
+                            weatherLabel.setText("Elapsed time: " + i.get() + " seconds");
+                        }
+                )
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 }
