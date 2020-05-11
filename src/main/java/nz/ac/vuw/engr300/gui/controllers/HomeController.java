@@ -51,11 +51,10 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //        updateDataRealTime();
-
         try {
             WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
             WeatherData w = wi.getWeather(0);
-            weatherLabel.setText("" + w.getWindSpeed());
+            weatherLabel.setText("Windspeed: " + w.getWindSpeed());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
