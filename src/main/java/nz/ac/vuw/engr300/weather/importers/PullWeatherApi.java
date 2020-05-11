@@ -6,6 +6,11 @@ import java.net.URLConnection;
 
 import nz.ac.vuw.engr300.importers.KeyImporter;
 
+/**
+ * PullWeatherAPI connects to OpenWeatherAPI and pulls down the weather forecast data. Data can be pulled every 3 hours.
+ * @author Jake Mai
+ * @author Ahad Rahman
+ */
 
 public class PullWeatherApi {
 
@@ -43,11 +48,10 @@ public class PullWeatherApi {
             writer.close();
             bReader.close();
 
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             throw new Error("Filepath not valid");
         } catch (IOException e){
             throw new Error("API request to OpenWeather failed");
         }
-
     }
 }
