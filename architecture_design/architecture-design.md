@@ -177,7 +177,25 @@ to allow integration of the two components. The simulation listener will communi
 ![Deployment Diagram](assets/deployment_diagram.png)
 
 ### 4.5 Scenarios
-...
+**TODO: Add use case diagram reference to project_requirements asset**
+
+*Tracking the rocket's location*
+
+One of the main purpose's of our mission control software is to be able to track the GPS location of the Rocket. In this scenario the system requires constant updates of the rocket's position to our device. 
+This influences our physical architecture design as we require a remote connection to the rocket to receive this information. This will be facilitated using the USB LoRa Dongle. By using this functionality
+we will be able to provide real-time updates of the position of the rocket. This data transfer goes between our **communications.importers** package to our **gui.controllers** package where this will handle
+interpreting the data from the rocket and display it to the user.
+
+**TODO: Add use case diagram reference to project_requirements asset**
+
+*Go/No go functionality*
+
+Another important purpose of our mission control software is to provide the option for the user to enable/disable the rocket based on when it is ready to launch. In this scenario we are taking into account
+the resulting communications within the **simulation** package as outlined in the logical architecture to determine whether the rocket is safe to launch. This combined with a manual button to arm the rocket
+can provide the protection required to ensure that the rocket does not launch early or present danger to anybody on the launch site. This has influenced our physical architecture as it means we need to be able
+to also send radio signals to the rocket to arm the charges and allow the rocket to be ready for launch.
+As outlined in the process architecture we also expect that the rocket will have a countdown in which there will be a limited amount of time which a user will be able to abort the launch. This requires the signal
+to be able to be reverted in the case of an emergency to stop the rocket from being armed and ensure we can safely handle the rocket after it has been shut off.
 
 ## 5. Development Schedule
 
