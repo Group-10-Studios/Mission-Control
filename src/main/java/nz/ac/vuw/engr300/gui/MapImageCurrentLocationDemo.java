@@ -46,16 +46,41 @@ public class MapImageCurrentLocationDemo extends JPanel {
 //        (givenLng*widthOfContainerElement)/360
         double latitude = -41.300442;
         double longitude = 174.780319;
+        //-41.297928, 174.784660
 
         double graphicsX = (latitude * HEIGHT)/180.0;
         double graphicsY = (longitude * WIDTH)/360.0;
-        System.out.println(graphicsX);
-        System.out.println(graphicsY);
+//        System.out.println(graphicsX);
+//        System.out.println(graphicsY);
 
         g.setColor(Color.RED);
         g.fillOval((int) graphicsX - (MARKER_WIDTH/2), (int) graphicsY - (MARKER_HEIGHT/2), MARKER_WIDTH, MARKER_HEIGHT);
 
     }
+
+    /**
+     * http://www.movable-type.co.uk/scripts/latlong.html
+     * @param lat1
+     * @param long1
+     * @param lat2
+     * @param long2
+     * @return
+     */
+    public static double distanceBetweenTwoLocations(double lat1, double long1, double lat2, double long2) {
+        double r = 6371e3;
+        double theta1 = lat1 * Math.PI/180.0;
+        double theta2 = lat2 * Math.PI/180.0;
+        double deltaTheta = (lat2 - lat1) * Math.PI/180.0;
+        double deltaLambda = (long2 - long1) * Math.PI/180.0;
+        double a = Math.sin(deltaTheta/2.0) * Math.sin(deltaTheta/2.0) + Math.cos(theta1) * Math.cos(theta2) * Math.sin(deltaLambda/2.0) * Math.sin(deltaLambda/2.0);
+        double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
+        return r * c;
+    }
+
+    public static int pixelsToMove(double distance) {
+        return (int) (distance/1.2);
+    }
+
 
 
     public static void main(String[] args){
@@ -65,5 +90,7 @@ public class MapImageCurrentLocationDemo extends JPanel {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
+
+        System.out.println(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.297928, 174.780667));
     }
 }
