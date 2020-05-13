@@ -110,6 +110,8 @@ Each architectural view should include at least one architectural model. If arch
 ### 4.3 Process
 Please view the UML State Diagram 'Architectural Process 4-3.png' in assets folder
 
+![Architectural_Process](assets/Architectural_Process.png)
+
 ### 4.4 Physical
 The physical topology of our Mission Control software consists of 4 primary components, these are:
 * Field Laptop
