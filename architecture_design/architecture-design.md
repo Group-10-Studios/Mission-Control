@@ -76,13 +76,13 @@ See ISO/IEC/IEEE 42010 clause 5.3 and ISO/IEC/IEEE 12207 clause 6.4.4.3(2).
 For most systems this will be about 2 pages, including a table mapping concerns to stakeholder.
 
 ### 3.2 Architectural Viewpoints
-(1 page, 42010 5.4) 
+(1 page, 42010 5.4)
 
 Identify the architectural viewpoints you will use to present your system's architecture. Write one sentence to outline each viewpoint. Show which viewpoint frames which architectural concern.
 
 ### 4. Architectural Views
 
-(5 sub-sections of 2 pages each sub-section, per 42010, 5.5, 5.6, with reference to Annex F of both 12207 and 15288) 
+(5 sub-sections of 2 pages each sub-section, per 42010, 5.5, 5.6, with reference to Annex F of both 12207 and 15288)
 
 Describe your system's architecture in a series of architectural views, each view corresponding to one viewpoint.
 
@@ -91,7 +91,7 @@ You should include views from the following viewpoints (from Kruchten's 4+1 mode
  * Logical
  * Development
  * Process
- * Physical 
+ * Physical
  * Scenarios - present scenarios illustrating how two of your most important use cases are supported by your architecture
 
 As appropriate you should include the following viewpoints:
@@ -108,27 +108,27 @@ Each architectural view should include at least one architectural model. If arch
 ...
 
 ### 4.3 Process
-...
+Please view the UML State Diagram 'Architectural Process 4-3.png' in assets folder
 
-### 4.4 Physical 
+### 4.4 Physical
 The physical topology of our Mission Control software consists of 4 primary components, these are:
 * Field Laptop
 * USB LoRa Dongle
 * LoRa WAN Module
 * Avionics </ul>
 
-The field laptop then consists of three main artifacts which are executed on the laptop, these consist of: 
+The field laptop then consists of three main artifacts which are executed on the laptop, these consist of:
 * Mission-Control.jar
 * SimulationListener.jar
 * OpenRocket.jar </ul>
 
  The below diagram demonstrates how the physical components are connected. The avionics system will be developed
 separately, by an independent hardware team. The field laptop will communicate with the avionics system via
-LoRa WAN radio signals. This is made possible though the LoRa WAN module broadcasting radio signals on the avionics 
+LoRa WAN radio signals. This is made possible though the LoRa WAN module broadcasting radio signals on the avionics
 system which will be picked up by the USB LoRa dongle connected to the field computer, and vice versa. To make this
-possible the mission control software will read and send information through USB serial to the LoRa Dongle. 
+possible the mission control software will read and send information through USB serial to the LoRa Dongle.
 
-Rocket simulation software will also run concurrently to the mission control software on the field laptop. The 
+Rocket simulation software will also run concurrently to the mission control software on the field laptop. The
 simulation software (OpenRocket) will be launched with our provided SimulationListener.jar included in its classpath
 to allow integration of the two components. The simulation listener will communicate directly with the mission control
  software over TCP to facilitate the mission controls safety functions.  
@@ -160,14 +160,14 @@ Identify dates for key project deliverables:
 
 Present a budget for the project (as a table), showing the amount of expenditure the project requires and the date(s) on which it will be incurred. Substantiate each budget item by reference to fulfilment of project goals (one paragraph per item).
 
-(1 page). 
+(1 page).
 
 #### 5.2.2 Procurement
 
 Present a table of goods or services that will be required to deliver project goals and specify how they are to be procured (e.g. from the School or from an external organisation). These may be software applications, libraries, training or other infrastructure, including open source software. Justify and substantiate procurement with reference to fulfilment of project goals, one paragraph per item.
 (1 page).
 
-### 5.3 Risks 
+### 5.3 Risks
 
 Identify the ten most important project risks: their type, likelihood, impact, and mitigation strategies (3 pages).
 
@@ -182,13 +182,13 @@ Safety Plans may be required for some projects, depending on project requirement
 
 ## 6. Appendices
 
-### 6.1 Assumptions and dependencies 
+### 6.1 Assumptions and dependencies
 
-One page on assumptions and dependencies (9.5.7) 
+One page on assumptions and dependencies (9.5.7)
 
 ### 6.2 Acronyms and abbreviations
 
-One page glossary as required 
+One page glossary as required
 
 ## 7. Contributions
 
@@ -196,19 +196,19 @@ An one page statement of contributions, including a list of each member of the g
 
 ---
 
-## Formatting Rules 
+## Formatting Rules
 
  * Write your document using [Markdown](https://gitlab.ecs.vuw.ac.nz/help/user/markdown#gitlab-flavored-markdown-gfm) in your team's GitLab repository.
  * Major sections should be separated by a horizontal rule.
 
 
-## Assessment 
+## Assessment
 
 This document will be weighted at 20% on the architectural proof-of-concept(s), and 80% on the architecture design.
 
 The proof-of-concept will be assessed for coverage (does it demonstrate all the technologies needed to build your project?) and quality (with an emphasis on simplicity, modularity, and modifiability).
 
-The document will be assessed by considering both presentation and content. Group and individual group members will be assessed by identical criteria, the group mark for the finished PDF and the individual mark on the contributions visible through `git blame`, `git diff`, file histories, etc. 
+The document will be assessed by considering both presentation and content. Group and individual group members will be assessed by identical criteria, the group mark for the finished PDF and the individual mark on the contributions visible through `git blame`, `git diff`, file histories, etc.
 
 The presentation will be based on how easy it is to read, correct spelling, grammar, punctuation, clear diagrams, and so on.
 
