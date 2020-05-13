@@ -142,8 +142,8 @@ to allow integration of the two components. The simulation listener will communi
 
 One of the main purpose's of our mission control software is to be able to track the GPS location of the Rocket. In this scenario the system requires constant updates of the rocket's position to our device. 
 This influences our physical architecture design as we require a remote connection to the rocket to receive this information. This will be facilitated using the USB LoRa Dongle. By using this functionality
-we will be able to provide real-time updates of the position of the rocket. This data transfer goes between our **communicatons.importers** package to our **gui.controllers** package where this will handle
-interpretting the data from the rocket and display it to the user.
+we will be able to provide real-time updates of the position of the rocket. This data transfer goes between our **communications.importers** package to our **gui.controllers** package where this will handle
+interpreting the data from the rocket and display it to the user.
 
 **TODO: Add use case diagram reference to project_requirements asset**
 
