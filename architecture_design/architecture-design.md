@@ -105,7 +105,46 @@ Each architectural view should include at least one architectural model. If arch
 ...
 
 ### 4.2 Development
-...
+This view focuses on the management of the project. Outlined below are five sub-views that incorporate Kruchten's Development view.
+#### 4.2.1 Roles and Responsibilities
+|        Name           | Organisation |      Role       |
+|-----------------------|--------------|-----------------|
+| Andre Geldenhuis      | VUW          | Client          |
+| Craig Anslow          | VUW          | Project Contact |
+| Miniruwani Samarakoon | VUW          | Senior Manager  |
+| Nathan Duckett        | Team 10      | Developer       |
+| Joshua Harwood        | Team 10      | Developer       |
+| Tim Salisbury         | Team 10      | Developer       |
+| Ahad Rahman           | Team 10      | Developer       |
+| Nalin Aswani          | Team 10      | Developer       |
+| Jake Mai              | Team 10      | Developer       |
+We each have assigned ourselves as Developers throughout the project, as outlined in the [Project Charter](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/wikis/Project-charter).
+We are all Software Engineering students so it makes sense that we are all assigned as the Developers. 
+We have intentionally excluded a Lead Developer to avoid someone having the most pressure, and will all make a conscious effort to ensure the workload is even.
+However, we will still acknowledge each other's strengths, and try to assign tickets/issues to those team members to ensure the best quality work is being outputted.
+
+#### 4.2.2 Development Methodology
+We realise the importance of being agile for software development, so we are following the Scrum methodology.
+This means we are breaking up work into weekly sprints, with the subsequent sprint plannings and reviews that follows. We also have fortnightly retrospectives with our senior manger.
+
+#### 4.2.3 Development Standards
+To ensure we are developing quality code, all tickets/issues go through a Merge Request process. When making a merge request, the assignee must follow a template which includes headings for:
+* Merge Details
+* Important parts to view closely
+* Manual Testing
+* Other Notes
+This template gives the reviewers of the merge request sufficient information to ensure the code quality of the assignee is to a high standard.
+Merge requests must be approved by at least 2 other members before it can be merged into our master branch.
+
+#### 4.2.4 Test Planning
+All merge requests run CI / CD pipelines, which will ensure there are no build failures, all our unit tests pass, and that our buildpackage pass. 
+We are also writing unit tests with high coverage for each feature we add, and running them on multiple operating systems to reduce the uncertainty of our code.
+
+#### 4.2.5 Work logs / Tracker System
+We are using GitLab as our project management tool. We create boards for each sprint, filled with many issues where each developer is assigned 2-3 tickets per sprint.
+We estimate the time for each ticket and log our hours to be able to determine our time efficiency each sprint, and make consequential changes for the next sprint. 
+The burndown chart assists us with this.
+We also use GitLab's Epics and assign tickets to certain Epics to be able to see how much progress we're making towards that.
 
 ### 4.3 Process
 ...
