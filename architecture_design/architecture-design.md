@@ -139,7 +139,7 @@ This template gives the reviewers of the merge request sufficient information to
 Merge requests must be approved by at least 2 other members before it can be merged into our master branch.
 
 #### 4.2.4 Test Planning
-All merge requests run CI / CD pipelines, which will build the JAR package for release for customers.
+All merge requests run CI / CD pipelines, which will ensure there are no build failures, all our unit tests pass, and build the JAR package for release for customers.
 We are also writing unit tests with high coverage for each feature we add, and running them on multiple operating systems to reduce the uncertainty of our code.
 
 #### 4.2.5 Work logs / Tracker System
