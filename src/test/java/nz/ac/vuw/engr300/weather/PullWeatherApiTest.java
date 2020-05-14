@@ -19,7 +19,7 @@ public class PullWeatherApiTest {
      * Initialize the API_KEY so that the test cases can use it during execution.
      */
     @BeforeAll
-    public void initTestKeys() {
+    public static void initTestKeys() {
     	try {
 			API_KEY = KeyImporter.getKey("weather");
 		} catch (FileNotFoundException e) {
