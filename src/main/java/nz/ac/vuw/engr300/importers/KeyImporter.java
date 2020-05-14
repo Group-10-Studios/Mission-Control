@@ -25,7 +25,9 @@ public class KeyImporter {
 			try {
 				keyIndex = JsonImporter.load("src/main/resources/keys.json").getAsJsonObject();
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				throw new FileNotFoundException("Your 'keys.json' file is missing and is required for this operation.", e);
+			} catch (JsonParseException e) {
+				throw new RuntimeException("There was an error parsing 'keys.json'", e);
 			}
 		}
 		
