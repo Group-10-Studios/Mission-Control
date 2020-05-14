@@ -33,9 +33,7 @@ public class HomeView {
         }
 
         Scene scene = new Scene(root);
-
         stage.setScene(scene);
-
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
 
