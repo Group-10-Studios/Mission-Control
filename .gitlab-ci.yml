@@ -16,6 +16,9 @@ stages:
     }
     EOF
 
+.build_windows_keys: &build_windows_keys
+  - |
+    Write-Output "{`"weather`": `"$env:weather_api_key`",`"maps`": `"$env:map_api_key`"}" > ./src/main/resources/keys.json
 
 build:
   stage: Build
@@ -37,6 +40,17 @@ unittest:
   artifacts:
     paths:
       - target/site/jacoco/
+
+unittest_windows:
+  stage: Test
+  tags:
+    - nathan
+    - windows
+  # before_script:
+  #   - *build_windows_keys
+  script:
+    - *build_windows_keys
+    - mvn test
 
 pages:
   stage: DeployPages
@@ -70,3 +84,17 @@ package:
     paths:
       # Only add the full mission-control jar wildcard the version
       - target/mission-control-*.jar
+
+package_windows:
+  stage: BuildPackage
+  tags:
+    - nathan
+    - windows
+  before_script:
+    - *build_windows_keys
+  script:
+    - mvn clean package
+  artifacts:
+    paths:
+      # Only add the full mission-control jar wildcard the version
+      - ./target/mission-control-*.jar
