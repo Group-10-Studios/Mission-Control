@@ -17,6 +17,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -60,8 +61,32 @@ public class HomeController implements Initializable {
             }
         });
     }
-    @FXML
-    AnchorPane apApp;
+
+    @FXML Label lblHeader;
+    @FXML AnchorPane apApp;
+    @FXML Region pnBanner;
+    @FXML Pane pnContent;
+    @FXML Pane pnAltitude;
+    @FXML Label lblAltHead;
+    @FXML Region lineChardAltitude;
+    @FXML Pane pnVelocity;
+    @FXML Label lblVelHead;
+    @FXML LineChart lineChardVel;
+    @FXML Pane pnRangeDist;
+    @FXML Region lblRangeDistHead;
+    @FXML Region lineChartRangeDist;
+    @FXML Region pnAngleOfAttack;
+    @FXML Region PieChartAngleOfAttack;
+    @FXML Region lbRealTimeFlightInfo;
+    @FXML Region ScrollBarContent;
+
+    @FXML Region apNav;
+    @FXML Region pnExtras;
+    @FXML Region btnPastFlights;
+    @FXML Region btnRunSim;
+    @FXML Region pnDetails;
+    @FXML Region pnNav;
+    @FXML Region apWarnings;
 
     /**
     * This is the initialize method that is called to build the root before starting the javafx project.
@@ -71,6 +96,7 @@ public class HomeController implements Initializable {
         WeatherController wc = new WeatherController(weatherLabel);
         wc.updateWindSpeed();
         scaleItemHeight(apApp, weatherLabel, 2);
+        scaleItemWidth(apApp, weatherLabel, 2);
     }
 
     /**
@@ -138,7 +164,8 @@ public class HomeController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 double height = (double) t1;
-                node.setPrefHeight(height/2);
+                node.setPrefHeight(height/10);
+                apApp.setPrefHeight(height);
             }
         });
     }
@@ -160,7 +187,10 @@ public class HomeController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 double width = (double) t1;
-                node.setPrefWidth(width / 2);
+                apApp.setPrefWidth(width);
+                node.setPrefWidth(width/2);
+                pnBanner.setPrefWidth(width);
+                lblHeader.setPrefWidth(width);
             }
         });
     }
