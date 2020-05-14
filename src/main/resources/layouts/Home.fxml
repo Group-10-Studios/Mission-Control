@@ -16,7 +16,7 @@
    <children>
       <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
          <children>
-            <Label fx:id="lblHeader" layoutX="864.0" layoutY="11.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="lblHeader" alignment="TOP_CENTER" layoutX="29.0" layoutY="11.0" prefHeight="26.0" prefWidth="1916.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Arial" size="22.0" />
                </font>
@@ -89,7 +89,7 @@
                   <PieChart fx:id="PieChartAngleOfAttack" layoutX="42.0" layoutY="61.0" prefHeight="288.0" prefWidth="562.0" />
                </children>
             </Pane>
-            <Label layoutX="17.0" layoutY="14.0" text="REAL-TIME FLIGHT INFO">
+            <Label fx:id="lbRealTimeFlightInfo" layoutX="17.0" layoutY="14.0" text="REAL-TIME FLIGHT INFO">
                <font>
                   <Font name="Segoe UI" size="45.0" />
                </font>
