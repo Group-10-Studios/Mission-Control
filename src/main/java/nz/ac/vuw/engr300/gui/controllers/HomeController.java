@@ -16,8 +16,21 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
+
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
@@ -30,6 +43,8 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 public class HomeController implements Initializable {
     
     @FXML Label weatherLabel;
+    @FXML
+    AnchorPane apApp;
 
     /**
     * This is the initialize method that is called to build the root before starting the javafx project.
@@ -38,6 +53,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(weatherLabel);
         wc.updateWindSpeed();
+        scaleItemHeight(apApp, weatherLabel, 2);
     }
 
     /**
@@ -57,4 +73,65 @@ public class HomeController implements Initializable {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
+
+//        public HomeView(Stage stage) {
+//            Pane root = new Pane();
+//            Scene scene = new Scene(root, 100, 100);
+//
+//            Button button1 = new Button();
+//            button1.setText("Button");
+//            root.getChildren().add(button1);
+//
+//            stage.setScene(scene);
+//            stage.show();
+//
+//            scaleItemHeight(root, button1, 2);
+//            scaleItemWidth(root, button1, 2);
+//        }
+
+        /**
+         *
+         * @param root The root pane the UI is all under.
+         * @param node A specific node we may want to change.
+         * @param i What ratio of the root height we want to scale things by.
+         */
+    private void scaleItemHeight(Region root, Region node, int i) {
+        root.heightProperty().addListener(new ChangeListener<Number>() {
+            /**
+             *
+             * @param observableValue
+             * @param number Current height of the window
+             * @param t1 New value of the height, what it will be changed to.
+             */
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                double height = (double) t1;
+                node.setPrefHeight(height/2);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param root The root pane the UI is all under.
+     * @param node A specific node we may want to change.
+     * @param i What ratio of the root width we want to scale things by.
+     */
+    private void scaleItemWidth(Region root, Region node, int i) {
+        root.widthProperty().addListener(new ChangeListener<Number>() {
+            /**
+             *
+             * @param observableValue
+             * @param number Current width of the window
+             * @param t1 New value of the width, what it will be changed to.
+             */
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                double width = (double) t1;
+                node.setPrefWidth(width / 2);
+            }
+        });
+    }
 }
+
+
