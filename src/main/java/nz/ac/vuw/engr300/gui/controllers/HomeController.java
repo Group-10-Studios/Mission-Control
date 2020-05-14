@@ -191,6 +191,24 @@ public class HomeController implements Initializable {
                 node.setPrefWidth(width/2);
                 pnBanner.setPrefWidth(width);
                 lblHeader.setPrefWidth(width);
+                apNav.setPrefWidth(width/6);
+
+                pnContent.setPrefWidth(width*3/6);
+                pnAltitude.setPrefWidth(width/4);
+                lineChardAltitude.setPrefWidth(width/4);
+
+                pnVelocity.setPrefWidth(width/4);
+                lineChardVel.setPrefWidth(width/4);
+
+                pnRangeDist.setPrefWidth(width/4);
+                lineChartRangeDist.setPrefWidth(width/4);
+
+                pnAngleOfAttack.setPrefWidth(width/4);
+                PieChartAngleOfAttack.setPrefWidth(width/4);
+
+                apWarnings.setPrefWidth(width/6);
+
+
             }
         });
     }
