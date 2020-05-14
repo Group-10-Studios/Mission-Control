@@ -2,6 +2,8 @@ package nz.ac.vuw.engr300.importers;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import javax.imageio.ImageIO;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class MapImageImporterTest {
 
-    public static final String API_KEY = KeyImporter.getKey("maps");
+    public static String API_KEY;
+    
+    /**
+     * Initialize the API_KEY so that the test cases can use it during execution.
+     */
+    @BeforeAll
+    public void initTestKeys() {
+    	try {
+			API_KEY = KeyImporter.getKey("maps");
+		} catch (FileNotFoundException e) {
+			System.err.println("Can't run tests as the 'keys.json' file is missing");
+			System.exit(1);
+		}
+    }
 
     /**
      * Test whether the imported image has the correct dimensions

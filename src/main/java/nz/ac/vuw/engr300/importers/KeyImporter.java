@@ -20,13 +20,14 @@ public class KeyImporter {
 	 * 
 	 * @param keyName API name to retrieve the key value from.
 	 * @return String containing the API key for the application.
+	 * @throws FileNotFoundException Throws FileNotFoundException if the keys.json can't be found.
 	 */
-	public static String getKey(String keyName) {
+	public static String getKey(String keyName) throws FileNotFoundException {
 		if (keyIndex == null) {
 			try {
 				keyIndex = JsonImporter.load("src/main/resources/keys.json").getAsJsonObject();
 			} catch (FileNotFoundException e) {
-				throw new FileNotFoundException("Your 'keys.json' file is missing and is required for this operation.", e);
+				throw new FileNotFoundException("Your 'keys.json' file is missing and is required for this operation.");
 			} catch (JsonParseException e) {
 				throw new RuntimeException("There was an error parsing 'keys.json'", e);
 			}
