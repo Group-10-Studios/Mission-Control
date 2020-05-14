@@ -46,10 +46,10 @@ unittest_windows:
   tags:
     - nathan
     - windows
-  # before_script:
-  #   - *build_windows_keys
-  script:
+  before_script:
     - *build_windows_keys
+  script:
+    - echo src/main/resources/keys.json
     - mvn test
 
 pages:
