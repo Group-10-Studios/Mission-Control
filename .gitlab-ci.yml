@@ -18,13 +18,11 @@ stages:
 
 .build_windows_keys: &build_windows_keys
   - |
-    $KeysContent = @"
-    {
-      `"weather`": `"$env:weather_api_key`",
-      `"maps`": `"$env:map_api_key`"
+    $KeysContent = @{
+      weather=$env:weather_api_key,
+      maps=$env:map_api_key
     }
-    "@
-  - $KeysContent | Out-File ./src/main/resources/keys.json
+  - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
 build:
   stage: Build
