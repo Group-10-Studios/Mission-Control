@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 
 /**
  * Static access class to load JSON data into the application. 
@@ -26,9 +25,7 @@ public class JsonImporter {
 	 * @throws FileNotFoundException Exception can be thrown when the file can't be found.
 	 */
 	public static JsonElement load(String fileName) throws FileNotFoundException {
-		try (JsonReader fr = new JsonReader(new FileReader(new File(fileName)))) {
-			// Must set lenient to allow for one line JSON files.
-			fr.setLenient(true);
+		try (FileReader fr = new FileReader(new File(fileName))) {
 			return JsonParser.parseReader(fr);
 		} catch (FileNotFoundException e) {
 			throw e;
