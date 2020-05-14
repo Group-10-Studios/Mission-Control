@@ -24,7 +24,7 @@ stages:
       `"maps`": `"$env:map_api_key`"
     }
     "@
-  - $KeysContent -f 'string' | Out-File ./src/main/resources/keys.json
+  - $KeysContent | Out-File ./src/main/resources/keys.json
 
 build:
   stage: Build
