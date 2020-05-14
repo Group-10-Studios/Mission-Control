@@ -3,6 +3,7 @@ package nz.ac.vuw.engr300.importers;
 import java.io.FileNotFoundException;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 /**
  * Provide basic lazy implementation to access API keys from configuration documents.
