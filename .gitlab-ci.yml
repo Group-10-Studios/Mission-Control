@@ -49,7 +49,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - echo src/main/resources/keys.json
+    - Get-Content src/main/resources/keys.json
     - mvn test
 
 pages:
