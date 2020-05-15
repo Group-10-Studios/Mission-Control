@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.log4j.Logger;
+
 import nz.ac.vuw.engr300.importers.KeyImporter;
 
 /**
@@ -13,9 +15,17 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
  */
 
 public class PullWeatherApi {
+	private static final Logger LOGGER = Logger.getLogger(PullWeatherApi.class);
 
     public static void main(String[] args) {
-        String apiKey = KeyImporter.getKey("weather");
+        String apiKey = null;
+		try {
+			apiKey = KeyImporter.getKey("weather");
+		} catch (FileNotFoundException e) {
+			LOGGER.error(e.getMessage());
+			System.out.println("Unable to retrieve weather as your keys.json file is missing");
+			System.exit(1);
+		}
         double latitude = -41.300442;
         double longitude = 174.780319;
         String filepath = "src/main/resources/weather-data";

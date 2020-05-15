@@ -3,15 +3,27 @@ package nz.ac.vuw.engr300.importers;
 import java.io.*;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
+import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
+
 /**
  * Returns and saves an image from TomTom's API.
  * Requires a longitude and latitude, as well the desired exported image's width and height and zoom level.
  * @author Ahad Rahman
  */
 public class MapImageImporter {
+	private static final Logger LOGGER = Logger.getLogger(MapImageImporter.class);
 
     public static void main(String[] args) {
-        String apiKey = KeyImporter.getKey("maps");
+    	String apiKey = null;
+		try {
+			apiKey = KeyImporter.getKey("maps");
+		} catch (FileNotFoundException e) {
+			LOGGER.error(e.getMessage());
+			System.out.println("Unable to retrieve the map as your keys.json file is missing");
+			System.exit(1);
+		}
         double latitude = -41.300442;
         double longitude = 174.780319;
         int zoomLevel = 17; //Number between 0-22
