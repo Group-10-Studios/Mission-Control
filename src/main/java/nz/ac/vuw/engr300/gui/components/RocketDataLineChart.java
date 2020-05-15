@@ -1,0 +1,48 @@
+package nz.ac.vuw.engr300.gui.components;
+
+import javafx.beans.NamedArg;
+import javafx.scene.chart.Axis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+
+/**
+ * A component that displays rocket data (two double values) as a line graph.
+ *
+ * @author Tim
+ */
+public class RocketDataLineChart extends LineChart<Number, Number> {
+
+    private XYChart.Series<Number, Number> series = new XYChart.Series<>();
+
+    /**
+     * Constructs a new RocketDataLineChart, note this will be most likely initialized in fxml code.
+     * For example,
+     * <code>
+     *     <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel="Altitude"/>
+     * </code>
+     *
+     * @param title     The title of the graph
+     * @param xLabel    The x label
+     * @param yLabel    The y label
+     */
+    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xLabel,
+                               @NamedArg("yLabel") String yLabel) {
+        super(new NumberAxis(), new NumberAxis());
+        this.setLegendVisible(false);
+        this.setTitle(title);
+        this.getXAxis().setLabel(xLabel);
+        this.getYAxis().setLabel(yLabel);
+        this.getData().add(series);
+    }
+
+    /**
+     * This function will add a value to the line graph.
+     *
+     * @param x     The x value
+     * @param y     The y value
+     */
+    public void addValue(double x, double y){
+        series.getData().add(new Data<>(x, y));
+    }
+}
