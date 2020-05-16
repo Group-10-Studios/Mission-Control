@@ -33,6 +33,15 @@ public class MapImageImporter {
     }
 
     public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth, int imageHeight) {
+        if (latitude < -85.0 || latitude > 85.0){
+            throw new IllegalArgumentException("Invalid latitude");
+        }
+        if (longitude < -180.0 || longitude > 180.0) {
+            throw new IllegalArgumentException("Invalid longitude");
+        }
+        if (zoomLevel < 0 || zoomLevel > 22) {
+            throw new IllegalArgumentException("Invalid zoom level");
+        }
         try {
             String apiCall = "https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&key="+apiKey+"&zoom="+zoomLevel+"&center="+longitude+","+latitude+"&width="+imageWidth+"&height="+imageHeight+"&viewUnified&language=NGT";
             URL imageURL = new URL(apiCall);

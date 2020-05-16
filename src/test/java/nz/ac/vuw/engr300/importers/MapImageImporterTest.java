@@ -72,10 +72,9 @@ public class MapImageImporterTest {
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
             fail();
-        } catch (Error e) {
-
+        } catch (IllegalArgumentException e) {
+            assert(true);
         }
-        //assertEquals(false, MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight));
     }
 
     @Test
@@ -88,8 +87,8 @@ public class MapImageImporterTest {
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
             fail();
-        } catch (Error e) {
-
+        } catch (IllegalArgumentException e) {
+            assert(true);
         }
     }
 
@@ -102,8 +101,8 @@ public class MapImageImporterTest {
         int imageHeight = 300; //Height of the output file
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-        } catch (Error e) {
-
+        } catch (IllegalArgumentException e) {
+            assert(true);
         }
     }
 
