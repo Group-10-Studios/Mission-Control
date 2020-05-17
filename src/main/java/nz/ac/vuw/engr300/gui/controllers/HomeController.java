@@ -42,26 +42,14 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Jake Mai
  */
 public class HomeController implements Initializable {
-    
-    @FXML Label weatherLabel;
+
+    @FXML Label lbWeather;
     @FXML Label lblHeader;
     @FXML AnchorPane apApp;
     @FXML Region pnBanner;
     @FXML Pane pnContent;
-    @FXML Pane pnAltitude;
-    @FXML Label lblAltHead;
-    @FXML Region lineChardAltitude;
-    @FXML Pane pnVelocity;
-    @FXML Label lblVelHead;
-    @FXML LineChart lineChardVel;
-    @FXML Pane pnRangeDist;
-    @FXML Region lblRangeDistHead;
-    @FXML Region lineChartRangeDist;
     @FXML Region pnAngleOfAttack;
-    @FXML Region PieChartAngleOfAttack;
     @FXML Region lbRealTimeFlightInfo;
-    @FXML Region ScrollBarContent;
-
     @FXML Region apNav;
     @FXML Region pnExtras;
     @FXML Region btnPastFlights;
@@ -75,10 +63,10 @@ public class HomeController implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(weatherLabel);
+        WeatherController wc = new WeatherController(lbWeather);
         wc.updateWindSpeed();
-        scaleItemHeight(apApp, weatherLabel, 2);
-        scaleItemWidth(apApp, weatherLabel, 2);
+        scaleItemHeight(apApp, lbWeather, 2);
+        scaleItemWidth(apApp, lbWeather, 2);
     }
 
     /**
@@ -91,7 +79,7 @@ public class HomeController implements Initializable {
                         Duration.seconds(1),
                         event -> {
                             i.set(i.get() + 1);
-                            weatherLabel.setText("Elapsed time: " + i.get() + " seconds");
+                            lbWeather.setText("Elapsed time: " + i.get() + " seconds");
                         }
                 )
         );
