@@ -164,8 +164,8 @@ public class HomeController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 double height = (double) t1;
-                node.setPrefHeight(height/10);
-                apApp.setPrefHeight(height);
+//                node.setPrefHeight(height/10);
+//                apApp.setPrefHeight(height);
             }
         });
     }
@@ -187,28 +187,17 @@ public class HomeController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 double width = (double) t1;
-                apApp.setPrefWidth(width);
+//                apApp.setPrefWidth(width);
                 node.setPrefWidth(width/2);
                 pnBanner.setPrefWidth(width);
                 lblHeader.setPrefWidth(width);
-                apNav.setPrefWidth(width/6);
+                apNav.setPrefWidth(width/6); //left panel
+                System.out.println(apNav.getWidth());
 
-                pnContent.setPrefWidth(width*3/6);
-                pnAltitude.setPrefWidth(width/4);
-                lineChardAltitude.setPrefWidth(width/4);
-
-                pnVelocity.setPrefWidth(width/4);
-                lineChardVel.setPrefWidth(width/4);
-
-                pnRangeDist.setPrefWidth(width/4);
-                lineChartRangeDist.setPrefWidth(width/4);
-
-                pnAngleOfAttack.setPrefWidth(width/4);
-                PieChartAngleOfAttack.setPrefWidth(width/4);
-
-                apWarnings.setPrefWidth(width/6);
-
-
+                //set middle panel to be slightly to the right of left panel
+                pnContent.setLayoutX(apNav.getWidth() + 10.0);
+                pnContent.setPrefWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
+                apWarnings.setPrefWidth(width/6); //right panel should be a 1/6th of sceen width
             }
         });
     }

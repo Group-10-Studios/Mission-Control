@@ -25,7 +25,7 @@
             <DropShadow color="#00000080" />
          </effect>
       </Pane>
-      <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" prefHeight="1055.0" prefWidth="1386.0">
+      <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" style="-fx-background-color: #C2DFFF;">
          <children>
             <Pane fx:id="pnAltitude" layoutX="18.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
@@ -64,7 +64,6 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <PieChart fx:id="PieChartAngleOfAttack" layoutX="42.0" layoutY="61.0" prefHeight="288.0" prefWidth="562.0" />
                </children>
             </Pane>
             <Label fx:id="lbRealTimeFlightInfo" layoutX="17.0" layoutY="14.0" text="REAL-TIME FLIGHT INFO">
@@ -78,7 +77,7 @@
             <DropShadow color="#00000051" />
          </effect>
       </AnchorPane>
-      <AnchorPane fx:id="apNav" layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
+      <AnchorPane fx:id="apNav" layoutY="50.0" prefHeight="1055.0" style="-fx-background-color: #BDEDFF;">
          <children>
             <Pane fx:id="pnExtras" layoutX="14.0" layoutY="938.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
                <children>
@@ -102,7 +101,7 @@
             <DropShadow color="#00000051" />
          </effect>
       </AnchorPane>
-      <AnchorPane fx:id="apWarnings" layoutX="1680.0" layoutY="50.0" prefHeight="1055.0" prefWidth="290.0">
+      <AnchorPane fx:id="apWarnings" layoutX="1680.0" layoutY="50.0" style="-fx-background-color: #B4CFEC;">
          <children>
             <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
                <children>
