@@ -44,6 +44,10 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Jake Mai
  */
 public class HomeController implements Initializable {
+    @FXML Pane pnRangeDistance;
+    @FXML Pane pnAngleOfAttack;
+    @FXML Pane pnLocation;
+
     @FXML Label lbWindSpeed;
     @FXML Pane pnWindSpeed;
 
@@ -187,25 +191,35 @@ public class HomeController implements Initializable {
                 node.setPrefWidth(width/2);
                 pnBanner.setPrefWidth(width);
                 lblHeader.setPrefWidth(width);
-                apNav.setPrefWidth(width/6); //left panel
+                apNav.setMinWidth(width/6); //left panel
                 System.out.println(apNav.getWidth());
 
                 //set middle panel to be slightly to the right of left panel
                 pnContent.setLayoutX(apNav.getWidth() + 10.0);
-                pnContent.setPrefWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
+                pnContent.setMinWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
 
                 //Small weather pane is 10 to the left of the start of the content pane
-//                pnWindSpeed.setLayoutX(apNav.getWidth() + 15.0);
+                pnWindSpeed.setLayoutX(15.0);
+                pnWindSpeed.setPrefWidth((pnContent.getWidth()/3) - 5);
+                pnRangeDistance.setLayoutX(15.0);
+                pnRangeDistance.setPrefWidth((pnContent.getWidth()/3) - 5);
 
-//                //Small Velocity pane is 10 to the left of the start of the weather pane
-//                pnVelocity.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
-//
-//                //Small Altitude pane is 10 to the left of the start of the velocity pane
-//                pnVelocity.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
+                //Small Velocity pane is 10 to the left of the start of the weather pane
+                pnVelocity.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
+                pnVelocity.setPrefWidth((pnContent.getWidth()/3) - 5);
+                pnAngleOfAttack.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
+                pnAngleOfAttack.setPrefWidth((pnContent.getWidth()/3) - 5);
+
+
+                //Small Altitude pane is 10 to the left of the start of the velocity pane
+                pnAltitude.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
+//                pnAltitude.setPrefWidth((pnContent.getWidth()/3) - 5); TODO fix this?? this one cuts off
+                pnLocation.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
+//                pnLocation.setPrefWidth((pnContent.getWidth()/3) - 5); TODO fix this?? this one cuts off
 
                 //set right panel to be slightly to the right of middle panel
                 apWarnings.setLayoutX(apNav.getWidth() + 10.0 + pnContent.getWidth() + 10.0);
-                apWarnings.setPrefWidth(width/6); //right panel should be a 1/6th of sceen width
+                apWarnings.setMinWidth(width/6); //right panel should be a 1/6th of sceen width
             }
         });
     }
