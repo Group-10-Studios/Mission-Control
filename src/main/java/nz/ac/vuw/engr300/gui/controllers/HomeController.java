@@ -198,7 +198,8 @@ public class HomeController implements Initializable {
                 pnContent.setLayoutX(apNav.getWidth() + 10.0);
                 pnContent.setPrefWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
 
-                pnContent.setLayoutX(apNav.getWidth() + 10.0 + pnContent.getWidth() + 10);
+                //set right panel to be slightly to the right of middle panel
+                apWarnings.setLayoutX(apNav.getWidth() + 10.0 + pnContent.getWidth() + 10.0);
                 apWarnings.setPrefWidth(width/6); //right panel should be a 1/6th of sceen width
             }
         });
