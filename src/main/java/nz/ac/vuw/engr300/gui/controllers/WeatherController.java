@@ -20,10 +20,10 @@ public class WeatherController {
      * @author: Nalin Aswani
      * @author: Jake Mai.
      */
-    @FXML private Label lbWeather;
+    @FXML private Label lbWindSpeed;
 
     public WeatherController(Label wl) {
-        this.lbWeather = wl;
+        this.lbWindSpeed = wl;
     }
 
     /**
@@ -39,7 +39,7 @@ public class WeatherController {
             // windspeed's unit extracted from weather data is meter per second
             // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 = windpseed * 3.6
             Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
-            lbWeather.setText("Windspeed: " + winSpeedMetric + " km/h");
+            lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

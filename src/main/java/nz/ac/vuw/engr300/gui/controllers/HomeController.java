@@ -42,13 +42,19 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Jake Mai
  */
 public class HomeController implements Initializable {
+    @FXML Label lbWindSpeed;
+    @FXML Pane pnWindSpeed;
 
-    @FXML Label lbWeather;
+    @FXML Label lbVelocity;
+    @FXML Pane pnVelocity;
+
+    @FXML Label lbAltitude;
+    @FXML Pane pnAltitude;
+
     @FXML Label lblHeader;
     @FXML AnchorPane apApp;
     @FXML Region pnBanner;
     @FXML Pane pnContent;
-    @FXML Region pnAngleOfAttack;
     @FXML Region lbRealTimeFlightInfo;
     @FXML Region apNav;
     @FXML Region pnExtras;
@@ -63,10 +69,10 @@ public class HomeController implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather);
+        WeatherController wc = new WeatherController(lbWindSpeed);
         wc.updateWindSpeed();
-        scaleItemHeight(apApp, lbWeather, 2);
-        scaleItemWidth(apApp, lbWeather, 2);
+        scaleItemHeight(apApp, lbWindSpeed, 2);
+        scaleItemWidth(apApp, lbWindSpeed, 2);
     }
 
     /**
@@ -79,7 +85,7 @@ public class HomeController implements Initializable {
                         Duration.seconds(1),
                         event -> {
                             i.set(i.get() + 1);
-                            lbWeather.setText("Elapsed time: " + i.get() + " seconds");
+                            lbWindSpeed.setText("Elapsed time: " + i.get() + " seconds");
                         }
                 )
         );
@@ -137,6 +143,15 @@ public class HomeController implements Initializable {
                 //set middle panel to be slightly to the right of left panel
                 pnContent.setLayoutX(apNav.getWidth() + 10.0);
                 pnContent.setPrefWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
+
+                //Small weather pane is 10 to the left of the start of the content pane
+//                pnWindSpeed.setLayoutX(apNav.getWidth() + 15.0);
+
+//                //Small Velocity pane is 10 to the left of the start of the weather pane
+//                pnVelocity.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
+//
+//                //Small Altitude pane is 10 to the left of the start of the velocity pane
+//                pnVelocity.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
 
                 //set right panel to be slightly to the right of middle panel
                 apWarnings.setLayoutX(apNav.getWidth() + 10.0 + pnContent.getWidth() + 10.0);
