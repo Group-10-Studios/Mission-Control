@@ -43,18 +43,6 @@ public class HomeController implements Initializable {
         wc.updateWindSpeed();
 
 
-//        //TODO: implement with data rather than a variable
-//        AtomicInteger var = new AtomicInteger();
-//        new Thread(() -> {
-//           while(true){
-//               try {
-//                   Thread.sleep(1000);
-//               } catch (InterruptedException e){
-//                   e.printStackTrace();
-//               }
-//               lineChardAltitude.addValue(var.getAndIncrement(), var.getAndIncrement());
-//           }
-//        }).run();
     }
 
     /**
@@ -73,5 +61,21 @@ public class HomeController implements Initializable {
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+    }
+
+    public void runSim(){
+
+        //TODO: implement with data rather than a variable
+        AtomicInteger var = new AtomicInteger();
+        new Thread(() -> {
+            while(true){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                lineChartAltitude.addValue(var.getAndIncrement(), var.getAndIncrement());
+            }
+        }).start();
     }
 }
