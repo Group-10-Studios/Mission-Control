@@ -171,6 +171,10 @@ rectangle mission-control {
 @enduml
 ```
 
+#### Verify Landing Zone in prior to launch
+
+![UseCase Diagram](assets/3.2.Functions.VerifyLandingZone.png)
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
