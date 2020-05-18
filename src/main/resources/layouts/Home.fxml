@@ -34,7 +34,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time (s)" yLabel="Altitude (m)" />
+                  <RocketDataLineChart fx:id="lineChartAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )" />
                </children>
             </Pane>
             <Pane fx:id="pnVelocity" layoutX="694.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
@@ -44,7 +44,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartVel" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time (s)" yLabel="Velocity (m/s)"/>
+                  <RocketDataLineChart fx:id="lineChartVel" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Velocity ( M/S )"/>
                </children>
             </Pane>
             <Pane fx:id="pnRangeDist" layoutX="18.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
@@ -54,7 +54,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartAcceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time (s)" yLabel="Acceleration (m/s^2)" />
+                  <RocketDataLineChart fx:id="lineChartAcceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time (s)" yLabel="Acceleration ( M/S^2 )" />
                </children>
             </Pane>
             <Pane fx:id="pnAngleOfAttack" layoutX="694.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
