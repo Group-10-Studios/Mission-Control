@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
@@ -43,6 +44,6 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
      * @param y     The y value
      */
     public void addValue(double x, double y){
-        series.getData().add(new Data<>(x, y));
+        Platform.runLater(()->series.getData().add(new Data<>(x, y)));
     }
 }
