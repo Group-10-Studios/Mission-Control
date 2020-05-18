@@ -133,6 +133,44 @@ See 9.5.10. for most systems this will be around one page.
 
 This is typically the longest subsection in the document. List up to fifty use cases (in order of priority for development), and for at least top ten focal use cases, write a short goal statement and use case body (up to seven pages).  Identify the use cases that comprise a minimum viable product.
 
+#### Show Rocket Position
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle mission-control {
+  user -- (View Position)
+  (View Position) <-> (Update Map)
+  (Update Map) <- (Draw Rocket Position)
+  (Draw Rocket Position) <. (Get GPS information)
+  (Get GPS information) <- rocket
+}
+@enduml
+```
+
+#### Go/No go Functionality
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle mission-control {
+  user -- (Prepare Launch)
+  user -> (Click Go) : Click Go Button
+  (Prepare Launch) .> (Click Go)
+  (Click Go) -> (Arm Rocket)
+  (Arm Rocket) -> rocket
+  (Arm Rocket) .> (Countdown 10 seconds)
+  (Countdown 10 seconds) .> user : Click No Go Button
+  (Countdown 10 seconds) -> (Launch Rocket)
+  (Launch Rocket) -> rocket
+}
+@enduml
+```
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
@@ -270,6 +308,10 @@ One page glossary _as required_.
 ## 7. Contributions
 
 A one page statement of contributions, including a list of each member of the group and what they contributed to this document.
+### Group Member Contributions:
+**Nathan Duckett:**
+- Section 1.3.1
+- Use cases in section 3.2
 
 ---
 
