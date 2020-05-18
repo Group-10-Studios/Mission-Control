@@ -8,6 +8,7 @@ package nz.ac.vuw.engr300.gui.controllers;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -40,6 +41,20 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(weatherLabel);
         wc.updateWindSpeed();
+
+
+//        //TODO: implement with data rather than a variable
+//        AtomicInteger var = new AtomicInteger();
+//        new Thread(() -> {
+//           while(true){
+//               try {
+//                   Thread.sleep(1000);
+//               } catch (InterruptedException e){
+//                   e.printStackTrace();
+//               }
+//               lineChardAltitude.addValue(var.getAndIncrement(), var.getAndIncrement());
+//           }
+//        }).run();
     }
 
     /**
