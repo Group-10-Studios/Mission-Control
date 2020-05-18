@@ -19,6 +19,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
 
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
+    private static double upperXBound = 10.0;
+
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely initialized in fxml code.
      * For example,
@@ -38,6 +40,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
         this.getData().add(series);
         this.setAnimated(false);
         this.setCreateSymbols(false);
+        ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
+        this.getXAxis().setAutoRanging(false);
 
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
     }
@@ -49,6 +53,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
      * @param y     The y value
      */
     public void addValue(double x, double y){
+        if(!this.getXAxis().isAutoRanging() && x > upperXBound){
+            this.getXAxis().setAutoRanging(true);
+        }
         Platform.runLater(()->series.getData().add(new Data<>(x, y)));
     }
 }
