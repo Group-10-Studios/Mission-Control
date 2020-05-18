@@ -2,10 +2,13 @@ package nz.ac.vuw.engr300.gui.components;
 
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+
+import java.awt.*;
 
 /**
  * A component that displays rocket data (two double values) as a line graph.
@@ -34,6 +37,10 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
         this.getXAxis().setLabel(xLabel);
         this.getYAxis().setLabel(yLabel);
         this.getData().add(series);
+        this.setAnimated(false);
+        this.setCreateSymbols(false);
+
+        series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
     }
 
     /**
