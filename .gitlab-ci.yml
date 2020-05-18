@@ -62,9 +62,9 @@ spell_check:
   script:
     - npm install markdown-spellcheck
     # Check README against AU - NZ doesn't work here
-    - mdspell -r -n -a --en-au *.md
+    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-au *.md
     # Check other documents in subfolders against NZ
-    - mdspell -r -n -a --en-nz **/*.md
+    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-nz **/*.md
   allow_failure: false
 
 pages:
