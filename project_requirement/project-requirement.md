@@ -171,6 +171,28 @@ rectangle mission-control {
 @enduml
 ```
 
+#### Verify Landing Zone prior to launch
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle "Mission Control" {
+	user -> (Collect Weather Data)
+	(Collect Weather Data) .> Monte_Carlo_Simulation
+	(Changing the launch rod angle into the wind) <..> Monte_Carlo_Simulation : No
+	(Prepare to launch) -> (Launch Rocket)
+	(Prepare to launch)  <.. Monte_Carlo_Simulation : Yes
+	(Launch Rocket) -> rocket
+}
+ rectangle Monte_Carlo_Simulation {
+	 (Determine if the rocket will land in the permitted landing zone)
+ }
+@enduml
+```
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
