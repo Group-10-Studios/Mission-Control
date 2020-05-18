@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.importers.RocketDataImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 
@@ -31,6 +32,8 @@ import javax.swing.*;
  * @author Jake Mai
  */
 public class HomeController implements Initializable {
+
+    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     
     @FXML Label weatherLabel;
     @FXML public RocketDataLineChart lineChartAltitude;
@@ -64,14 +67,17 @@ public class HomeController implements Initializable {
         timeline.play();
     }
 
+    /**
+     * Callback function for run simulation in main view, this function will
+     * open a file dialog to select a simulation data file. It will then load
+     * it into the data importer and run the simulation as if it was live.
+     */
     public void runSim(){
-        OpenRocketImporter simulatorImporter = new OpenRocketImporter();
-
         JFileChooser fileChooser = new JFileChooser("src/main/resources");
         if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            simulatorImporter.importData(file.getAbsolutePath());
-            simulatorImporter.subscribeObserver((data) -> {
+            simulationImporter.importData(file.getAbsolutePath());
+            simulationImporter.subscribeObserver((data) -> {
                 if (data instanceof RocketStatus) {
                     lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
                     lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
@@ -80,9 +86,7 @@ public class HomeController implements Initializable {
 
             });
 
-            simulatorImporter.start();
+            simulationImporter.start();
         }
-
-
     }
 }
