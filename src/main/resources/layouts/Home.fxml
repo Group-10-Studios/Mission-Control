@@ -30,7 +30,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" title="Altitude v Time" xLabel="Time" yLabel="Altitude" />
+                  <RocketDataLineChart fx:id="lineChartAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time" yLabel="Altitude" />
                </children>
             </Pane>
             <Pane fx:id="pnVelocity" layoutX="694.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
@@ -40,7 +40,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChardVel" xLabel="Time (TODO UNIT)" yLabel="Velocity (TODO UNIT)" title="Velocity over Time" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
+                  <RocketDataLineChart fx:id="lineChartVel" xLabel="Time (TODO UNIT)" yLabel="Velocity (TODO UNIT)" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
                </children>
             </Pane>
             <Pane fx:id="pnRangeDist" layoutX="18.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
@@ -50,7 +50,7 @@
                         <Font name="Segoe UI" size="32.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartRangeDist" xLabel="Time (TODO UNIT)" yLabel="Range (TODO UNIT)" title="Range over Time" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
+                  <RocketDataLineChart fx:id="lineChartRangeDist" xLabel="Time (TODO UNIT)" yLabel="Range (TODO UNIT)" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
                </children>
             </Pane>
             <Pane fx:id="pnAngleOfAttack" layoutX="694.0" layoutY="484.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">

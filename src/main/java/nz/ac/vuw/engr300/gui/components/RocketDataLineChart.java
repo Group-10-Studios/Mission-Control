@@ -27,11 +27,10 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
      * @param xLabel    The x label
      * @param yLabel    The y label
      */
-    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xLabel,
+    public RocketDataLineChart(@NamedArg("xLabel") String xLabel,
                                @NamedArg("yLabel") String yLabel) {
         super(new NumberAxis(), new NumberAxis());
         this.setLegendVisible(false);
-        this.setTitle(title);
         this.getXAxis().setLabel(xLabel);
         this.getYAxis().setLabel(yLabel);
         this.getData().add(series);
