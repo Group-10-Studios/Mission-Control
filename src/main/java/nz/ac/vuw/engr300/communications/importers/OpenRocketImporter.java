@@ -162,11 +162,13 @@ public class OpenRocketImporter implements RocketDataImporter {
         }).start();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void subscribeObserver(Consumer<RocketData> observer) {
-        observers.add(observer);
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void unsubscribeObserver(Consumer<RocketData> observer){
+        this.observers.remove(observer);
     }
 }

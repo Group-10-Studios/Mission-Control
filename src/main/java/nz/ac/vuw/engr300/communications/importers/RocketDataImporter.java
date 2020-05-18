@@ -18,4 +18,11 @@ public interface RocketDataImporter {
      * @param observer  The callback for the client
      */
     void subscribeObserver(Consumer<RocketData> observer);
+
+    /**
+     * Unsubscribes a client from the data importer
+     *
+     * @param observer  The client callback to unsubscribe
+     */
+    void unsubscribeObserver(Consumer<RocketData> observer);
 }
