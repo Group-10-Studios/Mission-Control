@@ -26,3 +26,10 @@ java -jar mission-control.jar
 ```
 
 If you have all dependencies installed this should launch without issues. However if you are missing JavaFX sdk it will result in a pop-up notifying you of the missing dependency.
+
+## Project Information Documents
+
+These are automatically generated from the latest version from the `master` branch in the CI pipeline.
+
+- [Test Coverage](https://course-work.glp.ecs.vuw.ac.nz/engr300/2020/group10/group-10/jacoco/)
+- [Javadocs](https://course-work.glp.ecs.vuw.ac.nz/engr300/2020/group10/group-10/javadoc/)
