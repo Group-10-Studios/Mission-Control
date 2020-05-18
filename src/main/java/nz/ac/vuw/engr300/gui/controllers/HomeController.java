@@ -32,7 +32,7 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 public class HomeController implements Initializable {
     
     @FXML Label weatherLabel;
-    @FXML RocketDataLineChart lineChardAltitude;
+    @FXML RocketDataLineChart lineChartAltitude;
 
     /**
     * This is the initialize method that is called to build the root before starting the javafx project.
