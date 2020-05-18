@@ -55,6 +55,18 @@ unittest_windows:
   script:
     - mvn test
 
+spell_check:
+  stage: Test
+  tags:
+    - shell
+  script:
+    - npm install markdown-spellcheck
+    # Check README against AU - NZ doesn't work here
+    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-au *.md
+    # Check other documents in subfolders against NZ
+    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-nz **/*.md
+  allow_failure: false
+
 pages:
   stage: DeployPages
   # Run this stage only on the master branch.

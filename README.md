@@ -7,7 +7,7 @@ This software can be used as mission control for rocket launches based on the ha
 ## Usage
 
 ### Prerequisites
-The computer this code will run on reuqires the following dependencies:
+The computer this code will run on requires the following dependencies:
 - [Java 11](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
 - [JavaFX SDK](https://gluonhq.com/products/javafx/) > This is only needed if you are using a pre-built package on a different OS (Mac or BSD)
 
@@ -25,11 +25,11 @@ Then you can run:
 java -jar mission-control.jar
 ```
 
-If you have all dependencies installed this should launch without issues. However if you are missing JavaFX sdk it will result in a pop-up notifying you of the missing dependency.
+If you have all dependencies installed this should launch without issues. However if you are missing JavaFX SDK it will result in a pop-up notifying you of the missing dependency.
 
 ## Project Information Documents
 
 These are automatically generated from the latest version from the `master` branch in the CI pipeline.
 
 - [Test Coverage](https://course-work.glp.ecs.vuw.ac.nz/engr300/2020/group10/group-10/jacoco/)
-- [Javadocs](https://course-work.glp.ecs.vuw.ac.nz/engr300/2020/group10/group-10/javadoc/)
+- [JavaDocs](https://course-work.glp.ecs.vuw.ac.nz/engr300/2020/group10/group-10/javadoc/)
