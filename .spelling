@@ -1,0 +1,53 @@
+# Global dictionary to ignore spelling of certain words within our CI spellchecker.
+Gitlab
+GitLab
+
+# Names
+Nathan
+Duckett
+Ahad
+Rahman
+Tim
+Salisbury
+Nalin
+Aswani
+Jake
+Mai
+Josh
+Harwood
+Miniruwani
+Samarakoon
+Andre
+Geldenhuis
+Craig
+Anslow
+
+# Tech terms
+LoRa
+LoRaWAN
+LoRaWAN's
+SimulationListener
+SimulationListeners
+project_requirements
+OpenRocket
+PlantUML
+Kanban
+pre-flight
+Kruchten's
+classpath
+OpenWeatherMap
+monte-carlo
+Nonfunctional
+nonfunctional
+Foswiki
+Talis
+JavaFX
+pre-built
+JavaDocs
+
+# Package references
+communications.importers
+gui.controllers
+
+I.e.
+e.g.

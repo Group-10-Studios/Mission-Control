@@ -78,7 +78,7 @@ Even though the program gives the "Go/No go" call, we will have a "Ready" button
 **Adding local current weather conditions:**
  For our rocket launch we would need to take the local current weather conditions into consideration. This does not only include the forecast and checking if it is raining for the “Go/No Go” functionality, but also heavily looks at the wind speed, and how this would affect the in flight calculations. 
 Our software could potentially go a step further using its wind speed. We expect to use this wind speed into our calculations, so that the rocket does not veer too far away from the exact spot it was launched from. We also expect to use the Monte Carlo Simulation, to determine an upward trajectory, which will be discussed later on. 
-We will be looking at the weather using OpenWeatherMap, and their free 3hour API. This means that we can only access the weather every 3 hours.
+We will be looking at the weather using OpenWeatherMap, and their free 3 hour API. This means that we can only access the weather every 3 hours.
 
 **Monte Carlo Rocket Simulation:**
  We will be integrating with the Monte Carlo Rocket Simulation. This will run multiple simulations of a rocket launch with slightly different parameters to get an idea of how safe a launch would be. These simulations run as sort of tests for the program to consider if it would be safe to launch considering the current conditions. We would expect a certain percentage of these simulations to pass in order for us to give the “Go” decision for a rocket launch. These simulations could also be used to determine an upward trajectory, or suggest changing the launch rod angle, after taking the wind into consideration. 
@@ -111,7 +111,7 @@ Limitations, in reference to this document, will be defined as any restrictions 
 
 - **Must be run locally:** Our mission control software is a Java program that is to be run locally. As opposed to a web-app which can be run on virtually any machine, our program must be downloaded onto the machine that will be used to monitor the rocket during launch and it's flight. This also requires the Java 8 JDK to be installed on the machine.
 
-- **LoRaWAN:** Transmitting data between the rocket and our mission control program will be through LoRaWAN. This means our software's ability to communicate with the rocket is entirely dependent on how reliable and efficient LoraWAN's means of transmitting and receiving data is. This may be a concern as the rocket reaches higher altitudes, but we are yet to conclude anything at this point.
+- **LoRaWAN:** Transmitting data between the rocket and our mission control program will be through LoRaWAN. This means our software's ability to communicate with the rocket is entirely dependent on how reliable and efficient LoRaWAN's means of transmitting and receiving data is. This may be a concern as the rocket reaches higher altitudes, but we are yet to conclude anything at this point.
 
 
 
@@ -125,7 +125,7 @@ References to other documents or standards. Follow the IEEE Citation  Reference 
 
 ### 3.1 External interfaces
 
-1) LoRa WAN - this is a low-powered wide area network which will be used to communicate the data from the rocket to the Mission Control software. Once a LoRa WAN signal is received it is then displayed in the corresponding component of the Mision Control Software
+1) LoRa WAN - this is a low-powered wide area network which will be used to communicate the data from the rocket to the Mission Control software. Once a LoRa WAN signal is received it is then displayed in the corresponding component of the Mission Control Software
 
 See 9.5.10. for most systems this will be around one page.
 
