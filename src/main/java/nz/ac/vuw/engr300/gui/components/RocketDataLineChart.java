@@ -26,7 +26,6 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
      *     <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel="Altitude"/>
      * </code>
      *
-     * @param title     The title of the graph
      * @param xLabel    The x label
      * @param yLabel    The y label
      */
