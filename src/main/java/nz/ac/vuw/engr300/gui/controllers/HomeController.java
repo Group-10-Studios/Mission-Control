@@ -47,6 +47,8 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(weatherLabel);
         wc.updateWindSpeed();
+
+        runSim();
     }
 
     /**
@@ -76,7 +78,15 @@ public class HomeController implements Initializable {
         JFileChooser fileChooser = new JFileChooser("src/main/resources");
         if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            simulationImporter.importData(file.getAbsolutePath());
+            try{
+                simulationImporter.importData(file.getAbsolutePath());
+            }catch (Exception e){
+                JOptionPane.showMessageDialog(null,
+                        e.getMessage(),
+                        "Failed to import simulation data!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             simulationImporter.subscribeObserver((data) -> {
                 if (data instanceof RocketStatus) {
                     lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
@@ -88,5 +98,13 @@ public class HomeController implements Initializable {
 
             simulationImporter.start();
         }
+    }
+
+    /**
+     * Callback for when the cross at top right gets pressed, this function
+     * should be used to cleanup any resources and close any ongoing threads.
+     */
+    public void shutdown(){
+        simulationImporter.stop();
     }
 }
