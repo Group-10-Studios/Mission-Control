@@ -308,6 +308,10 @@ One page glossary _as required_.
 ## 7. Contributions
 
 A one page statement of contributions, including a list of each member of the group and what they contributed to this document.
+### Group Member Contributions:
+**Nathan Duckett:**
+- Section 1.3.1
+- Use cases in section 3.2
 
 ---
 
