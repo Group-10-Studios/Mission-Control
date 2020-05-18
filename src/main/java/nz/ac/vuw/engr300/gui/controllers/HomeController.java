@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
@@ -30,6 +31,7 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 public class HomeController implements Initializable {
     
     @FXML Label weatherLabel;
+    @FXML RocketDataLineChart lineChardAltitude;
 
     /**
     * This is the initialize method that is called to build the root before starting the javafx project.
