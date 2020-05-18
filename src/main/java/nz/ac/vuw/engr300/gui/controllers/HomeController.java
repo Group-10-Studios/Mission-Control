@@ -40,6 +40,16 @@ public class HomeController implements Initializable {
     @FXML public RocketDataLineChart lineChartVel;
     @FXML public RocketDataLineChart lineChartAcceleration;
 
+    public HomeController() {
+        simulationImporter.subscribeObserver((data) -> {
+            if (data instanceof RocketStatus) {
+                lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
+                lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
+                lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+            }
+        });
+    }
+
     /**
     * This is the initialize method that is called to build the root before starting the javafx project.
     */
@@ -47,8 +57,6 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(weatherLabel);
         wc.updateWindSpeed();
-
-        runSim();
     }
 
     /**
@@ -86,15 +94,6 @@ public class HomeController implements Initializable {
                         "Failed to import simulation data!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            simulationImporter.subscribeObserver((data) -> {
-                if (data instanceof RocketStatus) {
-                    lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                    lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                    lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
-                }
-
-            });
 
             simulationImporter.start();
         }
