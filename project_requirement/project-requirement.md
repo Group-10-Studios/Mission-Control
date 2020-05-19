@@ -193,6 +193,44 @@ rectangle "Mission Control" {
 @enduml
 ```
 
+### Run Simulation Data
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle "Mission Control"{
+    user -> (Click Run Simulation)
+    (Click Run Simulation) .> (Displays File Choosing Dialog)
+    user -> (Displays File Choosing Dialog) : Selects simulation data file
+    (Displays File Choosing Dialog) .> (Loads File)
+    (Loads File) .> (Displays Simulation data as-if it were live)
+}
+
+@enduml
+```
+
+### Update weather data at launch site
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle "Mission Control"{
+    user -> (Input Updated Weather Data into Input Boxes)
+    (Input Updated Weather Data into Input Boxes) .> (Sends Updated Values to Simulation)
+    (Sends Updated Values to Simulation) -> Simulation
+    Simulation -> (Redisplays Prediction Rocket landing prediction on Map)
+}
+ rectangle Simulation {
+	 (Recalculates Launch prediction)
+ }
+
+@enduml
+```
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
