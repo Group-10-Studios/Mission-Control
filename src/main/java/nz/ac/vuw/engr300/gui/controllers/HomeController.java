@@ -45,7 +45,6 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Nathan Duckett
  */
 public class HomeController implements Initializable {
-<<<<<<< HEAD
     @FXML Pane pnRangeDistance;
     @FXML Pane pnAngleOfAttack;
     @FXML Pane pnLocation;
@@ -100,14 +99,6 @@ public class HomeController implements Initializable {
         scaleItemHeight(apApp, lbWindSpeed, 2);
         scaleItemWidth(apApp, lbWindSpeed, 2);
     }
-=======
-  @FXML
-  Pane pnRangeDistance;
-  @FXML
-  Pane pnAngleOfAttack;
-  @FXML
-  Pane pnLocation;
->>>>>>> #47: Refactor code to make it more reusable. Fix bugs with resize on app start, resizing right side graphs
 
   @FXML
   Label lbWindSpeed;
@@ -148,6 +139,8 @@ public class HomeController implements Initializable {
   Region pnNav;
   @FXML
   Region apWarnings;
+  @FXML
+  Region pnWarnings;
 
   /**
    * This is the initialize method that is called to build the root before
@@ -178,6 +171,7 @@ public class HomeController implements Initializable {
 
       // Pass bound width to begin application
       updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
+      updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
     }).start();
   }
 
@@ -225,27 +219,45 @@ public class HomeController implements Initializable {
         simulationImporter.stop();
        }
 
-        /**
-         *
-         * @param root The root pane the UI is all under.
-         * @param node A specific node we may want to change.
-         * @param i What ratio of the root height we want to scale things by.
-         */
-    private void scaleItemHeight(Region root, Region node, int i) {
-        root.heightProperty().addListener(new ChangeListener<Number>() {
-            /**
-             *
-             * @param observableValue
-             * @param number Current height of the window
-             * @param t1 New value of the height, what it will be changed to.
-             */
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                double height = (double) t1;
-//                node.setPrefHeight(height/10);
-//                apApp.setPrefHeight(height);
+  /**
+   *
+   * @param root The root pane the UI is all under.
+   * @param node A specific node we may want to change.
+   * @param i    What ratio of the root height we want to scale things by.
+   */
+  private void scaleItemHeight(Region root, Region node, int i) {
+    root.heightProperty().addListener(new ChangeListener<Number>() {
+      /**
+       *
+       * @param observableValue
+       * @param number          Current height of the window
+       * @param t1              New value of the height, what it will be changed to.
+       */
+      @Override
+      public void changed(ObservableValue<? extends Number> observableValue, Number number,
+          Number t1) {
+        updatePanelPositionsVertical(node, t1);
       }
     });
+  }
+  
+  /**
+   * Update the panel's positions to dynamically match the new application height.
+   * @param rootPanel
+   * @param newHeight
+   */
+  private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
+    double height = (double) newHeight;
+    updatePanelsToHeight(height, apNav, pnContent, apWarnings);
+    
+    // pnWarnings can have 5/6 of height space
+    updatePanelsToHeight((height * 5) /6, pnWarnings);
+    
+    // pnNav can have 2/3 of height space
+    updatePanelsToHeight((height * 2) / 3, pnNav);
+    
+    // Update the y position of pnExtras
+    updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
   }
 
   /**
@@ -325,10 +337,24 @@ public class HomeController implements Initializable {
       panel.setMaxWidth(width);
     }
   }
+  
+  /**
+   * Update all of the provided panels preferred height to the value provided.
+   * 
+   * @param height  Preferred height to set all panels to.
+   * @param panels Array of panels to set the preferred height on.
+   */
+  private void updatePanelsToHeight(double height, Region... panels) {
+    for (Region panel : panels) {
+      panel.setPrefHeight(height);
+      panel.setMaxHeight(height);
+    }
+  }
 
   /**
    * Update the panel position based on the relative position of the other panel.
    * This can offset thisPanel by the correct amount to not overlap relativePanel.
+   * This works on the x axis.
    * 
    * @param thisPanel     The panel to update the x position of based on the
    *                      relativePanel.
@@ -345,6 +371,28 @@ public class HomeController implements Initializable {
 
     // Calculate x position based off relativePanel position/size
     thisPanel.setLayoutX(relativePanel.getLayoutX() + relativePanel.getWidth() + offset);
+  }
+  
+  /**
+   * Update the panel position based on the relative position of the other panel.
+   * This can offset thisPanel by the correct amount to not overlap relativePanel.
+   * This works on the y axis.
+   * 
+   * @param thisPanel     The panel to update the y position of based on the
+   *                      relativePanel.
+   * @param relativePanel Relative panel to position thisPanel against based on
+   *                      its' y position and height.
+   * @param offset        Offset to add between the relativePanel bottom side and
+   *                      thisPanel top side.
+   */
+  private void updatePanelPositionOffsetVertical(Region thisPanel, Region relativePanel, double offset) {
+    if (relativePanel == null) {
+      thisPanel.setLayoutY(offset);
+      return;
+    }
+
+    // Calculate x position based off relativePanel position/size
+    thisPanel.setLayoutY(relativePanel.getLayoutY() + relativePanel.getHeight() + offset);
   }
 
 }
