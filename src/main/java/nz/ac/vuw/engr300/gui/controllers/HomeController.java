@@ -42,8 +42,10 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  *
  * @author Nalin Aswani
  * @author Jake Mai
+ * @author Nathan Duckett
  */
 public class HomeController implements Initializable {
+<<<<<<< HEAD
     @FXML Pane pnRangeDistance;
     @FXML Pane pnAngleOfAttack;
     @FXML Pane pnLocation;
@@ -98,24 +100,100 @@ public class HomeController implements Initializable {
         scaleItemHeight(apApp, lbWindSpeed, 2);
         scaleItemWidth(apApp, lbWindSpeed, 2);
     }
+=======
+  @FXML
+  Pane pnRangeDistance;
+  @FXML
+  Pane pnAngleOfAttack;
+  @FXML
+  Pane pnLocation;
+>>>>>>> #47: Refactor code to make it more reusable. Fix bugs with resize on app start, resizing right side graphs
 
-    /**
-     * TODO This method will update the weather data label with the weather received from the API.
-     */
-    private void updateDataRealTime() {
-        final IntegerProperty i = new SimpleIntegerProperty(0);
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-                        Duration.seconds(1),
-                        event -> {
-                            i.set(i.get() + 1);
-                            lbWindSpeed.setText("Elapsed time: " + i.get() + " seconds");
-                        }
-                )
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-    }
+  @FXML
+  Label lbWindSpeed;
+  @FXML
+  Pane pnWindSpeed;
+
+  @FXML
+  Label lbVelocity;
+  @FXML
+  Pane pnVelocity;
+
+  @FXML
+  Label lbAltitude;
+  @FXML
+  Pane pnAltitude;
+
+  @FXML
+  Label lblHeader;
+  @FXML
+  AnchorPane apApp;
+  @FXML
+  Region pnBanner;
+  @FXML
+  Pane pnContent;
+  @FXML
+  Region lbRealTimeFlightInfo;
+  @FXML
+  Region apNav;
+  @FXML
+  Region pnExtras;
+  @FXML
+  Region btnPastFlights;
+  @FXML
+  Region btnRunSim;
+  @FXML
+  Region pnDetails;
+  @FXML
+  Region pnNav;
+  @FXML
+  Region apWarnings;
+
+  /**
+   * This is the initialize method that is called to build the root before
+   * starting the javafx project.
+   */
+  @Override
+  public void initialize(URL url, ResourceBundle rb) {
+    WeatherController wc = new WeatherController(lbWindSpeed);
+    wc.updateWindSpeed();
+    scaleItemHeight(apApp, lbWindSpeed, 2);
+    scaleItemWidth(apApp, lbWindSpeed, 2);
+
+    refreshOnStart();
+  }
+
+  /**
+   * Refresh on start is designed to wait on a separate thread then manually
+   * update the positions of panels to match our dynamic design.
+   */
+  private void refreshOnStart() {
+    new Thread(() -> {
+      try {
+        // Sleep for 350ms to wait for UI to load
+        Thread.sleep(350);
+      } catch (InterruptedException e) {
+        throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
+      }
+
+      // Pass bound width to begin application
+      updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
+    }).start();
+  }
+
+  /**
+   * TODO This method will update the weather data label with the weather received
+   * from the API.
+   */
+  private void updateDataRealTime() {
+    final IntegerProperty i = new SimpleIntegerProperty(0);
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+      i.set(i.get() + 1);
+      lbWindSpeed.setText("Elapsed time: " + i.get() + " seconds");
+    }));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+  }
 
     /**
      * Callback function for run simulation in main view, this function will
@@ -166,63 +244,107 @@ public class HomeController implements Initializable {
                 double height = (double) t1;
 //                node.setPrefHeight(height/10);
 //                apApp.setPrefHeight(height);
-            }
-        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @param root The root pane the UI is all under.
+   * @param node A specific node we may want to change.
+   * @param i    What ratio of the root width we want to scale things by.
+   */
+  private void scaleItemWidth(Region root, Region node, int i) {
+    root.widthProperty().addListener(new ChangeListener<Number>() {
+      /**
+       *
+       * @param observableValue
+       * @param number          Current width of the window
+       * @param t1              New value of the width, what it will be changed to.
+       */
+      @Override
+      public void changed(ObservableValue<? extends Number> observableValue, Number number,
+          Number t1) {
+        updatePanelPositions(node, t1);
+      }
+    });
+  }
+
+  /**
+   * Update the panel positions to dynamically match the new application width.
+   * 
+   * @param rootPanel
+   * @param newWidth
+   */
+  private void updatePanelPositions(Region rootPanel, Number newWidth) {
+    double standardOffset = 10.0;
+    double rows = 3;
+    double width = (double) newWidth;
+    apApp.setPrefWidth(width / 2);
+    updatePanelsToWidth(width, pnBanner, lblHeader);
+    apNav.setMinWidth(width / 6); // left panel
+
+    // set middle panel to be slightly to the right of left panel
+    updatePanelPositionOffset(pnContent, apNav, standardOffset);
+    pnContent.setMinWidth((width * 2) / 3); // middle panel width should be 2/3 of the screen width
+    pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
+    
+    // Only the length internally excluding the offset
+    double graphWidth = (pnContent.getWidth() / rows) - standardOffset;
+    // Set all positions based on graph width
+    updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
+        pnAltitude, pnLocation);
+
+    // Set left most graph x positions - not relative to anything
+    updatePanelPositionOffset(pnWindSpeed, null, standardOffset / 2);
+    updatePanelPositionOffset(pnRangeDistance, null, standardOffset / 2);
+
+    // Set centre graph x positions - relative to wind speed graph
+    updatePanelPositionOffset(pnVelocity, pnWindSpeed, standardOffset);
+    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, standardOffset);
+
+    // Set the right graph x positions - relative to velocity graph
+    updatePanelPositionOffset(pnAltitude, pnVelocity, standardOffset);
+    updatePanelPositionOffset(pnLocation, pnVelocity, standardOffset);
+
+    // set right panel to be slightly to the right of middle panel
+    apWarnings
+        .setLayoutX(apNav.getWidth() + standardOffset + pnContent.getWidth() + standardOffset);
+    apWarnings.setMinWidth(width / 6); // right panel should be a 1/6th of screen width
+  }
+
+  /**
+   * Update all of the provided panels preferred width to the value provided.
+   * 
+   * @param width  Preferred width to set all panels to.
+   * @param panels Array of panels to set the preferred width on.
+   */
+  private void updatePanelsToWidth(double width, Region... panels) {
+    for (Region panel : panels) {
+      panel.setPrefWidth(width);
+      panel.setMaxWidth(width);
+    }
+  }
+
+  /**
+   * Update the panel position based on the relative position of the other panel.
+   * This can offset thisPanel by the correct amount to not overlap relativePanel.
+   * 
+   * @param thisPanel     The panel to update the x position of based on the
+   *                      relativePanel.
+   * @param relativePanel Relative panel to position thisPanel against based on
+   *                      its' x position and width.
+   * @param offset        Offset to add between the relativePanel right side and
+   *                      thisPanel left side.
+   */
+  private void updatePanelPositionOffset(Region thisPanel, Region relativePanel, double offset) {
+    if (relativePanel == null) {
+      thisPanel.setLayoutX(offset);
+      return;
     }
 
-    /**
-     *
-     * @param root The root pane the UI is all under.
-     * @param node A specific node we may want to change.
-     * @param i What ratio of the root width we want to scale things by.
-     */
-    private void scaleItemWidth(Region root, Region node, int i) {
-        root.widthProperty().addListener(new ChangeListener<Number>() {
-            /**
-             *
-             * @param observableValue
-             * @param number Current width of the window
-             * @param t1 New value of the width, what it will be changed to.
-             */
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                double width = (double) t1;
-//                apApp.setPrefWidth(width);
-                node.setPrefWidth(width/2);
-                pnBanner.setPrefWidth(width);
-                lblHeader.setPrefWidth(width);
-                apNav.setMinWidth(width/6); //left panel
-                System.out.println(apNav.getWidth());
+    // Calculate x position based off relativePanel position/size
+    thisPanel.setLayoutX(relativePanel.getLayoutX() + relativePanel.getWidth() + offset);
+  }
 
-                //set middle panel to be slightly to the right of left panel
-                pnContent.setLayoutX(apNav.getWidth() + 10.0);
-                pnContent.setMinWidth((width*2)/3); //middle panel width should be 2/3 of the screen width
-
-                //Small weather pane is 10 to the left of the start of the content pane
-                pnWindSpeed.setLayoutX(15.0);
-                pnWindSpeed.setPrefWidth((pnContent.getWidth()/3) - 5);
-                pnRangeDistance.setLayoutX(15.0);
-                pnRangeDistance.setPrefWidth((pnContent.getWidth()/3) - 5);
-
-                //Small Velocity pane is 10 to the left of the start of the weather pane
-                pnVelocity.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
-                pnVelocity.setPrefWidth((pnContent.getWidth()/3) - 5);
-                pnAngleOfAttack.setLayoutX(pnWindSpeed.getLayoutX() + pnWindSpeed.getWidth() + 10.0);
-                pnAngleOfAttack.setPrefWidth((pnContent.getWidth()/3) - 5);
-
-
-                //Small Altitude pane is 10 to the left of the start of the velocity pane
-                pnAltitude.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
-//                pnAltitude.setPrefWidth((pnContent.getWidth()/3) - 5); TODO fix this?? this one cuts off
-                pnLocation.setLayoutX(pnVelocity.getLayoutX() + pnVelocity.getWidth() + 10.0);
-//                pnLocation.setPrefWidth((pnContent.getWidth()/3) - 5); TODO fix this?? this one cuts off
-
-                //set right panel to be slightly to the right of middle panel
-                apWarnings.setLayoutX(apNav.getWidth() + 10.0 + pnContent.getWidth() + 10.0);
-                apWarnings.setMinWidth(width/6); //right panel should be a 1/6th of sceen width
-            }
-        });
-    }
 }
-
-
