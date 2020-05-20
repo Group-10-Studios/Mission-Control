@@ -32,5 +32,8 @@ public class HomeView {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        // Set minimum dimensions to 720p - Doesn't support below this
+        stage.setMinHeight(720);
+        stage.setMinWidth(1280);
     }
 }
