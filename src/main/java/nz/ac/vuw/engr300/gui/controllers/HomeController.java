@@ -22,7 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
-import nz.ac.vuw.engr300.communications.importers.RocketDataImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 
@@ -37,6 +36,7 @@ import javafx.stage.Stage;
 
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
+
 /**
  * Represents the controller for the Home application view.
  *
@@ -45,53 +45,78 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Nathan Duckett
  */
 public class HomeController implements Initializable {
-    private static final double STANDARD_OFFSET = 10.0;
-    private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 3;
+  private static final double STANDARD_OFFSET = 10.0;
+  private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
+  private static final double ROWS = 3;
 
-    @FXML Pane pnRangeDistance;
-    @FXML Pane pnAngleOfAttack;
-    @FXML Pane pnLocation;
+  @FXML
+  Pane pnRangeDist;
+//    @FXML Pane pnAngleOfAttack;
+//    @FXML Pane pnLocation;
 
-    @FXML Label lbWindSpeed;
-    @FXML Pane pnWindSpeed;
+//    @FXML Label lbWindSpeed;
+//    @FXML Pane pnWindSpeed;
 
-    @FXML Label lbVelocity;
-    @FXML Pane pnVelocity;
+  @FXML
+  Label lbVelocity;
+  @FXML
+  Pane pnVelocity;
 
-    @FXML Label lbAltitude;
-    @FXML Pane pnAltitude;
+  @FXML
+  Label lbAltitude;
+  @FXML
+  Pane pnAltitude;
 
-    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
-    
-    @FXML Label weatherLabel;
-    @FXML public RocketDataLineChart lineChartAltitude;
-    @FXML public RocketDataLineChart lineChartVel;
-    @FXML public RocketDataLineChart lineChartAcceleration;
+  private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
-    public HomeController() {
-        simulationImporter.subscribeObserver((data) -> {
-            if (data instanceof RocketStatus) {
-                lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
-            }
-        });
-    }
+  @FXML
+  Label weatherLabel;
+  @FXML
+  public RocketDataLineChart lineChartAltitude;
+  @FXML
+  public RocketDataLineChart lineChartVel;
+  @FXML
+  public RocketDataLineChart lineChartAcceleration;
 
-    @FXML Label lbWeather;
-    @FXML Label lblHeader;
-    @FXML AnchorPane apApp;
-    @FXML Region pnBanner;
-    @FXML Pane pnContent;
-    @FXML Region lbRealTimeFlightInfo;
-    @FXML Region apNav;
-    @FXML Region pnExtras;
-    @FXML Region btnPastFlights;
-    @FXML Region btnRunSim;
-    @FXML Region pnDetails;
-    @FXML Region pnNav;
-    @FXML Region apWarnings;
+  @FXML
+  Label lbWeather;
+  @FXML
+  Label lblHeader;
+  @FXML
+  AnchorPane apApp;
+  @FXML
+  Region pnBanner;
+  @FXML
+  Pane pnContent;
+  @FXML
+  Region lbRealTimeFlightInfo;
+  @FXML
+  Region apNav;
+  @FXML
+  Region pnExtras;
+  @FXML
+  Region btnPastFlights;
+  @FXML
+  Region btnRunSim;
+  @FXML
+  Region pnDetails;
+  @FXML
+  Region pnNav;
+  @FXML
+  Region apWarnings;
+  @FXML
+  Region pnWarnings;
+
+  public HomeController() {
+    simulationImporter.subscribeObserver((data) -> {
+      if (data instanceof RocketStatus) {
+        lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
+        lineChartAcceleration.addValue(data.getTime(),
+            ((RocketStatus) data).getTotalAcceleration());
+        lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+      }
+    });
+  }
 
   /**
    * This is the initialize method that is called to build the root before
@@ -99,10 +124,10 @@ public class HomeController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    WeatherController wc = new WeatherController(lbWindSpeed);
-    wc.updateWindSpeed();
-    scaleItemHeight(apApp, lbWindSpeed, 2);
-    scaleItemWidth(apApp, lbWindSpeed, 2);
+//    WeatherController wc = new WeatherController(lbWindSpeed);
+//    wc.updateWindSpeed();
+    scaleItemHeight(apApp);
+    scaleItemWidth(apApp);
 
     refreshOnStart();
   }
@@ -134,41 +159,40 @@ public class HomeController implements Initializable {
     final IntegerProperty i = new SimpleIntegerProperty(0);
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
       i.set(i.get() + 1);
-      lbWindSpeed.setText("Elapsed time: " + i.get() + " seconds");
+//      lbWindSpeed.setText("Elapsed time: " + i.get() + " seconds");
     }));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
 
-    /**
-     * Callback function for run simulation in main view, this function will
-     * open a file dialog to select a simulation data file. It will then load
-     * it into the data importer and run the simulation as if it was live.
-     */
-    public void runSim(){
-        JFileChooser fileChooser = new JFileChooser("src/main/resources");
-        if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            try{
-                simulationImporter.importData(file.getAbsolutePath());
-            }catch (Exception e){
-                JOptionPane.showMessageDialog(null,
-                        e.getMessage(),
-                        "Failed to import simulation data!", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+  /**
+   * Callback function for run simulation in main view, this function will open a
+   * file dialog to select a simulation data file. It will then load it into the
+   * data importer and run the simulation as if it was live.
+   */
+  public void runSim() {
+    JFileChooser fileChooser = new JFileChooser("src/main/resources");
+    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      try {
+        simulationImporter.importData(file.getAbsolutePath());
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
+            JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
-            simulationImporter.start();
-        }
+      simulationImporter.start();
     }
+  }
 
-    /**
-     * Callback for when the cross at top right gets pressed, this function
-     * should be used to cleanup any resources and close any ongoing threads.
-     */
-    public void shutdown(){
-        simulationImporter.stop();
-       }
+  /**
+   * Callback for when the cross at top right gets pressed, this function should
+   * be used to cleanup any resources and close any ongoing threads.
+   */
+  public void shutdown() {
+    simulationImporter.stop();
+  }
 
   /**
    *
@@ -176,7 +200,7 @@ public class HomeController implements Initializable {
    * @param node A specific node we may want to change.
    * @param i    What ratio of the root height we want to scale things by.
    */
-  private void scaleItemHeight(Region root, Region node, int i) {
+  private void scaleItemHeight(Region root) {
     root.heightProperty().addListener(new ChangeListener<Number>() {
       /**
        *
@@ -187,7 +211,7 @@ public class HomeController implements Initializable {
       @Override
       public void changed(ObservableValue<? extends Number> observableValue, Number number,
           Number t1) {
-        updatePanelPositionsVertical(node, t1);
+        updatePanelPositionsVertical(root, t1);
       }
     });
   }
@@ -218,7 +242,7 @@ public class HomeController implements Initializable {
    * @param node A specific node we may want to change.
    * @param i    What ratio of the root width we want to scale things by.
    */
-  private void scaleItemWidth(Region root, Region node, int i) {
+  private void scaleItemWidth(Region root) {
     root.widthProperty().addListener(new ChangeListener<Number>() {
       /**
        *
@@ -229,7 +253,7 @@ public class HomeController implements Initializable {
       @Override
       public void changed(ObservableValue<? extends Number> observableValue, Number number,
           Number t1) {
-        updatePanelPositions(node, t1);
+        updatePanelPositions(root, t1);
       }
     });
   }
@@ -288,20 +312,27 @@ public class HomeController implements Initializable {
     // Only the length internally excluding the offset
     double graphWidth = ((pnContent.getWidth() - STANDARD_OFFSET) / ROWS) - STANDARD_OFFSET;
     // Set all positions based on graph width
-    updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
-        pnAltitude, pnLocation);
+//    updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
+//        pnAltitude, pnLocation);
 
+    updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnRangeDist);
+    double internalChartWidth = graphWidth - STANDARD_OFFSET;
+    lineChartAcceleration.setMaxWidth(internalChartWidth);
+    lineChartAltitude.setMaxWidth(internalChartWidth);
+    lineChartVel.setMaxWidth(internalChartWidth);
     // Set left most graph x positions - not relative to anything
-    updatePanelPositionOffset(pnWindSpeed, null, HALF_OFFSET);
-    updatePanelPositionOffset(pnRangeDistance, null, HALF_OFFSET);
+//    updatePanelPositionOffset(pnWindSpeed, null, HALF_OFFSET);
+    updatePanelPositionOffset(pnRangeDist, null, HALF_OFFSET);
 
     // Set centre graph x positions - relative to wind speed graph
-    updatePanelPositionOffset(pnVelocity, pnWindSpeed, STANDARD_OFFSET);
-    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, STANDARD_OFFSET);
+//    updatePanelPositionOffset(pnVelocity, pnWindSpeed, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnVelocity, pnRangeDist, STANDARD_OFFSET);
+
+//    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, STANDARD_OFFSET);
 
     // Set the right graph x positions - relative to velocity graph
     updatePanelPositionOffset(pnAltitude, pnVelocity, STANDARD_OFFSET);
-    updatePanelPositionOffset(pnLocation, pnVelocity, STANDARD_OFFSET);
+//    updatePanelPositionOffset(pnLocation, pnVelocity, STANDARD_OFFSET);
   }
 
   /**
