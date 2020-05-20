@@ -179,7 +179,22 @@ to allow integration of the two components. The simulation listener will communi
 ![Deployment Diagram](assets/deployment_diagram.png)
 
 ### 4.5 Scenarios
-**TODO: Add use case diagram reference to project_requirements asset**
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle mission-control {
+  user -- (View Position)
+  (View Position) <-> (Update Map)
+  (Update Map) <- (Draw Rocket Position)
+  (Draw Rocket Position) <. (Get GPS information)
+  (Get GPS information) <- rocket
+}
+@enduml
+```
 
 *Tracking the rocket's location*
 
@@ -188,7 +203,26 @@ This influences our physical architecture design as we require a remote connecti
 we will be able to provide real-time updates of the position of the rocket. This data transfer goes between our **communications.importers** package to our **gui.controllers** package where this will handle
 interpreting the data from the rocket and display it to the user.
 
-**TODO: Add use case diagram reference to project_requirements asset**
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle mission-control {
+  user -- (Prepare Launch)
+  user -> (Click Go) : Click Go Button
+  (Prepare Launch) .> (Click Go)
+  (Click Go) -> (Arm Rocket)
+  (Arm Rocket) -> rocket
+  (Arm Rocket) .> (Countdown 10 seconds)
+  (Countdown 10 seconds) .> user : Click No Go Button
+  (Countdown 10 seconds) -> (Launch Rocket)
+  (Launch Rocket) -> rocket
+}
+@enduml
+```
 
 *Go/No go functionality*
 
