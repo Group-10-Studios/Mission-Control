@@ -160,22 +160,23 @@ public class HomeController implements Initializable {
       }
     });
   }
-  
+
   /**
    * Update the panel's positions to dynamically match the new application height.
-   * @param rootPanel
-   * @param newHeight
+   * 
+   * @param rootPanel Region provided from the root panel within the listener.
+   * @param newWidth  New height value of the root panel.
    */
   private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
     double height = (double) newHeight;
     updatePanelsToHeight(height, apNav, pnContent, apWarnings);
-    
+
     // pnWarnings can have 5/6 of height space
-    updatePanelsToHeight((height * 5) /6, pnWarnings);
-    
+    updatePanelsToHeight((height * 5) / 6, pnWarnings);
+
     // pnNav can have 1/2 of height space
     updatePanelsToHeight(height / 2, pnNav);
-    
+
     // Update the y position of pnExtras
     updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
   }
@@ -205,8 +206,8 @@ public class HomeController implements Initializable {
   /**
    * Update the panel positions to dynamically match the new application width.
    * 
-   * @param rootPanel
-   * @param newWidth
+   * @param rootPanel Region provided from the root panel within the listener.
+   * @param newWidth  New width value of the root panel.
    */
   private void updatePanelPositions(Region rootPanel, Number newWidth) {
     double standardOffset = 10.0;
@@ -215,13 +216,24 @@ public class HomeController implements Initializable {
     double sidePanelWidth = (width - standardOffset) / 6;
     apApp.setPrefWidth(width / 2);
     updatePanelsToWidth(width, pnBanner, lblHeader);
-    apNav.setMinWidth(sidePanelWidth); // left panel
+
+    // left panel - set widths of internal panels within the width
+    apNav.setMinWidth(sidePanelWidth);
+    updatePanelPositionOffset(pnNav, null, standardOffset / 2);
+    updatePanelPositionOffset(pnDetails, null, standardOffset / 2);
+    updatePanelPositionOffset(pnExtras, null, standardOffset / 2);
+    updatePanelsToWidth(sidePanelWidth - standardOffset, pnNav, pnDetails, pnExtras);
+    
+    //internal left panel buttons
+    updatePanelsToWidth(pnExtras.getWidth() - (standardOffset * 2), btnRunSim, btnPastFlights);
+    updatePanelPositionOffset(btnRunSim, null, standardOffset);
+    updatePanelPositionOffset(btnPastFlights, null, standardOffset);
 
     // set middle panel to be slightly to the right of left panel
     updatePanelPositionOffset(pnContent, apNav, standardOffset);
     pnContent.setMinWidth((width * 2) / 3); // middle panel width should be 2/3 of the screen width
     pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
-    
+
     // Only the length internally excluding the offset
     double graphWidth = ((pnContent.getWidth() - standardOffset) / rows) - standardOffset;
     // Set all positions based on graph width
@@ -257,11 +269,11 @@ public class HomeController implements Initializable {
       panel.setMaxWidth(width);
     }
   }
-  
+
   /**
    * Update all of the provided panels preferred height to the value provided.
    * 
-   * @param height  Preferred height to set all panels to.
+   * @param height Preferred height to set all panels to.
    * @param panels Array of panels to set the preferred height on.
    */
   private void updatePanelsToHeight(double height, Region... panels) {
@@ -292,7 +304,7 @@ public class HomeController implements Initializable {
     // Calculate x position based off relativePanel position/size
     thisPanel.setLayoutX(relativePanel.getLayoutX() + relativePanel.getWidth() + offset);
   }
-  
+
   /**
    * Update the panel position based on the relative position of the other panel.
    * This can offset thisPanel by the correct amount to not overlap relativePanel.
@@ -305,7 +317,8 @@ public class HomeController implements Initializable {
    * @param offset        Offset to add between the relativePanel bottom side and
    *                      thisPanel top side.
    */
-  private void updatePanelPositionOffsetVertical(Region thisPanel, Region relativePanel, double offset) {
+  private void updatePanelPositionOffsetVertical(Region thisPanel, Region relativePanel,
+      double offset) {
     if (relativePanel == null) {
       thisPanel.setLayoutY(offset);
       return;
