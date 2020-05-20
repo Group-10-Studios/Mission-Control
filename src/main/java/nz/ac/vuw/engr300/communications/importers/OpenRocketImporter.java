@@ -32,6 +32,8 @@ public class OpenRocketImporter implements RocketDataImporter {
         "Angle of attack (°)"
     );
 
+    private volatile boolean streamRunning = false;
+
     private static final Pattern HEADER_REGEX;
 
     static{
@@ -147,10 +149,12 @@ public class OpenRocketImporter implements RocketDataImporter {
      * Starts the stream of data to all of the subscribed clients
      */
     public void start(){
+        this.streamRunning = true;
         new Thread(()->{
             try{
                 long previousTime = 0;
                 for (RocketData data : this.data) {
+                    if(!streamRunning) break;
                     long currentTime = (long)(data.getTime() * 1000);
                     Thread.sleep(currentTime - previousTime);
                     observers.forEach((observer)->observer.accept(data));
@@ -163,10 +167,19 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     /**
-     * {@inheritDoc}
+     * Stops the stream of data to subscribed clients
      */
+    public void stop(){
+        this.streamRunning = false;
+    }
+
     @Override
     public void subscribeObserver(Consumer<RocketData> observer) {
-        observers.add(observer);
+        this.observers.add(observer);
+    }
+
+    @Override
+    public void unsubscribeObserver(Consumer<RocketData> observer){
+        this.observers.remove(observer);
     }
 }
