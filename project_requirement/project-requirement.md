@@ -267,25 +267,6 @@ rectangle "Mission Control" {
 @enduml
 ```
 
-#### Updating Rocket's Current Location on Map
-
-```plantuml
-@startuml
-left to right direction
-skinparam packageStyle rectangle
-actor user
-actor rocket
-rectangle "Mission Control" {
-        user -> (Dashboard)
-        (Dashboard) .> (Current Location Image) : contains
-        rocket -> (Send current location)
-        (Current Location Image) <. (Send current location) : update
-	
-}
-
-@enduml
-```
-
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
