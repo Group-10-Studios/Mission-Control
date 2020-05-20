@@ -211,6 +211,7 @@ public class HomeController implements Initializable {
    */
   private void updatePanelPositions(Region rootPanel, Number newWidth) {
     double standardOffset = 10.0;
+    double halfOffset = standardOffset / 2;
     double rows = 3;
     double width = (double) newWidth;
     double sidePanelWidth = (width - standardOffset) / 6;
@@ -219,18 +220,18 @@ public class HomeController implements Initializable {
 
     // left panel - set widths of internal panels within the width
     apNav.setMinWidth(sidePanelWidth);
-    updatePanelPositionOffset(pnNav, null, standardOffset / 2);
-    updatePanelPositionOffset(pnDetails, null, standardOffset / 2);
-    updatePanelPositionOffset(pnExtras, null, standardOffset / 2);
+    updatePanelPositionOffset(pnNav, null, halfOffset);
+    updatePanelPositionOffset(pnDetails, null, halfOffset);
+    updatePanelPositionOffset(pnExtras, null, halfOffset);
     updatePanelsToWidth(sidePanelWidth - standardOffset, pnNav, pnDetails, pnExtras);
-    
-    //internal left panel buttons
+
+    // internal left panel buttons
     updatePanelsToWidth(pnExtras.getWidth() - (standardOffset * 2), btnRunSim, btnPastFlights);
     updatePanelPositionOffset(btnRunSim, null, standardOffset);
     updatePanelPositionOffset(btnPastFlights, null, standardOffset);
 
     // set middle panel to be slightly to the right of left panel
-    updatePanelPositionOffset(pnContent, apNav, standardOffset);
+    updatePanelPositionOffset(pnContent, apNav, standardOffset / 2);
     pnContent.setMinWidth((width * 2) / 3); // middle panel width should be 2/3 of the screen width
     pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
 
@@ -241,8 +242,8 @@ public class HomeController implements Initializable {
         pnAltitude, pnLocation);
 
     // Set left most graph x positions - not relative to anything
-    updatePanelPositionOffset(pnWindSpeed, null, standardOffset / 2);
-    updatePanelPositionOffset(pnRangeDistance, null, standardOffset / 2);
+    updatePanelPositionOffset(pnWindSpeed, null, halfOffset);
+    updatePanelPositionOffset(pnRangeDistance, null, halfOffset);
 
     // Set centre graph x positions - relative to wind speed graph
     updatePanelPositionOffset(pnVelocity, pnWindSpeed, standardOffset);
@@ -253,8 +254,12 @@ public class HomeController implements Initializable {
     updatePanelPositionOffset(pnLocation, pnVelocity, standardOffset);
 
     // set right panel to be slightly to the right of middle panel
-    updatePanelPositionOffset(apWarnings, pnContent, standardOffset);
+    updatePanelPositionOffset(apWarnings, pnContent, halfOffset);
     apWarnings.setMinWidth(sidePanelWidth); // right panel should be a 1/6th of screen width
+    updatePanelsToWidth(apWarnings.getWidth() - (2 * standardOffset), pnWarnings);
+    // Must be relative to null to make internal to apWarnings
+    updatePanelPositionOffset(pnWarnings, null, halfOffset);
+
   }
 
   /**
