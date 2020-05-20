@@ -24,9 +24,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely initialized in fxml code.
      * For example,
-     * <code>
-     *     <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel="Altitude"/>
-     * </code>
+     * {@code
+     *      <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel="Altitude"/>
+     * }
      *
      * @param xLabel    The x label
      * @param yLabel    The y label
