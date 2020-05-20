@@ -232,7 +232,7 @@ public class HomeController implements Initializable {
    */
   private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
     double height = (double) newHeight;
-    updatePanelsToHeight(height, apNav, pnContent, apWarnings);
+    updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, apWarnings);
 
     // pnWarnings can have 5/6 of height space
     updatePanelsToHeight((height * 5) / 6, pnWarnings);
@@ -242,9 +242,9 @@ public class HomeController implements Initializable {
 
     // Update the y position of pnExtras
     updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
-
+    
     // Update each graph relative to each other
-    updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
+    updateGraphsVertical();
     
     // Update text height relative to each other in pnDetails
     updatePanelPositionOffsetVertical(lbRocketHead, null, 0);
@@ -255,6 +255,24 @@ public class HomeController implements Initializable {
     updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
   }
 
+  private void updateGraphsVertical() {
+    // Update heights of the panels
+    double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
+    updatePanelsToHeight(graphHeight, pnAcceleration, pnAltitude, pnVelocity);
+    
+    // Set the graph sizes relative to the box
+    double internalChartWidth = graphHeight * 5/6;
+    lineChartAcceleration.setMaxHeight(internalChartWidth);
+    lineChartAltitude.setMaxHeight(internalChartWidth);
+    lineChartVel.setMaxHeight(internalChartWidth);
+    lineChartAcceleration.setPrefHeight(internalChartWidth);
+    lineChartAltitude.setPrefHeight(internalChartWidth);
+    lineChartVel.setPrefHeight(internalChartWidth);
+    
+    // Set position relative to above row
+    updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
+  }
+  
   /**
    *
    * @param root The root pane the UI is all under.
@@ -350,7 +368,7 @@ public class HomeController implements Initializable {
     lineChartAltitude.setMaxWidth(internalChartWidth);
     lineChartVel.setMaxWidth(internalChartWidth);
     // Set left most graph x positions - not relative to anything
-    updatePanelPositionOffset(pnAcceleration, null, HALF_OFFSET);
+    updatePanelPositionOffset(pnAcceleration, null, STANDARD_OFFSET);
     updatePanelPositionOffset(pnVelocity, null, STANDARD_OFFSET);
 
     // Set the right graph x positions - relative to velocity graph
