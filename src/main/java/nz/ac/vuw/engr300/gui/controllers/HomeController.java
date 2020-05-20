@@ -47,7 +47,7 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 public class HomeController implements Initializable {
   private static final double STANDARD_OFFSET = 10.0;
   private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-  private static final double ROWS = 3;
+  private static final double ROWS = 2;
 
   @FXML
   Pane pnRangeDist;
@@ -234,6 +234,9 @@ public class HomeController implements Initializable {
 
     // Update the y position of pnExtras
     updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
+    
+    // Update each graph relative to each other
+    updatePanelPositionOffsetVertical(pnRangeDist, pnVelocity, 10.0);
   }
 
   /**
@@ -326,7 +329,7 @@ public class HomeController implements Initializable {
 
     // Set centre graph x positions - relative to wind speed graph
 //    updatePanelPositionOffset(pnVelocity, pnWindSpeed, STANDARD_OFFSET);
-    updatePanelPositionOffset(pnVelocity, pnRangeDist, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnVelocity, null, STANDARD_OFFSET);
 
 //    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, STANDARD_OFFSET);
 

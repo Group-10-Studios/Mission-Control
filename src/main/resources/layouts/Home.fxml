@@ -28,7 +28,7 @@
       <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" minHeight="225.0" style="-fx-background-color: #EEEEEE;">
          <children>
 
-            <Pane fx:id="pnAltitude" layoutX="18.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnAltitude" layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
                   <Label fx:id="lbWindSpeed" layoutX="14.0" layoutY="14.0" text="Wind Speed">
                      <font>
@@ -41,7 +41,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Pane>
-            <Pane fx:id="pnVelocity" layoutX="345.0" layoutY="80.0" minHeight="225.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnVelocity" layoutX="345.0" layoutY="10.0" minHeight="225.0" style="-fx-background-color: #F6F6F6;">
                <children>
                   <Label fx:id="lbVelocity" layoutX="14.0" layoutY="14.0" text="Velocity">
                      <font>
@@ -54,7 +54,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Pane>
-            <Pane fx:id="pnRangeDist" layoutX="18.0" layoutY="83.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+            <Pane fx:id="pnRangeDist" layoutX="10.0" layoutY="300.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
                <children>
                   <Label fx:id="lblRangeDistHead" layoutX="14.0" layoutY="14.0" text="Acceleration">
                      <font>
@@ -62,30 +62,6 @@
                      </font>
                   </Label>
                   <RocketDataLineChart fx:id="lineChartAcceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Acceleration ( M/S^2 )" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </Pane>
-            <Pane fx:id="pnAngleOfAttack" layoutX="345.0" layoutY="328.0" minHeight="225.0" style="-fx-background-color: #F6F6F6;">
-               <children>
-                  <Label fx:id="lbAngleOfAttack" layoutX="14.0" layoutY="14.0" text="Angle of attack">
-                     <font>
-                        <Font name="Segoe UI" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </Pane>
-            <Pane fx:id="pnLocation" layoutX="665.0" layoutY="328.0" minHeight="225.0" style="-fx-background-color: #F6F6F6;">
-               <children>
-                  <Label fx:id="lbLocation" layoutX="14.0" layoutY="14.0" text="Location">
-                     <font>
-                        <Font name="Segoe UI" size="24.0" />
-                     </font>
-                  </Label>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
