@@ -50,12 +50,9 @@ public class HomeController implements Initializable {
   private static final double ROWS = 2;
 
   @FXML
-  Pane pnRangeDist;
-//    @FXML Pane pnAngleOfAttack;
-//    @FXML Pane pnLocation;
-
-//    @FXML Label lbWindSpeed;
-//    @FXML Pane pnWindSpeed;
+  Pane pnAcceleration;
+  @FXML
+  Label lbAcceleration;
 
   @FXML
   Label lbVelocity;
@@ -124,8 +121,8 @@ public class HomeController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-//    WeatherController wc = new WeatherController(lbWindSpeed);
-//    wc.updateWindSpeed();
+    WeatherController wc = new WeatherController(lbWeather);
+    wc.updateWindSpeed();
     scaleItemHeight(apApp);
     scaleItemWidth(apApp);
 
@@ -234,9 +231,9 @@ public class HomeController implements Initializable {
 
     // Update the y position of pnExtras
     updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
-    
+
     // Update each graph relative to each other
-    updatePanelPositionOffsetVertical(pnRangeDist, pnVelocity, 10.0);
+    updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
   }
 
   /**
@@ -318,24 +315,17 @@ public class HomeController implements Initializable {
 //    updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
 //        pnAltitude, pnLocation);
 
-    updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnRangeDist);
+    updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnAcceleration);
     double internalChartWidth = graphWidth - STANDARD_OFFSET;
     lineChartAcceleration.setMaxWidth(internalChartWidth);
     lineChartAltitude.setMaxWidth(internalChartWidth);
     lineChartVel.setMaxWidth(internalChartWidth);
     // Set left most graph x positions - not relative to anything
-//    updatePanelPositionOffset(pnWindSpeed, null, HALF_OFFSET);
-    updatePanelPositionOffset(pnRangeDist, null, HALF_OFFSET);
-
-    // Set centre graph x positions - relative to wind speed graph
-//    updatePanelPositionOffset(pnVelocity, pnWindSpeed, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnAcceleration, null, HALF_OFFSET);
     updatePanelPositionOffset(pnVelocity, null, STANDARD_OFFSET);
-
-//    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, STANDARD_OFFSET);
 
     // Set the right graph x positions - relative to velocity graph
     updatePanelPositionOffset(pnAltitude, pnVelocity, STANDARD_OFFSET);
-//    updatePanelPositionOffset(pnLocation, pnVelocity, STANDARD_OFFSET);
   }
 
   /**
