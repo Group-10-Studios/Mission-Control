@@ -292,9 +292,10 @@ public class HomeController implements Initializable {
     double standardOffset = 10.0;
     double rows = 3;
     double width = (double) newWidth;
+    double sidePanelWidth = (width - standardOffset) / 6;
     apApp.setPrefWidth(width / 2);
     updatePanelsToWidth(width, pnBanner, lblHeader);
-    apNav.setMinWidth(width / 6); // left panel
+    apNav.setMinWidth(sidePanelWidth); // left panel
 
     // set middle panel to be slightly to the right of left panel
     updatePanelPositionOffset(pnContent, apNav, standardOffset);
@@ -320,9 +321,8 @@ public class HomeController implements Initializable {
     updatePanelPositionOffset(pnLocation, pnVelocity, standardOffset);
 
     // set right panel to be slightly to the right of middle panel
-    apWarnings
-        .setLayoutX(apNav.getWidth() + standardOffset + pnContent.getWidth() + standardOffset);
-    apWarnings.setMinWidth(width / 6); // right panel should be a 1/6th of screen width
+    updatePanelPositionOffset(apWarnings, pnContent, standardOffset);
+    apWarnings.setMinWidth(sidePanelWidth); // right panel should be a 1/6th of screen width
   }
 
   /**
