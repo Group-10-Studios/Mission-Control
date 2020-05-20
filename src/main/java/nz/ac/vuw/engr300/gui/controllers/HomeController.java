@@ -78,6 +78,17 @@ public class HomeController implements Initializable {
   @FXML
   Label lbWeather;
   @FXML
+  Label lbWeatherHead;
+  @FXML
+  Label lbRocketID;
+  @FXML
+  Label lbRocketHead;
+  @FXML
+  Label lbState;
+  @FXML
+  Label lbStateHead;
+
+  @FXML
   Label lblHeader;
   @FXML
   AnchorPane apApp;
@@ -234,6 +245,14 @@ public class HomeController implements Initializable {
 
     // Update each graph relative to each other
     updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
+    
+    // Update text height relative to each other in pnDetails
+    updatePanelPositionOffsetVertical(lbRocketHead, null, 0);
+    updatePanelPositionOffsetVertical(lbRocketID, lbRocketHead, 0);
+    updatePanelPositionOffsetVertical(lbStateHead, lbRocketID, 0);
+    updatePanelPositionOffsetVertical(lbState, lbStateHead, 0);
+    updatePanelPositionOffsetVertical(lbWeatherHead, lbState, 0);
+    updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
   }
 
   /**
@@ -290,10 +309,20 @@ public class HomeController implements Initializable {
     updatePanelPositionOffset(pnExtras, null, HALF_OFFSET);
     updatePanelsToWidth(sidePanelWidth - STANDARD_OFFSET, pnNav, pnDetails, pnExtras);
 
-    // internal left panel buttons
+    // internal left panel extras buttons
     updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), btnRunSim, btnPastFlights);
     updatePanelPositionOffset(btnRunSim, null, STANDARD_OFFSET);
     updatePanelPositionOffset(btnPastFlights, null, STANDARD_OFFSET);
+
+    // internal left panel details text
+    updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID,
+        lbState, lbStateHead, lbWeather, lbWeatherHead);
+    updatePanelPositionOffset(lbState, null, 0);
+    updatePanelPositionOffset(lbStateHead, null, 0);
+    updatePanelPositionOffset(lbRocketID, null, 0);
+    updatePanelPositionOffset(lbRocketHead, null, 0);
+    updatePanelPositionOffset(lbWeather, null, 0);
+    updatePanelPositionOffset(lbWeatherHead, null, 0);
   }
 
   /**
