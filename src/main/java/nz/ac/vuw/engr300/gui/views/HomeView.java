@@ -38,5 +38,8 @@ public class HomeView {
         stage.setOnCloseRequest(e -> controller.shutdown());
 
         stage.show();
+        // Set minimum dimensions to 720p - Doesn't support below this
+        stage.setMinHeight(720);
+        stage.setMinWidth(1280);
     }
 }

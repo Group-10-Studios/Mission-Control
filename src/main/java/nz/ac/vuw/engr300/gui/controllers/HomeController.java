@@ -253,8 +253,8 @@ public class HomeController implements Initializable {
     // pnWarnings can have 5/6 of height space
     updatePanelsToHeight((height * 5) /6, pnWarnings);
     
-    // pnNav can have 2/3 of height space
-    updatePanelsToHeight((height * 2) / 3, pnNav);
+    // pnNav can have 1/2 of height space
+    updatePanelsToHeight(height / 2, pnNav);
     
     // Update the y position of pnExtras
     updatePanelPositionOffsetVertical(pnExtras, pnNav, 10.0);
@@ -302,7 +302,7 @@ public class HomeController implements Initializable {
     pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
     
     // Only the length internally excluding the offset
-    double graphWidth = (pnContent.getWidth() / rows) - standardOffset;
+    double graphWidth = ((pnContent.getWidth() - standardOffset) / rows) - standardOffset;
     // Set all positions based on graph width
     updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
         pnAltitude, pnLocation);
