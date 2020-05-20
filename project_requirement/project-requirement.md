@@ -231,6 +231,23 @@ rectangle "Mission Control"{
 @enduml
 ```
 
+#### View Past Flights
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle "Mission Control"{
+    user -> (Click Past Flights)
+    (Click Past Flights) .> (Displays File Choosing Dialog)
+    user -> (Displays File Choosing Dialog) : Selects past flight data file
+    (Displays File Choosing Dialog) .> (Loads File)
+    (Loads File) .> (Displays Past Flight as-if it were live)
+}
+@enduml
+```
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
