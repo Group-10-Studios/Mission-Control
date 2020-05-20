@@ -193,7 +193,6 @@ rectangle "Mission Control" {
 @enduml
 ```
 
-<<<<<<< HEAD
 ### Run Simulation Data
 
 ```plantuml
@@ -232,8 +231,6 @@ rectangle "Mission Control"{
 @enduml
 ```
 
-=======
->>>>>>> 9b4bcbd686287c1fbfabe7ea4f6723750967c30a
 #### View Past Flights
 
 ```plantuml
