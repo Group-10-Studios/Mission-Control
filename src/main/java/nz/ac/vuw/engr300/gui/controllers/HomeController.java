@@ -45,6 +45,10 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
  * @author Nathan Duckett
  */
 public class HomeController implements Initializable {
+    private static final double STANDARD_OFFSET = 10.0;
+    private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
+    private static final double ROWS = 3;
+
     @FXML Pane pnRangeDistance;
     @FXML Pane pnAngleOfAttack;
     @FXML Pane pnLocation;
@@ -88,59 +92,6 @@ public class HomeController implements Initializable {
     @FXML Region pnDetails;
     @FXML Region pnNav;
     @FXML Region apWarnings;
-
-    /**
-    * This is the initialize method that is called to build the root before starting the javafx project.
-    */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWindSpeed);
-        wc.updateWindSpeed();
-        scaleItemHeight(apApp, lbWindSpeed, 2);
-        scaleItemWidth(apApp, lbWindSpeed, 2);
-    }
-
-  @FXML
-  Label lbWindSpeed;
-  @FXML
-  Pane pnWindSpeed;
-
-  @FXML
-  Label lbVelocity;
-  @FXML
-  Pane pnVelocity;
-
-  @FXML
-  Label lbAltitude;
-  @FXML
-  Pane pnAltitude;
-
-  @FXML
-  Label lblHeader;
-  @FXML
-  AnchorPane apApp;
-  @FXML
-  Region pnBanner;
-  @FXML
-  Pane pnContent;
-  @FXML
-  Region lbRealTimeFlightInfo;
-  @FXML
-  Region apNav;
-  @FXML
-  Region pnExtras;
-  @FXML
-  Region btnPastFlights;
-  @FXML
-  Region btnRunSim;
-  @FXML
-  Region pnDetails;
-  @FXML
-  Region pnNav;
-  @FXML
-  Region apWarnings;
-  @FXML
-  Region pnWarnings;
 
   /**
    * This is the initialize method that is called to build the root before
@@ -290,56 +241,82 @@ public class HomeController implements Initializable {
    * @param newWidth  New width value of the root panel.
    */
   private void updatePanelPositions(Region rootPanel, Number newWidth) {
-    double standardOffset = 10.0;
-    double halfOffset = standardOffset / 2;
-    double rows = 3;
     double width = (double) newWidth;
-    double sidePanelWidth = (width - standardOffset) / 6;
+    // side panels should be a 1/6th of screen width
+    double sidePanelWidth = (width - STANDARD_OFFSET) / 6;
     apApp.setPrefWidth(width / 2);
     updatePanelsToWidth(width, pnBanner, lblHeader);
 
     // left panel - set widths of internal panels within the width
+    updateLeftPanel(sidePanelWidth);
+    updateMiddlePanel(width);
+    updateRightPanel(sidePanelWidth);
+  }
+
+  /**
+   * Update the components within the left panel to dynamically fit within the
+   * screen.
+   * 
+   * @param sidePanelWidth The expected width of the side panel.
+   */
+  private void updateLeftPanel(double sidePanelWidth) {
     apNav.setMinWidth(sidePanelWidth);
-    updatePanelPositionOffset(pnNav, null, halfOffset);
-    updatePanelPositionOffset(pnDetails, null, halfOffset);
-    updatePanelPositionOffset(pnExtras, null, halfOffset);
-    updatePanelsToWidth(sidePanelWidth - standardOffset, pnNav, pnDetails, pnExtras);
+    updatePanelPositionOffset(pnNav, null, HALF_OFFSET);
+    updatePanelPositionOffset(pnDetails, null, HALF_OFFSET);
+    updatePanelPositionOffset(pnExtras, null, HALF_OFFSET);
+    updatePanelsToWidth(sidePanelWidth - STANDARD_OFFSET, pnNav, pnDetails, pnExtras);
 
     // internal left panel buttons
-    updatePanelsToWidth(pnExtras.getWidth() - (standardOffset * 2), btnRunSim, btnPastFlights);
-    updatePanelPositionOffset(btnRunSim, null, standardOffset);
-    updatePanelPositionOffset(btnPastFlights, null, standardOffset);
+    updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), btnRunSim, btnPastFlights);
+    updatePanelPositionOffset(btnRunSim, null, STANDARD_OFFSET);
+    updatePanelPositionOffset(btnPastFlights, null, STANDARD_OFFSET);
+  }
 
+  /**
+   * Update the components within the middle panel to dynamically fit within the
+   * screen.
+   * 
+   * @param width Total width of the application which will determine the internal
+   *              widths.
+   */
+  private void updateMiddlePanel(double width) {
     // set middle panel to be slightly to the right of left panel
-    updatePanelPositionOffset(pnContent, apNav, standardOffset / 2);
+    updatePanelPositionOffset(pnContent, apNav, STANDARD_OFFSET / 2);
     pnContent.setMinWidth((width * 2) / 3); // middle panel width should be 2/3 of the screen width
     pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
 
     // Only the length internally excluding the offset
-    double graphWidth = ((pnContent.getWidth() - standardOffset) / rows) - standardOffset;
+    double graphWidth = ((pnContent.getWidth() - STANDARD_OFFSET) / ROWS) - STANDARD_OFFSET;
     // Set all positions based on graph width
     updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
         pnAltitude, pnLocation);
 
     // Set left most graph x positions - not relative to anything
-    updatePanelPositionOffset(pnWindSpeed, null, halfOffset);
-    updatePanelPositionOffset(pnRangeDistance, null, halfOffset);
+    updatePanelPositionOffset(pnWindSpeed, null, HALF_OFFSET);
+    updatePanelPositionOffset(pnRangeDistance, null, HALF_OFFSET);
 
     // Set centre graph x positions - relative to wind speed graph
-    updatePanelPositionOffset(pnVelocity, pnWindSpeed, standardOffset);
-    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, standardOffset);
+    updatePanelPositionOffset(pnVelocity, pnWindSpeed, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnAngleOfAttack, pnWindSpeed, STANDARD_OFFSET);
 
     // Set the right graph x positions - relative to velocity graph
-    updatePanelPositionOffset(pnAltitude, pnVelocity, standardOffset);
-    updatePanelPositionOffset(pnLocation, pnVelocity, standardOffset);
+    updatePanelPositionOffset(pnAltitude, pnVelocity, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnLocation, pnVelocity, STANDARD_OFFSET);
+  }
 
-    // set right panel to be slightly to the right of middle panel
-    updatePanelPositionOffset(apWarnings, pnContent, halfOffset);
-    apWarnings.setMinWidth(sidePanelWidth); // right panel should be a 1/6th of screen width
-    updatePanelsToWidth(apWarnings.getWidth() - (2 * standardOffset), pnWarnings);
+  /**
+   * Update the components within the right side panel to dynamically fit within
+   * the screen.
+   * 
+   * @param sidePanelWidth The expected width of the side panel.
+   */
+  private void updateRightPanel(double sidePanelWidth) {
+    // set right panel to be right of middle panel
+    updatePanelPositionOffset(apWarnings, pnContent, HALF_OFFSET);
+    apWarnings.setMinWidth(sidePanelWidth);
+    updatePanelsToWidth(apWarnings.getWidth() - (2 * STANDARD_OFFSET), pnWarnings);
     // Must be relative to null to make internal to apWarnings
-    updatePanelPositionOffset(pnWarnings, null, halfOffset);
-
+    updatePanelPositionOffset(pnWarnings, null, HALF_OFFSET);
   }
 
   /**
