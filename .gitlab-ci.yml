@@ -55,6 +55,15 @@ unittest_windows:
   script:
     - mvn test
 
+# Must verify javadoc in test phase incase it fails during deploy pages.
+verify_javadoc:
+  stage: Test
+  tags:
+    - shell
+  script:
+    - mvn javadoc:javadoc
+  allow_failure: false
+
 spell_check:
   stage: Test
   tags:
