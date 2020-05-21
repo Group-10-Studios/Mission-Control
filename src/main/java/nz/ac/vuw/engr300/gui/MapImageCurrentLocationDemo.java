@@ -58,12 +58,12 @@ public class MapImageCurrentLocationDemo extends JPanel {
         g.fillOval(WIDTH/2 - (MARKER_WIDTH/2), HEIGHT/2 - (MARKER_HEIGHT/2), MARKER_WIDTH, MARKER_HEIGHT); //Center
 
 //        if (angle > 0 && angle < 90) {
-            double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
-            double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-            System.out.println("METERS TO MOVE: " + toMoveHorizontal + ", " + toMoveVertical);
-            System.out.println("PIXELS TO MOVE: " + pixelsToMove(toMoveHorizontal) + ", " + pixelsToMove(toMoveVertical));
-            g.setColor(Color.RED);
-            g.fillOval(WIDTH/2 - (MARKER_WIDTH/2) + (int)pixelsToMove(toMoveHorizontal), HEIGHT/2 - (MARKER_HEIGHT/2) - (int)pixelsToMove(toMoveVertical), MARKER_WIDTH, MARKER_HEIGHT); //Center
+        double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
+        double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
+        System.out.println("METERS TO MOVE: " + toMoveHorizontal + ", " + toMoveVertical);
+        System.out.println("PIXELS TO MOVE: " + pixelsToMove(toMoveHorizontal) + ", " + pixelsToMove(toMoveVertical));
+        g.setColor(Color.RED);
+        g.fillOval(WIDTH/2 - (MARKER_WIDTH/2) + (int)pixelsToMove(toMoveHorizontal), HEIGHT/2 - (MARKER_HEIGHT/2) - (int)pixelsToMove(toMoveVertical), MARKER_WIDTH, MARKER_HEIGHT); //Center
 //        }
 
 
