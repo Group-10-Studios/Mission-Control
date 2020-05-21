@@ -296,6 +296,9 @@ One page glossary as required
 
 **Tim Salisbury:**
 - Section 4.4 Physical
+
+**Josh Harwood:**
+- Section 4.3 Process
 ---
 
 ## Formatting Rules
