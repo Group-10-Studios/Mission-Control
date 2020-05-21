@@ -277,10 +277,11 @@ skinparam packageStyle rectangle
 actor user
 rectangle "Mission Control" {
         user -> (Rocket is idle)
-        (Rocket is idle) .> (Rocket is about to launch) : Want to launch
-        (Rocket is about to launch) .> (Rocket in launch) : Pressed Go
-        (Rocket is about to launch) .> (Rocket is idle) : Pressed No Go
         (Rocket in launch) .> (Rocket is idle) : Flight is over
+        (Rocket is idle) .> (Rocket is about to launch) : \n\n\n\nWant to launch
+        (Rocket is about to launch) .> (Rocket is idle) : Pressed No Go
+        (Rocket is about to launch) .> (Rocket in launch) : Pressed Go
+        
 }
 
 @enduml
