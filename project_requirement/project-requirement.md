@@ -267,6 +267,26 @@ rectangle "Mission Control" {
 @enduml
 ```
 
+
+#### Current Software State
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle "Mission Control" {
+        user -> (Rocket is idle)
+        (Rocket in launch) .> (Rocket is idle) : Flight is over
+        (Rocket is idle) .> (Rocket is about to launch) : \n\n\n\nWant to launch
+        (Rocket is about to launch) .> (Rocket is idle) : Pressed No Go
+        (Rocket is about to launch) .> (Rocket in launch) : Pressed Go
+        
+}
+
+@enduml
+```
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
