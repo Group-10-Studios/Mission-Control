@@ -287,8 +287,12 @@ One page glossary as required
 
 ## 7. Contributions
 
-An one page statement of contributions, including a list of each member of the group and what they contributed to this document.
+**Jake Mai:**
+- Section 1. Introduction
+- Section 4.5 Scenarios
 
+**Ahad Rahman**
+- Section 4.2 Development
 ---
 
 ## Formatting Rules
