@@ -5,13 +5,16 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.awt.*;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -178,20 +181,25 @@ public class HomeController implements Initializable {
    * file dialog to select a simulation data file. It will then load it into the
    * data importer and run the simulation as if it was live.
    */
-  public void runSim() {
-    JFileChooser fileChooser = new JFileChooser("src/main/resources");
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-      File file = fileChooser.getSelectedFile();
-      try {
-        simulationImporter.importData(file.getAbsolutePath());
-      } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-            JOptionPane.ERROR_MESSAGE);
-        return;
-      }
+  public void runSim() throws InvocationTargetException, InterruptedException {
+    EventQueue.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        JFileChooser fileChooser = new JFileChooser("src/main/resources");
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+          File file = fileChooser.getSelectedFile();
+          try {
+            simulationImporter.importData(file.getAbsolutePath());
+          } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+          }
 
-      simulationImporter.start();
-    }
+          simulationImporter.start();
+        }
+      }
+    });
   }
 
   /**
