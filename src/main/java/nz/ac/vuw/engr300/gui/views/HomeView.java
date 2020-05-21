@@ -33,12 +33,13 @@ public class HomeView {
         }
 
         Scene scene = new Scene(root);
-
         stage.setScene(scene);
-
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
 
         stage.show();
+        // Set minimum dimensions to 720p - Doesn't support below this
+        stage.setMinHeight(720);
+        stage.setMinWidth(1280);
     }
 }
