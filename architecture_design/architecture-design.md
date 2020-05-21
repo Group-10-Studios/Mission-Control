@@ -302,6 +302,9 @@ One page glossary as required
 
 **Nathan Duckett:**
 - Section 4.5 Scenarios
+
+**Nalin Aswani:**
+- Section 4.1 Logical
 ---
 
 ## Formatting Rules

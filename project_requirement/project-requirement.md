@@ -426,6 +426,10 @@ A one page statement of contributions, including a list of each member of the gr
 - 3.1 External interfaces
 - Use cases in section 3.2
 
+**Nalin Aswani**
+- 1.3.2 Project Functions
+- Use cases in section 3.2
+
 ## Formatting Rules
 
  * Write your document using [Markdown](https://gitlab.ecs.vuw.ac.nz/help/user/markdown#gitlab-flavored-markdown-gfm) and ensure you commit your work to your team's GitLab repository.
