@@ -429,7 +429,26 @@ A one page statement of contributions, including a list of each member of the gr
 - Section 1.3.1
 - Use cases in section 3.2
 
----
+**Ahad Rahman:**
+- Section 1.3.4
+- Use cases in section 3.2
+
+**Jake Mai:**
+- Section 1.3.3
+- Use cases in section 3.2
+
+**Tim Salisbury:**
+- Section 1.1
+- Section 1.2
+- Use cases in section 3.2
+
+**Josh Harwood**
+- 3.1 External interfaces
+- Use cases in section 3.2
+
+**Nalin Aswani**
+- 1.3.2 Project Functions
+- Use cases in section 3.2
 
 ## Formatting Rules
 

@@ -296,8 +296,24 @@ One page glossary as required
 
 ## 7. Contributions
 
-An one page statement of contributions, including a list of each member of the group and what they contributed to this document.
+**Jake Mai:**
+- Section 1. Introduction
+- Section 4.5 Scenarios
 
+**Ahad Rahman:**
+- Section 4.2 Development
+
+**Tim Salisbury:**
+- Section 4.4 Physical
+
+**Josh Harwood:**
+- Section 4.3 Process
+
+**Nathan Duckett:**
+- Section 4.5 Scenarios
+
+**Nalin Aswani:**
+- Section 4.1 Logical
 ---
 
 ## Formatting Rules
