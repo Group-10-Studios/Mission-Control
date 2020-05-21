@@ -299,6 +299,9 @@ One page glossary as required
 
 **Josh Harwood:**
 - Section 4.3 Process
+
+**Nathan Duckett:**
+- Section 4.5 Scenarios
 ---
 
 ## Formatting Rules
