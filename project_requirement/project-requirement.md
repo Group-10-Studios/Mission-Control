@@ -409,6 +409,9 @@ A one page statement of contributions, including a list of each member of the gr
 - Section 1.3.1
 - Use cases in section 3.2
 
+**Ahad Rahman:**
+- Section 1.3.4
+- Use cases in section 3.2
 ---
 
 ## Formatting Rules
