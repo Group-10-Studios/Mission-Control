@@ -422,6 +422,10 @@ A one page statement of contributions, including a list of each member of the gr
 - Section 1.2
 - Use cases in section 3.2
 
+**Josh Harwood**
+- 3.1 External interfaces
+- Use cases in section 3.2
+
 ## Formatting Rules
 
  * Write your document using [Markdown](https://gitlab.ecs.vuw.ac.nz/help/user/markdown#gitlab-flavored-markdown-gfm) and ensure you commit your work to your team's GitLab repository.
