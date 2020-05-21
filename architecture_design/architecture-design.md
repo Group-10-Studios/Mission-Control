@@ -104,8 +104,8 @@ Each architectural view should include at least one architectural model. If arch
 ### 4.1 Logical
 According to  Kruchten's 4+1 model, the Logical viewpoint looks at the End-user functionality. This section will refer heavily to Project Requirement section 1.3.2 (Product Functions) and Architecture Design section 4.3 (Process).
 
-From a Logical viewpoint, users should be able to follow a process in order to launch a rocket. There are 4 states the Mission Control Software can be in (refer to diagram below), either Idle, Run Simulation, Prepare Launch, or Do Rocket. 
-![Architectural_Process](assets/Architectural_Process.png)
+From a Logical viewpoint, users should be able to follow a process in order to launch a rocket. There are 4 states the Mission Control Software can be in , either Idle, Run Simulation, Prepare Launch, or Do Rocket. 
+(Please view the UML State Diagram 'Architectural Process 4-3.png' in assets folder, or in the `Process section - 4.3`)
 
 1. `Idle`: From here, the user can make the rocket  go to one of two different states, either run simulation or prepare launch. 
 2. `Run simulation`: Here the user can receive the simulation data and see the results. Once this is done the rocket will go back to idle mode. 
