@@ -5,6 +5,7 @@
 This software can be used as mission control for rocket launches based on the hardware developed by teams 1-6.
 
 ## Usage - Compile
+
 To run our code you can clone our repo and run the following commands:
 
 - `mvn clean javafx:run` > This will run our mission control UI. This will allow you to run simulations, and use our software.
