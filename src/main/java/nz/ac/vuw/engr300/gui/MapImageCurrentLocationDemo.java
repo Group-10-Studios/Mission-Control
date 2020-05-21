@@ -28,8 +28,8 @@ public class MapImageCurrentLocationDemo extends JPanel {
 
     public static final int WIDTH = 512;
     public static final int HEIGHT = 512;
-    public static final int MARKER_HEIGHT = 20;
-    public static final int MARKER_WIDTH = 20;
+    public static final int MARKER_HEIGHT = 10;
+    public static final int MARKER_WIDTH = 10;
 
     public void paint(Graphics g) {
 
@@ -41,20 +41,31 @@ public class MapImageCurrentLocationDemo extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        -41.299652, 174.780667
-//        (givenLat*heightOfContainerElement)/180
-//        (givenLng*widthOfContainerElement)/360
-        double latitude = -41.300442;
-        double longitude = 174.780319;
-        //-41.297928, 174.784660
+        double centerLatitude = -41.300442;
+        double centerLongitude = 174.780319;
+//        double newLatitude = -41.299716;
+//        double newLongitude = 174.781139;'
 
-        double graphicsX = (latitude * HEIGHT)/180.0;
-        double graphicsY = (longitude * WIDTH)/360.0;
-//        System.out.println(graphicsX);
-//        System.out.println(graphicsY);
+        double newLatitude = -41.300290;
+        double newLongitude = 174.781161;
 
-        g.setColor(Color.RED);
-        g.fillOval((int) graphicsX - (MARKER_WIDTH/2), (int) graphicsY - (MARKER_HEIGHT/2), MARKER_WIDTH, MARKER_HEIGHT);
+
+        double angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+        double hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+        System.out.println("HYP: " + hypotenuse);
+        System.out.println("ANGLE: " + angle);
+        g.setColor(Color.GREEN);
+        g.fillOval(WIDTH/2 - (MARKER_WIDTH/2), HEIGHT/2 - (MARKER_HEIGHT/2), MARKER_WIDTH, MARKER_HEIGHT); //Center
+
+//        if (angle > 0 && angle < 90) {
+            double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
+            double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
+            System.out.println("METERS TO MOVE: " + toMoveHorizontal + ", " + toMoveVertical);
+            System.out.println("PIXELS TO MOVE: " + pixelsToMove(toMoveHorizontal) + ", " + pixelsToMove(toMoveVertical));
+            g.setColor(Color.RED);
+            g.fillOval(WIDTH/2 - (MARKER_WIDTH/2) + (int)pixelsToMove(toMoveHorizontal), HEIGHT/2 - (MARKER_HEIGHT/2) - (int)pixelsToMove(toMoveVertical), MARKER_WIDTH, MARKER_HEIGHT); //Center
+//        }
+
 
     }
 
@@ -77,8 +88,36 @@ public class MapImageCurrentLocationDemo extends JPanel {
         return r * c;
     }
 
-    public static int pixelsToMove(double distance) {
-        return (int) (distance/1.2);
+    public static double angleBetweenTwoLocations(double lat1, double long1, double lat2, double long2) {
+        double dLon = (long2 - long1);
+
+        double y = Math.sin(dLon) * Math.cos(lat2);
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1)
+                * Math.cos(lat2) * Math.cos(dLon);
+
+        double brng = Math.atan2(y, x);
+
+        brng = Math.toDegrees(brng);
+        brng = (brng + 360) % 360;
+        brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
+
+        return brng;
+    }
+
+    public static double pixelsToMove(double distance) {
+        //Not sure which one to use
+        return (distance*(WIDTH/235.0));
+//        return (distance/(WIDTH/307.2));
+//        return (distance/1.2);
+    }
+
+
+    public static double pixelsToMoveHorizontally(double distance) {
+        return (distance/(WIDTH/307.2));
+    }
+
+    public static double pixelsToMoveVerically(double distance) {
+        return (distance/(HEIGHT/307.2));
     }
 
 
@@ -91,6 +130,8 @@ public class MapImageCurrentLocationDemo extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
 
-        System.out.println(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.297928, 174.780667));
+//        System.out.println(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139));
+//        System.out.println(angleBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139));
+//        System.out.println(pixelsToMove(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139)));
     }
 }
