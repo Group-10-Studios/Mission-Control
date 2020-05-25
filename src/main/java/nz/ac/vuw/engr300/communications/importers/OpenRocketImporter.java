@@ -162,6 +162,7 @@ public class OpenRocketImporter implements RocketDataImporter {
                     observers.forEach((observer)->observer.accept(data));
                     previousTime = currentTime;
                 }
+                this.streamRunning = false;
             }catch (Exception e){
                 throw new RuntimeException(e);
             }
