@@ -26,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import nz.ac.vuw.engr300.gui.components.RocketDataCompass;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 
 import javax.swing.*;
@@ -51,6 +52,14 @@ public class HomeController implements Initializable {
   private static final double STANDARD_OFFSET = 10.0;
   private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
   private static final double ROWS = 2;
+
+  @FXML
+  public Pane pnWindDirection;
+  @FXML
+  public Label lbWindDirection;
+
+  @FXML
+  public RocketDataCompass windCompass;
 
   @FXML
   Pane pnAcceleration;
@@ -266,7 +275,7 @@ public class HomeController implements Initializable {
   private void updateGraphsVertical() {
     // Update heights of the panels
     double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
-    updatePanelsToHeight(graphHeight, pnAcceleration, pnAltitude, pnVelocity);
+    updatePanelsToHeight(graphHeight, pnAcceleration, pnAltitude, pnVelocity, pnWindDirection);
     
     // Set the graph sizes relative to the box
     double internalChartWidth = graphHeight * 5/6;
@@ -279,6 +288,7 @@ public class HomeController implements Initializable {
     
     // Set position relative to above row
     updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
+    updatePanelPositionOffsetVertical(pnWindDirection, pnAltitude, 10.0);
   }
   
   /**
@@ -370,17 +380,19 @@ public class HomeController implements Initializable {
 //    updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack,
 //        pnAltitude, pnLocation);
 
-    updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnAcceleration);
+    updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnAcceleration, pnWindDirection);
     double internalChartWidth = graphWidth - STANDARD_OFFSET;
     lineChartAcceleration.setMaxWidth(internalChartWidth);
     lineChartAltitude.setMaxWidth(internalChartWidth);
     lineChartVel.setMaxWidth(internalChartWidth);
+    windCompass.setMaxWidth(internalChartWidth);
     // Set left most graph x positions - not relative to anything
     updatePanelPositionOffset(pnAcceleration, null, STANDARD_OFFSET);
     updatePanelPositionOffset(pnVelocity, null, STANDARD_OFFSET);
 
     // Set the right graph x positions - relative to velocity graph
     updatePanelPositionOffset(pnAltitude, pnVelocity, STANDARD_OFFSET);
+    updatePanelPositionOffset(pnWindDirection, pnAcceleration, STANDARD_OFFSET);
   }
 
   /**
