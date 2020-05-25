@@ -153,14 +153,15 @@ public class OpenRocketImporter implements RocketDataImporter {
         new Thread(()->{
             try{
                 long previousTime = 0;
-                for (RocketData data : this.data) {
+                List<RocketData> dataCopy = new ArrayList<>(this.data);
+                for (RocketData data : dataCopy) {
                     if(!streamRunning) break;
                     long currentTime = (long)(data.getTime() * 1000);
                     Thread.sleep(currentTime - previousTime);
                     observers.forEach((observer)->observer.accept(data));
                     previousTime = currentTime;
                 }
-            }catch (InterruptedException e){
+            }catch (Exception e){
                 throw new RuntimeException(e);
             }
         }).start();
