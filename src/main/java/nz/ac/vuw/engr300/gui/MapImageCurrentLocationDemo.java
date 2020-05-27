@@ -6,34 +6,51 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-
-//        double latitude = -41.300442;
-//        double longitude = 174.780319;
-//        String filename = "src/main/resources/map-data/-41.300442-174.780319-map_image.png";
-//        JFrame frame = new JFrame();
-//        Canvas canvas = new MapImageCurrentLocationDemo();
-//        canvas.setSize(550, 550);
-//        frame.add(canvas);
-//        frame.pack();
-//        BufferedImage img = ImageIO.read(new File(filename));
-//        ImageIcon icon = new ImageIcon(img);
-//        frame.setLayout(new FlowLayout());
-//        JLabel label = new JLabel();
-//        label.setIcon(icon);
-//        frame.add(label);
-//        frame.setVisible(true);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 public class MapImageCurrentLocationDemo extends JPanel {
 
-    public static final int WIDTH = 512;
-    public static final int HEIGHT = 512;
-    public static final int MARKER_HEIGHT = 10;
-    public static final int MARKER_WIDTH = 10;
+    public static final int MARKER_SIZE = 10;
+
+    public static double centerLatitude = -41.227938; //Update this value
+    public static double centerLongitude = 174.798772; //Update this value
+    public static int graphicsWidth;
+    public static int graphicsHeight;
+    public static String filename;
+    public static double angle;
+    public static double hypotenuse;
+
+    public static void main(String[] args) {
+        filename = "src/main/resources/map-data/"+centerLatitude+"-"+centerLongitude+"-map_image.png";
+
+        updateGraphicsDimensions(filename);
+        double newLatitude = -41.228890; //Update this value
+        double newLongitude = 174.799470; //Update this value
+        updateAngleDistanceInfo(newLatitude, newLongitude);
+
+        JFrame frame= new JFrame();
+        frame.getContentPane().add(new MapImageCurrentLocationDemo());
+        frame.setSize(graphicsWidth, graphicsHeight);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+    }
+
+    private static void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
+        angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+        hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+    }
+
+    public static void updateGraphicsDimensions(String filename) {
+        BufferedImage img;
+        try {
+            img = ImageIO.read(new File(filename));
+            graphicsWidth = img.getWidth();
+            graphicsHeight = img.getHeight();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void paint(Graphics g) {
-
-        String filename = "src/main/resources/map-data/-41.300442-174.780319-map_image.png";
         BufferedImage img;
         try {
             img = ImageIO.read(new File(filename));
@@ -41,32 +58,16 @@ public class MapImageCurrentLocationDemo extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        double centerLatitude = -41.300442;
-        double centerLongitude = 174.780319;
-//        double newLatitude = -41.299716;
-//        double newLongitude = 174.781139;'
-
-        double newLatitude = -41.300290;
-        double newLongitude = 174.781161;
-
-
-        double angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
-        double hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
         System.out.println("HYP: " + hypotenuse);
         System.out.println("ANGLE: " + angle);
         g.setColor(Color.GREEN);
-        g.fillOval(WIDTH/2 - (MARKER_WIDTH/2), HEIGHT/2 - (MARKER_HEIGHT/2), MARKER_WIDTH, MARKER_HEIGHT); //Center
-
-//        if (angle > 0 && angle < 90) {
+        g.fillOval(graphicsWidth /2 - (MARKER_SIZE /2), graphicsHeight /2 - (MARKER_SIZE /2), MARKER_SIZE, MARKER_SIZE); //Center
         double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
         double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
         System.out.println("METERS TO MOVE: " + toMoveHorizontal + ", " + toMoveVertical);
         System.out.println("PIXELS TO MOVE: " + pixelsToMove(toMoveHorizontal) + ", " + pixelsToMove(toMoveVertical));
         g.setColor(Color.RED);
-        g.fillOval(WIDTH/2 - (MARKER_WIDTH/2) + (int)pixelsToMove(toMoveHorizontal), HEIGHT/2 - (MARKER_HEIGHT/2) - (int)pixelsToMove(toMoveVertical), MARKER_WIDTH, MARKER_HEIGHT); //Center
-//        }
-
-
+        g.fillOval(graphicsWidth /2 - (MARKER_SIZE /2) + (int)pixelsToMove(toMoveHorizontal), graphicsHeight /2 - (MARKER_SIZE /2) - (int)pixelsToMove(toMoveVertical), MARKER_SIZE, MARKER_SIZE); //Center
     }
 
     /**
@@ -88,6 +89,14 @@ public class MapImageCurrentLocationDemo extends JPanel {
         return r * c;
     }
 
+    /**
+     * https://stackoverflow.com/questions/3932502/calculate-angle-between-two-latitude-longitude-points
+     * @param lat1
+     * @param long1
+     * @param lat2
+     * @param long2
+     * @return
+     */
     public static double angleBetweenTwoLocations(double lat1, double long1, double lat2, double long2) {
         double dLon = (long2 - long1);
 
@@ -99,39 +108,19 @@ public class MapImageCurrentLocationDemo extends JPanel {
 
         brng = Math.toDegrees(brng);
         brng = (brng + 360) % 360;
-        brng = 360 - brng; // count degrees counter-clockwise - remove to make clockwise
+        brng = 365 - brng; // count degrees counter-clockwise - remove to make clockwise
 
         return brng;
     }
 
+    /**
+     * https://developer.tomtom.com/maps-api/maps-api-documentation/zoom-levels-and-tile-grid
+     * @param distance, the distance in meters
+     * @return - the amount of pixels to move
+     */
     public static double pixelsToMove(double distance) {
-        //Not sure which one to use
-        return (distance*(WIDTH/235.0));
-//        return (distance/(WIDTH/307.2));
-//        return (distance/1.2);
-    }
-
-
-    public static double pixelsToMoveHorizontally(double distance) {
-        return (distance/(WIDTH/307.2));
-    }
-
-    public static double pixelsToMoveVerically(double distance) {
-        return (distance/(HEIGHT/307.2));
-    }
-
-
-
-    public static void main(String[] args){
-        JFrame frame= new JFrame();
-        frame.getContentPane().add(new MapImageCurrentLocationDemo());
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
-
-//        System.out.println(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139));
-//        System.out.println(angleBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139));
-//        System.out.println(pixelsToMove(distanceBetweenTwoLocations(-41.300442, 174.780319, -41.299716, 174.781139)));
+        //1 m = 0.8333 pixels for zoom level 17.
+        //1.8 is a scale factor...Don't ask me why it works, it just does...
+        return (1.8*(distance/0.8333));
     }
 }
