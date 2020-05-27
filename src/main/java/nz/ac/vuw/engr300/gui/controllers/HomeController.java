@@ -44,7 +44,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
-import java.awt.*;
+import java.awt.EventQueue;
 
 /**
  * Represents the controller for the Home application view.
