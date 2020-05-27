@@ -16,7 +16,7 @@ import java.awt.*;
  *
  * @author Tim Salisbury
  */
-public class RocketDataLineChart extends LineChart<Number, Number> {
+public class RocketDataLineChart extends LineChart<Number, Number> implements RocketGraph {
 
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
@@ -62,21 +62,13 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
         Platform.runLater(()->series.getData().add(new Data<>(x, y)));
     }
     
-    /**
-     * Set the underlying type of this graph for matching against the side panel.
-     * 
-     * @param g GraphType to match this graph against.
-     */
+    @Override
     public void setGraphType(GraphType g) {
-	this.type = g;
+    	this.type = g;
     }
     
-    /**
-     * Get the underlying type of this graph.
-     * 
-     * @return GraphType which this graph is classified as.
-     */
+    @Override
     public GraphType getGraphType() {
-	return this.type;
+    	return this.type;
     }
 }

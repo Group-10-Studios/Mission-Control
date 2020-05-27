@@ -7,7 +7,7 @@ package nz.ac.vuw.engr300.gui.model;
  * @author Nathan Duckett
  */
 public enum GraphType {
-    VELOCITY, ACCELERATION, ALTITUDE;
+    VELOCITY, ALTITUDE, ACCELERATION, WINDDIRECTION;
 
     /**
      * Get the label to display within the side panel text for the graph type.
@@ -22,6 +22,8 @@ public enum GraphType {
 	    return "Acceleration";
 	case ALTITUDE:
 	    return "Altitude";
+	case WINDDIRECTION:
+		return "Wind Direction";
 	default:
 	    return "Invalid GraphType";
 	}
@@ -42,6 +44,8 @@ public enum GraphType {
 	    return ACCELERATION;
 	case "Altitude":
 	    return ALTITUDE;
+	case "Wind Direction":
+		return WINDDIRECTION;
 	default:
 	    return null;
 	}

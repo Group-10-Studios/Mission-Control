@@ -22,6 +22,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
@@ -36,6 +37,7 @@ import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -134,7 +136,10 @@ public class HomeController implements Initializable {
   @FXML
   Region pnWarnings;
   
-  private List<RocketDataLineChart> graphs;
+  /**
+   * Note must be Region to be a parent of all graph components.
+   */
+  private List<RocketGraph> graphs;
   private List<Button> pnNavButtons;
 
   public HomeController() {
@@ -197,11 +202,13 @@ public class HomeController implements Initializable {
       lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
       lineChartAltitude.setGraphType(GraphType.ALTITUDE);
       lineChartVel.setGraphType(GraphType.VELOCITY);
+      windCompass.setGraphType(GraphType.WINDDIRECTION);
       
       this.graphs = new ArrayList<>();
       this.graphs.add(lineChartAcceleration);
       this.graphs.add(lineChartAltitude);
       this.graphs.add(lineChartVel);
+      this.graphs.add(windCompass);
   }
   
   /**
@@ -215,9 +222,10 @@ public class HomeController implements Initializable {
 		  Button b = new Button(label);
 		  b.setLayoutY(y);
 		  b.setOnAction(e -> {
-		      for (RocketDataLineChart chart : this.graphs) {
+		      for (RocketGraph chart : this.graphs) {
 		    	  // Get parent of chart to highlight entire block not just graph.
-		    	  Region parent = (Region) chart.getParent();
+		    	  // Get the chart as a region, then get the parent as a region to allow borders.
+		    	  Region parent = (Region) ((Region) chart).getParent();
 				  if (chart.getGraphType() == GraphType.fromLabel(label)) {
 				      parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
 		                      new CornerRadii(5.0), new BorderWidths(2.0))));
