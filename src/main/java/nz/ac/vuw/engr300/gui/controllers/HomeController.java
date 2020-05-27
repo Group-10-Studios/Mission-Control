@@ -135,7 +135,7 @@ public class HomeController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    WeatherController wc = new WeatherController(lbWeather);
+    WeatherController wc = new WeatherController(lbWeather, windCompass);
     wc.updateWindSpeed();
     scaleItemHeight(apApp);
     scaleItemWidth(apApp);
