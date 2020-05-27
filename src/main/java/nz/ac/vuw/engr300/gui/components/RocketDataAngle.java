@@ -2,14 +2,15 @@ package nz.ac.vuw.engr300.gui.components;
 
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
+import javafx.beans.NamedArg;
 
 /**
  *
  * @author Tim Salisbury
  */
-public class RocketDataCompass extends Gauge {
+public class RocketDataAngle extends Gauge {
 
-    public RocketDataCompass() {
+    public RocketDataAngle(@NamedArg("isCompass") boolean isCompass) {
         super();
 
         this.setBorderPaint(Gauge.DARK_COLOR);
@@ -22,10 +23,18 @@ public class RocketDataCompass extends Gauge {
         this.setMediumTickMarksVisible(false);
         this.setMajorTickMarksVisible(false);
         this.setCustomTickLabelsEnabled(true);
-        this.setCustomTickLabels("0", "", "", "", "45", "", "", "", "",
-                                "90", "", "", "", "135", "", "", "", "",
-                                "180", "", "", "", "225", "", "", "", "",
-                                "270", "", "", "", "315", "", "", "", "");
+        if(isCompass) {
+            this.setCustomTickLabels("N", "", "", "", "NE", "", "", "", "",
+                    "E", "", "", "", "SE", "", "", "", "",
+                    "S", "", "", "", "SW", "", "", "", "",
+                    "W", "", "", "", "NW", "", "", "", "");
+        }else{
+            this.setCustomTickLabels("0", "", "", "", "45", "", "", "", "",
+                    "90", "", "", "", "135", "", "", "", "",
+                    "180", "", "", "", "225", "", "", "", "",
+                    "270", "", "", "", "315", "", "", "", "");
+        }
+
         this.setCustomTickLabelFontSize(48);
         this.setKnobType(KnobType.FLAT);
         this.setKnobColor(Gauge.DARK_COLOR);

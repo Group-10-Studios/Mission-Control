@@ -14,32 +14,23 @@ import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
-import nz.ac.vuw.engr300.gui.components.RocketDataCompass;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 
 import javax.swing.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
-
-import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
-import nz.ac.vuw.engr300.weather.model.WeatherData;
 
 /**
  * Represents the controller for the Home application view.
@@ -59,7 +50,7 @@ public class HomeController implements Initializable {
   public Label lbWindDirection;
 
   @FXML
-  public RocketDataCompass windCompass;
+  public RocketDataAngle windCompass;
 
   @FXML
   Pane pnAcceleration;
