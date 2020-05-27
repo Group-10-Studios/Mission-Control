@@ -185,6 +185,11 @@ public class HomeController implements Initializable {
     EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {
+
+        lineChartAcceleration.clear();
+        lineChartAltitude.clear();
+        lineChartVel.clear();
+
         JFileChooser fileChooser = new JFileChooser("src/main/resources");
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
