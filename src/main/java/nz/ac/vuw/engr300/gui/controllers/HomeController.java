@@ -46,6 +46,8 @@ import javafx.scene.layout.Region;
 
 import java.awt.EventQueue;
 
+import java.awt.EventQueue;
+
 /**
  * Represents the controller for the Home application view.
  *
