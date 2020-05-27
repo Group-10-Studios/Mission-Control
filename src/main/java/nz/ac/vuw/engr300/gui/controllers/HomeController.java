@@ -5,11 +5,15 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.util.List;
+
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -27,6 +31,7 @@ import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 
 import javax.swing.*;
 import javafx.beans.value.ChangeListener;
@@ -141,6 +146,8 @@ public class HomeController implements Initializable {
     scaleItemWidth(apApp);
 
     refreshOnStart();
+    bindGraphsToType();
+    listGraphs();
   }
 
   /**
@@ -160,6 +167,32 @@ public class HomeController implements Initializable {
       updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
       updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
     }).start();
+  }
+  
+  /**
+   * Manually binds the graph type to the graphs. This could maybe be automated later but for now can
+   * set the values.
+   */
+  private void bindGraphsToType() {
+      lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
+      lineChartAltitude.setGraphType(GraphType.ALTITUDE);
+      lineChartVel.setGraphType(GraphType.VELOCITY);
+  }
+  
+  /**
+   * List out all of the graphs in the side panel.
+   */
+  private void listGraphs() {
+      List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+      Pane nav = (Pane) pnNav;
+      int y = 5;
+      for (String label : labels) {
+	  Button b = new Button(label);
+	  b.setLayoutY(y);
+	  b.setOnAction(e -> {});
+	  nav.getChildren().add(b);
+	  y += 30;
+      }
   }
 
   /**

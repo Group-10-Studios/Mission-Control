@@ -7,6 +7,7 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 
 import java.awt.*;
 
@@ -20,6 +21,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
     private static double upperXBound = 10.0;
+    
+    private GraphType type;
 
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely initialized in fxml code.
@@ -57,5 +60,23 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
             this.getXAxis().setAutoRanging(true);
         }
         Platform.runLater(()->series.getData().add(new Data<>(x, y)));
+    }
+    
+    /**
+     * Set the underlying type of this graph for matching against the side panel.
+     * 
+     * @param g GraphType to match this graph against.
+     */
+    public void setGraphType(GraphType g) {
+	this.type = g;
+    }
+    
+    /**
+     * Get the underlying type of this graph.
+     * 
+     * @return GraphType which this graph is classified as.
+     */
+    public GraphType getGraphType() {
+	return this.type;
     }
 }
