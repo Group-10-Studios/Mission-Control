@@ -353,16 +353,20 @@ public class HomeController implements Initializable {
     
     // Set the graph sizes relative to the box
     double internalChartWidth = graphHeight * 5/6;
-    lineChartAcceleration.setMaxHeight(internalChartWidth);
-    lineChartAltitude.setMaxHeight(internalChartWidth);
-    lineChartVel.setMaxHeight(internalChartWidth);
-    lineChartAcceleration.setPrefHeight(internalChartWidth);
-    lineChartAltitude.setPrefHeight(internalChartWidth);
-    lineChartVel.setPrefHeight(internalChartWidth);
+    updatePanelsToHeight(internalChartWidth, lineChartAcceleration, 
+    		lineChartAltitude, lineChartVel);
+    
+    double internalCompassWidth = graphHeight * 3/4;
+    updatePanelsToHeight(internalCompassWidth, windCompass);
     
     // Set position relative to above row
     updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
     updatePanelPositionOffsetVertical(pnWindDirection, pnAltitude, 10.0);
+  }
+  
+  private void setHeight(Region component, double height) {
+	  component.setMaxHeight(height);
+	  component.setPrefHeight(height);
   }
   
   /**
