@@ -148,6 +148,10 @@ public class HomeController implements Initializable {
   /**
    * This is the initialize method that is called to build the root before
    * starting the javafx project.
+   * @param url The location used to resolve relative paths for the root object,
+   *            or null if the location is not known.
+   * @param rb The resources used to localize the root object,
+   *           or null if the root object was not localized.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -268,10 +272,9 @@ public class HomeController implements Initializable {
   }
 
   /**
-   *
+   * Scaling all the panel heights according to the current window
+   * size.
    * @param root The root pane the UI is all under.
-   * @param node A specific node we may want to change.
-   * @param i    What ratio of the root height we want to scale things by.
    */
   private void scaleItemHeight(Region root) {
     root.heightProperty().addListener(new ChangeListener<Number>() {
@@ -293,7 +296,7 @@ public class HomeController implements Initializable {
    * Update the panel's positions to dynamically match the new application height.
    * 
    * @param rootPanel Region provided from the root panel within the listener.
-   * @param newWidth  New height value of the root panel.
+   * @param newHeight  New height value of the root panel.
    */
   private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
     double height = (double) newHeight;
@@ -320,6 +323,11 @@ public class HomeController implements Initializable {
     updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
   }
 
+  /**
+   * Updates  heights of the panels when the window is adjusted.
+   * Set the graph sizes relative to the box.
+   * Set position relative to above row.
+   */
   private void updateGraphsVertical() {
     // Update heights of the panels
     double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
@@ -339,10 +347,9 @@ public class HomeController implements Initializable {
   }
   
   /**
-   *
+   * Scaling all the panel widths according to the current window
+   * size.
    * @param root The root pane the UI is all under.
-   * @param node A specific node we may want to change.
-   * @param i    What ratio of the root width we want to scale things by.
    */
   private void scaleItemWidth(Region root) {
     root.widthProperty().addListener(new ChangeListener<Number>() {
