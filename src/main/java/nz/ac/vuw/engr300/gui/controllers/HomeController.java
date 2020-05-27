@@ -185,10 +185,7 @@ public class HomeController implements Initializable {
     EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {
-
-        lineChartAcceleration.clear();
-        lineChartAltitude.clear();
-        lineChartVel.clear();
+        simulationImporter.stop();
 
         JFileChooser fileChooser = new JFileChooser("src/main/resources");
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -200,7 +197,9 @@ public class HomeController implements Initializable {
                     JOptionPane.ERROR_MESSAGE);
             return;
           }
-
+          lineChartAcceleration.clear();
+          lineChartAltitude.clear();
+          lineChartVel.clear();
           simulationImporter.start();
         }
       }
