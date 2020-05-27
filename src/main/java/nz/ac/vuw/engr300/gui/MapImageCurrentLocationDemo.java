@@ -1,10 +1,14 @@
 package nz.ac.vuw.engr300.gui;
 
+import nz.ac.vuw.engr300.importers.KeyImporter;
+import nz.ac.vuw.engr300.importers.MapImageImporter;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class MapImageCurrentLocationDemo extends JPanel {
 
@@ -12,16 +16,25 @@ public class MapImageCurrentLocationDemo extends JPanel {
 
     public static double centerLatitude = -41.227938; //Update this value
     public static double centerLongitude = 174.798772; //Update this value
-    public static int graphicsWidth;
-    public static int graphicsHeight;
+    public static int graphicsWidth = 800;
+    public static int graphicsHeight = 600;
     public static String filename;
     public static double angle;
     public static double hypotenuse;
+    public static String API_KEY;
+
+    static {
+        try {
+            API_KEY = KeyImporter.getKey("maps");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
+        MapImageImporter.importImage(API_KEY, centerLatitude, centerLongitude, 17, graphicsWidth, graphicsHeight);
         filename = "src/main/resources/map-data/"+centerLatitude+"-"+centerLongitude+"-map_image.png";
 
-        updateGraphicsDimensions(filename);
         double newLatitude = -41.228890; //Update this value
         double newLongitude = 174.799470; //Update this value
         updateAngleDistanceInfo(newLatitude, newLongitude);
@@ -39,16 +52,6 @@ public class MapImageCurrentLocationDemo extends JPanel {
         hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
     }
 
-    public static void updateGraphicsDimensions(String filename) {
-        BufferedImage img;
-        try {
-            img = ImageIO.read(new File(filename));
-            graphicsWidth = img.getWidth();
-            graphicsHeight = img.getHeight();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void paint(Graphics g) {
         BufferedImage img;
