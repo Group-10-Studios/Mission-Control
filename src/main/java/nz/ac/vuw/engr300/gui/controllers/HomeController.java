@@ -209,6 +209,8 @@ public class HomeController implements Initializable {
 	      for (RocketDataLineChart chart : this.graphs) {
 		  if (chart.getGraphType() == GraphType.fromLabel(label)) {
 		      chart.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		  } else {
+		      chart.setBorder(null);
 		  }
 	      }
 	  });
