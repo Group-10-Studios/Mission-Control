@@ -47,6 +47,13 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
     }
 
     /**
+     * Clears the current graph.
+     */
+    public void clear(){
+        this.series.getData().clear();
+    }
+
+    /**
      * This function will add a value to the line graph.
      *
      * @param x     The x value
