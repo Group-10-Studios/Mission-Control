@@ -5,9 +5,9 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -27,6 +27,13 @@ import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
@@ -44,6 +51,8 @@ import javafx.stage.Stage;
 
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
+
+import java.awt.*;
 
 /**
  * Represents the controller for the Home application view.
@@ -122,6 +131,8 @@ public class HomeController implements Initializable {
   Region apWarnings;
   @FXML
   Region pnWarnings;
+  
+  private List<RocketDataLineChart> graphs;
 
   public HomeController() {
     simulationImporter.subscribeObserver((data) -> {
@@ -177,6 +188,11 @@ public class HomeController implements Initializable {
       lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
       lineChartAltitude.setGraphType(GraphType.ALTITUDE);
       lineChartVel.setGraphType(GraphType.VELOCITY);
+      
+      this.graphs = new ArrayList<>();
+      this.graphs.add(lineChartAcceleration);
+      this.graphs.add(lineChartAltitude);
+      this.graphs.add(lineChartVel);
   }
   
   /**
@@ -189,7 +205,13 @@ public class HomeController implements Initializable {
       for (String label : labels) {
 	  Button b = new Button(label);
 	  b.setLayoutY(y);
-	  b.setOnAction(e -> {});
+	  b.setOnAction(e -> {
+	      for (RocketDataLineChart chart : this.graphs) {
+		  if (chart.getGraphType() == GraphType.fromLabel(label)) {
+		      chart.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+		  }
+	      }
+	  });
 	  nav.getChildren().add(b);
 	  y += 30;
       }
