@@ -37,8 +37,8 @@ import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
-
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
