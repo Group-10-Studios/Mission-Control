@@ -207,20 +207,22 @@ public class HomeController implements Initializable {
       Pane nav = (Pane) pnNav;
       int y = 5;
       for (String label : labels) {
-	  Button b = new Button(label);
-	  b.setLayoutY(y);
-	  b.setOnAction(e -> {
-	      for (RocketDataLineChart chart : this.graphs) {
-		  if (chart.getGraphType() == GraphType.fromLabel(label)) {
-		      chart.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                      new CornerRadii(10.0), new BorderWidths(5.0))));
-		  } else {
-		      chart.setBorder(null);
-		  }
-	      }
-	  });
-	  nav.getChildren().add(b);
-	  y += 30;
+		  Button b = new Button(label);
+		  b.setLayoutY(y);
+		  b.setOnAction(e -> {
+		      for (RocketDataLineChart chart : this.graphs) {
+		    	  // Get parent of chart to highlight entire block not just graph.
+		    	  Region parent = (Region) chart.getParent();
+				  if (chart.getGraphType() == GraphType.fromLabel(label)) {
+				      parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+		                      new CornerRadii(5.0), new BorderWidths(2.0))));
+				  } else {
+				      parent.setBorder(null);
+				  }
+		      }
+		  });
+		  nav.getChildren().add(b);
+		  y += 30;
       }
   }
 
