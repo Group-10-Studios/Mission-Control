@@ -133,6 +133,7 @@ public class HomeController implements Initializable {
   Region pnWarnings;
   
   private List<RocketDataLineChart> graphs;
+  private List<Button> pnNavButtons;
 
   public HomeController() {
     simulationImporter.subscribeObserver((data) -> {
@@ -160,6 +161,8 @@ public class HomeController implements Initializable {
     scaleItemHeight(apApp);
     scaleItemWidth(apApp);
 
+    this.pnNavButtons = new ArrayList<>();
+    
     refreshOnStart();
     bindGraphsToType();
     listGraphs();
@@ -222,6 +225,8 @@ public class HomeController implements Initializable {
 		      }
 		  });
 		  nav.getChildren().add(b);
+		  // Add to button list for dynamics
+		  pnNavButtons.add(b);
 		  y += 30;
       }
   }
@@ -406,6 +411,13 @@ public class HomeController implements Initializable {
     updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), btnRunSim, btnPastFlights);
     updatePanelPositionOffset(btnRunSim, null, STANDARD_OFFSET);
     updatePanelPositionOffset(btnPastFlights, null, STANDARD_OFFSET);
+    
+    // Internal pnNav Buttons
+    updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), 
+    		this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+    for (Button b : this.pnNavButtons) {
+    	updatePanelPositionOffset(b, null, STANDARD_OFFSET);
+    }
 
     // internal left panel details text
     updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID,
