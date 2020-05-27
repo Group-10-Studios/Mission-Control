@@ -52,7 +52,7 @@ import javafx.stage.Stage;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
-import java.awt.*;
+import java.awt.EventQueue;
 
 /**
  * Represents the controller for the Home application view.
