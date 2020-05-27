@@ -47,10 +47,12 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
     }
 
     /**
-     * Clears the current graph.
+     * Clears the current graph, and resets the X scale.
      */
     public void clear(){
         this.series.getData().clear();
+        ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
+        this.getXAxis().setAutoRanging(false);
     }
 
     /**
