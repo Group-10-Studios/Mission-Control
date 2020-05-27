@@ -141,6 +141,11 @@ public class HomeController implements Initializable {
    */
   private List<RocketGraph> graphs;
   private List<Button> pnNavButtons;
+  
+  /**
+   * Stores the currently highlighted graph information for de-selection.
+   */
+  private GraphType highlightedGraph;
 
   public HomeController() {
     simulationImporter.subscribeObserver((data) -> {
@@ -222,13 +227,22 @@ public class HomeController implements Initializable {
 		  Button b = new Button(label);
 		  b.setLayoutY(y);
 		  b.setOnAction(e -> {
+			  GraphType thisGraph = GraphType.fromLabel(label);
 		      for (RocketGraph chart : this.graphs) {
 		    	  // Get parent of chart to highlight entire block not just graph.
 		    	  // Get the chart as a region, then get the parent as a region to allow borders.
 		    	  Region parent = (Region) ((Region) chart).getParent();
-				  if (chart.getGraphType() == GraphType.fromLabel(label)) {
+				  if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
 				      parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
 		                      new CornerRadii(5.0), new BorderWidths(2.0))));
+				      this.highlightedGraph = thisGraph;
+				  } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
+					  // Ensure the clicked type is thisGraph and check if it is already clicked.
+					  parent.setBorder(null);
+					  
+					  // Set the highlighted graph to null if already highlighted before.
+					  // This is for turning off highlighting to re-enable.
+					  this.highlightedGraph = null;
 				  } else {
 				      parent.setBorder(null);
 				  }
