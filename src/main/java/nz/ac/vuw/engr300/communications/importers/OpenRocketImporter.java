@@ -149,7 +149,6 @@ public class OpenRocketImporter implements RocketDataImporter {
      * Starts the stream of data to all of the subscribed clients
      */
     public void start(){
-        if(streamRunning) return;
         this.streamRunning = true;
         new Thread(()->{
             try{
