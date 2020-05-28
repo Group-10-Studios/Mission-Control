@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
+import javafx.scene.paint.Color;
+import java.awt.*;
+
 /**
  * A component that can display an angle or a direction.
  *
@@ -57,6 +60,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
         this.setKnobColor(Gauge.DARK_COLOR);
         this.setNeedleShape(NeedleShape.FLAT);
         this.setNeedleType(NeedleType.VARIOMETER);
+        this.setNeedleColor(Color.valueOf("#4267B2"));
         this.setNeedleBehavior(NeedleBehavior.OPTIMIZED);
         this.setTickLabelColor(DARK_COLOR);
         this.setAnimated(false);
