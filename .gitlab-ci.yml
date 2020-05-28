@@ -76,6 +76,17 @@ spell_check:
     - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-nz **/*.md
   allow_failure: false
 
+
+checkstyle:
+  stage: Test
+  tags:
+    - shell
+  script:
+    - wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.32/checkstyle-8.32-all.jar
+    - java -jar checkstyle-8.32-all.jar -c checkstyle.xml src/
+    # Cleanup following running checkstyle
+    - rm checkstyle-8.32-all.jar
+
 pages:
   stage: DeployPages
   # Run this stage only on the master branch.

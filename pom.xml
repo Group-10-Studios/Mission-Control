@@ -103,7 +103,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.3</version>
 				<configuration>
-					<mainClass>nz.ac.vuw.engr300.gui.GUI</mainClass>
+					<mainClass>nz.ac.vuw.engr300.gui.Gui</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
