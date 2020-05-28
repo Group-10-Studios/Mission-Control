@@ -184,16 +184,17 @@ public class HomeController implements Initializable {
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
-        this.graphs.add(lineChartAcceleration);
-        this.graphs.add(lineChartAltitude);
         this.graphs.add(lineChartVel);
+        this.graphs.add(lineChartAltitude);
+        this.graphs.add(lineChartAcceleration);
         this.graphs.add(windCompass);
         // Initialize the graph table.
         buildTable();
     }
-    
+
     /**
-     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the screen.
+     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
+     * screen.
      */
     private void buildTable() {
         int graphNo = 0;
@@ -205,7 +206,7 @@ public class HomeController implements Initializable {
             }
             rowBox.getChildren().add(colBox);
         }
-        
+
         pnContent.getChildren().clear();
         pnContent.getChildren().add(rowBox);
     }
@@ -223,22 +224,21 @@ public class HomeController implements Initializable {
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
-                    // Get parent of chart to highlight entire block not just graph.
-                    // Get the chart as a region, then get the parent as a region to allow borders.
-                    Region parent = (Region) ((Region) chart).getParent();
+                    // Get the chart as a region to set the Border
+                    Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
-                        parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                new CornerRadii(5.0), new BorderWidths(2.0))));
+                        chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+                                        new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
 
                         // Set the highlighted graph to null if already highlighted before.
                         // This is for turning off highlighting to re-enable.
                         this.highlightedGraph = null;
                     } else {
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
                     }
                 }
             });
@@ -281,7 +281,7 @@ public class HomeController implements Initializable {
                         simulationImporter.importData(file.getAbsolutePath());
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                JOptionPane.ERROR_MESSAGE);
+                                        JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     lineChartAcceleration.clear();
@@ -308,9 +308,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositionsVertical(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositionsVertical(root, t1);
+                        });
 
     }
 
@@ -364,9 +364,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositions(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositions(root, t1);
+                        });
     }
 
     /**
@@ -408,14 +408,14 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead);
+                        lbWeatherHead);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
