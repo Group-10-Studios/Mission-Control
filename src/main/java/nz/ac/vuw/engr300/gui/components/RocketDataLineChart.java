@@ -7,6 +7,7 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 
 import java.awt.*;
 
@@ -15,11 +16,13 @@ import java.awt.*;
  *
  * @author Tim Salisbury
  */
-public class RocketDataLineChart extends LineChart<Number, Number> {
+public class RocketDataLineChart extends LineChart<Number, Number> implements RocketGraph {
 
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
     private static double upperXBound = 10.0;
+    
+    private GraphType type;
 
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely initialized in fxml code.
@@ -57,5 +60,15 @@ public class RocketDataLineChart extends LineChart<Number, Number> {
             this.getXAxis().setAutoRanging(true);
         }
         Platform.runLater(()->series.getData().add(new Data<>(x, y)));
+    }
+    
+    @Override
+    public void setGraphType(GraphType g) {
+    	this.type = g;
+    }
+    
+    @Override
+    public GraphType getGraphType() {
+    	return this.type;
     }
 }

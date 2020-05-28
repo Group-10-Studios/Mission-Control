@@ -3,8 +3,9 @@ package nz.ac.vuw.engr300.gui.components;
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
-import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 
+import javafx.scene.paint.Color;
 import java.awt.*;
 
 /**
@@ -12,8 +13,9 @@ import java.awt.*;
  *
  * @author Tim Salisbury
  */
-public class RocketDataAngle extends Gauge {
-
+public class RocketDataAngle extends Gauge implements RocketGraph {
+	private GraphType type;
+	
     /**
      * Constructs a new RocketDataAngle component, where the boolean {@code isCompass} will define
      * the appearance. If it is set to true, then it will appear as a compass with N, NE, E, SE,
@@ -79,5 +81,15 @@ public class RocketDataAngle extends Gauge {
     @Override
     public String getUserAgentStylesheet() {
         return Gauge.class.getResource("gauge.css").toExternalForm();
+    }
+    
+    @Override
+    public void setGraphType(GraphType g) {
+    	this.type = g;
+    }
+    
+    @Override
+    public GraphType getGraphType() {
+    	return this.type;
     }
 }

@@ -5,11 +5,15 @@
  */
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -18,19 +22,33 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
-
-import javax.swing.*;
+import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.model.GraphType;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+
+import java.awt.EventQueue;
+
+import java.awt.EventQueue;
 
 /**
  * Represents the controller for the Home application view.
@@ -117,6 +135,17 @@ public class HomeController implements Initializable {
   Region apWarnings;
   @FXML
   Region pnWarnings;
+  
+  /**
+   * Note must be Region to be a parent of all graph components.
+   */
+  private List<RocketGraph> graphs;
+  private List<Button> pnNavButtons;
+  
+  /**
+   * Stores the currently highlighted graph information for de-selection.
+   */
+  private GraphType highlightedGraph;
 
   public HomeController() {
     simulationImporter.subscribeObserver((data) -> {
@@ -132,6 +161,10 @@ public class HomeController implements Initializable {
   /**
    * This is the initialize method that is called to build the root before
    * starting the javafx project.
+   * @param url The location used to resolve relative paths for the root object,
+   *            or null if the location is not known.
+   * @param rb The resources used to localize the root object,
+   *           or null if the root object was not localized.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -140,7 +173,11 @@ public class HomeController implements Initializable {
     scaleItemHeight(apApp);
     scaleItemWidth(apApp);
 
+    this.pnNavButtons = new ArrayList<>();
+    
     refreshOnStart();
+    bindGraphsToType();
+    listGraphs();
   }
 
   /**
@@ -160,6 +197,62 @@ public class HomeController implements Initializable {
       updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
       updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
     }).start();
+  }
+  
+  /**
+   * Manually binds the graph type to the graphs. This could maybe be automated later but for now can
+   * set the values.
+   */
+  private void bindGraphsToType() {
+      lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
+      lineChartAltitude.setGraphType(GraphType.ALTITUDE);
+      lineChartVel.setGraphType(GraphType.VELOCITY);
+      windCompass.setGraphType(GraphType.WINDDIRECTION);
+      
+      this.graphs = new ArrayList<>();
+      this.graphs.add(lineChartAcceleration);
+      this.graphs.add(lineChartAltitude);
+      this.graphs.add(lineChartVel);
+      this.graphs.add(windCompass);
+  }
+  
+  /**
+   * List out all of the graphs in the side panel.
+   */
+  private void listGraphs() {
+      List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+      Pane nav = (Pane) pnNav;
+      int y = 5;
+      for (String label : labels) {
+		  Button b = new Button(label);
+		  b.setLayoutY(y);
+		  b.setOnAction(e -> {
+			  GraphType thisGraph = GraphType.fromLabel(label);
+		      for (RocketGraph chart : this.graphs) {
+		    	  // Get parent of chart to highlight entire block not just graph.
+		    	  // Get the chart as a region, then get the parent as a region to allow borders.
+		    	  Region parent = (Region) ((Region) chart).getParent();
+				  if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
+				      parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+		                      new CornerRadii(5.0), new BorderWidths(2.0))));
+				      this.highlightedGraph = thisGraph;
+				  } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
+					  // Ensure the clicked type is thisGraph and check if it is already clicked.
+					  parent.setBorder(null);
+					  
+					  // Set the highlighted graph to null if already highlighted before.
+					  // This is for turning off highlighting to re-enable.
+					  this.highlightedGraph = null;
+				  } else {
+				      parent.setBorder(null);
+				  }
+		      }
+		  });
+		  nav.getChildren().add(b);
+		  // Add to button list for dynamics
+		  pnNavButtons.add(b);
+		  y += 30;
+      }
   }
 
   /**
@@ -211,10 +304,9 @@ public class HomeController implements Initializable {
   }
 
   /**
-   *
+   * Scaling all the panel heights according to the current window
+   * size.
    * @param root The root pane the UI is all under.
-   * @param node A specific node we may want to change.
-   * @param i    What ratio of the root height we want to scale things by.
    */
   private void scaleItemHeight(Region root) {
     root.heightProperty().addListener(new ChangeListener<Number>() {
@@ -236,7 +328,7 @@ public class HomeController implements Initializable {
    * Update the panel's positions to dynamically match the new application height.
    * 
    * @param rootPanel Region provided from the root panel within the listener.
-   * @param newWidth  New height value of the root panel.
+   * @param newHeight  New height value of the root panel.
    */
   private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
     double height = (double) newHeight;
@@ -263,6 +355,11 @@ public class HomeController implements Initializable {
     updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
   }
 
+  /**
+   * Updates  heights of the panels when the window is adjusted.
+   * Set the graph sizes relative to the box.
+   * Set position relative to above row.
+   */
   private void updateGraphsVertical() {
     // Update heights of the panels
     double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
@@ -270,23 +367,26 @@ public class HomeController implements Initializable {
     
     // Set the graph sizes relative to the box
     double internalChartWidth = graphHeight * 5/6;
-    lineChartAcceleration.setMaxHeight(internalChartWidth);
-    lineChartAltitude.setMaxHeight(internalChartWidth);
-    lineChartVel.setMaxHeight(internalChartWidth);
-    lineChartAcceleration.setPrefHeight(internalChartWidth);
-    lineChartAltitude.setPrefHeight(internalChartWidth);
-    lineChartVel.setPrefHeight(internalChartWidth);
+    updatePanelsToHeight(internalChartWidth, lineChartAcceleration, 
+    		lineChartAltitude, lineChartVel);
+    
+    double internalCompassWidth = graphHeight * 3/4;
+    updatePanelsToHeight(internalCompassWidth, windCompass);
     
     // Set position relative to above row
     updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
     updatePanelPositionOffsetVertical(pnWindDirection, pnAltitude, 10.0);
   }
   
+  private void setHeight(Region component, double height) {
+	  component.setMaxHeight(height);
+	  component.setPrefHeight(height);
+  }
+  
   /**
-   *
+   * Scaling all the panel widths according to the current window
+   * size.
    * @param root The root pane the UI is all under.
-   * @param node A specific node we may want to change.
-   * @param i    What ratio of the root width we want to scale things by.
    */
   private void scaleItemWidth(Region root) {
     root.widthProperty().addListener(new ChangeListener<Number>() {
@@ -340,6 +440,13 @@ public class HomeController implements Initializable {
     updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), btnRunSim, btnPastFlights);
     updatePanelPositionOffset(btnRunSim, null, STANDARD_OFFSET);
     updatePanelPositionOffset(btnPastFlights, null, STANDARD_OFFSET);
+    
+    // Internal pnNav Buttons
+    updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2), 
+    		this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+    for (Button b : this.pnNavButtons) {
+    	updatePanelPositionOffset(b, null, STANDARD_OFFSET);
+    }
 
     // internal left panel details text
     updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID,
