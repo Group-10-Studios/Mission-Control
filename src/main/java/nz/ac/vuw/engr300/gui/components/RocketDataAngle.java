@@ -3,6 +3,10 @@ package nz.ac.vuw.engr300.gui.components;
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
@@ -59,6 +63,9 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
         this.setTickLabelColor(DARK_COLOR);
         this.setAnimated(false);
         this.setValueVisible(true);
+
+        this.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+                CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     /**
