@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 
+import java.lang.reflect.Executable;
+
 /**
  * Runs the main GUI application for Mission Control. This defaults to a
  * HomeView start.

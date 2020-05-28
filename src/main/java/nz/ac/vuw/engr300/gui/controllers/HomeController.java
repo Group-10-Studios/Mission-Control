@@ -168,8 +168,8 @@ public class HomeController implements Initializable {
             }
 
             // Pass bound width to begin application
-            updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
-            updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
+            updatePanelPositions(apApp, apApp.getWidth());
+            updatePanelPositionsVertical(apApp, apApp.getHeight());
         }).start();
     }
 
@@ -311,6 +311,7 @@ public class HomeController implements Initializable {
                 .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
                     updatePanelPositionsVertical(root, t1);
                 });
+
     }
 
     /**
@@ -354,10 +355,6 @@ public class HomeController implements Initializable {
 
         // Set the graph sizes relative to the box
         updatePanelsToHeight(graphHeight, allGraphs());
-
-        // Set position relative to above row
-        updatePanelPositionOffsetVertical(lineChartAcceleration, lineChartVel, 10.0);
-        updatePanelPositionOffsetVertical(windCompass, lineChartAltitude, 10.0);
     }
 
     /**
