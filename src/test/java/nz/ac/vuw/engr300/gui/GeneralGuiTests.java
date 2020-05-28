@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui;
 
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
@@ -88,19 +89,23 @@ public class GeneralGuiTests {
             Thread.sleep(500);
         } catch (InterruptedException ignored) { }
 
-        RocketDataLineChart velocityChart = robot.lookup("#lineChartVel").queryAs(RocketDataLineChart.class);
-        RocketDataLineChart altitudeChart = robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class);
-        RocketDataLineChart accelerationChart = robot.lookup("#lineChartAcceleration").queryAs(RocketDataLineChart.class);
+        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#lineChartVel").queryAs(RocketDataLineChart.class).getData().get(0).getData();
+        List<XYChart.Data<Number, Number>>  altitudeChartData = robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class).getData().get(0).getData();
+        List<XYChart.Data<Number, Number>>  accelerationChartData = robot.lookup("#lineChartAcceleration").queryAs(RocketDataLineChart.class).getData().get(0).getData();
+
+        assertEquals(TEST_DATA.size(), velocityChartData.size());
+        assertEquals(TEST_DATA.size(), altitudeChartData.size());
+        assertEquals(TEST_DATA.size(), accelerationChartData.size());
 
         //Now check all the values displayed by the graph are those in the simulation!
         for(int i = 0; i < TEST_DATA.size(); i++){
-            assertEquals(TEST_DATA.get(i).getTime(), velocityChart.getData().get(0).getData().get(i).getXValue());
-            assertEquals(TEST_DATA.get(i).getTime(), altitudeChart.getData().get(0).getData().get(i).getXValue());
-            assertEquals(TEST_DATA.get(i).getTime(), accelerationChart.getData().get(0).getData().get(i).getXValue());
+            assertEquals(TEST_DATA.get(i).getTime(), velocityChartData.get(i).getXValue());
+            assertEquals(TEST_DATA.get(i).getTime(), altitudeChartData.get(i).getXValue());
+            assertEquals(TEST_DATA.get(i).getTime(), accelerationChartData.get(i).getXValue());
 
-            assertEquals(TEST_DATA.get(i).getTotalVelocity(), velocityChart.getData().get(0).getData().get(i).getYValue());
-            assertEquals(TEST_DATA.get(i).getAltitude(), altitudeChart.getData().get(0).getData().get(i).getYValue());
-            assertEquals(TEST_DATA.get(i).getTotalAcceleration(), accelerationChart.getData().get(0).getData().get(i).getYValue());
+            assertEquals(TEST_DATA.get(i).getTotalVelocity(), velocityChartData.get(i).getYValue());
+            assertEquals(TEST_DATA.get(i).getAltitude(), altitudeChartData.get(i).getYValue());
+            assertEquals(TEST_DATA.get(i).getTotalAcceleration(), accelerationChartData.get(i).getYValue());
         }
     }
 
