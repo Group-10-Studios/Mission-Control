@@ -3,6 +3,7 @@ package nz.ac.vuw.engr300.gui.components;
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -25,7 +26,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * set to false, it will appear with standard angle markings, E.G. 0, 45, 90,
      * 135, 180, 225, 270, 315.
      * Usage: {@code
-     *  <RocketDataAngle Title="Wind Direction" isCompass="true"/>
+     * <RocketDataAngle Title="Wind Direction" isCompass="true"/>
      * }
      *
      * @param isCompass Whether or not this compass is displaying an angle or a
@@ -66,6 +67,14 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
 
         this.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
                 CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // Do not remove! If you remove you'll get exceptions! This is to stop it from overflowing the border.
+        this.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
+                                           Number number, Number t1) -> {
+            if (t1.intValue() > 0) {
+                this.setPadding(new Insets(10));
+            }
+        });
     }
 
     /**

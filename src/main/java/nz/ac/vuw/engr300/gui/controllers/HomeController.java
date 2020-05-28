@@ -25,8 +25,10 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javax.swing.JFileChooser;
@@ -49,6 +51,7 @@ public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
     private static final double ROWS = 2;
+    private static final double COLS = 2;
 
     @FXML
     public RocketDataAngle windCompass;
@@ -165,8 +168,8 @@ public class HomeController implements Initializable {
             }
 
             // Pass bound width to begin application
-            updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
-            updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
+            updatePanelPositions(apApp, apApp.getWidth());
+            updatePanelPositionsVertical(apApp, apApp.getHeight());
         }).start();
     }
 
@@ -181,10 +184,31 @@ public class HomeController implements Initializable {
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
-        this.graphs.add(lineChartAcceleration);
-        this.graphs.add(lineChartAltitude);
         this.graphs.add(lineChartVel);
+        this.graphs.add(lineChartAltitude);
+        this.graphs.add(lineChartAcceleration);
         this.graphs.add(windCompass);
+        // Initialize the graph table.
+        buildTable();
+    }
+
+    /**
+     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
+     * screen.
+     */
+    private void buildTable() {
+        int graphNo = 0;
+        VBox rowBox = new VBox(ROWS);
+        for (int i = 0; i < ROWS; i++) {
+            HBox colBox = new HBox(COLS);
+            for (int j = 0; j < COLS; j++) {
+                colBox.getChildren().add((Region) this.graphs.get(graphNo++));
+            }
+            rowBox.getChildren().add(colBox);
+        }
+
+        pnContent.getChildren().clear();
+        pnContent.getChildren().add(rowBox);
     }
 
     /**
@@ -200,22 +224,21 @@ public class HomeController implements Initializable {
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
-                    // Get parent of chart to highlight entire block not just graph.
-                    // Get the chart as a region, then get the parent as a region to allow borders.
-                    Region parent = (Region) ((Region) chart).getParent();
+                    // Get the chart as a region to set the Border
+                    Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
-                        parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                new CornerRadii(5.0), new BorderWidths(2.0))));
+                        chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+                                        new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
 
                         // Set the highlighted graph to null if already highlighted before.
                         // This is for turning off highlighting to re-enable.
                         this.highlightedGraph = null;
                     } else {
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
                     }
                 }
             });
@@ -258,7 +281,7 @@ public class HomeController implements Initializable {
                         simulationImporter.importData(file.getAbsolutePath());
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                JOptionPane.ERROR_MESSAGE);
+                                        JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     lineChartAcceleration.clear();
@@ -285,9 +308,10 @@ public class HomeController implements Initializable {
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositionsVertical(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositionsVertical(root, t1);
+                        });
+
     }
 
     /**
@@ -327,17 +351,10 @@ public class HomeController implements Initializable {
      */
     private void updateGraphsVertical() {
         // Update heights of the panels
-        double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
+        double graphHeight = (pnContent.getHeight() / ROWS);
 
         // Set the graph sizes relative to the box
-        double internalChartWidth = graphHeight * 5 / 6;
-        updatePanelsToHeight(internalChartWidth, lineChartAcceleration, lineChartAltitude, lineChartVel);
-
-        updatePanelsToHeight(internalChartWidth, windCompass);
-
-        // Set position relative to above row
-        updatePanelPositionOffsetVertical(lineChartAcceleration, lineChartVel, 10.0);
-        updatePanelPositionOffsetVertical(windCompass, lineChartAltitude, 10.0);
+        updatePanelsToHeight(graphHeight, allGraphs());
     }
 
     /**
@@ -347,9 +364,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositions(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositions(root, t1);
+                        });
     }
 
     /**
@@ -391,14 +408,14 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead);
+                        lbWeatherHead);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
@@ -421,21 +438,9 @@ public class HomeController implements Initializable {
         pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
 
         // Only the length internally excluding the offset
-        double graphWidth = ((pnContent.getWidth() - STANDARD_OFFSET) / ROWS) - STANDARD_OFFSET;
+        double graphWidth = (pnContent.getWidth()) / COLS;
 
-        updatePanelsToWidth(graphWidth, lineChartAltitude, lineChartVel, lineChartAcceleration, windCompass);
-        double internalChartWidth = graphWidth - STANDARD_OFFSET;
-        lineChartAcceleration.setMaxWidth(internalChartWidth);
-        lineChartAltitude.setMaxWidth(internalChartWidth);
-        lineChartVel.setMaxWidth(internalChartWidth);
-        windCompass.setMaxWidth(internalChartWidth);
-        // Set left most graph x positions - not relative to anything
-        updatePanelPositionOffset(lineChartAcceleration, null, STANDARD_OFFSET);
-        updatePanelPositionOffset(lineChartVel, null, STANDARD_OFFSET);
-
-        // Set the right graph x positions - relative to velocity graph
-        updatePanelPositionOffset(lineChartAltitude, lineChartVel, STANDARD_OFFSET);
-        updatePanelPositionOffset(windCompass, lineChartAcceleration, STANDARD_OFFSET);
+        updatePanelsToWidth(graphWidth, allGraphs());
     }
 
     /**
@@ -523,4 +528,12 @@ public class HomeController implements Initializable {
         thisPanel.setLayoutY(relativePanel.getLayoutY() + relativePanel.getHeight() + offset);
     }
 
+    /**
+     * Get all the graphs from pnContent in Region format.
+     * 
+     * @return Region array of graphs.
+     */
+    private Region[] allGraphs() {
+        return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
+    }
 }
