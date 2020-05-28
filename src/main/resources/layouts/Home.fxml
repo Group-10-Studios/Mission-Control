@@ -13,118 +13,90 @@
 
 <?import nz.ac.vuw.engr300.gui.components.RocketDataAngle?>
 <?import eu.hansolo.medusa.Gauge?>
-<AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="948.0" prefWidth="1909.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
-   <children>
-      <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
-         <children>
-            <Label fx:id="lblHeader" alignment="TOP_CENTER" layoutX="29.0" layoutY="11.0" prefHeight="26.0" prefWidth="1916.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="22.0" />
-               </font>
-            </Label>
-         </children>
-         <effect>
-            <DropShadow color="#00000080" />
-         </effect>
-      </Pane>
-      <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" minHeight="225.0" style="-fx-background-color: #EEEEEE;">
-         <children>
-
-<!--            <Pane fx:id="pnAltitude" layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">-->
-<!--               <children>-->
-<!--                  <Label fx:id="lbAltitude" layoutX="14.0" layoutY="14.0" text="Altitude">-->
-<!--                     <font>-->
-<!--                        <Font name="Segoe UI" size="24.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-                  <RocketDataLineChart fx:id="lineChartAltitude" title="Altitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )" />
-<!--               </children>-->
-<!--               <padding>-->
-<!--                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
-<!--               </padding>-->
-<!--            </Pane>-->
-<!--            <Pane fx:id="pnVelocity" layoutX="345.0" layoutY="10.0" minHeight="225.0" style="-fx-background-color: #F6F6F6;">-->
-<!--               <children>-->
-<!--                  <Label fx:id="lbVelocity" layoutX="14.0" layoutY="14.0" text="Velocity">-->
-<!--                     <font>-->
-<!--                        <Font name="Segoe UI" size="24.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-                  <RocketDataLineChart fx:id="lineChartVel" title="Velocity" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Velocity ( M/S )"/>
-<!--               </children>-->
-<!--               <padding>-->
-<!--                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
-<!--               </padding>-->
-<!--            </Pane>-->
-<!--            <Pane fx:id="pnAcceleration" layoutX="10.0" layoutY="300.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">-->
-<!--               <children>-->
-<!--                  <Label fx:id="lbAcceleration" layoutX="14.0" layoutY="14.0" text="Acceleration">-->
-<!--                     <font>-->
-<!--                        <Font name="Segoe UI" size="24.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-                  <RocketDataLineChart fx:id="lineChartAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Acceleration ( M/S^2 )" />
-<!--               </children>-->
-<!--               <padding>-->
-<!--                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
-<!--               </padding>-->
-<!--            </Pane>-->
-<!--            <Pane fx:id="pnWindDirection" layoutX="345.0" layoutY="300.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">-->
-<!--               <children>-->
-<!--                  <Label fx:id="lbWindDirection" layoutX="14.0" layoutY="14.0" text="Wind Direction">-->
-<!--                     <font>-->
-<!--                        <Font name="Segoe UI" size="24.0" />-->
-<!--                     </font>-->
-<!--                  </Label>-->
-                 <RocketDataAngle title="Wind Direction" isCompass="true" fx:id="windCompass" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
-<!--               </children>-->
-<!--               <padding>-->
-<!--                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
-<!--               </padding>-->
-<!--            </Pane>-->
-         </children>
-         <effect>
-            <DropShadow color="#00000051" />
-         </effect>
-      </AnchorPane>
-      <AnchorPane fx:id="apNav" layoutY="50.0" prefHeight="1055.0" style="-fx-background-color: #E0E0E0;">
-         <children>
-            <Pane fx:id="pnExtras" layoutX="14.0" layoutY="938.0" prefHeight="103.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
-               <children>
-                  <Button fx:id="btnPastFlights" layoutX="23.0" layoutY="13.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="218.0" text="Past Flights" />
-                  <Button fx:id="btnRunSim" layoutX="23.0" layoutY="57.0" mnemonicParsing="false" onAction="#runSim" prefHeight="32.0" prefWidth="218.0" text="Run Simulation" />
-               </children>
-            </Pane>
-            <Pane fx:id="pnDetails" layoutX="14.0" layoutY="14.0" prefHeight="115.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
-               <children>
-                  <Label fx:id="lbRocketHead" layoutX="60.0" layoutY="5.0" text="Rocket: " textAlignment="CENTER" alignment="TOP_CENTER"/>
-                  <Label fx:id="lbRocketID" layoutX="107.0" layoutY="6.0" text="***************" textAlignment="CENTER" alignment="TOP_CENTER"/>
-                  <Label fx:id="lbStateHead" layoutX="87.0" layoutY="24.0" text="Current State" textAlignment="CENTER" alignment="TOP_CENTER"/>
-                  <Label fx:id="lbState" layoutX="87.0" layoutY="43.0" text="**************" textAlignment="CENTER" alignment="TOP_CENTER"/>
-                  <Label fx:id="lbWeatherHead" layoutX="78.0" layoutY="52.0" text="Weather Condition" textAlignment="CENTER" alignment="TOP_CENTER"/>
-                  <Label fx:id="lbWeather" layoutX="89.0" layoutY="69.0" text="*************" textAlignment="CENTER" alignment="TOP_CENTER"/>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </Pane>
-            <Pane fx:id="pnNav" layoutX="14.0" layoutY="136.0" prefHeight="782.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;" />
-         </children>
-         <effect>
-            <DropShadow color="#00000051" />
-         </effect>
-      </AnchorPane>
-      <AnchorPane fx:id="apWarnings" layoutX="1680.0" layoutY="50.0" style="-fx-background-color: #E0E0E0;">
-         <children>
-            <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0" style="-fx-background-color: #F6F6F6;">
-               <children>
-                  <Label layoutX="10.0" layoutY="4.0" text="Warnings" />
-               </children>
-            </Pane>
-         </children>
-         <effect>
-            <DropShadow color="#00000051" />
-         </effect>
-      </AnchorPane>
-   </children>
+<AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="948.0" prefWidth="1909.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
+    <children>
+        <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
+            <children>
+                <Label fx:id="lblHeader" alignment="TOP_CENTER" layoutX="29.0" layoutY="11.0" prefHeight="26.0"
+                       prefWidth="1916.0" text="Mission Control Software" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="22.0"/>
+                    </font>
+                </Label>
+            </children>
+            <effect>
+                <DropShadow color="#00000080"/>
+            </effect>
+        </Pane>
+        <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" minHeight="225.0"
+                    style="-fx-background-color: #EEEEEE;">
+            <children>
+                <RocketDataLineChart fx:id="lineChartAltitude" title="Altitude" layoutX="15.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )"/>
+                <RocketDataLineChart fx:id="lineChartVel" title="Velocity" layoutX="15.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Velocity ( M/S )"/>
+                <RocketDataLineChart fx:id="lineChartAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Acceleration ( M/S^2 )"/>
+                <RocketDataAngle title="Wind Direction" isCompass="true" fx:id="windCompass" layoutX="14.0"
+                                 layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
+            </children>
+            <effect>
+                <DropShadow color="#00000051"/>
+            </effect>
+        </AnchorPane>
+        <AnchorPane fx:id="apNav" layoutY="50.0" prefHeight="1055.0" style="-fx-background-color: #E0E0E0;">
+            <children>
+                <Pane fx:id="pnExtras" layoutX="14.0" layoutY="938.0" prefHeight="103.0" prefWidth="257.0"
+                      style="-fx-background-color: #F6F6F6;">
+                    <children>
+                        <Button fx:id="btnPastFlights" layoutX="23.0" layoutY="13.0" mnemonicParsing="false"
+                                prefHeight="32.0" prefWidth="218.0" text="Past Flights"/>
+                        <Button fx:id="btnRunSim" layoutX="23.0" layoutY="57.0" mnemonicParsing="false"
+                                onAction="#runSim" prefHeight="32.0" prefWidth="218.0" text="Run Simulation"/>
+                    </children>
+                </Pane>
+                <Pane fx:id="pnDetails" layoutX="14.0" layoutY="14.0" prefHeight="115.0" prefWidth="257.0"
+                      style="-fx-background-color: #F6F6F6;">
+                    <children>
+                        <Label fx:id="lbRocketHead" layoutX="60.0" layoutY="5.0" text="Rocket: " textAlignment="CENTER"
+                               alignment="TOP_CENTER"/>
+                        <Label fx:id="lbRocketID" layoutX="107.0" layoutY="6.0" text="***************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbStateHead" layoutX="87.0" layoutY="24.0" text="Current State"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbState" layoutX="87.0" layoutY="43.0" text="**************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeatherHead" layoutX="78.0" layoutY="52.0" text="Weather Condition"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeather" layoutX="89.0" layoutY="69.0" text="*************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </Pane>
+                <Pane fx:id="pnNav" layoutX="14.0" layoutY="136.0" prefHeight="782.0" prefWidth="257.0"
+                      style="-fx-background-color: #F6F6F6;"/>
+            </children>
+            <effect>
+                <DropShadow color="#00000051"/>
+            </effect>
+        </AnchorPane>
+        <AnchorPane fx:id="apWarnings" layoutX="1680.0" layoutY="50.0" style="-fx-background-color: #E0E0E0;">
+            <children>
+                <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0"
+                      style="-fx-background-color: #F6F6F6;">
+                    <children>
+                        <Label layoutX="10.0" layoutY="4.0" text="Warnings"/>
+                    </children>
+                </Pane>
+            </children>
+            <effect>
+                <DropShadow color="#00000051"/>
+            </effect>
+        </AnchorPane>
+    </children>
 </AnchorPane>
