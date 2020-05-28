@@ -27,10 +27,12 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     ="Altitude"/>
      * }
      *
-     * @param xlabel The x label
-     * @param ylabel The y label
+     * @param xlabel    The x label
+     * @param ylabel    The y label
+     * @param title     The title of what this component is display, E.G. "Wind Direction"
      */
-    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xlabel, @NamedArg("yLabel") String ylabel) {
+    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xlabel,
+                               @NamedArg("yLabel") String ylabel) {
         super(new NumberAxis(), new NumberAxis());
         this.setTitle(title);
         this.setLegendVisible(false);

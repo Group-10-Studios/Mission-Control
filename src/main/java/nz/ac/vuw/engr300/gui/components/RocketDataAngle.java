@@ -21,7 +21,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * set to false, it will appear with standard angle markings, E.G. 0, 45, 90,
      * 135, 180, 225, 270, 315.
      * Usage: {@code
-     *  <RocketDataAngle isCompass="true"/>
+     *  <RocketDataAngle Title="Wind Direction" isCompass="true"/>
      * }
      *
      * @param isCompass Whether or not this compass is displaying an angle or a
