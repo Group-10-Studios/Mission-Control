@@ -350,13 +350,10 @@ public class HomeController implements Initializable {
      */
     private void updateGraphsVertical() {
         // Update heights of the panels
-        double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
+        double graphHeight = (pnContent.getHeight() / ROWS);
 
         // Set the graph sizes relative to the box
-        double internalChartWidth = graphHeight * 5 / 6;
-        updatePanelsToHeight(internalChartWidth, lineChartAcceleration, lineChartAltitude, lineChartVel);
-
-        updatePanelsToHeight(internalChartWidth, windCompass);
+        updatePanelsToHeight(graphHeight, allGraphs());
 
         // Set position relative to above row
         updatePanelPositionOffsetVertical(lineChartAcceleration, lineChartVel, 10.0);
@@ -444,21 +441,9 @@ public class HomeController implements Initializable {
         pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
 
         // Only the length internally excluding the offset
-        double graphWidth = ((pnContent.getWidth() - STANDARD_OFFSET) / ROWS) - STANDARD_OFFSET;
+        double graphWidth = (pnContent.getWidth()) / COLS;
 
-        updatePanelsToWidth(graphWidth, lineChartAltitude, lineChartVel, lineChartAcceleration, windCompass);
-        double internalChartWidth = graphWidth - STANDARD_OFFSET;
-        lineChartAcceleration.setMaxWidth(internalChartWidth);
-        lineChartAltitude.setMaxWidth(internalChartWidth);
-        lineChartVel.setMaxWidth(internalChartWidth);
-        windCompass.setMaxWidth(internalChartWidth);
-        // Set left most graph x positions - not relative to anything
-        updatePanelPositionOffset(lineChartAcceleration, null, STANDARD_OFFSET);
-        updatePanelPositionOffset(lineChartVel, null, STANDARD_OFFSET);
-
-        // Set the right graph x positions - relative to velocity graph
-        updatePanelPositionOffset(lineChartAltitude, lineChartVel, STANDARD_OFFSET);
-        updatePanelPositionOffset(windCompass, lineChartAcceleration, STANDARD_OFFSET);
+        updatePanelsToWidth(graphWidth, allGraphs());
     }
 
     /**
@@ -546,4 +531,12 @@ public class HomeController implements Initializable {
         thisPanel.setLayoutY(relativePanel.getLayoutY() + relativePanel.getHeight() + offset);
     }
 
+    /**
+     * Get all the graphs from pnContent in Region format.
+     * 
+     * @return Region array of graphs.
+     */
+    private Region[] allGraphs() {
+        return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
+    }
 }
