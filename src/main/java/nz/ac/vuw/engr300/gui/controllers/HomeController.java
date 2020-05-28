@@ -25,8 +25,10 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javax.swing.JFileChooser;
@@ -49,6 +51,7 @@ public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
     private static final double ROWS = 2;
+    private static final double COLS = 2;
 
     @FXML
     public RocketDataAngle windCompass;
@@ -185,6 +188,26 @@ public class HomeController implements Initializable {
         this.graphs.add(lineChartAltitude);
         this.graphs.add(lineChartVel);
         this.graphs.add(windCompass);
+        // Initialize the graph table.
+        buildTable();
+    }
+    
+    /**
+     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the screen.
+     */
+    private void buildTable() {
+        int graphNo = 0;
+        VBox rowBox = new VBox(ROWS);
+        for (int i = 0; i < ROWS; i++) {
+            HBox colBox = new HBox(COLS);
+            for (int j = 0; j < COLS; j++) {
+                colBox.getChildren().add((Region) this.graphs.get(graphNo++));
+            }
+            rowBox.getChildren().add(colBox);
+        }
+        
+        pnContent.getChildren().clear();
+        pnContent.getChildren().add(rowBox);
     }
 
     /**
