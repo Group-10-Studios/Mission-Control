@@ -27,9 +27,9 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * @param isCompass Whether or not this compass is displaying an angle or a
      *                  direction.
      */
-    public RocketDataAngle(@NamedArg("isCompass") boolean isCompass) {
+    public RocketDataAngle(@NamedArg("title") String title, @NamedArg("isCompass") boolean isCompass) {
         super();
-
+        this.setTitle(title);
         // Make it pretty!
         this.setBorderPaint(Gauge.DARK_COLOR);
         this.setMinValue(0);

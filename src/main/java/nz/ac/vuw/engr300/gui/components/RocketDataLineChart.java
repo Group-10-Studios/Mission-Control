@@ -30,8 +30,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
      * @param xlabel The x label
      * @param ylabel The y label
      */
-    public RocketDataLineChart(@NamedArg("xLabel") String xlabel, @NamedArg("yLabel") String ylabel) {
+    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xlabel, @NamedArg("yLabel") String ylabel) {
         super(new NumberAxis(), new NumberAxis());
+        this.setTitle(title);
         this.setLegendVisible(false);
         this.getXAxis().setLabel(xlabel);
         this.getYAxis().setLabel(ylabel);

@@ -37,7 +37,7 @@
                         <Font name="Segoe UI" size="24.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartAltitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )" />
+                  <RocketDataLineChart fx:id="lineChartAltitude" title="Altitude" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -50,7 +50,7 @@
                         <Font name="Segoe UI" size="24.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartVel" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Velocity ( M/S )"/>
+                  <RocketDataLineChart fx:id="lineChartVel" title="Velocity" layoutX="15.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Velocity ( M/S )"/>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -63,7 +63,7 @@
                         <Font name="Segoe UI" size="24.0" />
                      </font>
                   </Label>
-                  <RocketDataLineChart fx:id="lineChartAcceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Acceleration ( M/S^2 )" />
+                  <RocketDataLineChart fx:id="lineChartAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Acceleration ( M/S^2 )" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -76,7 +76,7 @@
                         <Font name="Segoe UI" size="24.0" />
                      </font>
                   </Label>
-                 <RocketDataAngle isCompass="true" fx:id="windCompass" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
+                 <RocketDataAngle title="Wind Direction" isCompass="true" fx:id="windCompass" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
