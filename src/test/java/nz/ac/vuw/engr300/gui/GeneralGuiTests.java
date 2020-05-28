@@ -58,7 +58,7 @@ public class GeneralGuiTests {
      * @param robot The robot injected to run tests
      */
     @Test
-    public void checkVisibilityOfGraphs(FxRobot robot){
+    public void check_visibility_of_graphs(FxRobot robot){
         RocketDataLineChart velocityChart = robot.lookup("#lineChartVel").queryAs(RocketDataLineChart.class);
         RocketDataLineChart altitudeChart = robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class);
         RocketDataLineChart accelerationChart = robot.lookup("#lineChartAcceleration").queryAs(RocketDataLineChart.class);
