@@ -15,18 +15,18 @@ public enum GraphType {
      * @return String label to represent the graph type.
      */
     public String getLabel() {
-	switch (this) {
-	case VELOCITY:
-	    return "Velocity";
-	case ACCELERATION:
-	    return "Acceleration";
-	case ALTITUDE:
-	    return "Altitude";
-	case WINDDIRECTION:
-		return "Wind Direction";
-	default:
-	    return "Invalid GraphType";
-	}
+        switch (this) {
+            case VELOCITY:
+                return "Velocity";
+            case ACCELERATION:
+                return "Acceleration";
+            case ALTITUDE:
+                return "Altitude";
+            case WINDDIRECTION:
+                return "Wind Direction";
+            default:
+                return "Invalid GraphType";
+        }
     }
 
     /**
@@ -37,17 +37,17 @@ public enum GraphType {
      * @return GraphType which matches the value of the label.
      */
     public static GraphType fromLabel(String label) {
-	switch (label) {
-	case "Velocity":
-	    return VELOCITY;
-	case "Acceleration":
-	    return ACCELERATION;
-	case "Altitude":
-	    return ALTITUDE;
-	case "Wind Direction":
-		return WINDDIRECTION;
-	default:
-	    return null;
-	}
+        switch (label) {
+            case "Velocity":
+                return VELOCITY;
+            case "Acceleration":
+                return ACCELERATION;
+            case "Altitude":
+                return ALTITUDE;
+            case "Wind Direction":
+                return WINDDIRECTION;
+            default:
+                return null;
+        }
     }
 }

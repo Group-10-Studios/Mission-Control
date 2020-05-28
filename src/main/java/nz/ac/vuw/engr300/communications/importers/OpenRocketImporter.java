@@ -1,53 +1,57 @@
 package nz.ac.vuw.engr300.communications.importers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import nz.ac.vuw.engr300.communications.model.RocketData;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
- * Simple implementation of the template interface, used for importing and stream any of the dummy data files provided
+ * Simple implementation of the template interface, used for importing and
+ * stream any of the dummy data files provided.
+ * 
  * @author Tim Salisbury
  */
 public class OpenRocketImporter implements RocketDataImporter {
 
-    private static final Pattern EVENT_REGEX = Pattern.compile("^# Event (\\w+) occurred at t=(\\d*\\.?\\d*?) seconds$");
+    private static final Pattern EVENT_REGEX = Pattern
+            .compile("^# Event (\\w+) occurred at t=(\\d*\\.?\\d*?) seconds$");
     private static final Pattern STATUS_REGEX = Pattern.compile("^(((-?\\d*\\.?\\d*(e-?\\d*)?)\\s*)|NaN)+$");
-//    private static final Pattern HEADER_REGEX = Pattern.compile("#.*Time \\(s\\).*Altitude \\(m\\).*Total velocity \\(m/s\\).*Total acceleration \\(m/s²\\).*Latitude \\(°\\).*Longitude \\(°\\).*Angle of attack \\(°\\)\\n");
-    private static final List<String> REQUIRED_VALUES = Arrays.asList(
-        "Time (s)",
-        "Altitude (m)",
-        "Total velocity (m/s)",
-        "Total acceleration (m/s²)",
-        "Latitude (°)",
-        "Longitude (°)",
-        "Angle of attack (°)"
-    );
+    // Note requires to be split like this for checkstyle
+    // private static final Pattern HEADER_REGEX = Pattern.compile("#.*Time
+    // \\(s\\).*Altitude \\(m\\).*Total
+    // velocity \\(m/s\\).*Total acceleration \\(m/s²\\).*Latitude \\(°\\).
+    // *Longitude \\(°\\).*Angle of attack \\(°\\)\\n");
+    private static final List<String> REQUIRED_VALUES = Arrays.asList("Time (s)", "Altitude (m)",
+            "Total velocity (m/s)", "Total acceleration (m/s²)", "Latitude (°)", "Longitude (°)",
+            "Angle of attack (°)");
 
     private volatile boolean streamRunning = false;
 
     private static final Pattern HEADER_REGEX;
 
-    static{
+    static {
         StringBuilder headerlineBuilder = new StringBuilder();
         headerlineBuilder.append("#.*");
-        REQUIRED_VALUES.forEach(value->{
+        REQUIRED_VALUES.forEach(value -> {
             headerlineBuilder.append(value).append(".*");
         });
 
-//        headerlineBuilder.append("\\n");
+        // headerlineBuilder.append("\\n");
 
         String pattern = headerlineBuilder.toString();
-        pattern = pattern.replaceAll("\\(","\\\\(");
-        pattern = pattern.replaceAll("\\)","\\\\)");
+        pattern = pattern.replaceAll("\\(", "\\\\(");
+        pattern = pattern.replaceAll("\\)", "\\\\)");
         HEADER_REGEX = Pattern.compile(pattern);
     }
 
@@ -59,9 +63,10 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     /**
-     * Imports the data given in the file path and populates the data array with said data
+     * Imports the data given in the file path and populates the data array with
+     * said data.
      *
-     * @param filePath  The path of the file to import data from
+     * @param filePath The path of the file to import data from
      */
     public void importData(String filePath) {
         data.clear();
@@ -71,14 +76,14 @@ public class OpenRocketImporter implements RocketDataImporter {
             reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
         } catch (FileNotFoundException e) {
             throw new IllegalArgumentException("Invalid file name provided.", e);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IllegalArgumentException("Invalid encoding.", e);
         }
         int[] parameterIndices = getParameterIndicesFromHeader(reader);
         String line;
-        while(true){
+        while (true) {
             try {
-                if ((line = reader.readLine()) == null){
+                if ((line = reader.readLine()) == null) {
                     break;
                 }
             } catch (IOException e) {
@@ -88,21 +93,16 @@ public class OpenRocketImporter implements RocketDataImporter {
             Matcher statusRegexMatcher = STATUS_REGEX.matcher(line);
             Matcher eventRegexMatcher = EVENT_REGEX.matcher(line);
 
-            if(statusRegexMatcher.find()){
-                double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble).mapToDouble(Double::doubleValue).toArray();
-                data.add(new RocketStatus(
-                        values[parameterIndices[0]],
-                        values[parameterIndices[1]],
-                        values[parameterIndices[2]],
-                        values[parameterIndices[3]],
-                        values[parameterIndices[4]],
+            if (statusRegexMatcher.find()) {
+                double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble)
+                        .mapToDouble(Double::doubleValue).toArray();
+                data.add(new RocketStatus(values[parameterIndices[0]], values[parameterIndices[1]],
+                        values[parameterIndices[2]], values[parameterIndices[3]], values[parameterIndices[4]],
                         values[parameterIndices[5]],
-                        Double.isNaN(values[parameterIndices[6]]) ? 0 : values[parameterIndices[6]]
-                ));
-            }else if(eventRegexMatcher.find()){
-                data.add(new RocketEvent(
-                        RocketEvent.EventType.valueOf(eventRegexMatcher.group(1)),    //Event type
-                        Double.parseDouble(eventRegexMatcher.group(2))                //Event time
+                        Double.isNaN(values[parameterIndices[6]]) ? 0 : values[parameterIndices[6]]));
+            } else if (eventRegexMatcher.find()) {
+                data.add(new RocketEvent(RocketEvent.EventType.valueOf(eventRegexMatcher.group(1)), // Event type
+                        Double.parseDouble(eventRegexMatcher.group(2)) // Event time
                 ));
             }
         }
@@ -114,26 +114,29 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     /**
-     * Finds the header line from the given reader, then extracts the indices of the columns in the CSV of the
-     * attributes that Mission Control requires.
+     * Finds the header line from the given reader, then extracts the indices of the
+     * columns in the CSV of the attributes that Mission Control requires.
      *
-     * @param reader    The buffered reader to find the header line in
-     * @return          The indices of the attributes that mission control requires
+     * @param reader The buffered reader to find the header line in
+     * @return The indices of the attributes that mission control requires
      */
-    private int[] getParameterIndicesFromHeader(BufferedReader reader){
+    private int[] getParameterIndicesFromHeader(BufferedReader reader) {
         String line;
-        while(true){
-            try{
-                if((line = reader.readLine()) == null) break;
-            }catch (IOException e){
+        while (true) {
+            try {
+                if ((line = reader.readLine()) == null) {
+                    break;
+                }
+            } catch (IOException e) {
                 break;
             }
 
             Matcher headerlineMatcher = HEADER_REGEX.matcher(line);
 
-            if(headerlineMatcher.find()){
+            if (headerlineMatcher.find()) {
                 String[] splitValues = line.toLowerCase().substring(2).split("\t");
-                return REQUIRED_VALUES.stream().map(value-> Arrays.asList(splitValues).indexOf(value.toLowerCase())).mapToInt(Integer::intValue).toArray();
+                return REQUIRED_VALUES.stream().map(value -> Arrays.asList(splitValues).indexOf(value.toLowerCase()))
+                        .mapToInt(Integer::intValue).toArray();
             }
 
         }
@@ -146,32 +149,34 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     /**
-     * Starts the stream of data to all of the subscribed clients
+     * Starts the stream of data to all of the subscribed clients.
      */
-    public void start(){
+    public void start() {
         this.streamRunning = true;
-        new Thread(()->{
-            try{
+        new Thread(() -> {
+            try {
                 long previousTime = 0;
                 List<RocketData> dataCopy = new ArrayList<>(this.data);
                 for (RocketData data : dataCopy) {
-                    if(!streamRunning) break;
-                    long currentTime = (long)(data.getTime() * 1000);
+                    if (!streamRunning) {
+                        break;
+                    }
+                    long currentTime = (long) (data.getTime() * 1000);
                     Thread.sleep(currentTime - previousTime);
-                    observers.forEach((observer)->observer.accept(data));
+                    observers.forEach((observer) -> observer.accept(data));
                     previousTime = currentTime;
                 }
                 this.streamRunning = false;
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }).start();
     }
 
     /**
-     * Stops the stream of data to subscribed clients
+     * Stops the stream of data to subscribed clients.
      */
-    public void stop(){
+    public void stop() {
         this.streamRunning = false;
     }
 
@@ -181,7 +186,7 @@ public class OpenRocketImporter implements RocketDataImporter {
     }
 
     @Override
-    public void unsubscribeObserver(Consumer<RocketData> observer){
+    public void unsubscribeObserver(Consumer<RocketData> observer) {
         this.observers.remove(observer);
     }
 }
