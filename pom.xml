@@ -53,6 +53,11 @@
 			<artifactId>javafx-fxml</artifactId>
 			<version>13</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.hansolo</groupId>
+			<artifactId>Medusa</artifactId>
+			<version>7.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

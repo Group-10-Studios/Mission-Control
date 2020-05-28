@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
@@ -15,6 +16,7 @@ import java.io.FileNotFoundException;
 
 public class WeatherController {
 
+    private final RocketDataAngle windCompass;
     /**
      * Represents a separate weather controller in the GUI
      * @author: Nalin Aswani
@@ -22,8 +24,9 @@ public class WeatherController {
      */
     @FXML private Label lbWindSpeed;
 
-    public WeatherController(Label wl) {
+    public WeatherController(Label wl, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
+        this.windCompass = windCompass;
     }
 
     /**
@@ -35,10 +38,11 @@ public class WeatherController {
         try {
             WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
             WeatherData w = wi.getWeather(0);
-            
+
             // windspeed's unit extracted from weather data is meter per second
             // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 = windpseed * 3.6
             Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
+            windCompass.setAngle(w.getWindAngle());
             lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
         } catch (FileNotFoundException e) {
             e.printStackTrace();

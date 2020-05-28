@@ -11,6 +11,8 @@
 
 <?import nz.ac.vuw.engr300.gui.components.RocketDataLineChart?>
 
+<?import nz.ac.vuw.engr300.gui.components.RocketDataAngle?>
+<?import eu.hansolo.medusa.Gauge?>
 <AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="948.0" prefWidth="1909.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
    <children>
       <Pane fx:id="pnBanner" prefHeight="50.0" prefWidth="1973.0" style="-fx-background-color: #4267B2;">
@@ -62,6 +64,19 @@
                      </font>
                   </Label>
                   <RocketDataLineChart fx:id="lineChartAcceleration" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Acceleration ( M/S^2 )" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Pane>
+            <Pane fx:id="pnWindDirection" layoutX="345.0" layoutY="300.0" prefHeight="370.0" prefWidth="647.0" style="-fx-background-color: #F6F6F6;">
+               <children>
+                  <Label fx:id="lbWindDirection" layoutX="14.0" layoutY="14.0" text="Wind Direction">
+                     <font>
+                        <Font name="Segoe UI" size="24.0" />
+                     </font>
+                  </Label>
+                 <RocketDataAngle isCompass="true" fx:id="windCompass" layoutX="14.0" layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

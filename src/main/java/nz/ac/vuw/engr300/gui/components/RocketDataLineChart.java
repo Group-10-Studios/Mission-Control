@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * A component that displays rocket data (two double values) as a line graph.
  *
- * @author Tim
+ * @author Tim Salisbury
  */
 public class RocketDataLineChart extends LineChart<Number, Number> {
 
