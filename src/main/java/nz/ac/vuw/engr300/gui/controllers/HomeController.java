@@ -230,8 +230,10 @@ public class HomeController implements Initializable {
     private void buildTable() {
         int graphNo = 0;
         VBox rowBox = new VBox(ROWS);
+        rowBox.setSpacing(0);
         for (int i = 0; i < ROWS; i++) {
             HBox colBox = new HBox(COLS);
+            colBox.setSpacing(0);
             for (int j = 0; j < COLS; j++) {
                 if (graphNo >= this.graphs.size()) {
                     break;
@@ -318,9 +320,7 @@ public class HomeController implements Initializable {
                                 JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    lineChartTotalAcceleration.clear();
-                    lineChartAltitude.clear();
-                    lineChartTotalVelocity.clear();
+                    graphs.forEach(g -> g.clear());
                     simulationImporter.start();
                 }
             }

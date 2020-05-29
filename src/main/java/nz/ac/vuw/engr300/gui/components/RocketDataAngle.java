@@ -91,6 +91,12 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
     public String getUserAgentStylesheet() {
         return Gauge.class.getResource("gauge.css").toExternalForm();
     }
+    
+    @Override
+    public void clear() {
+        // Do nothing for now - not needed.
+        return;
+    }
 
     @Override
     public void setGraphType(GraphType g) {

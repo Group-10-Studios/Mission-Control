@@ -55,9 +55,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
     }
 
-    /**
-     * Clears the current graph, and resets the X scale.
-     */
+    @Override
     public void clear() {
         this.series.getData().clear();
         ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
