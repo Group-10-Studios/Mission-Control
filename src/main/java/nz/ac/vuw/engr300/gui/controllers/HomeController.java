@@ -134,7 +134,7 @@ public class HomeController implements Initializable {
     /**
      * This is the initialize method that is called to build the root before
      * starting the javafx project.
-     * 
+     *
      * @param url The location used to resolve relative paths for the root object,
      *            or null if the location is not known.
      * @param rb  The resources used to localize the root object, or null if the
@@ -202,7 +202,9 @@ public class HomeController implements Initializable {
         for (int i = 0; i < ROWS; i++) {
             HBox colBox = new HBox(COLS);
             for (int j = 0; j < COLS; j++) {
-                if(graphNo >= this.graphs.size()) break;
+                if (graphNo >= this.graphs.size()) {
+                    break;
+                }
                 colBox.getChildren().add((Region) this.graphs.get(graphNo++));
             }
             rowBox.getChildren().add(colBox);
@@ -229,7 +231,7 @@ public class HomeController implements Initializable {
                     Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
                         chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                        new CornerRadii(5.0), new BorderWidths(2.0))));
+                                new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
@@ -282,7 +284,7 @@ public class HomeController implements Initializable {
                         simulationImporter.importData(file.getAbsolutePath());
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                        JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     lineChartAcceleration.clear();
@@ -304,20 +306,20 @@ public class HomeController implements Initializable {
 
     /**
      * Scaling all the panel heights according to the current window size.
-     * 
+     *
      * @param root The root pane the UI is all under.
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                            updatePanelPositionsVertical(root, t1);
-                        });
+                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                    updatePanelPositionsVertical(root, t1);
+                });
 
     }
 
     /**
      * Update the panel's positions to dynamically match the new application height.
-     * 
+     *
      * @param rootPanel Region provided from the root panel within the listener.
      * @param newHeight New height value of the root panel.
      */
@@ -360,19 +362,19 @@ public class HomeController implements Initializable {
 
     /**
      * Scaling all the panel widths according to the current window size.
-     * 
+     *
      * @param root The root pane the UI is all under.
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                            updatePanelPositions(root, t1);
-                        });
+                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                    updatePanelPositions(root, t1);
+                });
     }
 
     /**
      * Update the panel positions to dynamically match the new application width.
-     * 
+     *
      * @param rootPanel Region provided from the root panel within the listener.
      * @param newWidth  New width value of the root panel.
      */
@@ -392,7 +394,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the left panel to dynamically fit within the
      * screen.
-     * 
+     *
      * @param sidePanelWidth The expected width of the side panel.
      */
     private void updateLeftPanel(double sidePanelWidth) {
@@ -409,14 +411,14 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                        lbWeatherHead);
+                lbWeatherHead);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
@@ -428,7 +430,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the middle panel to dynamically fit within the
      * screen.
-     * 
+     *
      * @param width Total width of the application which will determine the internal
      *              widths.
      */
@@ -447,7 +449,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the right side panel to dynamically fit within
      * the screen.
-     * 
+     *
      * @param sidePanelWidth The expected width of the side panel.
      */
     private void updateRightPanel(double sidePanelWidth) {
@@ -461,7 +463,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update all of the provided panels preferred width to the value provided.
-     * 
+     *
      * @param width  Preferred width to set all panels to.
      * @param panels Array of panels to set the preferred width on.
      */
@@ -474,7 +476,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update all of the provided panels preferred height to the value provided.
-     * 
+     *
      * @param height Preferred height to set all panels to.
      * @param panels Array of panels to set the preferred height on.
      */
@@ -489,7 +491,7 @@ public class HomeController implements Initializable {
      * Update the panel position based on the relative position of the other panel.
      * This can offset thisPanel by the correct amount to not overlap relativePanel.
      * This works on the x axis.
-     * 
+     *
      * @param thisPanel     The panel to update the x position of based on the
      *                      relativePanel.
      * @param relativePanel Relative panel to position thisPanel against based on
@@ -511,7 +513,7 @@ public class HomeController implements Initializable {
      * Update the panel position based on the relative position of the other panel.
      * This can offset thisPanel by the correct amount to not overlap relativePanel.
      * This works on the y axis.
-     * 
+     *
      * @param thisPanel     The panel to update the y position of based on the
      *                      relativePanel.
      * @param relativePanel Relative panel to position thisPanel against based on
@@ -531,7 +533,7 @@ public class HomeController implements Initializable {
 
     /**
      * Get all the graphs from pnContent in Region format.
-     * 
+     *
      * @return Region array of graphs.
      */
     private Region[] allGraphs() {
