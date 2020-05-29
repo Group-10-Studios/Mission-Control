@@ -11,11 +11,11 @@ public enum GraphType {
     X_VELOCITY("X Velocity"),
     Y_VELOCITY("Y Velocity"),
     Z_VELOCITY("Z Velocity"),
-    ALTITUDE("Altitude"),
     TOTAL_ACCELERATION("Total Acceleration"),
     X_ACCELERATION("X Acceleration"),
     Y_ACCELERATION("Y Acceleration"),
     Z_ACCELERATION("Z Acceleration"),
+    ALTITUDE("Altitude"),
     WINDDIRECTION("Wind Direction");
 
 

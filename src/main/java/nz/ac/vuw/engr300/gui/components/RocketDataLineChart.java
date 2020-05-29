@@ -30,18 +30,16 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely
      * initialized in fxml code. For example, {@code
-     *      <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel
+     *      <RocketDataLineChart xLabel="Time (s)" yLabel
     ="Altitude"/>
      * }
      *
      * @param xlabel    The x label
      * @param ylabel    The y label
-     * @param title     The title of what this component is display, E.G. "Wind Direction"
      */
-    public RocketDataLineChart(@NamedArg("title") String title, @NamedArg("xLabel") String xlabel,
+    public RocketDataLineChart(@NamedArg("xLabel") String xlabel,
                                @NamedArg("yLabel") String ylabel) {
         super(new NumberAxis(), new NumberAxis());
-        this.setTitle(title);
         this.setLegendVisible(false);
         this.getXAxis().setLabel(xlabel);
         this.getYAxis().setLabel(ylabel);
@@ -82,6 +80,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     @Override
     public void setGraphType(GraphType g) {
         this.type = g;
+        this.setTitle(g.getLabel());
     }
 
     @Override

@@ -32,37 +32,6 @@
         <AnchorPane fx:id="pnContent" layoutX="294.0" layoutY="50.0" minHeight="225.0"
                     style="-fx-background-color: #EEEEEE;">
             <children>
-                <RocketDataLineChart fx:id="lineChartAltitude" title="Altitude" layoutX="15.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )"/>
-                <RocketDataLineChart fx:id="lineChartTotalVelocity" title="Velocity" layoutX="15.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartTotalAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Acceleration ( M/S^2 )"/>
-
-                <RocketDataLineChart fx:id="lineChartAccelerationX" title="Acceleration X" layoutX="14.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Acceleration ( M/S^2 )"/>
-                <RocketDataLineChart fx:id="lineChartAccelerationY" title="Acceleration Y" layoutX="14.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Acceleration ( M/S^2 )"/>
-                <RocketDataLineChart fx:id="lineChartAccelerationZ" title="Acceleration Z" layoutX="14.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Acceleration ( M/S^2 )"/>
-
-                <RocketDataLineChart fx:id="lineChartVelocityX" title="Velocity X" layoutX="15.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartVelocityY" title="Velocity Y" layoutX="15.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartVelocityZ" title="Velocity Z" layoutX="15.0" layoutY="68.0"
-                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
-                                     yLabel="Velocity ( M/S )"/>
-
-                <RocketDataAngle title="Wind Direction" isCompass="true" fx:id="windCompass" layoutX="14.0"
-                                 layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
             </children>
             <effect>
                 <DropShadow color="#00000051"/>

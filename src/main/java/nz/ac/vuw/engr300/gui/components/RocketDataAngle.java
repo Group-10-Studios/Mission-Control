@@ -26,15 +26,14 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * set to false, it will appear with standard angle markings, E.G. 0, 45, 90,
      * 135, 180, 225, 270, 315.
      * Usage: {@code
-     * <RocketDataAngle Title="Wind Direction" isCompass="true"/>
+     * <RocketDataAngle isCompass="true"/>
      * }
      *
      * @param isCompass Whether or not this compass is displaying an angle or a
      *                  direction.
      */
-    public RocketDataAngle(@NamedArg("title") String title, @NamedArg("isCompass") boolean isCompass) {
+    public RocketDataAngle(@NamedArg("isCompass") boolean isCompass) {
         super();
-        this.setTitle(title);
         // Make it pretty!
         this.setBorderPaint(Gauge.DARK_COLOR);
         this.setMinValue(0);
@@ -96,6 +95,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
     @Override
     public void setGraphType(GraphType g) {
         this.type = g;
+        this.setTitle(g.getLabel());
     }
 
     @Override

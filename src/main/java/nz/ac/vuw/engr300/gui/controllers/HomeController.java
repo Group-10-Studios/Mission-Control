@@ -54,31 +54,31 @@ public class HomeController implements Initializable {
     private static final double COLS = 4;
 
     @FXML
-    public RocketDataAngle windCompass;
+    public RocketDataAngle windCompass = new RocketDataAngle(true);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
     @FXML
     Label weatherLabel;
     @FXML
-    public RocketDataLineChart lineChartAltitude;
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )");
     @FXML
-    public RocketDataLineChart lineChartTotalVelocity;
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
     @FXML
-    public RocketDataLineChart lineChartTotalAcceleration;
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
 
     @FXML
-    public RocketDataLineChart lineChartVelocityX;
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
     @FXML
-    public RocketDataLineChart lineChartVelocityY;
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
     @FXML
-    public RocketDataLineChart lineChartVelocityZ;
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
     @FXML
-    public RocketDataLineChart lineChartAccelerationX;
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
     @FXML
-    public RocketDataLineChart lineChartAccelerationY;
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
     @FXML
-    public RocketDataLineChart lineChartAccelerationZ;
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
 
     @FXML
     Label lbWeather;
@@ -196,7 +196,7 @@ public class HomeController implements Initializable {
         lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
         lineChartAccelerationX.setGraphType(GraphType.X_ACCELERATION);
         lineChartAccelerationY.setGraphType(GraphType.Y_ACCELERATION);
-        lineChartAccelerationY.setGraphType(GraphType.Z_ACCELERATION);
+        lineChartAccelerationZ.setGraphType(GraphType.Z_ACCELERATION);
 
 
         lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
