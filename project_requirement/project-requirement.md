@@ -287,6 +287,34 @@ rectangle "Mission Control" {
 @enduml
 ```
 
+#### Highlight a graph on the UI
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+  user -- (Click graph title in sidepanel)
+  (Click graph title in sidepanel) -> (Highlight Graph)
+}
+@enduml
+```
+
+#### Adjust Graph Order
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+  user -- (Drag a graph title in sidepanel)
+  (Drag a graph title in sidepanel) -> (Highlight Graph)
+  (Drag a graph title in sidepanel) -> (Redraw Graphs to match title order)
+}
+@enduml
+```
+
+
 ### 3.3 Usability Requirements
 
 See 9.5.12. for most systems this will be around one page.
