@@ -202,6 +202,7 @@ public class HomeController implements Initializable {
         for (int i = 0; i < ROWS; i++) {
             HBox colBox = new HBox(COLS);
             for (int j = 0; j < COLS; j++) {
+                if(graphNo >= this.graphs.size()) break;
                 colBox.getChildren().add((Region) this.graphs.get(graphNo++));
             }
             rowBox.getChildren().add(colBox);
