@@ -50,8 +50,8 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 2;
-    private static final double COLS = 2;
+    private static final double ROWS = 3;
+    private static final double COLS = 4;
 
     @FXML
     public RocketDataAngle windCompass;
@@ -63,16 +63,16 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataLineChart lineChartAltitude;
     @FXML
-    public RocketDataLineChart lineChartVel;
+    public RocketDataLineChart lineChartTotalVelocity;
     @FXML
-    public RocketDataLineChart lineChartAcceleration;
+    public RocketDataLineChart lineChartTotalAcceleration;
 
     @FXML
-    public RocketDataLineChart lineChartVelX;
+    public RocketDataLineChart lineChartVelocityX;
     @FXML
-    public RocketDataLineChart lineChartVelY;
+    public RocketDataLineChart lineChartVelocityY;
     @FXML
-    public RocketDataLineChart lineChartVelZ;
+    public RocketDataLineChart lineChartVelocityZ;
     @FXML
     public RocketDataLineChart lineChartAccelerationX;
     @FXML
@@ -138,8 +138,8 @@ public class HomeController implements Initializable {
         simulationImporter.subscribeObserver((data) -> {
             if (data instanceof RocketStatus) {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+                lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
+                lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
             }
         });
     }
@@ -191,15 +191,33 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
         lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-        lineChartVel.setGraphType(GraphType.TOTAL_VELOCITY);
+
+        lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
+        lineChartAccelerationX.setGraphType(GraphType.X_ACCELERATION);
+        lineChartAccelerationY.setGraphType(GraphType.Y_ACCELERATION);
+        lineChartAccelerationY.setGraphType(GraphType.Z_ACCELERATION);
+
+
+        lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
+        lineChartVelocityX.setGraphType(GraphType.X_VELOCITY);
+        lineChartVelocityY.setGraphType(GraphType.Y_VELOCITY);
+        lineChartVelocityZ.setGraphType(GraphType.Z_VELOCITY);
+
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
-        this.graphs.add(lineChartVel);
+        this.graphs.add(lineChartTotalVelocity);
+        this.graphs.add(lineChartVelocityX);
+        this.graphs.add(lineChartVelocityY);
+        this.graphs.add(lineChartVelocityZ);
+
+        this.graphs.add(lineChartTotalAcceleration);
+        this.graphs.add(lineChartAccelerationX);
+        this.graphs.add(lineChartAccelerationY);
+        this.graphs.add(lineChartAccelerationZ);
+
         this.graphs.add(lineChartAltitude);
-        this.graphs.add(lineChartAcceleration);
         this.graphs.add(windCompass);
         // Initialize the graph table.
         buildTable();
@@ -300,9 +318,9 @@ public class HomeController implements Initializable {
                                 JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    lineChartAcceleration.clear();
+                    lineChartTotalAcceleration.clear();
                     lineChartAltitude.clear();
-                    lineChartVel.clear();
+                    lineChartTotalVelocity.clear();
                     simulationImporter.start();
                 }
             }

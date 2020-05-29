@@ -42,8 +42,8 @@ public enum GraphType {
      * @return GraphType which matches the value of the label.
      */
     public static GraphType fromLabel(String label) {
-        for(GraphType type : values()){
-            if(type.label.equals(label)){
+        for (GraphType type : values()) {
+            if (type.label.equals(label)) {
                 return type;
             }
         }

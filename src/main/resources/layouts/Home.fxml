@@ -34,10 +34,10 @@
             <children>
                 <RocketDataLineChart fx:id="lineChartAltitude" title="Altitude" layoutX="15.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )" yLabel="Altitude ( M )"/>
-                <RocketDataLineChart fx:id="lineChartVel" title="Velocity" layoutX="15.0" layoutY="68.0"
+                <RocketDataLineChart fx:id="lineChartTotalVelocity" title="Velocity" layoutX="15.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0"
+                <RocketDataLineChart fx:id="lineChartTotalAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Acceleration ( M/S^2 )"/>
 
@@ -51,13 +51,13 @@
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Acceleration ( M/S^2 )"/>
 
-                <RocketDataLineChart fx:id="lineChartVelX" title="Velocity X" layoutX="15.0" layoutY="68.0"
+                <RocketDataLineChart fx:id="lineChartVelocityX" title="Velocity X" layoutX="15.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartVelY" title="Velocity Y" layoutX="15.0" layoutY="68.0"
+                <RocketDataLineChart fx:id="lineChartVelocityY" title="Velocity Y" layoutX="15.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Velocity ( M/S )"/>
-                <RocketDataLineChart fx:id="lineChartVelZ" title="Velocity Z" layoutX="15.0" layoutY="68.0"
+                <RocketDataLineChart fx:id="lineChartVelocityZ" title="Velocity Z" layoutX="15.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Velocity ( M/S )"/>
 
