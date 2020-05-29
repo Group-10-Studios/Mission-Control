@@ -40,6 +40,27 @@
                 <RocketDataLineChart fx:id="lineChartAcceleration" title="Acceleration" layoutX="14.0" layoutY="68.0"
                                      prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
                                      yLabel="Acceleration ( M/S^2 )"/>
+
+                <RocketDataLineChart fx:id="lineChartAccelerationX" title="Acceleration X" layoutX="14.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Acceleration ( M/S^2 )"/>
+                <RocketDataLineChart fx:id="lineChartAccelerationY" title="Acceleration Y" layoutX="14.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Acceleration ( M/S^2 )"/>
+                <RocketDataLineChart fx:id="lineChartAccelerationZ" title="Acceleration Z" layoutX="14.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Acceleration ( M/S^2 )"/>
+
+                <RocketDataLineChart fx:id="lineChartVelX" title="Velocity X" layoutX="15.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Velocity ( M/S )"/>
+                <RocketDataLineChart fx:id="lineChartVelY" title="Velocity Y" layoutX="15.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Velocity ( M/S )"/>
+                <RocketDataLineChart fx:id="lineChartVelZ" title="Velocity Z" layoutX="15.0" layoutY="68.0"
+                                     prefHeight="288.0" prefWidth="617.0" xLabel="Time ( S )"
+                                     yLabel="Velocity ( M/S )"/>
+
                 <RocketDataAngle title="Wind Direction" isCompass="true" fx:id="windCompass" layoutX="14.0"
                                  layoutY="68.0" prefHeight="288.0" prefWidth="617.0"/>
             </children>
