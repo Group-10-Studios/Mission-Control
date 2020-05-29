@@ -7,7 +7,7 @@ package nz.ac.vuw.engr300.gui.model;
  * @author Nathan Duckett
  */
 public enum GraphType {
-    VELOCITY, ALTITUDE, ACCELERATION, WINDDIRECTION;
+    TOTAL_VELOCITY, X_VELOCITY, Y_VELOCITY, Z_VELOCITY, ALTITUDE, TOTAL_ACCELERATION, X_ACCELERATION, Y_ACCELERATION, Z_ACCELERATION, WINDDIRECTION;
 
     /**
      * Get the label to display within the side panel text for the graph type.
@@ -16,10 +16,22 @@ public enum GraphType {
      */
     public String getLabel() {
         switch (this) {
-            case VELOCITY:
+            case TOTAL_VELOCITY:
                 return "Velocity";
-            case ACCELERATION:
+            case X_VELOCITY:
+                return "X Velocity";
+            case Y_VELOCITY:
+                return "Y Velocity";
+            case Z_VELOCITY:
+                return "Z Velocity";
+            case TOTAL_ACCELERATION:
                 return "Acceleration";
+            case X_ACCELERATION:
+                return "X Acceleration";
+            case Y_ACCELERATION:
+                return "Y Acceleration";
+            case Z_ACCELERATION:
+                return "Z Acceleration";
             case ALTITUDE:
                 return "Altitude";
             case WINDDIRECTION:

@@ -68,6 +68,19 @@ public class HomeController implements Initializable {
     public RocketDataLineChart lineChartAcceleration;
 
     @FXML
+    public RocketDataLineChart lineChartVelX;
+    @FXML
+    public RocketDataLineChart lineChartVelY;
+    @FXML
+    public RocketDataLineChart lineChartVelZ;
+    @FXML
+    public RocketDataLineChart lineChartAccelerationX;
+    @FXML
+    public RocketDataLineChart lineChartAccelerationY;
+    @FXML
+    public RocketDataLineChart lineChartAccelerationZ;
+
+    @FXML
     Label lbWeather;
     @FXML
     Label lbWeatherHead;
