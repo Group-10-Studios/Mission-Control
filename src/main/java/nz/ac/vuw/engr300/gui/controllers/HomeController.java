@@ -191,9 +191,9 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
+        lineChartAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
         lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-        lineChartVel.setGraphType(GraphType.VELOCITY);
+        lineChartVel.setGraphType(GraphType.TOTAL_VELOCITY);
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
