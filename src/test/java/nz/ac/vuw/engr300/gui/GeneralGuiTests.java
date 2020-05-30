@@ -1,10 +1,12 @@
 package nz.ac.vuw.engr300.gui;
 
+import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketData;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -96,12 +99,22 @@ public class GeneralGuiTests {
         // NOTE: 250ms is not enough time for this simulation to run
         runSimulation(robot, "../../test/resources/FullyCorrectRocketData.csv", 250);
 
-        //Also note that these two files are actually different.
+        // Also note that these two files are actually different.
 
         // Run another simulation while one is already going
         runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 500);
 
         checkGraphValues(robot, TEST_DATA);
+    }
+
+    @Test
+    public void test_running_simulation_with_invalid_file(FxRobot robot){
+        runSimulation(robot, "../../test/resources/InvalidJsonFile.json", 200);
+
+        FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
+        FxAssert.verifyThat("File provided does not contain a header line!", Node::isVisible);
+
+        robot.clickOn("OK");
     }
 
     /**
@@ -141,6 +154,10 @@ public class GeneralGuiTests {
      * @param simulationRunTime     How long we should let the simulation run for.
      */
     private static void runSimulation(FxRobot robot, String simulationFile, long simulationRunTime){
+        try {
+            // Wait for UI to resize, otherwise it seems to miss the button?
+            Thread.sleep(500);
+        } catch (InterruptedException ignored) { }
         robot.clickOn("#btnRunSim");
         try {
             //Let the JFileChooser open, this isn't done on the main thread so we need to sleep.
