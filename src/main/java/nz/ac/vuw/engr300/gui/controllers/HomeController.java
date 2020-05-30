@@ -12,11 +12,13 @@ import java.util.stream.Stream;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +30,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -277,8 +280,15 @@ public class HomeController implements Initializable {
                     try {
                         simulationImporter.importData(file.getAbsolutePath());
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                JOptionPane.ERROR_MESSAGE);
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.initStyle(StageStyle.DECORATED);
+                            alert.setTitle("Warning");
+                            alert.setHeaderText("Failed to import simulation data!");
+                            alert.setContentText(e.getMessage());
+
+                            alert.showAndWait();
+                        });
                         return;
                     }
                     lineChartAcceleration.clear();
