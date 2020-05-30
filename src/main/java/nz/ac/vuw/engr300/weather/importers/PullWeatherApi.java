@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import org.apache.log4j.Logger;
 
@@ -68,12 +69,14 @@ public class PullWeatherApi {
             // Fetch data
             URL useThisUrl = new URL(apiCall);
             URLConnection connect = useThisUrl.openConnection();
-            BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(connect.getInputStream())));
+            BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(connect.getInputStream(),
+                    StandardCharsets.UTF_8)));
             returnedData += bufferedReader.readLine();
 
             // Write data to json
             String filename = latitude + "-" + longitude + "-weather.json";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename,
+                    StandardCharsets.UTF_8));
             writer.write(returnedData);
 
             writer.close();
