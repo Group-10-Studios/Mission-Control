@@ -35,7 +35,8 @@ build:
 unittest:
   stage: Test
   tags:
-    - shell
+    - nathan
+    - linux
   before_script:
     - *build_keys
   script:
@@ -110,7 +111,8 @@ pages:
 package:
   stage: BuildPackage
   tags:
-    - shell
+    - nathan
+    - linux
   before_script:
     - *build_keys
   script:

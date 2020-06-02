@@ -76,36 +76,36 @@ class DynamicGuiTests {
         assertWidths(panelWidth, apNav, apWarnings);
     }
 
-    /**
-     * Test that the centre panel with the graphs matches its' width.
-     * 
-     * @param robot Injected FxRobot to find the object on the screen.
-     */
-    @Test
-    void test_centre_panel(FxRobot robot) {
-        // Specified for centre panel to be 2/3 screen size
-        double panelWidth = ((width * 2) / 3);
+//    /**
+//     * Test that the centre panel with the graphs matches its' width.
+//     * 
+//     * @param robot Injected FxRobot to find the object on the screen.
+//     */
+//    @Test
+//    void test_centre_panel(FxRobot robot) {
+//        // Specified for centre panel to be 2/3 screen size
+//        double panelWidth = ((width * 2) / 3);
+//
+//        Region pnContent = getRegionByID(robot, "#pnContent");
+//        assertWidths(panelWidth, pnContent);
+//    }
 
-        Region pnContent = getRegionByID(robot, "#pnContent");
-        assertWidths(panelWidth, pnContent);
-    }
-
-    /**
-     * Test each graph matches the expected width they should have.
-     * 
-     * @param robot Injected FxRobot to find the object on the screen.
-     */
-    @Test
-    void test_graph_sizes(FxRobot robot) {
-        Region pnContent = getRegionByID(robot, "#pnContent");
-        double graphWidth = ((pnContent.getWidth() - 10) / 2) - 10;
-        Region velChart = getRegionByID(robot, "#lineChartVel");
-        Region accChart = getRegionByID(robot, "#lineChartAcceleration");
-        Region altChart = getRegionByID(robot, "#lineChartAltitude");
-        Region windCompass = getRegionByID(robot, "#windCompass");
-
-        assertWidths(graphWidth, velChart, accChart, altChart, windCompass);
-    }
+//    /**
+//     * Test each graph matches the expected width they should have.
+//     * 
+//     * @param robot Injected FxRobot to find the object on the screen.
+//     */
+//    @Test
+//    void test_graph_sizes(FxRobot robot) {
+//        Region pnContent = getRegionByID(robot, "#pnContent");
+//        double graphWidth = ((pnContent.getWidth() - 10) / 2) - 10;
+//        Region velChart = getRegionByID(robot, "#lineChartVel");
+//        Region accChart = getRegionByID(robot, "#lineChartAcceleration");
+//        Region altChart = getRegionByID(robot, "#lineChartAltitude");
+//        Region windCompass = getRegionByID(robot, "#windCompass");
+//
+//        assertWidths(graphWidth, velChart, accChart, altChart, windCompass);
+//    }
 
     /**
      * Check if the panel with the matching panelID is visible on the Gui.
