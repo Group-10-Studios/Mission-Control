@@ -81,6 +81,8 @@
                       style="-fx-background-color: #F6F6F6;">
                     <children>
                         <Label layoutX="10.0" layoutY="4.0" text="Warnings"/>
+                        <Label fx:id="lbWarning1" layoutX="10.0" layoutY="19.0" text="1) "
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
                     </children>
                 </Pane>
             </children>
