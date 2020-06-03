@@ -144,6 +144,10 @@ public class GeneralGuiTests {
         robot.clickOn("OK");
     }
 
+    @Test
+    public void test_highlight_graphs(FxRobot robot) {
+
+    }
     /**
      * Checks that the graphs displayed by the UI have been populated with the {@code expected}
      * Rocket data.
@@ -196,6 +200,10 @@ public class GeneralGuiTests {
         } catch (InterruptedException ignored) {
             fail("Simulation sleep interrupted!");
         }
+    }
+
+    private static void clickButton(String bId, FxRobot robot){
+        robot.clickOn(bId);
     }
 
     /**

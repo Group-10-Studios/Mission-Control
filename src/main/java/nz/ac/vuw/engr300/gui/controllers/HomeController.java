@@ -271,6 +271,7 @@ public class HomeController implements Initializable {
         int y = 5;
         for (String label : labels) {
             Button b = new Button(label);
+            b.setId("btn" + label.replace(" ", ""));
             b.setLayoutY(y);
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
