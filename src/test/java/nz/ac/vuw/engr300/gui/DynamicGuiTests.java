@@ -32,7 +32,7 @@ class DynamicGuiTests {
      * @param stage Injected stage parameter to load the GUI inside.
      */
     @Start
-    private static void start(Stage stage) {
+    private static void start(Stage stage) throws Exception {
         new HomeView(stage);
         width = stage.getWidth();
         height = stage.getHeight();
