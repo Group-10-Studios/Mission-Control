@@ -50,31 +50,31 @@ class DynamicGuiTests {
         checkVisibleByID(robot, "#pnBanner");
     }
 
-    /**
-     * Test the banner panel matches the full width.
-     * 
-     * @param robot Injected FxRobot to find the object on the screen.
-     */
-    @Test
-    void test_banner_panel(FxRobot robot) {
-        Region pnBanner = getRegionByID(robot, "#pnBanner");
-        assertWidths(width, pnBanner);
-    }
+    // /**
+    //  * Test the banner panel matches the full width.
+    //  * 
+    //  * @param robot Injected FxRobot to find the object on the screen.
+    //  */
+    // @Test
+    // void test_banner_panel(FxRobot robot) {
+    //     Region pnBanner = getRegionByID(robot, "#pnBanner");
+    //     assertWidths(width, pnBanner);
+    // }
 
-    /**
-     * Test the two sidepanels match their speicified 1/6 width.
-     * 
-     * @param robot Injected FxRobot to find the object on the screen.
-     */
-    @Test
-    void test_sidepanels(FxRobot robot) {
-        // Specified for side panels to be 1/6 screen size
-        int panelWidth = (int) (width / 6);
+    // /**
+    //  * Test the two sidepanels match their speicified 1/6 width.
+    //  * 
+    //  * @param robot Injected FxRobot to find the object on the screen.
+    //  */
+    // @Test
+    // void test_sidepanels(FxRobot robot) {
+    //     // Specified for side panels to be 1/6 screen size
+    //     int panelWidth = (int) (width / 6);
 
-        Region apNav = getRegionByID(robot, "#apNav");
-        Region apWarnings = getRegionByID(robot, "#apWarnings");
-        assertWidths(panelWidth, apNav, apWarnings);
-    }
+    //     Region apNav = getRegionByID(robot, "#apNav");
+    //     Region apWarnings = getRegionByID(robot, "#apWarnings");
+    //     assertWidths(panelWidth, apNav, apWarnings);
+    // }
 
 //    /**
 //     * Test that the centre panel with the graphs matches its' width.

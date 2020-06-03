@@ -35,11 +35,12 @@ build:
 unittest:
   stage: Test
   tags:
-    - shell
+    - nathan
+    - linux
   before_script:
     - *build_keys
   script:
-    - DISPLAY=:0 mvn test
+    - DISPLAY=:0 mvn clean test
   allow_failure: false
   artifacts:
     paths:
