@@ -56,6 +56,8 @@ public class GeneralGuiTests extends ApplicationTest {
 
     private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
 
+    Stage stage;
+
     static {
         //Load in test data
         OpenRocketImporter importer = new OpenRocketImporter();
@@ -78,12 +80,14 @@ public class GeneralGuiTests extends ApplicationTest {
         primaryStage.centerOnScreen();
 
         primaryStage.setAlwaysOnTop(true);
+        stage = primaryStage;
         new HomeView(primaryStage);
     }
 
     @Override
     public void stop() throws Exception {
         FxToolkit.cleanupStages();
+        stage.close();
     }
 
     /**
