@@ -76,11 +76,11 @@ public class GeneralGuiTests {
     @Test
     public void check_visibility_of_graphs(FxRobot robot) {
         RocketDataLineChart velocityChart =
-                robot.lookup("#lineChartTotalVelocity").queryAs(RocketDataLineChart.class);
+                robot.lookup("#graphTotalVelocity").queryAs(RocketDataLineChart.class);
         RocketDataLineChart altitudeChart =
-                robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class);
+                robot.lookup("#graphAltitude").queryAs(RocketDataLineChart.class);
         RocketDataLineChart accelerationChart =
-                robot.lookup("#lineChartTotalAcceleration").queryAs(RocketDataLineChart.class);
+                robot.lookup("#graphTotalAcceleration").queryAs(RocketDataLineChart.class);
         Assertions.assertThat(velocityChart.isVisible());
         Assertions.assertThat(altitudeChart.isVisible());
         Assertions.assertThat(accelerationChart.isVisible());
@@ -156,11 +156,11 @@ public class GeneralGuiTests {
      * @param expected The expected data that the graphs should be populated with.
      */
     private static void checkGraphValues(FxRobot robot, List<RocketStatus> expected) {
-        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#lineChartTotalVelocity")
+        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#graphTotalVelocity")
                 .queryAs(RocketDataLineChart.class).getData().get(0).getData();
-        List<XYChart.Data<Number, Number>> altitudeChartData = robot.lookup("#lineChartAltitude")
+        List<XYChart.Data<Number, Number>> altitudeChartData = robot.lookup("#graphAltitude")
                 .queryAs(RocketDataLineChart.class).getData().get(0).getData();
-        List<XYChart.Data<Number, Number>> accelerationChartData = robot.lookup("#lineChartTotalAcceleration")
+        List<XYChart.Data<Number, Number>> accelerationChartData = robot.lookup("#graphTotalAcceleration")
                 .queryAs(RocketDataLineChart.class).getData().get(0).getData();
 
         int expectedDataSize = expected.size();
@@ -203,6 +203,7 @@ public class GeneralGuiTests {
     }
 
     private static void clickButton(String bId, FxRobot robot){
+
         robot.clickOn(bId);
     }
 

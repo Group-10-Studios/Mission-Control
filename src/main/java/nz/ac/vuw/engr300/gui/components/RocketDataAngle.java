@@ -77,7 +77,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
 
         this.setGraphType(graphType);
 
-        this.setId("compass" + graphType.getLabel().replace(" ", ""));
+        this.setId("graph" + graphType.getLabel().replace(" ", ""));
     }
 
     /**
