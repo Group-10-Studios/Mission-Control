@@ -83,6 +83,8 @@ public class HomeController implements Initializable {
     @FXML
     Label lbWeather;
     @FXML
+    Label lbWeatherAngle;
+    @FXML
     Label lbWeatherHead;
     @FXML
     Label lbRocketID;
@@ -120,6 +122,7 @@ public class HomeController implements Initializable {
     @FXML
     Region pnWarnings;
 
+
     /**
      * Note must be Region to be a parent of all graph components.
      */
@@ -155,8 +158,9 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, windCompass);
+        WeatherController wc = new WeatherController(lbWeather, lbWeatherAngle, windCompass);
         wc.updateWindSpeed();
+        wc.updateWindAngle();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
 

@@ -7,20 +7,21 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
+/**
+ * Represents a separate weather controller in the GUI.
+ *
+ * @author: Nalin Aswani
+ * @author: Jake Mai.
+ */
 public class WeatherController {
 
     private final RocketDataAngle windCompass;
-    /**
-     * Represents a separate weather controller in the GUI.
-     * 
-     * @author: Nalin Aswani
-     * @author: Jake Mai.
-     */
     @FXML
-    private Label lbWindSpeed;
+    private Label lbWindSpeed, lbWindAngle;
 
-    public WeatherController(Label wl, RocketDataAngle windCompass) {
+    public WeatherController(Label wl, Label wa, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
+        this.lbWindAngle = wa;
         this.windCompass = windCompass;
     }
 
@@ -32,7 +33,7 @@ public class WeatherController {
      */
     public void updateWindSpeed() {
         try {
-            WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
             WeatherData w = wi.getWeather(0);
 
             // windspeed's unit extracted from weather data is meter per second
@@ -41,6 +42,20 @@ public class WeatherController {
             Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
             windCompass.setAngle(w.getWindAngle());
             lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Test Wind Angle
+    public void updateWindAngle() {
+        try {
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
+            WeatherData w = wi.getWeather(0);
+
+            Double windAngleMetric = Math.round((w.getWindAngle() ) * 100.0) / 100.0;
+            windCompass.setAngle(w.getWindAngle());
+            lbWindAngle.setText("WindAngle: " + windAngleMetric + " degrees");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
