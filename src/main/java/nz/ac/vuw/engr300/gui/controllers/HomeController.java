@@ -87,6 +87,8 @@ public class HomeController implements Initializable {
     @FXML
     Label lbWeatherHumid;
     @FXML
+    Label lbWeatherPressure;
+    @FXML
     Label lbWeatherHead;
     @FXML
     Label lbRocketID;
@@ -160,10 +162,11 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, windCompass);
+        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, windCompass);
         wc.updateWindSpeed();
         wc.updateTemp();
         wc.updateHumidity();
+        wc.updatePressure();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
 
@@ -386,6 +389,7 @@ public class HomeController implements Initializable {
         updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
         updatePanelPositionOffsetVertical(lbWeatherTemp, lbWeather, 0);
         updatePanelPositionOffsetVertical(lbWeatherHumid, lbWeatherTemp, 0);
+        updatePanelPositionOffsetVertical(lbWeatherPressure, lbWeatherHumid, 0);
     }
 
     /**
@@ -458,7 +462,7 @@ public class HomeController implements Initializable {
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead, lbWeatherTemp, lbWeatherHumid);
+                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
@@ -467,6 +471,7 @@ public class HomeController implements Initializable {
         updatePanelPositionOffset(lbWeatherHead, null, 0);
         updatePanelPositionOffset(lbWeatherTemp, null, 0);
         updatePanelPositionOffset(lbWeatherHumid, null, 0);
+        updatePanelPositionOffset(lbWeatherPressure, null, 0);
     }
 
     /**

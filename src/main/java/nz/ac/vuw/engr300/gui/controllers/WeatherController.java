@@ -17,12 +17,13 @@ public class WeatherController {
 
     private final RocketDataAngle windCompass;
     @FXML
-    private Label lbWindSpeed, lbWeatherTemp, lbWeatherHumidity;
+    private Label lbWindSpeed, lbWeatherTemp, lbWeatherHumidity, lbWeatherPressure;
 
-    public WeatherController(Label wl, Label wa, Label wh, RocketDataAngle windCompass) {
+    public WeatherController(Label wl, Label wa, Label wh, Label wp, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
         this.lbWeatherTemp = wa;
         this.lbWeatherHumidity = wh;
+        this.lbWeatherPressure = wp;
         this.windCompass = windCompass;
     }
 
@@ -59,7 +60,7 @@ public class WeatherController {
         try {
             WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
             WeatherData w = wi.getWeather(0);
-            // Convert temperature from Kelvin to Celcius: temp - 273.15, displaying up to 1 decimal place.
+            // Convert temperature from Kelvin to Celcius: temp - 273.15, displayed up to 1 decimal place.
             Double tempMetric = Math.round((w.getTemp() - 273.15 ) * 10.0) / 10.0;
             lbWeatherTemp.setText("Temperature: " + tempMetric + " degrees");
         } catch (FileNotFoundException e) {
@@ -77,9 +78,28 @@ public class WeatherController {
         try {
             WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
             WeatherData w = wi.getWeather(0);
-            // Humidity is display in percentage, up to 1 decimal place.
+            // Humidity is displayed in percentage, up to 1 decimal place.
             Double humid = Math.round((w.getHumidity() ) * 10.0) / 10.0;
+            System.out.println(w.getPressure());
             lbWeatherHumidity.setText("Humidity: " + humid + "%");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * updatePressure method creates a new instance of WeatherImporter, process the
+     * information from output.json and creates a new instance of Weather Data to
+     * retrieve the specific weather condition date (weather pressure) the pressure data will
+     * be converted to metric and displayed on the GUI.
+     */
+    public void updatePressure() {
+        try {
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
+            WeatherData w = wi.getWeather(0);
+            // Pressure is displayed in millibar, up to 1 decimal place
+            Double pressure = Math.round((w.getPressure() ) * 10.0) / 10.0;
+            lbWeatherPressure.setText("Air Pressure: " + pressure + "mb");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
