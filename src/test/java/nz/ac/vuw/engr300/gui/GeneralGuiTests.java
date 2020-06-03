@@ -78,6 +78,8 @@ public class GeneralGuiTests {
         // I have no idea what this function does, but without it the UI tests fail.
         stage.sizeToScene();
         stage.centerOnScreen();
+
+        stage.setAlwaysOnTop(true);
         new HomeView(stage);
     }
 
@@ -140,11 +142,6 @@ public class GeneralGuiTests {
      */
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         runSimulation(robot, invalidJSONFile, 200);
         try {
             WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
