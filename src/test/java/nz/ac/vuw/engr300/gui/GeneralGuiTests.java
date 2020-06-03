@@ -1,8 +1,5 @@
 package nz.ac.vuw.engr300.gui;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -19,6 +16,7 @@ import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -31,6 +29,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * General tests for the UI.
@@ -146,7 +146,12 @@ public class GeneralGuiTests {
 
     @Test
     public void test_highlight_graphs(FxRobot robot) {
+        for(GraphType g : GraphType.values()){
 
+            String bId = "#btn" + g.getLabel().replace(" ", "");
+            String gId = "#graph" + g.getLabel().replace(" ", "");
+            checkHighlight(bId, gId, robot);
+        }
     }
     /**
      * Checks that the graphs displayed by the UI have been populated with the {@code expected}
@@ -202,9 +207,13 @@ public class GeneralGuiTests {
         }
     }
 
-    private static void clickButton(String bId, FxRobot robot){
+    private static void checkHighlight(String bId, String gId, FxRobot robot){
 
+        assertNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
         robot.clickOn(bId);
+        assertNotNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
+        robot.clickOn(bId);
+        assertNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
     }
 
     /**
