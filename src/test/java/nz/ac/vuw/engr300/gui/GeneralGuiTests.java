@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
@@ -119,6 +120,11 @@ public class GeneralGuiTests {
         checkGraphValues(robot, TEST_DATA);
     }
 
+    /**
+     * Test to see if the buttons will highlight the graphs.
+     *
+     * @param robot The robot injected to run tests.
+     */
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
         runSimulation(robot, invalidJSONFile, 200);
@@ -207,13 +213,21 @@ public class GeneralGuiTests {
         }
     }
 
+    /**
+     * Clicks the button and checks to see if the graph is highlighted.
+     *
+     * @param bId       The ID of the button to be clicked.
+     * @param gId       The ID of the graph that should be highlighted.
+     * @param robot     The robot injected to run tests.
+     */
     private static void checkHighlight(String bId, String gId, FxRobot robot){
 
-        assertNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
+        assertNull(robot.lookup(gId).queryAs(Region.class).getBorder());
         robot.clickOn(bId);
-        assertNotNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
+        assertNotNull(robot.lookup(gId).queryAs(Region.class).getBorder());
         robot.clickOn(bId);
-        assertNull(robot.lookup(gId).queryAs(RocketDataLineChart.class).getBorder());
+        assertNull(robot.lookup(gId).queryAs(Region.class).getBorder());
+
     }
 
     /**
