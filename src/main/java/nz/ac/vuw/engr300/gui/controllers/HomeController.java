@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -30,10 +31,13 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
@@ -154,7 +158,7 @@ public class HomeController implements Initializable {
     /**
      * This is the initialize method that is called to build the root before
      * starting the javafx project.
-     * 
+     *
      * @param url The location used to resolve relative paths for the root object,
      *            or null if the location is not known.
      * @param rb  The resources used to localize the root object, or null if the
@@ -268,36 +272,33 @@ public class HomeController implements Initializable {
      * file dialog to select a simulation data file. It will then load it into the
      * data importer and run the simulation as if it was live.
      */
-    public void runSim() throws InvocationTargetException, InterruptedException {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                simulationImporter.stop();
+    public void runSim() {
+            simulationImporter.stop();
 
-                JFileChooser fileChooser = new JFileChooser("src/main/resources");
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        simulationImporter.importData(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.initStyle(StageStyle.DECORATED);
-                            alert.setTitle("Warning");
-                            alert.setHeaderText("Failed to import simulation data!");
-                            alert.setContentText(e.getMessage());
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select a simulation to run.");
+            fileChooser.setInitialDirectory(new File("src/main/resources/"));
+            File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
+            if (selectedFile != null) {
+                try {
+                    simulationImporter.importData(selectedFile.getAbsolutePath());
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.initStyle(StageStyle.DECORATED);
+                        alert.setTitle("Warning");
+                        alert.setHeaderText("Failed to import simulation data!");
+                        alert.setContentText(e.getMessage());
 
-                            alert.showAndWait();
-                        });
-                        return;
-                    }
-                    lineChartAcceleration.clear();
-                    lineChartAltitude.clear();
-                    lineChartVel.clear();
-                    simulationImporter.start();
+                        alert.showAndWait();
+                    });
+                    return;
                 }
+                lineChartAcceleration.clear();
+                lineChartAltitude.clear();
+                lineChartVel.clear();
+                simulationImporter.start();
             }
-        });
     }
 
     /**
@@ -310,7 +311,7 @@ public class HomeController implements Initializable {
 
     /**
      * Scaling all the panel heights according to the current window size.
-     * 
+     *
      * @param root The root pane the UI is all under.
      */
     private void scaleItemHeight(Region root) {
@@ -322,7 +323,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update the panel's positions to dynamically match the new application height.
-     * 
+     *
      * @param rootPanel Region provided from the root panel within the listener.
      * @param newHeight New height value of the root panel.
      */
@@ -374,7 +375,7 @@ public class HomeController implements Initializable {
 
     /**
      * Scaling all the panel widths according to the current window size.
-     * 
+     *
      * @param root The root pane the UI is all under.
      */
     private void scaleItemWidth(Region root) {
@@ -386,7 +387,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update the panel positions to dynamically match the new application width.
-     * 
+     *
      * @param rootPanel Region provided from the root panel within the listener.
      * @param newWidth  New width value of the root panel.
      */
@@ -406,7 +407,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the left panel to dynamically fit within the
      * screen.
-     * 
+     *
      * @param sidePanelWidth The expected width of the side panel.
      */
     private void updateLeftPanel(double sidePanelWidth) {
@@ -442,7 +443,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the middle panel to dynamically fit within the
      * screen.
-     * 
+     *
      * @param width Total width of the application which will determine the internal
      *              widths.
      */
@@ -476,7 +477,7 @@ public class HomeController implements Initializable {
     /**
      * Update the components within the right side panel to dynamically fit within
      * the screen.
-     * 
+     *
      * @param sidePanelWidth The expected width of the side panel.
      */
     private void updateRightPanel(double sidePanelWidth) {
@@ -490,7 +491,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update all of the provided panels preferred width to the value provided.
-     * 
+     *
      * @param width  Preferred width to set all panels to.
      * @param panels Array of panels to set the preferred width on.
      */
@@ -503,7 +504,7 @@ public class HomeController implements Initializable {
 
     /**
      * Update all of the provided panels preferred height to the value provided.
-     * 
+     *
      * @param height Preferred height to set all panels to.
      * @param panels Array of panels to set the preferred height on.
      */
@@ -518,7 +519,7 @@ public class HomeController implements Initializable {
      * Update the panel position based on the relative position of the other panel.
      * This can offset thisPanel by the correct amount to not overlap relativePanel.
      * This works on the x axis.
-     * 
+     *
      * @param thisPanel     The panel to update the x position of based on the
      *                      relativePanel.
      * @param relativePanel Relative panel to position thisPanel against based on
@@ -540,7 +541,7 @@ public class HomeController implements Initializable {
      * Update the panel position based on the relative position of the other panel.
      * This can offset thisPanel by the correct amount to not overlap relativePanel.
      * This works on the y axis.
-     * 
+     *
      * @param thisPanel     The panel to update the y position of based on the
      *                      relativePanel.
      * @param relativePanel Relative panel to position thisPanel against based on
