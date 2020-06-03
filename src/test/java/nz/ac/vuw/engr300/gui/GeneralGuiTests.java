@@ -83,7 +83,7 @@ public class GeneralGuiTests extends ApplicationTest {
 
     @Override
     public void stop() throws Exception {
-        FxToolkit.hideStage();
+        FxToolkit.cleanupStages();
     }
 
     /**
