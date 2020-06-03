@@ -5,6 +5,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
@@ -16,27 +17,36 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.service.query.EmptyNodeQueryException;
+import org.testfx.util.WaitForAsyncUtils;
 
+import javax.swing.plaf.FileChooserUI;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 
 /**
  * @author Tim Salisbury
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ApplicationExtension.class)
 public class GeneralGuiTests {
     private static final List<RocketStatus> TEST_DATA;
@@ -83,7 +93,7 @@ public class GeneralGuiTests {
      */
     @Test
     public void test_run_simulation(FxRobot robot) {
-        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 500);
+        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 750);
 
         checkGraphValues(robot, TEST_DATA);
     }
@@ -97,12 +107,12 @@ public class GeneralGuiTests {
     @Test
     public void test_running_simulation_while_simulation_running(FxRobot robot){
         // NOTE: 250ms is not enough time for this simulation to run
-        runSimulation(robot, "../../test/resources/FullyCorrectRocketData.csv", 250);
+        runSimulation(robot, "../../test/resources/FullyCorrectRocketData.csv", 1000);
 
         // Also note that these two files are actually different.
 
         // Run another simulation while one is already going
-        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 500);
+        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 1000);
 
         checkGraphValues(robot, TEST_DATA);
     }
@@ -110,10 +120,24 @@ public class GeneralGuiTests {
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot){
         runSimulation(robot, "../../test/resources/InvalidJsonFile.json", 200);
+        try {
+            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, ()->{
+                try{
+                    Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
+                    Node description = robot.lookup("File provided does not contain a header line!").queryAs(Node.class);
+                    Node ok = robot.lookup("OK").queryAs(Node.class);
+                    return title.isVisible() && description.isVisible() && ok.isVisible();
+                }catch (EmptyNodeQueryException ignored){
+                    return false;
+                }
 
+            });
+        } catch (TimeoutException e) {
+            fail("Timeout waiting for popup occured!");
+        }
         FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
         FxAssert.verifyThat("File provided does not contain a header line!", Node::isVisible);
-
+        FxAssert.verifyThat("OK", Node::isVisible);
         robot.clickOn("OK");
     }
 
@@ -154,17 +178,11 @@ public class GeneralGuiTests {
      * @param simulationRunTime     How long we should let the simulation run for.
      */
     private static void runSimulation(FxRobot robot, String simulationFile, long simulationRunTime){
-        try {
-            // Wait for UI to resize, otherwise it seems to miss the button?
-            Thread.sleep(500);
-        } catch (InterruptedException ignored) { }
         robot.clickOn("#btnRunSim");
-        try {
-            //Let the JFileChooser open, this isn't done on the main thread so we need to sleep.
-            Thread.sleep(500);
-        } catch (InterruptedException ignored) { }
-        //As the JFileChooser can not be tested by TestFX, we must make the robot type for us.
+        WaitForAsyncUtils.waitForFxEvents();
+
         copyPasteString(robot, simulationFile);
+        WaitForAsyncUtils.waitForFxEvents();
 
         try {
             //Let the simulation run
