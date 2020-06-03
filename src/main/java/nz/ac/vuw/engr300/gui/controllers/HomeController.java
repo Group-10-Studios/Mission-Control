@@ -92,6 +92,10 @@ public class HomeController implements Initializable {
     Label lbState;
     @FXML
     Label lbStateHead;
+    @FXML
+    private Label lbWarning1;
+    @FXML
+    private Label lbWarning2;
 
     @FXML
     Label lblHeader;
@@ -157,6 +161,9 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(lbWeather, windCompass);
         wc.updateWindSpeed();
+
+        WarningsController warningC = new WarningsController(lbWarning1, lbWarning2);
+        warningC.checkWindSpeed();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
 
