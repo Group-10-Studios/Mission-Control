@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import org.apache.commons.text.WordUtils;
 import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,13 +18,14 @@ public class WeatherController {
 
     private final RocketDataAngle windCompass;
     @FXML
-    private Label lbWindSpeed, lbWeatherTemp, lbWeatherHumidity, lbWeatherPressure;
+    private Label lbWindSpeed, lbWeatherTemp, lbWeatherHumidity, lbWeatherPressure, lbWeatherStatus;
 
-    public WeatherController(Label wl, Label wa, Label wh, Label wp, RocketDataAngle windCompass) {
+    public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
         this.lbWeatherTemp = wa;
         this.lbWeatherHumidity = wh;
         this.lbWeatherPressure = wp;
+        this.lbWeatherStatus = ws;
         this.windCompass = windCompass;
     }
 
@@ -99,7 +101,26 @@ public class WeatherController {
             WeatherData w = wi.getWeather(0);
             // Pressure is displayed in millibar, up to 1 decimal place
             Double pressure = Math.round((w.getPressure() ) * 10.0) / 10.0;
+            System.out.println(w.getCondition().getWeatherDescription());
             lbWeatherPressure.setText("Air Pressure: " + pressure + "mb");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * updatePressure method creates a new instance of WeatherImporter, process the
+     * information from output.json and creates a new instance of Weather Data to
+     * retrieve the specific weather condition date (weather pressure) the pressure data will
+     * be converted to metric and displayed on the GUI.
+     */
+    public void updateForecast() {
+        try {
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
+            WeatherData w = wi.getWeather(0);
+            String forecast = w.getCondition().getWeatherDescription();
+            String formattedForecast = WordUtils.capitalize(forecast);
+            lbWeatherPressure.setText("Weather status: " + formattedForecast);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

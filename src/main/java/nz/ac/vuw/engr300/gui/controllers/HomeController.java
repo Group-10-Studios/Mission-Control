@@ -89,6 +89,8 @@ public class HomeController implements Initializable {
     @FXML
     Label lbWeatherPressure;
     @FXML
+    Label lbWeatherStatus;
+    @FXML
     Label lbWeatherHead;
     @FXML
     Label lbRocketID;
@@ -162,11 +164,13 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, windCompass);
+        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+                lbWeatherStatus, windCompass);
         wc.updateWindSpeed();
         wc.updateTemp();
         wc.updateHumidity();
         wc.updatePressure();
+        wc.updateForecast();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
 
@@ -390,6 +394,7 @@ public class HomeController implements Initializable {
         updatePanelPositionOffsetVertical(lbWeatherTemp, lbWeather, 0);
         updatePanelPositionOffsetVertical(lbWeatherHumid, lbWeatherTemp, 0);
         updatePanelPositionOffsetVertical(lbWeatherPressure, lbWeatherHumid, 0);
+        updatePanelPositionOffsetVertical(lbWeatherStatus, lbWeatherPressure, 0);
     }
 
     /**
@@ -462,7 +467,7 @@ public class HomeController implements Initializable {
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure);
+                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
@@ -472,6 +477,7 @@ public class HomeController implements Initializable {
         updatePanelPositionOffset(lbWeatherTemp, null, 0);
         updatePanelPositionOffset(lbWeatherHumid, null, 0);
         updatePanelPositionOffset(lbWeatherPressure, null, 0);
+        updatePanelPositionOffset(lbWeatherStatus, null, 0);
     }
 
     /**
