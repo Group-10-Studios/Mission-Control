@@ -2,10 +2,17 @@ package nz.ac.vuw.engr300.gui.components;
 
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+
 
 /**
  * A component that displays rocket data (two double values) as a line graph.
@@ -23,14 +30,15 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     /**
      * Constructs a new RocketDataLineChart, note this will be most likely
      * initialized in fxml code. For example, {@code
-     *      <RocketDataLineChart title="Altitude over Time" xLabel="Time (s)" yLabel
+     *      <RocketDataLineChart xLabel="Time (s)" yLabel
     ="Altitude"/>
      * }
      *
-     * @param xlabel The x label
-     * @param ylabel The y label
+     * @param xlabel    The x label
+     * @param ylabel    The y label
      */
-    public RocketDataLineChart(@NamedArg("xLabel") String xlabel, @NamedArg("yLabel") String ylabel) {
+    public RocketDataLineChart(@NamedArg("xLabel") String xlabel,
+                               @NamedArg("yLabel") String ylabel) {
         super(new NumberAxis(), new NumberAxis());
         this.setLegendVisible(false);
         this.getXAxis().setLabel(xlabel);
@@ -41,12 +49,13 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
         this.getXAxis().setAutoRanging(false);
 
+        this.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
     }
 
-    /**
-     * Clears the current graph, and resets the X scale.
-     */
+    @Override
     public void clear() {
         this.series.getData().clear();
         ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
@@ -69,6 +78,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     @Override
     public void setGraphType(GraphType g) {
         this.type = g;
+        this.setTitle(g.getLabel());
     }
 
     @Override

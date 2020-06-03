@@ -23,4 +23,9 @@ public interface RocketGraph {
      * @return GraphType which this graph is classified as.
      */
     public GraphType getGraphType();
+    
+    /**
+     * Clears the current graph, and resets the X scale.
+     */
+    public void clear();
 }
