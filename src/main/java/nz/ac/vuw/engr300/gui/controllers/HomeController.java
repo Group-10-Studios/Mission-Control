@@ -453,13 +453,14 @@ public class HomeController implements Initializable {
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead);
+                lbWeatherHead, lbWeatherAngle);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
         updatePanelPositionOffset(lbRocketHead, null, 0);
         updatePanelPositionOffset(lbWeather, null, 0);
         updatePanelPositionOffset(lbWeatherHead, null, 0);
+        updatePanelPositionOffset(lbWeatherAngle, null, 0);
     }
 
     /**

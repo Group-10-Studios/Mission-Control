@@ -40,7 +40,6 @@ public class WeatherController {
             // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
             // windpseed * 3.6
             Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
-            windCompass.setAngle(w.getWindAngle());
             lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
