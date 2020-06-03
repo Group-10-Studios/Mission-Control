@@ -43,10 +43,10 @@ class DynamicGuiTests {
      */
     @Test
     void test_panel_visibility(FxRobot robot) {
-        checkVisibleByID(robot, "#lineChartVel");
-        checkVisibleByID(robot, "#lineChartAcceleration");
+        checkVisibleByID(robot, "#lineChartTotalVelocity");
+        checkVisibleByID(robot, "#lineChartTotalAcceleration");
         checkVisibleByID(robot, "#lineChartAltitude");
-        checkVisibleByID(robot, "#windCompass");
+        checkVisibleByID(robot, "#compassWindDirection");
         checkVisibleByID(robot, "#pnBanner");
     }
 

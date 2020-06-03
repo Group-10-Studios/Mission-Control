@@ -54,7 +54,7 @@ public class HomeController implements Initializable {
     private static final double COLS = 4;
 
     @FXML
-    public RocketDataAngle windCompass = new RocketDataAngle(true);
+    public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
