@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Static access class to load JSON data into the application. Access this using
@@ -25,7 +27,7 @@ public class JsonImporter {
      *                               found.
      */
     public static JsonElement load(String fileName) throws FileNotFoundException {
-        try (FileReader fr = new FileReader(new File(fileName))) {
+        try (FileReader fr = new FileReader(new File(fileName), StandardCharsets.UTF_8)) {
             return JsonParser.parseReader(fr);
         } catch (FileNotFoundException e) {
             throw e;

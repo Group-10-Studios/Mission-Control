@@ -81,7 +81,7 @@ find_bugs:
   tags:
     - shell
   script:
-    - mvn clean spotbugs:check
+    - mvn clean compile spotbugs:check
 
 checkstyle:
   stage: Test
