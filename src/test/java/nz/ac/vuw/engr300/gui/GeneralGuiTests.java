@@ -1,5 +1,10 @@
 package nz.ac.vuw.engr300.gui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -31,7 +36,8 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+
 
 /**
  * General tests for the UI.
@@ -43,8 +49,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GeneralGuiTests {
     private static final List<RocketStatus> TEST_DATA;
 
-    private static String fullyCorrectRocketData = new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
-    private static String fullyCorrectTestData = new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
+    private static String fullyCorrectRocketData =
+            new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
+    private static String fullyCorrectTestData =
+            new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
 
     private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
 
@@ -152,13 +160,14 @@ public class GeneralGuiTests {
 
     @Test
     public void test_highlight_graphs(FxRobot robot) {
-        for(GraphType g : GraphType.values()){
+        for (GraphType g : GraphType.values()) {
 
-            String bId = "#btn" + g.getLabel().replace(" ", "");
-            String gId = "#graph" + g.getLabel().replace(" ", "");
-            checkHighlight(bId, gId, robot);
+            String btnId = "#btn" + g.getLabel().replace(" ", "");
+            String graphId = "#graph" + g.getLabel().replace(" ", "");
+            checkHighlight(btnId, graphId, robot);
         }
     }
+
     /**
      * Checks that the graphs displayed by the UI have been populated with the {@code expected}
      * Rocket data.
@@ -216,17 +225,17 @@ public class GeneralGuiTests {
     /**
      * Clicks the button and checks to see if the graph is highlighted.
      *
-     * @param bId       The ID of the button to be clicked.
-     * @param gId       The ID of the graph that should be highlighted.
+     * @param btnId       The ID of the button to be clicked.
+     * @param graphId       The ID of the graph that should be highlighted.
      * @param robot     The robot injected to run tests.
      */
-    private static void checkHighlight(String bId, String gId, FxRobot robot){
+    private static void checkHighlight(String btnId, String graphId, FxRobot robot) {
 
-        assertNull(robot.lookup(gId).queryAs(Region.class).getBorder());
-        robot.clickOn(bId);
-        assertNotNull(robot.lookup(gId).queryAs(Region.class).getBorder());
-        robot.clickOn(bId);
-        assertNull(robot.lookup(gId).queryAs(Region.class).getBorder());
+        assertNull(robot.lookup(graphId).queryAs(Region.class).getBorder());
+        robot.clickOn(btnId);
+        assertNotNull(robot.lookup(graphId).queryAs(Region.class).getBorder());
+        robot.clickOn(btnId);
+        assertNull(robot.lookup(graphId).queryAs(Region.class).getBorder());
 
     }
 
