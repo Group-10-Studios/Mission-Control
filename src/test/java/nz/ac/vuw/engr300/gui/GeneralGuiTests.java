@@ -24,14 +24,15 @@ import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
@@ -44,9 +45,8 @@ import org.testfx.util.WaitForAsyncUtils;
  *
  * @author Tim Salisbury
  */
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ApplicationExtension.class)
-public class GeneralGuiTests {
+public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
     private static String fullyCorrectRocketData =
@@ -56,8 +56,6 @@ public class GeneralGuiTests {
 
     private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
 
-
-
     static {
         //Load in test data
         OpenRocketImporter importer = new OpenRocketImporter();
@@ -66,23 +64,27 @@ public class GeneralGuiTests {
                 .map(data -> (RocketStatus) data).collect(Collectors.toList());
     }
 
-    /**
-     * Start the application UI. This is run before each test.
-     *
-     * @param stage Injected stage parameter to load the GUI inside.
-     */
-    @Start
-    private static void start(Stage stage) throws Exception {
-        stage.requestFocus();
-
-        // I have no idea what this function does, but without it the UI tests fail.
-        stage.sizeToScene();
-        stage.centerOnScreen();
-
-        stage.setAlwaysOnTop(true);
-        new HomeView(stage);
+    @Override
+    public void init() throws Exception {
+        FxToolkit.registerStage(Stage::new);
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.requestFocus();
+
+        // I have no idea what this function does, but without it the UI tests fail.
+        primaryStage.sizeToScene();
+        primaryStage.centerOnScreen();
+
+        primaryStage.setAlwaysOnTop(true);
+        new HomeView(primaryStage);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxToolkit.hideStage();
+    }
 
     /**
      * Checks the visibility of the graphs, much like Nathan's tests.
