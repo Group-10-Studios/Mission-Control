@@ -79,7 +79,6 @@ public class GeneralGuiTests extends ApplicationTest {
         primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
 
-        primaryStage.setAlwaysOnTop(true);
         stage = primaryStage;
         new HomeView(primaryStage);
     }
@@ -148,7 +147,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
-        runSimulation(robot, invalidJSONFile, 200);
+        runSimulation(robot, invalidJSONFile, 1000);
         try {
             WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
                 try {
