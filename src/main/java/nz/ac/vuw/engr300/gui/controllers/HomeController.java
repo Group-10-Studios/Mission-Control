@@ -4,10 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.Animation;
@@ -47,6 +44,7 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
  * @author Nalin Aswani
  * @author Jake Mai
  * @author Nathan Duckett
+ * @author Ahad Rahman
  */
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
@@ -113,6 +111,8 @@ public class HomeController implements Initializable {
     @FXML
     Region btnRunSim;
     @FXML
+    Region btnShuffle;
+    @FXML
     Region pnDetails;
     @FXML
     Region pnNav;
@@ -126,7 +126,7 @@ public class HomeController implements Initializable {
      */
     private List<RocketGraph> graphs;
     private List<Button> pnNavButtons;
-
+    private List<String> graphTypeLabels;
     /**
      * Stores the currently highlighted graph information for de-selection.
      */
@@ -207,6 +207,7 @@ public class HomeController implements Initializable {
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
+
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
         this.graphs.add(lineChartVelocityX);
@@ -223,6 +224,7 @@ public class HomeController implements Initializable {
         // Initialize the graph table.
         buildTable();
     }
+
 
     /**
      * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
@@ -255,6 +257,8 @@ public class HomeController implements Initializable {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         Pane nav = (Pane) pnNav;
         int y = 5;
+        Collections.shuffle(labels);
+        reorderGraphs(labels);
         for (String label : labels) {
             Button b = new Button(label);
             b.setLayoutY(y);
@@ -284,12 +288,19 @@ public class HomeController implements Initializable {
             pnNavButtons.add(b);
             y += 30;
         }
-        Collections.shuffle(pnNavButtons);
-        for (Button b : pnNavButtons) {
-            System.out.println(b.toString());
+    }
+
+    private void reorderGraphs(List<String> labels) {
+        for (int i = 0; i < labels.size(); i++) {
+            for (int j = 0; j < graphs.size(); j++) {
+                if (graphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
+                    RocketGraph temp = graphs.get(j);
+                    graphs.remove(j);
+                    graphs.add(i, temp);
+                }
+            }
         }
-        scaleItemHeight(apApp);
-        scaleItemWidth(apApp);
+        buildTable();
     }
 
     /**
@@ -332,6 +343,14 @@ public class HomeController implements Initializable {
                 }
             }
         });
+    }
+
+    public void shuffle() {
+        Pane nav = (Pane) pnNav;
+        nav.getChildren().clear();
+        listGraphs();
+        updatePanelPositions(apApp, apApp.getWidth());
+        updatePanelPositionsVertical(apApp, apApp.getHeight());
     }
 
     /**
