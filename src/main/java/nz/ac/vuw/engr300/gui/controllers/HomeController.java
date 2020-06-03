@@ -5,6 +5,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -283,6 +284,12 @@ public class HomeController implements Initializable {
             pnNavButtons.add(b);
             y += 30;
         }
+        Collections.shuffle(pnNavButtons);
+        for (Button b : pnNavButtons) {
+            System.out.println(b.toString());
+        }
+        scaleItemHeight(apApp);
+        scaleItemWidth(apApp);
     }
 
     /**
