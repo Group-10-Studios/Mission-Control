@@ -76,9 +76,9 @@ public class GeneralGuiTests {
      */
     @Test
     public void check_visibility_of_graphs(FxRobot robot){
-        RocketDataLineChart velocityChart = robot.lookup("#lineChartVel").queryAs(RocketDataLineChart.class);
+        RocketDataLineChart velocityChart = robot.lookup("#lineChartTotalVelocity").queryAs(RocketDataLineChart.class);
         RocketDataLineChart altitudeChart = robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class);
-        RocketDataLineChart accelerationChart = robot.lookup("#lineChartAcceleration").queryAs(RocketDataLineChart.class);
+        RocketDataLineChart accelerationChart = robot.lookup("#lineChartTotalAcceleration").queryAs(RocketDataLineChart.class);
         Assertions.assertThat(velocityChart.isVisible());
         Assertions.assertThat(altitudeChart.isVisible());
         Assertions.assertThat(accelerationChart.isVisible());
@@ -149,9 +149,9 @@ public class GeneralGuiTests {
      * @param expected  The expected data that the graphs should be populated with.
      */
     private static void checkGraphValues(FxRobot robot, List<RocketStatus> expected){
-        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#lineChartVel").queryAs(RocketDataLineChart.class).getData().get(0).getData();
+        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#lineChartTotalVelocity").queryAs(RocketDataLineChart.class).getData().get(0).getData();
         List<XYChart.Data<Number, Number>>  altitudeChartData = robot.lookup("#lineChartAltitude").queryAs(RocketDataLineChart.class).getData().get(0).getData();
-        List<XYChart.Data<Number, Number>>  accelerationChartData = robot.lookup("#lineChartAcceleration").queryAs(RocketDataLineChart.class).getData().get(0).getData();
+        List<XYChart.Data<Number, Number>>  accelerationChartData = robot.lookup("#lineChartTotalAcceleration").queryAs(RocketDataLineChart.class).getData().get(0).getData();
 
         int expectedDataSize = expected.size();
         assertEquals(expectedDataSize, velocityChartData.size());

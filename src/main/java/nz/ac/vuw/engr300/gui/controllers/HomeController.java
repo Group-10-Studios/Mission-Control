@@ -68,24 +68,24 @@ public class HomeController implements Initializable {
     @FXML
     Label weatherLabel;
     @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )");
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )", GraphType.ALTITUDE);
     @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )", GraphType.TOTAL_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )", GraphType.TOTAL_ACCELERATION);
 
     @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )", GraphType.X_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )", GraphType.Y_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )", GraphType.Z_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )", GraphType.X_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )", GraphType.Y_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )", GraphType.Z_ACCELERATION);
 
     @FXML
     Label lbWeather;
@@ -198,18 +198,6 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-
-        lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
-        lineChartAccelerationX.setGraphType(GraphType.X_ACCELERATION);
-        lineChartAccelerationY.setGraphType(GraphType.Y_ACCELERATION);
-        lineChartAccelerationZ.setGraphType(GraphType.Z_ACCELERATION);
-
-
-        lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
-        lineChartVelocityX.setGraphType(GraphType.X_VELOCITY);
-        lineChartVelocityY.setGraphType(GraphType.Y_VELOCITY);
-        lineChartVelocityZ.setGraphType(GraphType.Z_VELOCITY);
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
