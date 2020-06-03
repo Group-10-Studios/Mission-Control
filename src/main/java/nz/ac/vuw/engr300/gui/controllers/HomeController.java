@@ -28,8 +28,10 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -55,41 +57,35 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 2;
+    private static final double ROWS = 3;
+    private static final double COLS = 4;
 
     @FXML
-    public Pane pnWindDirection;
-    @FXML
-    public Label lbWindDirection;
-
-    @FXML
-    public RocketDataAngle windCompass;
-
-    @FXML
-    Pane pnAcceleration;
-    @FXML
-    Label lbAcceleration;
-
-    @FXML
-    Label lbVelocity;
-    @FXML
-    Pane pnVelocity;
-
-    @FXML
-    Label lbAltitude;
-    @FXML
-    Pane pnAltitude;
+    public RocketDataAngle windCompass = new RocketDataAngle(true);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
     @FXML
     Label weatherLabel;
     @FXML
-    public RocketDataLineChart lineChartAltitude;
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )");
     @FXML
-    public RocketDataLineChart lineChartVel;
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
     @FXML
-    public RocketDataLineChart lineChartAcceleration;
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+
+    @FXML
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    @FXML
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    @FXML
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
+    @FXML
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    @FXML
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
+    @FXML
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
 
     @FXML
     Label lbWeather;
@@ -149,8 +145,8 @@ public class HomeController implements Initializable {
         simulationImporter.subscribeObserver((data) -> {
             if (data instanceof RocketStatus) {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                lineChartAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                lineChartVel.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+                lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
+                lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
             }
         });
     }
@@ -192,8 +188,8 @@ public class HomeController implements Initializable {
             }
 
             // Pass bound width to begin application
-            updatePanelPositions(apApp, apApp.getBoundsInParent().getWidth());
-            updatePanelPositionsVertical(apApp, apApp.getBoundsInParent().getHeight());
+            updatePanelPositions(apApp, apApp.getWidth());
+            updatePanelPositionsVertical(apApp, apApp.getHeight());
         }).start();
     }
 
@@ -202,16 +198,60 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAcceleration.setGraphType(GraphType.ACCELERATION);
         lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-        lineChartVel.setGraphType(GraphType.VELOCITY);
+
+        lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
+        lineChartAccelerationX.setGraphType(GraphType.X_ACCELERATION);
+        lineChartAccelerationY.setGraphType(GraphType.Y_ACCELERATION);
+        lineChartAccelerationZ.setGraphType(GraphType.Z_ACCELERATION);
+
+
+        lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
+        lineChartVelocityX.setGraphType(GraphType.X_VELOCITY);
+        lineChartVelocityY.setGraphType(GraphType.Y_VELOCITY);
+        lineChartVelocityZ.setGraphType(GraphType.Z_VELOCITY);
+
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
-        this.graphs.add(lineChartAcceleration);
+        this.graphs.add(lineChartTotalVelocity);
+        this.graphs.add(lineChartVelocityX);
+        this.graphs.add(lineChartVelocityY);
+        this.graphs.add(lineChartVelocityZ);
+
+        this.graphs.add(lineChartTotalAcceleration);
+        this.graphs.add(lineChartAccelerationX);
+        this.graphs.add(lineChartAccelerationY);
+        this.graphs.add(lineChartAccelerationZ);
+
         this.graphs.add(lineChartAltitude);
-        this.graphs.add(lineChartVel);
         this.graphs.add(windCompass);
+        // Initialize the graph table.
+        buildTable();
+    }
+
+    /**
+     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
+     * screen.
+     */
+    private void buildTable() {
+        int graphNo = 0;
+        VBox rowBox = new VBox(ROWS);
+        rowBox.setSpacing(0);
+        for (int i = 0; i < ROWS; i++) {
+            HBox colBox = new HBox(COLS);
+            colBox.setSpacing(0);
+            for (int j = 0; j < COLS; j++) {
+                if (graphNo >= this.graphs.size()) {
+                    break;
+                }
+                colBox.getChildren().add((Region) this.graphs.get(graphNo++));
+            }
+            rowBox.getChildren().add(colBox);
+        }
+
+        pnContent.getChildren().clear();
+        pnContent.getChildren().add(rowBox);
     }
 
     /**
@@ -227,22 +267,21 @@ public class HomeController implements Initializable {
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
-                    // Get parent of chart to highlight entire block not just graph.
-                    // Get the chart as a region, then get the parent as a region to allow borders.
-                    Region parent = (Region) ((Region) chart).getParent();
+                    // Get the chart as a region to set the Border
+                    Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
-                        parent.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+                        chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
                                 new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
 
                         // Set the highlighted graph to null if already highlighted before.
                         // This is for turning off highlighting to re-enable.
                         this.highlightedGraph = null;
                     } else {
-                        parent.setBorder(null);
+                        chartRegion.setBorder(null);
                     }
                 }
             });
@@ -273,32 +312,29 @@ public class HomeController implements Initializable {
      * data importer and run the simulation as if it was live.
      */
     public void runSim() {
-            simulationImporter.stop();
+        simulationImporter.stop();
 
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select a simulation to run.");
-            fileChooser.setInitialDirectory(new File("src/main/resources/"));
-            File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
-            if (selectedFile != null) {
-                try {
-                    simulationImporter.importData(selectedFile.getAbsolutePath());
-                } catch (Exception e) {
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.initStyle(StageStyle.DECORATED);
-                        alert.setTitle("Warning");
-                        alert.setHeaderText("Failed to import simulation data!");
-                        alert.setContentText(e.getMessage());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a simulation to run.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                simulationImporter.importData(selectedFile.getAbsolutePath());
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.initStyle(StageStyle.DECORATED);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("Failed to import simulation data!");
+                    alert.setContentText(e.getMessage());
 
-                        alert.showAndWait();
-                    });
-                    return;
-                }
-                lineChartAcceleration.clear();
-                lineChartAltitude.clear();
-                lineChartVel.clear();
-                simulationImporter.start();
+                    alert.showAndWait();
+                });
             }
+            graphs.forEach(RocketGraph::clear);
+            simulationImporter.start();
+        }
     }
 
     /**
@@ -319,6 +355,7 @@ public class HomeController implements Initializable {
                 .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
                     updatePanelPositionsVertical(root, t1);
                 });
+
     }
 
     /**
@@ -358,19 +395,10 @@ public class HomeController implements Initializable {
      */
     private void updateGraphsVertical() {
         // Update heights of the panels
-        double graphHeight = (pnContent.getHeight() / ROWS) - STANDARD_OFFSET;
-        updatePanelsToHeight(graphHeight, pnAcceleration, pnAltitude, pnVelocity, pnWindDirection);
+        double graphHeight = (pnContent.getHeight() / ROWS);
 
         // Set the graph sizes relative to the box
-        double internalChartWidth = graphHeight * 5 / 6;
-        updatePanelsToHeight(internalChartWidth, lineChartAcceleration, lineChartAltitude, lineChartVel);
-
-        double internalCompassWidth = graphHeight * 3 / 4;
-        updatePanelsToHeight(internalCompassWidth, windCompass);
-
-        // Set position relative to above row
-        updatePanelPositionOffsetVertical(pnAcceleration, pnVelocity, 10.0);
-        updatePanelPositionOffsetVertical(pnWindDirection, pnAltitude, 10.0);
+        updatePanelsToHeight(graphHeight, allGraphs());
     }
 
     /**
@@ -454,24 +482,9 @@ public class HomeController implements Initializable {
         pnContent.setMaxWidth((width * 2) / 3); // middle panel shouldn't be larger than 2/3
 
         // Only the length internally excluding the offset
-        double graphWidth = ((pnContent.getWidth() - STANDARD_OFFSET) / ROWS) - STANDARD_OFFSET;
-        // Set all positions based on graph width
-        // updatePanelsToWidth(graphWidth, pnWindSpeed, pnRangeDistance, pnVelocity, pnAngleOfAttack, pnAltitude,
-        //        pnLocation);
+        double graphWidth = (pnContent.getWidth()) / COLS;
 
-        updatePanelsToWidth(graphWidth, pnAltitude, pnVelocity, pnAcceleration, pnWindDirection);
-        double internalChartWidth = graphWidth - STANDARD_OFFSET;
-        lineChartAcceleration.setMaxWidth(internalChartWidth);
-        lineChartAltitude.setMaxWidth(internalChartWidth);
-        lineChartVel.setMaxWidth(internalChartWidth);
-        windCompass.setMaxWidth(internalChartWidth);
-        // Set left most graph x positions - not relative to anything
-        updatePanelPositionOffset(pnAcceleration, null, STANDARD_OFFSET);
-        updatePanelPositionOffset(pnVelocity, null, STANDARD_OFFSET);
-
-        // Set the right graph x positions - relative to velocity graph
-        updatePanelPositionOffset(pnAltitude, pnVelocity, STANDARD_OFFSET);
-        updatePanelPositionOffset(pnWindDirection, pnAcceleration, STANDARD_OFFSET);
+        updatePanelsToWidth(graphWidth, allGraphs());
     }
 
     /**
@@ -559,4 +572,12 @@ public class HomeController implements Initializable {
         thisPanel.setLayoutY(relativePanel.getLayoutY() + relativePanel.getHeight() + offset);
     }
 
+    /**
+     * Get all the graphs from pnContent in Region format.
+     *
+     * @return Region array of graphs.
+     */
+    private Region[] allGraphs() {
+        return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
+    }
 }

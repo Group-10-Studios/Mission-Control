@@ -3,6 +3,11 @@ package nz.ac.vuw.engr300.gui.components;
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
@@ -21,7 +26,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * set to false, it will appear with standard angle markings, E.G. 0, 45, 90,
      * 135, 180, 225, 270, 315.
      * Usage: {@code
-     *  <RocketDataAngle isCompass="true"/>
+     * <RocketDataAngle isCompass="true"/>
      * }
      *
      * @param isCompass Whether or not this compass is displaying an angle or a
@@ -29,7 +34,6 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      */
     public RocketDataAngle(@NamedArg("isCompass") boolean isCompass) {
         super();
-
         // Make it pretty!
         this.setBorderPaint(Gauge.DARK_COLOR);
         this.setMinValue(0);
@@ -59,6 +63,17 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
         this.setTickLabelColor(DARK_COLOR);
         this.setAnimated(false);
         this.setValueVisible(true);
+
+        this.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // Do not remove! If you remove you'll get exceptions! This is to stop it from overflowing the border.
+        this.heightProperty().addListener((ObservableValue<? extends Number> observableValue,
+                                           Number number, Number t1) -> {
+            if (t1.intValue() > 0) {
+                this.setPadding(new Insets(10));
+            }
+        });
     }
 
     /**
@@ -76,10 +91,17 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
     public String getUserAgentStylesheet() {
         return Gauge.class.getResource("gauge.css").toExternalForm();
     }
+    
+    @Override
+    public void clear() {
+        // Do nothing for now - not needed.
+        return;
+    }
 
     @Override
     public void setGraphType(GraphType g) {
         this.type = g;
+        this.setTitle(g.getLabel());
     }
 
     @Override

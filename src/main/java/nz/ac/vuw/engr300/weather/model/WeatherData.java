@@ -1,12 +1,13 @@
 package nz.ac.vuw.engr300.weather.model;
 
+import java.util.Objects;
+
 /**
  * Representation of weather data. This contains the details of the weather at a
  * specific time. This is comparable with other weather data to order the data
  * by time if required in the list.
- * 
- * @author Nathan Duckett
  *
+ * @author Nathan Duckett
  */
 public class WeatherData implements Comparable<WeatherData> {
     private Long timestamp;
@@ -19,7 +20,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Create a new instance of WeatherData.
-     * 
+     *
      * @param timestamp epoch time stamp from the weather API.
      * @param windSpeed Wind speed in km/hr from the weather API.
      * @param windAngle Wind angle representing the direction of the wind.
@@ -30,7 +31,7 @@ public class WeatherData implements Comparable<WeatherData> {
      *                  the API.
      */
     public WeatherData(long timestamp, double windSpeed, double windAngle, double temp, double pressure,
-            double humidity, WeatherConditionData condition) {
+                       double humidity, WeatherConditionData condition) {
         this.timestamp = timestamp;
         this.windSpeed = windSpeed;
         this.windAngle = windAngle;
@@ -42,7 +43,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the time stamp of this weather data.
-     * 
+     *
      * @return Long representation of the epoch time
      */
     public Long getTimestamp() {
@@ -51,7 +52,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the wind speed of this weather data.
-     * 
+     *
      * @return Double representation of the wind speed.
      */
     public double getWindSpeed() {
@@ -60,7 +61,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the wind angle of this weather data.
-     * 
+     *
      * @return Double representation of the wind angle.
      */
     public double getWindAngle() {
@@ -69,7 +70,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the temperature of this weather data.
-     * 
+     *
      * @return Double representation of the temperature.
      */
     public double getTemp() {
@@ -78,7 +79,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the pressure of this weather data.
-     * 
+     *
      * @return Double representation of the pressure.
      */
     public double getPressure() {
@@ -87,7 +88,7 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the humidity of this weather data.
-     * 
+     *
      * @return Double representation of the humidity.
      */
     public double getHumidity() {
@@ -96,9 +97,9 @@ public class WeatherData implements Comparable<WeatherData> {
 
     /**
      * Get the weather condition in an accessible object.
-     * 
+     *
      * @return WeatherConditionData containing access to the information of the
-     *         current weather from the API.
+     *          current weather from the API.
      */
     public WeatherConditionData getCondition() {
         return condition;
@@ -107,5 +108,28 @@ public class WeatherData implements Comparable<WeatherData> {
     @Override
     public int compareTo(WeatherData o) {
         return this.timestamp.compareTo(o.getTimestamp());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        WeatherData that = (WeatherData) o;
+        return Double.compare(that.windSpeed, windSpeed) == 0
+                && Double.compare(that.windAngle, windAngle) == 0
+                && Double.compare(that.temp, temp) == 0
+                && Double.compare(that.pressure, pressure) == 0
+                && Double.compare(that.humidity, humidity) == 0
+                && Objects.equals(timestamp, that.timestamp)
+                && Objects.equals(condition, that.condition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, windSpeed, windAngle, temp, pressure, humidity, condition);
     }
 }

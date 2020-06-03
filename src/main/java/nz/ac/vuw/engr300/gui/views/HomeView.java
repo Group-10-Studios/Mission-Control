@@ -20,7 +20,7 @@ public class HomeView {
      * 
      * @param stage Root application stage to have panels attached to.
      */
-    public HomeView(Stage stage) {
+    public HomeView(Stage stage) throws Exception {
         Parent root = null;
         URL layoutFile = getClass().getClassLoader().getResource("layouts/Home.fxml");
         if (layoutFile == null) {
@@ -40,6 +40,7 @@ public class HomeView {
         stage.setScene(scene);
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
+
 
         stage.show();
         // Set minimum dimensions to 720p - Doesn't support below this

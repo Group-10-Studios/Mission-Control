@@ -11,15 +11,15 @@ import javax.swing.JPanel;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 
-public class MapImageCurrentLocationDemo extends JPanel {
+class MapImageCurrentLocationDemo extends JPanel {
     private static final long serialVersionUID = 1L;
 
     public static final int MARKER_SIZE = 10;
 
-    public static double centerLatitude = -41.227938; // Update this value
-    public static double centerLongitude = 174.798772; // Update this value
-    public static int graphicsWidth = 800;
-    public static int graphicsHeight = 600;
+    public static final double centerLatitude = -41.227938; // Update this value
+    public static final double centerLongitude = 174.798772; // Update this value
+    public static final int graphicsWidth = 800;
+    public static final int graphicsHeight = 600;
     public static String filename;
     public static double angle;
     public static double hypotenuse;

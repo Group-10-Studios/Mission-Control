@@ -77,6 +77,12 @@ spell_check:
     - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-nz **/*.md
   allow_failure: false
 
+find_bugs:
+  stage: Test
+  tags:
+    - shell
+  script:
+    - mvn clean compile spotbugs:check
 
 checkstyle:
   stage: Test
