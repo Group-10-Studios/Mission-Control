@@ -40,7 +40,7 @@ unittest:
   before_script:
     - *build_keys
   script:
-    - mvn test
+    - DISPLAY=:0 mvn test
   allow_failure: false
   artifacts:
     paths:
@@ -116,7 +116,7 @@ package:
   before_script:
     - *build_keys
   script:
-    - mvn clean package
+    - DISPLAY=:0 mvn clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
