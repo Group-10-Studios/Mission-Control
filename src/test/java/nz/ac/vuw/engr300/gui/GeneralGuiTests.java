@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +41,13 @@ import org.testfx.util.WaitForAsyncUtils;
 @ExtendWith(ApplicationExtension.class)
 public class GeneralGuiTests {
     private static final List<RocketStatus> TEST_DATA;
+
+    private static String fullyCorrectRocketData = new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
+    private static String fullyCorrectTestData = new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
+
+    private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
+
+
 
     static {
         //Load in test data
@@ -87,7 +95,7 @@ public class GeneralGuiTests {
      */
     @Test
     public void test_run_simulation(FxRobot robot) {
-        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 750);
+        runSimulation(robot, fullyCorrectTestData, 750);
 
         checkGraphValues(robot, TEST_DATA);
     }
@@ -101,19 +109,19 @@ public class GeneralGuiTests {
     @Test
     public void test_running_simulation_while_simulation_running(FxRobot robot) {
         // NOTE: 250ms is not enough time for this simulation to run
-        runSimulation(robot, "../../test/resources/FullyCorrectRocketData.csv", 1000);
+        runSimulation(robot, fullyCorrectRocketData, 1000);
 
         // Also note that these two files are actually different.
 
         // Run another simulation while one is already going
-        runSimulation(robot, "../../test/resources/FullyCorrectTestData.csv", 1000);
+        runSimulation(robot, fullyCorrectTestData, 1000);
 
         checkGraphValues(robot, TEST_DATA);
     }
 
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
-        runSimulation(robot, "../../test/resources/InvalidJsonFile.json", 200);
+        runSimulation(robot, invalidJSONFile, 200);
         try {
             WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
                 try {
