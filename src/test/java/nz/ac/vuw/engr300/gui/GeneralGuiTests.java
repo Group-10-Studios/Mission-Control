@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
+
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
@@ -36,8 +37,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
-
-
 
 
 /**
@@ -75,9 +74,7 @@ public class GeneralGuiTests extends ApplicationTest {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.requestFocus();
 
-        // I have no idea what this function does, but without it the UI tests fail.
-//        primaryStage.sizeToScene();
-        primaryStage.centerOnScreen();
+//        primaryStage.centerOnScreen();
 
         stage = primaryStage;
         new HomeView(primaryStage);
@@ -118,7 +115,9 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_run_simulation(FxRobot robot) {
-        runSimulation(robot, fullyCorrectTestData, 1500);
+        if (!runSimulation(robot, fullyCorrectTestData, 1500)) {
+            fail("Failed to run simulation - Alert popup found.");
+        }
 
         checkGraphValues(robot, TEST_DATA);
     }
@@ -132,7 +131,9 @@ public class GeneralGuiTests extends ApplicationTest {
     @Test
     public void test_running_simulation_while_simulation_running(FxRobot robot) {
         // NOTE: 250ms is not enough time for this simulation to run
-        runSimulation(robot, fullyCorrectRocketData, 1000);
+        if (!runSimulation(robot, fullyCorrectRocketData, 1000)) {
+            fail("Failed to run simulation - Alert popup found.");
+        }
 
         // Also note that these two files are actually different.
 
@@ -149,27 +150,9 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
-        runSimulation(robot, invalidJSONFile, 1000);
-        try {
-            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
-                try {
-                    Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
-                    Node description
-                            = robot.lookup("File provided does not contain a header line!").queryAs(Node.class);
-                    Node ok = robot.lookup("OK").queryAs(Node.class);
-                    return title.isVisible() && description.isVisible() && ok.isVisible();
-                } catch (EmptyNodeQueryException ignored) {
-                    return false;
-                }
-
-            });
-        } catch (TimeoutException e) {
-            fail("Timeout while waiting for Failed Import Data alert!");
+        if (runSimulation(robot, invalidJSONFile, 1000)) {
+            fail("Alert popup not shown when it should have!");
         }
-        FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
-        FxAssert.verifyThat("File provided does not contain a header line!", Node::isVisible);
-        FxAssert.verifyThat("OK", Node::isVisible);
-        robot.clickOn("OK");
     }
 
     @Test
@@ -179,6 +162,28 @@ public class GeneralGuiTests extends ApplicationTest {
             String btnId = "#btn" + g.getLabel().replace(" ", "");
             String graphId = "#graph" + g.getLabel().replace(" ", "");
             checkHighlight(btnId, graphId, robot);
+        }
+    }
+
+    private static boolean checkForAlertPopup(FxRobot robot) {
+        try {
+            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
+                try {
+                    Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
+//                    Node description
+//                            = robot.lookup("File provided does not contain a header line!").queryAs(Node.class);
+                    Node ok = robot.lookup("OK").queryAs(Node.class);
+                    return title.isVisible() && ok.isVisible();
+                } catch (EmptyNodeQueryException ignored) {
+                    return false;
+                }
+            });
+            FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
+            FxAssert.verifyThat("OK", Node::isVisible);
+            robot.clickOn("OK");
+            return true;
+        } catch (TimeoutException e) {
+            return false;
         }
     }
 
@@ -221,27 +226,32 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param simulationFile    The simulation we wish to run.
      * @param simulationRunTime How long we should let the simulation run for.
      */
-    private static void runSimulation(FxRobot robot, String simulationFile, long simulationRunTime) {
+    private static boolean runSimulation(FxRobot robot, String simulationFile, long simulationRunTime) {
         robot.clickOn("#btnRunSim");
         WaitForAsyncUtils.waitForFxEvents(5);
 
         copyPasteString(robot, simulationFile);
         WaitForAsyncUtils.waitForFxEvents();
-
         try {
             //Let the simulation run
             Thread.sleep(simulationRunTime);
+
+            if (checkForAlertPopup(robot)) {
+                return false;
+            }
         } catch (InterruptedException ignored) {
-            fail("Simulation sleep interrupted!");
+            fail("Sleep for simulation interrupted!");
         }
+
+        return true;
     }
 
     /**
      * Clicks the button and checks to see if the graph is highlighted.
      *
-     * @param btnId       The ID of the button to be clicked.
-     * @param graphId       The ID of the graph that should be highlighted.
-     * @param robot     The robot injected to run tests.
+     * @param btnId   The ID of the button to be clicked.
+     * @param graphId The ID of the graph that should be highlighted.
+     * @param robot   The robot injected to run tests.
      */
     private static void checkHighlight(String btnId, String graphId, FxRobot robot) {
 
