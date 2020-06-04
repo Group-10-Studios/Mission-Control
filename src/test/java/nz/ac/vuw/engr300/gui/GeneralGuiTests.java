@@ -76,11 +76,13 @@ public class GeneralGuiTests extends ApplicationTest {
         primaryStage.requestFocus();
 
         // I have no idea what this function does, but without it the UI tests fail.
-        primaryStage.sizeToScene();
+//        primaryStage.sizeToScene();
         primaryStage.centerOnScreen();
 
         stage = primaryStage;
         new HomeView(primaryStage);
+
+        Thread.sleep(2000);
     }
 
     @Override
@@ -116,7 +118,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_run_simulation(FxRobot robot) {
-        runSimulation(robot, fullyCorrectTestData, 750);
+        runSimulation(robot, fullyCorrectTestData, 1500);
 
         checkGraphValues(robot, TEST_DATA);
     }

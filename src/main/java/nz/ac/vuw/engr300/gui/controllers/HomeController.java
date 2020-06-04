@@ -16,19 +16,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -198,11 +190,11 @@ public class HomeController implements Initializable {
      * Refresh on start is designed to wait on a separate thread then manually
      * update the positions of panels to match our dynamic design.
      */
-    private void refreshOnStart() {
+    public void refreshOnStart() {
         new Thread(() -> {
             try {
                 // Sleep for 350ms to wait for UI to load
-                Thread.sleep(350);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
             }
@@ -244,10 +236,10 @@ public class HomeController implements Initializable {
      */
     private void buildTable() {
         int graphNo = 0;
-        VBox rowBox = new VBox(ROWS);
+        VBox rowBox = new VBox();
         rowBox.setSpacing(0);
         for (int i = 0; i < ROWS; i++) {
-            HBox colBox = new HBox(COLS);
+            HBox colBox = new HBox();
             colBox.setSpacing(0);
             for (int j = 0; j < COLS; j++) {
                 if (graphNo >= this.graphs.size()) {
@@ -388,6 +380,7 @@ public class HomeController implements Initializable {
 
         // Update each graph relative to each other
         updateGraphsVertical();
+
 
         // Update text height relative to each other in pnDetails
         updatePanelPositionOffsetVertical(lbRocketHead, null, 0);
