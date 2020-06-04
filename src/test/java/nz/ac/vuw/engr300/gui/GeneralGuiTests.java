@@ -50,11 +50,11 @@ public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
     private static String fullyCorrectRocketData =
-            new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
+            "./src/test/resources/FullyCorrectRocketData.csv";
     private static String fullyCorrectTestData =
-            new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
+            "./src/test/resources/FullyCorrectTestData.csv";
 
-    private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
+    private static String invalidJSONFile = "./src/test/resources/InvalidJsonFile.json";
 
     Stage stage;
 
@@ -164,7 +164,7 @@ public class GeneralGuiTests extends ApplicationTest {
 
             });
         } catch (TimeoutException e) {
-            fail("Timeout waiting for failed import data popup!");
+            fail("Timeout while waiting for Failed Import Data alert!");
         }
         FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
         FxAssert.verifyThat("File provided does not contain a header line!", Node::isVisible);
