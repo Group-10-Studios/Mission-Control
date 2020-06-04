@@ -55,7 +55,7 @@ unittest_windows:
     - *build_windows_keys
   script:
     # Must use bash shell to run display commands - Configured on runner.
-    - bash -c "display=:0 mvn test"
+    - bash -c "DISPLAY=:0 mvn test"
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
