@@ -164,7 +164,7 @@ public class GeneralGuiTests extends ApplicationTest {
 
             });
         } catch (TimeoutException e) {
-            fail("Timeout waiting for popup occured!");
+            fail("Timeout waiting for failed import data popup!");
         }
         FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
         FxAssert.verifyThat("File provided does not contain a header line!", Node::isVisible);
@@ -223,7 +223,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     private static void runSimulation(FxRobot robot, String simulationFile, long simulationRunTime) {
         robot.clickOn("#btnRunSim");
-        WaitForAsyncUtils.waitForFxEvents();
+        WaitForAsyncUtils.waitForFxEvents(5);
 
         copyPasteString(robot, simulationFile);
         WaitForAsyncUtils.waitForFxEvents();
