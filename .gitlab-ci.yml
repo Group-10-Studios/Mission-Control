@@ -54,8 +54,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    # Must use bash shell to run display commands - Configured on runner.
-    - bash -c "DISPLAY=:0 mvn test"
+    - cmdow.exe /run "mvn test"
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -137,8 +136,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    # Must use bash shell to run display commands - Configured on runner.
-    - bash -c "DISPLAY=:0 mvn clean package"
+    - cmdow.exe /run "mvn clean package"
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
