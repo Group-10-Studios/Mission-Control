@@ -50,11 +50,11 @@ public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
     private static String fullyCorrectRocketData =
-            "./src/test/resources/FullyCorrectRocketData.csv";
+            "./../../test/resources/FullyCorrectRocketData.csv";
     private static String fullyCorrectTestData =
-            "./src/test/resources/FullyCorrectTestData.csv";
+            "./../../test/resources/FullyCorrectTestData.csv";
 
-    private static String invalidJSONFile = "./src/test/resources/InvalidJsonFile.json";
+    private static String invalidJSONFile = "./../../test/resources/InvalidJsonFile.json";
 
     Stage stage;
 
