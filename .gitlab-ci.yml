@@ -54,7 +54,9 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn test
+    # Must use bash shell to run display commands - Configured on runner.
+    - bash
+    - display=:0 mvn test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -136,6 +138,8 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
+    # Must use bash shell to run display commands - Configured on runner.
+    - bash
     - mvn clean package
   artifacts:
     paths:
