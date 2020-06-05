@@ -166,11 +166,12 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
                 lbWeatherStatus, windCompass);
-        wc.updateWindSpeed();
-        wc.updateTemp();
-        wc.updateHumidity();
-        wc.updatePressure();
-        wc.updateForecast();
+        wc.updateWeatherInfo();
+//        wc.updateWindSpeed();
+//        wc.updateTemp();
+//        wc.updateHumidity();
+//        wc.updatePressure();
+//        wc.updateForecast();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
 
