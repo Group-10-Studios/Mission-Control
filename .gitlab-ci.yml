@@ -40,6 +40,7 @@ unittest:
     - *build_keys
   script:
     - mvn test
+    - cat target/site/jacoco/index.html
   allow_failure: false
   artifacts:
     paths:
