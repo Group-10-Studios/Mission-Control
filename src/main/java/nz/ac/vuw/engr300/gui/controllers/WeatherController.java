@@ -1,12 +1,12 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import org.apache.commons.text.WordUtils;
 import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
+import org.apache.commons.text.WordUtils;
 
 /**
  * Represents a separate weather controller in the GUI.
@@ -18,7 +18,11 @@ public class WeatherController {
 
     private final RocketDataAngle windCompass;
     @FXML
-    private Label lbWindSpeed, lbWeatherTemp, lbWeatherHumidity, lbWeatherPressure, lbWeatherStatus;
+    private Label lbWindSpeed;
+    private Label lbWeatherTemp;
+    private Label lbWeatherHumidity;
+    private Label lbWeatherPressure;
+    private Label lbWeatherStatus;
 
     public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
@@ -51,15 +55,15 @@ public class WeatherController {
             lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
 
             // Temperature is converted from Kelvin to Celcius: temp - 273.15, displayed up to 1 decimal place.
-            Double tempMetric = Math.round((w.getTemp() - 273.15 ) * 10.0) / 10.0;
+            Double tempMetric = Math.round((w.getTemp() - 273.15) * 10.0) / 10.0;
             lbWeatherTemp.setText("Temperature: " + tempMetric + " degrees");
 
             // Air Humidity is displayed in percentage, up to 1 decimal place.
-            Double humid = Math.round((w.getHumidity() ) * 10.0) / 10.0;
+            Double humid = Math.round((w.getHumidity()) * 10.0) / 10.0;
             lbWeatherHumidity.setText("Humidity: " + humid + "%");
 
             // Air Pressure is displayed in millibar, up to 1 decimal place
-            Double pressure = Math.round((w.getPressure() ) * 10.0) / 10.0;
+            Double pressure = Math.round((w.getPressure()) * 10.0) / 10.0;
             lbWeatherPressure.setText("Air Pressure: " + pressure + "mb");
 
             // Sky forecast (rainy, cloudy, etc.)

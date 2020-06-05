@@ -167,16 +167,9 @@ public class HomeController implements Initializable {
         WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
                 lbWeatherStatus, windCompass);
         wc.updateWeatherInfo();
-//        wc.updateWindSpeed();
-//        wc.updateTemp();
-//        wc.updateHumidity();
-//        wc.updatePressure();
-//        wc.updateForecast();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
-
         this.pnNavButtons = new ArrayList<>();
-
         refreshOnStart();
         bindGraphsToType();
         listGraphs();
