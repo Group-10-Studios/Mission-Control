@@ -60,16 +60,16 @@ public class WeatherController {
 
             // Air Humidity is displayed in percentage, up to 1 decimal place.
             Double humid = Math.round((w.getHumidity()) * 10.0) / 10.0;
-            lbWeatherHumidity.setText("Humidity: " + humid + "%");
+            lbWeatherHumidity.setText("Humidity: " + humid + " %");
 
             // Air Pressure is displayed in millibar, up to 1 decimal place
             Double pressure = Math.round((w.getPressure()) * 10.0) / 10.0;
-            lbWeatherPressure.setText("Air Pressure: " + pressure + "mb");
+            lbWeatherPressure.setText("Air Pressure: " + pressure + " mb");
 
             // Sky forecast (rainy, cloudy, etc.)
             String forecast = w.getCondition().getWeatherDescription();
             String formattedForecast = WordUtils.capitalize(forecast);
-            lbWeatherPressure.setText("Weather status: " + formattedForecast);
+            lbWeatherStatus.setText("Weather status: " + formattedForecast);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
