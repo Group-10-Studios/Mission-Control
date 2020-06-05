@@ -25,7 +25,7 @@ public class WeatherController {
     private Label lbWeatherStatus;
 
     /**
-     * Create a new WeatherController that stores weather data
+     * Create a new WeatherController that stores weather data.
      * @param wl represents Wind Speed
      * @param wa represents Temperature
      * @param wh represents Air Humidity
