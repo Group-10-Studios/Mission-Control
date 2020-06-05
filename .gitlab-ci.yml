@@ -24,6 +24,10 @@ stages:
     }
   - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
+# Storage of common variables between stages
+variables:
+  GUI_TEST_CLI: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+
 build:
   stage: Build
   tags:
@@ -40,7 +44,7 @@ unittest:
   before_script:
     - *build_keys
   script:
-    - DISPLAY=:0 mvn clean test
+    - DISPLAY=:0 mvn $GUI_TEST_CLI clean test
   allow_failure: false
   artifacts:
     paths:
@@ -54,7 +58,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn clean test
+    - mvn $GUI_TEST_CLI clean test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -122,7 +126,7 @@ package:
   before_script:
     - *build_keys
   script:
-    - DISPLAY=:0 mvn clean package
+    - DISPLAY=:0 mvn $GUI_TEST_CLI clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
@@ -136,7 +140,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn clean package
+    - mvn $GUI_TEST_CLI clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
