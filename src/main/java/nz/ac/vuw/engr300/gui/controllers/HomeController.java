@@ -13,10 +13,12 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -126,7 +128,6 @@ public class HomeController implements Initializable {
      */
     private List<RocketGraph> graphs;
     private List<Button> pnNavButtons;
-    private List<String> graphTypeLabels;
     /**
      * Stores the currently highlighted graph information for de-selection.
      */
@@ -259,9 +260,29 @@ public class HomeController implements Initializable {
         int y = 5;
         Collections.shuffle(labels);
         reorderGraphs(labels);
+        final Delta delta = new Delta();
+//        final String btnSelected = "";
         for (String label : labels) {
             Button b = new Button(label);
             b.setLayoutY(y);
+            b.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    delta.y = b.getLayoutY() - mouseEvent.getSceneY();
+                }
+//                btnSelected = label;
+            });
+            b.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    System.out.println(delta.y);
+                    if (Math.abs(delta.y) > 200) {
+                        System.out.println("moved below button");
+                    }
+                    b.setLayoutY(mouseEvent.getSceneY() + delta.y);
+
+                }
+            });
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
@@ -596,4 +617,9 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
+}
+
+// records relative x and y co-ordinates.
+class Delta {
+    double x, y;
 }
