@@ -24,6 +24,15 @@ public class WeatherController {
     private Label lbWeatherPressure;
     private Label lbWeatherStatus;
 
+    /**
+     * Create a new WeatherController that stores weather data
+     * @param wl represents Wind Speed
+     * @param wa represents Temperature
+     * @param wh represents Air Humidity
+     * @param wp represents Air Pressure
+     * @param ws represents weather status
+     * @param windCompass represents Wind Direction
+     */
     public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass) {
         this.lbWindSpeed = wl;
         this.lbWeatherTemp = wa;
