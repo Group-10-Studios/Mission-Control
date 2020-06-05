@@ -76,6 +76,13 @@
 			<version>3.13.2</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Copied from https://github.com/TestFX/Monocle -->
+		<dependency>
+			<groupId>org.testfx</groupId>
+			<artifactId>openjfx-monocle</artifactId>
+			<version>jdk-11+26</version> <!-- jdk-11+26 for Java 11, jdk-9+181 for Java 9, 8u76-b04 for Java 8 -->
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
