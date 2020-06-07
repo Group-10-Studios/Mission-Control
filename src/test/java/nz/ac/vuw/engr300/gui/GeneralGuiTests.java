@@ -169,7 +169,7 @@ public class GeneralGuiTests extends ApplicationTest {
 
     private static boolean checkForAlertPopup(FxRobot robot) {
         try {
-            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
+            WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
                 try {
                     Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
