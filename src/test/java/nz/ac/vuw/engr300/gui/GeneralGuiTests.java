@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
-
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
@@ -25,7 +24,7 @@ import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testfx.api.FxAssert;
@@ -48,14 +47,14 @@ import org.testfx.util.WaitForAsyncUtils;
 public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
-    private static String fullyCorrectRocketData =
+    private static final String fullyCorrectRocketData =
             new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
-    private static String fullyCorrectTestData =
+    private static final String fullyCorrectTestData =
             new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
 
-    private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();;
+    private static final String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();
 
-    Stage stage;
+    private Stage stage;
 
     static {
         //Load in test data
@@ -73,8 +72,6 @@ public class GeneralGuiTests extends ApplicationTest {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.requestFocus();
-
-//        primaryStage.centerOnScreen();
 
         stage = primaryStage;
         new HomeView(primaryStage);
@@ -115,7 +112,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_run_simulation(FxRobot robot) {
-        if (!runSimulation(robot, fullyCorrectTestData, 1500)) {
+        if (!runSimulation(robot, fullyCorrectTestData)) {
             fail("Failed to run simulation - Alert popup found.");
         }
 
@@ -130,15 +127,15 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_running_simulation_while_simulation_running(FxRobot robot) {
-        // NOTE: 250ms is not enough time for this simulation to run
-        if (!runSimulation(robot, fullyCorrectRocketData, 1000)) {
+        // NOTE: The 8 seconds waited while checking for an alert pop is not enough time to run this simulation.
+        if (!runSimulation(robot, fullyCorrectRocketData)) {
             fail("Failed to run simulation - Alert popup found.");
         }
 
         // Also note that these two files are actually different.
 
         // Run another simulation while one is already going
-        if (!runSimulation(robot, fullyCorrectTestData, 1000)) {
+        if (!runSimulation(robot, fullyCorrectTestData)) {
             fail("Failed to run simulation - Alert popup found.");
         }
 
@@ -146,17 +143,23 @@ public class GeneralGuiTests extends ApplicationTest {
     }
 
     /**
-     * Test to see if the buttons will highlight the graphs.
+     * Tests that an alert popup is shown when attempting to run simulations with invalid simulation
+     * files.
      *
-     * @param robot The robot injected to run tests.
+     * @param robot     The robot injected to run tests
      */
     @Test
     public void test_running_simulation_with_invalid_file(FxRobot robot) {
-        if (runSimulation(robot, invalidJSONFile, 1000)) {
+        if (runSimulation(robot, invalidJSONFile)) {
             fail("Alert popup not shown when it should have!");
         }
     }
 
+    /**
+     * Test to see if the buttons will highlight the graphs.
+     *
+     * @param robot The robot injected to run tests.
+     */
     @Test
     public void test_highlight_graphs(FxRobot robot) {
         for (GraphType g : GraphType.values()) {
@@ -167,6 +170,13 @@ public class GeneralGuiTests extends ApplicationTest {
         }
     }
 
+    /**
+     * Checks if an alert pop is shown while importing simulation data. Note, this will take 8 seconds currently. If
+     * a popup is on the screen, this function will press the OK button on it to dismiss it.
+     *
+     * @param robot     The robot injected to run tests.
+     * @return          Whether or not an alert popup was visible.
+     */
     private static boolean checkForAlertPopup(FxRobot robot) {
         try {
             WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
@@ -226,24 +236,14 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param simulationFile    The simulation we wish to run.
      * @param simulationRunTime How long we should let the simulation run for.
      */
-    private static boolean runSimulation(FxRobot robot, String simulationFile, long simulationRunTime) {
+    private static boolean runSimulation(FxRobot robot, String simulationFile) {
         robot.clickOn("#btnRunSim");
         WaitForAsyncUtils.waitForFxEvents(5);
 
         copyPasteString(robot, simulationFile);
         WaitForAsyncUtils.waitForFxEvents();
-        try {
-            //Let the simulation run
-            Thread.sleep(simulationRunTime);
 
-            if (checkForAlertPopup(robot)) {
-                return false;
-            }
-        } catch (InterruptedException ignored) {
-            fail("Sleep for simulation interrupted!");
-        }
-
-        return true;
+        return !checkForAlertPopup(robot);
     }
 
     /**
