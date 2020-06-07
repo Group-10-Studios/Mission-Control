@@ -1,17 +1,35 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import java.awt.EventQueue;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -23,26 +41,22 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Represents the controller for the Home application view.
  *
  * @author Nalin Aswani
  * @author Jake Mai
  * @author Nathan Duckett
+ * @author Ahad Rahman
  */
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
     private static final double ROWS = 3;
     private static final double COLS = 4;
+
+    private static final double BUTTON_HEIGHT = 30;
+
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
@@ -147,7 +161,6 @@ public class HomeController implements Initializable {
      */
     private List<RocketGraph> graphs;
     private List<Button> pnNavButtons;
-
     /**
      * Stores the currently highlighted graph information for de-selection.
      */
@@ -215,6 +228,7 @@ public class HomeController implements Initializable {
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
+
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
         this.graphs.add(lineChartVelocityX);
@@ -231,6 +245,7 @@ public class HomeController implements Initializable {
         // Initialize the graph table.
         buildTable();
     }
+
 
     /**
      * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
@@ -263,10 +278,60 @@ public class HomeController implements Initializable {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         Pane nav = (Pane) pnNav;
         int y = 5;
+        reorderGraphs(labels);
+        ButtonSelected buttonSelected = new ButtonSelected();
         for (String label : labels) {
             Button b = new Button(label);
             b.setId("btn" + label.replace(" ", ""));
             b.setLayoutY(y);
+            b.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.toFront();
+                    buttonSelected.originalY = b.getLayoutY();
+                    buttonSelected.y = b.getLayoutY() - mouseEvent.getSceneY();
+                }
+            });
+            b.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.y);
+                }
+            });
+            b.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
+                    if (distanceMoved > BUTTON_HEIGHT/2) { //If the user has dragged the button past the halfway point of a button boundary
+                        String buttonBeingMovedLabel = b.getText();
+                        int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
+                        int indexFurther = (int) Math.floor(distanceMoved/(BUTTON_HEIGHT-1));
+                        int indexToReplace;
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) { //Figuring out which direction the user is dragging. If this is true, the user is dragging downwards
+                            indexToReplace = indexOfButtonBeingMoved + indexFurther;
+                            if (indexToReplace > labels.size() - 1) {
+                                indexToReplace = labels.size() - 1; //If the user drags beyond the list, replace the last button
+                            }
+                        } else {
+                            indexToReplace = indexOfButtonBeingMoved - indexFurther;
+                            if (indexToReplace < 0) {
+                                indexToReplace = 0; //If the user drags above the list, replace the first button
+                            }
+                        }
+                        String btnBeingReplaced = labels.get(indexToReplace);
+                        for (Button bt : pnNavButtons) {
+                            if (bt.getText().equals(btnBeingReplaced)) {
+                                b.setLayoutY(bt.getLayoutY());
+                                bt.setLayoutY(buttonSelected.originalY);
+                            }
+                        }
+                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); //Swap the two butons
+                        reorderGraphs(labels);
+                    } else {
+                        b.setLayoutY(buttonSelected.originalY); //If the user barely drags the button (by mistake), then put it back
+                    }
+                }
+            });
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
@@ -291,8 +356,21 @@ public class HomeController implements Initializable {
             nav.getChildren().add(b);
             // Add to button list for dynamics
             pnNavButtons.add(b);
-            y += 30;
+            y += BUTTON_HEIGHT;
         }
+    }
+
+    private void reorderGraphs(List<String> labels) {
+        for (int i = 0; i < labels.size(); i++) {
+            for (int j = 0; j < graphs.size(); j++) {
+                if (graphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
+                    RocketGraph temp = graphs.get(j);
+                    graphs.remove(j);
+                    graphs.add(i, temp);
+                }
+            }
+        }
+        buildTable();
     }
 
     /**
@@ -591,4 +669,10 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
+}
+
+// records relative y co-ordinates.
+class ButtonSelected {
+    double originalY;
+    double y;
 }
