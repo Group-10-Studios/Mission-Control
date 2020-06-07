@@ -76,6 +76,7 @@ public class GeneralGuiTests extends ApplicationTest {
 
         stage = primaryStage;
         new HomeView(primaryStage);
+        stage.show();
 
         Thread.sleep(2000);
     }
@@ -184,14 +185,15 @@ public class GeneralGuiTests extends ApplicationTest {
                 try {
                     Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
-                    return title.isVisible() && ok.isVisible();
+                    if(title.isVisible() && ok.isVisible()){
+                        robot.clickOn("OK");
+                        return true;
+                    }
+                    return false;
                 } catch (EmptyNodeQueryException | NoSuchElementException ignored) {
                     return false;
                 }
             });
-            FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
-            FxAssert.verifyThat("OK", Node::isVisible);
-            robot.clickOn("OK");
             return true;
         } catch (TimeoutException e) {
             return false;
