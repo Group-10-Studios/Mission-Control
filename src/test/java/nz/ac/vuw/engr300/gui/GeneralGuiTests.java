@@ -190,6 +190,8 @@ public class GeneralGuiTests extends ApplicationTest {
             });
             FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
             FxAssert.verifyThat("OK", Node::isVisible);
+            Node ok = robot.lookup("OK").queryAs(Node.class);
+            ok.requestFocus();
             robot.clickOn("OK");
             return true;
         } catch (TimeoutException e) {
