@@ -195,7 +195,7 @@ public class GeneralGuiTests extends ApplicationTest {
                     Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
                     if (title.isVisible() && ok.isVisible()) {
-                        robot.clickOn("OK");
+                        robot.clickOn(ok);
                         return true;
                     }
                     return false;
