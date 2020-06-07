@@ -44,7 +44,7 @@ public class WeatherController {
 
     /**
      * updateWeatherInfo creates a new instance of WeatherImporter, process the
-     * information from weather-output.json and creates a new instance of Weather Data to
+     * information from output.json and creates a new instance of Weather Data to
      * grab the specific weather condition: windspeed, temperature, humidity,
      * air pressure and weather status. The data will be formatted accordingly and
      * displayed on the UI.
@@ -52,7 +52,7 @@ public class WeatherController {
 
     public void updateWeatherInfo() {
         try {
-            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-weather-output.json");
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
             WeatherData w = wi.getWeather(0);
 
             // Original windspeed data from weather data is measured in meter per second
