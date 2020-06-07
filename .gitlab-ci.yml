@@ -26,7 +26,9 @@ stages:
 
 # Storage of common variables between stages
 variables:
-  GUI_TEST_CLI: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+  GUI_HEADLESS_TESTS: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+  # This prefix only works on Windows to skip GUI Tests
+  NO_GUI_TEST: "-Dtest=!\"nz.ac.vuw.engr300.gui.**\""
 
 build:
   stage: Build
@@ -58,7 +60,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn clean test
+    - mvn $NO_GUI_TEST clean test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -140,7 +142,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn clean package
+    - mvn $NO_GUI_TEST clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
