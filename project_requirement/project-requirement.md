@@ -349,7 +349,7 @@ See 9.5.12. for most systems this will be around one page.
 ### 3.4 Performance requirements
 
 Our application expects to support one user at a time connected at one terminal. The software expects to have a connection made to the rocket via LoRaWAN.
-This can allow for multiple mission-control clients to connect using the same connection details but we only will officialy support one client connection as specified in our project description.
+This can allow for multiple mission-control clients to connect using the same connection details but we only will officially support one client connection as specified in our project description.
 
 We expect a varying influx of data from the rocket sent via connections using LoRaWAN. We expect this data to be coming in at near real-time based on our radio connection. Our application should process this information in less than 1 second 99% of the time as the data is streamed into our metrics. The operator should be able to reliably see the application update in a smooth manner showing the change in values as detected by the rocket itself.
 
