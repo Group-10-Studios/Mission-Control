@@ -49,11 +49,11 @@ public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
     private static String fullyCorrectRocketData =
-            "./../../test/resources/FullyCorrectRocketData.csv";
+            new File("src/test/resources/FullyCorrectRocketData.csv").getAbsolutePath();
     private static String fullyCorrectTestData =
-            "./../../test/resources/FullyCorrectTestData.csv";
+            new File("src/test/resources/FullyCorrectTestData.csv").getAbsolutePath();
 
-    private static String invalidJSONFile = "./../../test/resources/InvalidJsonFile.json";
+    private static String invalidJSONFile = new File("src/test/resources/InvalidJsonFile.json").getAbsolutePath();;
 
     Stage stage;
 

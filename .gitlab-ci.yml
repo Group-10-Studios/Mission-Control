@@ -24,6 +24,10 @@ stages:
     }
   - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
+# Storage of common variables between stages
+variables:
+  GUI_TEST_CLI: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+
 build:
   stage: Build
   tags:
@@ -54,7 +58,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - cmdow.exe /run "mvn test"
+    - mvn clean test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -136,7 +140,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    - cmdow.exe /run "mvn clean package"
+    - mvn clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
