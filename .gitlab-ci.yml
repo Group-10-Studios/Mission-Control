@@ -58,7 +58,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn $GUI_TEST_CLI clean test
+    - mvn clean test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -140,7 +140,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn $GUI_TEST_CLI clean package
+    - mvn clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
