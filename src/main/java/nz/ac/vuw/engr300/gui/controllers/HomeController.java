@@ -113,8 +113,6 @@ public class HomeController implements Initializable {
     @FXML
     Region btnRunSim;
     @FXML
-    Region btnShuffle;
-    @FXML
     Region pnDetails;
     @FXML
     Region pnNav;
@@ -258,29 +256,57 @@ public class HomeController implements Initializable {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         Pane nav = (Pane) pnNav;
         int y = 5;
-        Collections.shuffle(labels);
         reorderGraphs(labels);
-        final Delta delta = new Delta();
-//        final String btnSelected = "";
+        ButtonSelected buttonSelected = new ButtonSelected();
         for (String label : labels) {
             Button b = new Button(label);
             b.setLayoutY(y);
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    delta.y = b.getLayoutY() - mouseEvent.getSceneY();
+                    b.toFront();
+                    buttonSelected.originalY = b.getLayoutY();
+                    buttonSelected.y = b.getLayoutY() - mouseEvent.getSceneY();
                 }
-//                btnSelected = label;
             });
             b.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    System.out.println(delta.y);
-                    if (Math.abs(delta.y) > 200) {
-                        System.out.println("moved below button");
+                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.y);
+                }
+            });
+            b.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
+                    if (distanceMoved > 15) { //If the user has dragged the button past the halfway point of a button boundary
+                        String buttonBeingMovedLabel = b.getText();
+                        int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
+                        int indexFurther = (int) Math.floor(distanceMoved/29);
+                        int indexToReplace;
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) { //Figuring out which direction the user is dragging. If this is true, the user is dragging downwards
+                            indexToReplace = indexOfButtonBeingMoved + indexFurther;
+                            if (indexToReplace > labels.size() - 1) {
+                                indexToReplace = labels.size() - 1; //If the user drags beyond the list, replace the last button
+                            }
+                        } else {
+                            indexToReplace = indexOfButtonBeingMoved - indexFurther;
+                            if (indexToReplace < 0) {
+                                indexToReplace = 0; //If the user drags above the list, replace the first button
+                            }
+                        }
+                        String btnBeingReplaced = labels.get(indexToReplace);
+                        for (Button bt : pnNavButtons) {
+                            if (bt.getText().equals(btnBeingReplaced)) {
+                                b.setLayoutY(bt.getLayoutY());
+                                bt.setLayoutY(buttonSelected.originalY);
+                            }
+                        }
+                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); //Swap the two butons
+                        reorderGraphs(labels);
+                    } else {
+                        b.setLayoutY(buttonSelected.originalY); //If the user barely drags the button (by mistake), then put it back
                     }
-                    b.setLayoutY(mouseEvent.getSceneY() + delta.y);
-
                 }
             });
             b.setOnAction(e -> {
@@ -364,14 +390,6 @@ public class HomeController implements Initializable {
                 }
             }
         });
-    }
-
-    public void shuffle() {
-        Pane nav = (Pane) pnNav;
-        nav.getChildren().clear();
-        listGraphs();
-        updatePanelPositions(apApp, apApp.getWidth());
-        updatePanelPositionsVertical(apApp, apApp.getHeight());
     }
 
     /**
@@ -619,7 +637,8 @@ public class HomeController implements Initializable {
     }
 }
 
-// records relative x and y co-ordinates.
-class Delta {
-    double x, y;
+// records relative y co-ordinates.
+class ButtonSelected {
+    double originalY;
+    double y;
 }
