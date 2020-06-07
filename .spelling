@@ -1,6 +1,7 @@
 # Global dictionary to ignore spelling of certain words within our CI spellchecker.
 Gitlab
 GitLab
+Mattermost
 
 # Names
 Nathan
@@ -22,6 +23,8 @@ Andre
 Geldenhuis
 Craig
 Anslow
+Roger
+Cliffe
 
 # Tech terms
 LoRa

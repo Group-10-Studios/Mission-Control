@@ -83,6 +83,11 @@
 			<version>jdk-12.0.1+2</version> <!-- JDK-12 version must be used to bypass error in 11 - somehow it works -->
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.8</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

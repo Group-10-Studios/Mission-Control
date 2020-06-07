@@ -96,6 +96,14 @@ public class HomeController implements Initializable {
     @FXML
     Label lbWeather;
     @FXML
+    Label lbWeatherTemp;
+    @FXML
+    Label lbWeatherHumid;
+    @FXML
+    Label lbWeatherPressure;
+    @FXML
+    Label lbWeatherStatus;
+    @FXML
     Label lbWeatherHead;
     @FXML
     Label lbRocketID;
@@ -133,6 +141,7 @@ public class HomeController implements Initializable {
     @FXML
     Region pnWarnings;
 
+
     /**
      * Note must be Region to be a parent of all graph components.
      */
@@ -168,13 +177,12 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, windCompass);
-        wc.updateWindSpeed();
+        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+                lbWeatherStatus, windCompass);
+        wc.updateWeatherInfo();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
-
         this.pnNavButtons = new ArrayList<>();
-
         refreshOnStart();
         bindGraphsToType();
         listGraphs();
@@ -382,6 +390,10 @@ public class HomeController implements Initializable {
         updatePanelPositionOffsetVertical(lbState, lbStateHead, 0);
         updatePanelPositionOffsetVertical(lbWeatherHead, lbState, 0);
         updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
+        updatePanelPositionOffsetVertical(lbWeatherTemp, lbWeather, 0);
+        updatePanelPositionOffsetVertical(lbWeatherHumid, lbWeatherTemp, 0);
+        updatePanelPositionOffsetVertical(lbWeatherPressure, lbWeatherHumid, 0);
+        updatePanelPositionOffsetVertical(lbWeatherStatus, lbWeatherPressure, 0);
     }
 
     /**
@@ -454,13 +466,17 @@ public class HomeController implements Initializable {
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead);
+                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
         updatePanelPositionOffset(lbRocketHead, null, 0);
         updatePanelPositionOffset(lbWeather, null, 0);
         updatePanelPositionOffset(lbWeatherHead, null, 0);
+        updatePanelPositionOffset(lbWeatherTemp, null, 0);
+        updatePanelPositionOffset(lbWeatherHumid, null, 0);
+        updatePanelPositionOffset(lbWeatherPressure, null, 0);
+        updatePanelPositionOffset(lbWeatherStatus, null, 0);
     }
 
     /**
