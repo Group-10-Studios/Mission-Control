@@ -54,6 +54,8 @@ public class HomeController implements Initializable {
     private static final double ROWS = 3;
     private static final double COLS = 4;
 
+    private static final double BUTTON_HEIGHT = 30;
+
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true);
 
@@ -279,10 +281,10 @@ public class HomeController implements Initializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
-                    if (distanceMoved > 15) { //If the user has dragged the button past the halfway point of a button boundary
+                    if (distanceMoved > BUTTON_HEIGHT/2) { //If the user has dragged the button past the halfway point of a button boundary
                         String buttonBeingMovedLabel = b.getText();
                         int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
-                        int indexFurther = (int) Math.floor(distanceMoved/29);
+                        int indexFurther = (int) Math.floor(distanceMoved/(BUTTON_HEIGHT-1));
                         int indexToReplace;
                         if (buttonSelected.originalY - b.getLayoutY() < 0) { //Figuring out which direction the user is dragging. If this is true, the user is dragging downwards
                             indexToReplace = indexOfButtonBeingMoved + indexFurther;
@@ -333,7 +335,7 @@ public class HomeController implements Initializable {
             nav.getChildren().add(b);
             // Add to button list for dynamics
             pnNavButtons.add(b);
-            y += 30;
+            y += BUTTON_HEIGHT;
         }
     }
 
