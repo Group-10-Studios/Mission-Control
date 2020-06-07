@@ -348,24 +348,16 @@ See 9.5.12. for most systems this will be around one page.
 
 ### 3.4 Performance requirements
 
-See 9.5.13. for most systems this will be around one page. Hardware projects also see section 9.4.6.
+Our application expects to support one user at a time connected at one terminal. The software expects to have a connection made to the rocket via LoRaWAN.
+This can allow for multiple mission-control clients to connect using the same connection details but we only will officialy support one client connection as specified in our project description.
 
-> **9.5.13 Performance requirements** <br>
-> Specify both the static and the dynamic numerical requirements placed on the software or on human interaction with the software as a whole.
->
-> Static numerical requirements may include the following:
->
-> a) The number of terminals to be supported;  
-> b) The number of simultaneous users to be supported;  
-> c) Amount and type of information to be handled.
->
-> Static numerical requirements are sometimes identified under a separate section entitled Capacity.
->
-> Dynamic numerical requirements may include, for example, the numbers of transactions and tasks and the amount of data to be processed within certain time periods for both normal and peak workload conditions. The performance requirements should be stated in measurable terms.
->
->  For example, "_95 % of the transactions shall be processed in less than 1 second._" rather than, "An operator shall not have to wait for the transaction to complete."
->
-> NOTE Numerical limits applied to one specific function are normally specified as part of the processing subparagraph description of that function.
+We expect a varying influx of data from the rocket sent via connections using LoRaWAN. We expect this data to be coming in at near real-time based on our radio connection. Our application should process this information in less than 1 second 99% of the time as the data is streamed into our metrics. The operator should be able to reliably see the application update in a smooth manner showing the change in values as detected by the rocket itself.
+
+Our code is being built to be run on a field laptop at the launch site and as such should be able to match the factors required for the machine like this including:
+- Support for smaller screen/resolution to display on a laptop screen.
+- Support to run on lower RAM totals and using less cores (e.g. 2-4 cores as standard within laptops)
+
+Ensuring that our code can run smoothly on these machines as our target device must be portable and provide stable performance when monitoring the rocket.
 
 
 ### 3.5 Logical database requirements
@@ -471,6 +463,7 @@ A one page statement of contributions, including a list of each member of the gr
 **Nathan Duckett:**
 - Section 1.3.1
 - Use cases in section 3.2
+- Section 3.4
 
 **Ahad Rahman:**
 - Section 1.3.4
