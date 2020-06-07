@@ -1,22 +1,13 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +23,14 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Represents the controller for the Home application view.
  *
@@ -44,14 +43,9 @@ public class HomeController implements Initializable {
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
     private static final double ROWS = 3;
     private static final double COLS = 4;
-
+    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
-
-    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
-
-    @FXML
-    Label weatherLabel;
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart(
             "Time ( S )",
@@ -67,7 +61,6 @@ public class HomeController implements Initializable {
             "Time ( S )",
             "Altitude ( M/S^2 )",
             GraphType.TOTAL_ACCELERATION);
-
     @FXML
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart(
             "Time ( S )",
@@ -98,7 +91,8 @@ public class HomeController implements Initializable {
             "Time ( S )",
             "Altitude ( M/S^2 )",
             GraphType.Z_ACCELERATION);
-
+    @FXML
+    Label weatherLabel;
     @FXML
     Label lbWeather;
     @FXML
@@ -323,15 +317,14 @@ public class HomeController implements Initializable {
             try {
                 simulationImporter.importData(selectedFile.getAbsolutePath());
             } catch (Exception e) {
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.initStyle(StageStyle.DECORATED);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Failed to import simulation data!");
-                    alert.setContentText(e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initStyle(StageStyle.DECORATED);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Failed to import simulation data!");
+                alert.setContentText(e.getMessage());
 
-                    alert.showAndWait();
-                });
+                alert.showAndWait();
+                return;
             }
             graphs.forEach(RocketGraph::clear);
             simulationImporter.start();

@@ -11,6 +11,7 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -184,14 +185,12 @@ public class GeneralGuiTests extends ApplicationTest {
                     Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
                     return title.isVisible() && ok.isVisible();
-                } catch (EmptyNodeQueryException ignored) {
+                } catch (EmptyNodeQueryException | NoSuchElementException ignored) {
                     return false;
                 }
             });
             FxAssert.verifyThat("Failed to import simulation data!", Node::isVisible);
             FxAssert.verifyThat("OK", Node::isVisible);
-            Node ok = robot.lookup("OK").queryAs(Node.class);
-            ok.requestFocus();
             robot.clickOn("OK");
             return true;
         } catch (TimeoutException e) {
