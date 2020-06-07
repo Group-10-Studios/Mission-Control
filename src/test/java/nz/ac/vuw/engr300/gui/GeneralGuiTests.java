@@ -25,7 +25,10 @@ import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testfx.api.FxAssert;
@@ -45,6 +48,7 @@ import org.testfx.util.WaitForAsyncUtils;
  * @author Tim Salisbury
  */
 @ExtendWith(ApplicationExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GeneralGuiTests extends ApplicationTest {
     private static final List<RocketStatus> TEST_DATA;
 
@@ -78,7 +82,7 @@ public class GeneralGuiTests extends ApplicationTest {
         new HomeView(primaryStage);
         stage.show();
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
     }
 
     @Override
@@ -93,6 +97,7 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param robot The robot injected to run tests
      */
     @Test
+    @Order(1)
     public void check_visibility_of_graphs(FxRobot robot) {
         RocketDataLineChart velocityChart =
                 robot.lookup("#graphTotalVelocity").queryAs(RocketDataLineChart.class);
@@ -103,7 +108,11 @@ public class GeneralGuiTests extends ApplicationTest {
         Assertions.assertThat(velocityChart.isVisible());
         Assertions.assertThat(altitudeChart.isVisible());
         Assertions.assertThat(accelerationChart.isVisible());
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
