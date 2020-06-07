@@ -138,7 +138,9 @@ public class GeneralGuiTests extends ApplicationTest {
         // Also note that these two files are actually different.
 
         // Run another simulation while one is already going
-        runSimulation(robot, fullyCorrectTestData, 1000);
+        if (!runSimulation(robot, fullyCorrectTestData, 1000)) {
+            fail("Failed to run simulation - Alert popup found.");
+        }
 
         checkGraphValues(robot, TEST_DATA);
     }
@@ -170,8 +172,6 @@ public class GeneralGuiTests extends ApplicationTest {
             WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () -> {
                 try {
                     Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
-//                    Node description
-//                            = robot.lookup("File provided does not contain a header line!").queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
                     return title.isVisible() && ok.isVisible();
                 } catch (EmptyNodeQueryException ignored) {
