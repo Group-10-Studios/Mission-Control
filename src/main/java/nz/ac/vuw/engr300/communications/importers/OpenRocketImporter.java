@@ -32,8 +32,17 @@ public class OpenRocketImporter implements RocketDataImporter {
     // \\(s\\).*Altitude \\(m\\).*Total
     // velocity \\(m/s\\).*Total acceleration \\(m/s²\\).*Latitude \\(°\\).
     // *Longitude \\(°\\).*Angle of attack \\(°\\)\\n");
-    private static final List<String> REQUIRED_VALUES = Arrays.asList("Time (s)", "Altitude (m)",
-            "Total velocity (m/s)", "Total acceleration (m/s²)", "Latitude (°)", "Longitude (°)",
+    private static final List<String> REQUIRED_VALUES = Arrays.asList(
+            "Time (s)",
+            "Altitude (m)",
+            "Vertical velocity (m/s)",
+            "Vertical acceleration (m/s²)",
+            "Total velocity (m/s)",
+            "Total acceleration (m/s²)",
+            "Lateral velocity (m/s)",
+            "Lateral acceleration (m/s²)",
+            "Latitude (°)",
+            "Longitude (°)",
             "Angle of attack (°)");
 
     private volatile boolean streamRunning = false;
@@ -95,11 +104,17 @@ public class OpenRocketImporter implements RocketDataImporter {
 
             if (statusRegexMatcher.find()) {
                 double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble)
-                        .mapToDouble(Double::doubleValue).toArray();
+                        .mapToDouble(Double::doubleValue).map(value -> Double.isNaN(value) ? 0 : value).toArray();
                 data.add(new RocketStatus(values[parameterIndices[0]], values[parameterIndices[1]],
                         values[parameterIndices[2]], values[parameterIndices[3]], values[parameterIndices[4]],
                         values[parameterIndices[5]],
-                        Double.isNaN(values[parameterIndices[6]]) ? 0 : values[parameterIndices[6]]));
+                        values[parameterIndices[6]],
+                        values[parameterIndices[7]],
+                        values[parameterIndices[8]],
+                        values[parameterIndices[9]],
+                        values[parameterIndices[10]],
+                        values[parameterIndices[11]],
+                        values[parameterIndices[12]]));
             } else if (eventRegexMatcher.find()) {
                 data.add(new RocketEvent(RocketEvent.EventType.valueOf(eventRegexMatcher.group(1)), // Event type
                         Double.parseDouble(eventRegexMatcher.group(2)) // Event time

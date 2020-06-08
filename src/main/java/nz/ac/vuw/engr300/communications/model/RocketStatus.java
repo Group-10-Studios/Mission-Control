@@ -16,6 +16,13 @@ public class RocketStatus implements RocketData {
     private final double latitude;
     private final double longitude;
     private final double angleOfAttack;
+    private final double lateralVelocity;
+    private final double lateralAcceleration;
+    private final double longitudinalVelocity;
+    private final double longitudinalAcceleration;
+    private final double verticalAcceleration;
+    private final double verticalVelocity;
+
 
     /**
      * Create a new RocketStatus with the following information received from incoming data.
@@ -27,8 +34,7 @@ public class RocketStatus implements RocketData {
      * @param longitude Current longitude of the rocket
      * @param angleOfAttack Current angle the rocket is traveling
      */
-    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude,
-            double longitude, double angleOfAttack) {
+    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude, double longitude, double angleOfAttack, double lateralVelocity, double lateralAcceleration, double longitudinalVelocity, double longitudinalAcceleration, double verticalAcceleration, double verticalVelocity) {
         this.time = time;
         this.altitude = altitude;
         this.totalVelocity = totalVelocity;
@@ -36,7 +42,14 @@ public class RocketStatus implements RocketData {
         this.latitude = latitude;
         this.longitude = longitude;
         this.angleOfAttack = angleOfAttack;
+        this.lateralVelocity = lateralVelocity;
+        this.lateralAcceleration = lateralAcceleration;
+        this.longitudinalVelocity = longitudinalVelocity;
+        this.longitudinalAcceleration = longitudinalAcceleration;
+        this.verticalAcceleration = verticalAcceleration;
+        this.verticalVelocity = verticalVelocity;
     }
+
 
     @Override
     public double getTime() {
@@ -65,5 +78,29 @@ public class RocketStatus implements RocketData {
 
     public double getAngleOfAttack() {
         return angleOfAttack;
+    }
+
+    public double getLateralVelocity() {
+        return lateralVelocity;
+    }
+
+    public double getLateralAcceleration() {
+        return lateralAcceleration;
+    }
+
+    public double getLongitudinalVelocity() {
+        return longitudinalVelocity;
+    }
+
+    public double getLongitudinalAcceleration() {
+        return longitudinalAcceleration;
+    }
+
+    public double getVerticalAcceleration() {
+        return verticalAcceleration;
+    }
+
+    public double getVerticalVelocity() {
+        return verticalVelocity;
     }
 }
