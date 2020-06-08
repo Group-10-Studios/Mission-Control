@@ -22,6 +22,9 @@ public class RocketStatus implements RocketData {
     private final double longitudinalAcceleration;
     private final double verticalAcceleration;
     private final double verticalVelocity;
+    private final double rollRate;
+    private final double pitchRate;
+    private final double yawRate;
 
 
     /**
@@ -34,7 +37,12 @@ public class RocketStatus implements RocketData {
      * @param longitude Current longitude of the rocket
      * @param angleOfAttack Current angle the rocket is traveling
      */
-    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude, double longitude, double angleOfAttack, double lateralVelocity, double lateralAcceleration, double longitudinalVelocity, double longitudinalAcceleration, double verticalAcceleration, double verticalVelocity) {
+    public RocketStatus(double time, double altitude, double totalVelocity,
+                        double totalAcceleration, double latitude, double longitude,
+                        double angleOfAttack, double lateralVelocity, double lateralAcceleration,
+                        double longitudinalVelocity, double longitudinalAcceleration,
+                        double verticalAcceleration, double verticalVelocity,
+                        double rollRate, double pitchRate, double yawRate) {
         this.time = time;
         this.altitude = altitude;
         this.totalVelocity = totalVelocity;
@@ -48,6 +56,9 @@ public class RocketStatus implements RocketData {
         this.longitudinalAcceleration = longitudinalAcceleration;
         this.verticalAcceleration = verticalAcceleration;
         this.verticalVelocity = verticalVelocity;
+        this.rollRate = rollRate;
+        this.pitchRate = pitchRate;
+        this.yawRate = yawRate;
     }
 
 
@@ -102,5 +113,17 @@ public class RocketStatus implements RocketData {
 
     public double getVerticalVelocity() {
         return verticalVelocity;
+    }
+
+    public double getRollRate() {
+        return rollRate;
+    }
+
+    public double getPitchRate() {
+        return pitchRate;
+    }
+
+    public double getYawRate() {
+        return yawRate;
     }
 }
