@@ -8,7 +8,7 @@ import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class PullWeatherApiTest {
+class PullWeatherApiTest {
 
     public static String API_KEY;
     public static final String FILEPATH = "src/test/resources/test-weather-data";

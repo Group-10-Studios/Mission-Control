@@ -40,6 +40,7 @@ public class HomeView {
         stage.setScene(scene);
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
+        stage.setMaximized(true);
 
 
         stage.show();

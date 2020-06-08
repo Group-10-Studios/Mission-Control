@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
  */
 public class MapImageImporterTest {
 
-    public static String API_KEY;
+    static String API_KEY;
 
     /**
      * Initialize the API_KEY so that the test cases can use it during execution.

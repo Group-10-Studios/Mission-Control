@@ -32,7 +32,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * @param isCompass Whether or not this compass is displaying an angle or a
      *                  direction.
      */
-    public RocketDataAngle(@NamedArg("isCompass") boolean isCompass) {
+    public RocketDataAngle(@NamedArg("isCompass") boolean isCompass, GraphType graphType) {
         super();
         // Make it pretty!
         this.setBorderPaint(Gauge.DARK_COLOR);
@@ -74,6 +74,10 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
                 this.setPadding(new Insets(10));
             }
         });
+
+        this.setGraphType(graphType);
+
+        this.setId("graph" + graphType.getLabel().replace(" ", ""));
     }
 
     /**
