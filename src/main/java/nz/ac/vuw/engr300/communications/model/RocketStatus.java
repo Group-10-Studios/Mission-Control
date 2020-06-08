@@ -20,6 +20,7 @@ public class RocketStatus implements RocketData {
     private double totalAcceleration;
     private double lateralVelocity;
     private double lateralAcceleration;
+    // Removed as we have no data for it
 //    private double longitudinalVelocity;
 //    private double longitudinalAcceleration;
     private double latitude;

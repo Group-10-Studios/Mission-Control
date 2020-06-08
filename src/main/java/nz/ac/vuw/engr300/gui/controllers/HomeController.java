@@ -52,7 +52,7 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 3;
+    private static final double ROWS = 4;
     private static final double COLS = 4;
 
     private static final double BUTTON_HEIGHT = 30;
@@ -246,11 +246,11 @@ public class HomeController implements Initializable {
         this.graphs.add(lineChartAccelerationZ);
 
         this.graphs.add(lineChartAltitude);
-        this.graphs.add(windCompass);
-
         this.graphs.add(yawRateCompass);
         this.graphs.add(pitchRateCompass);
         this.graphs.add(rollRateCompass);
+
+        this.graphs.add(windCompass);
         // Initialize the graph table.
         buildTable();
     }
