@@ -1,10 +1,10 @@
 package nz.ac.vuw.engr300.communications.importers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import nz.ac.vuw.engr300.communications.model.RocketData;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
+import nz.ac.vuw.engr300.communications.model.RocketStatus;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,14 +12,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import nz.ac.vuw.engr300.communications.model.RocketData;
-import nz.ac.vuw.engr300.communications.model.RocketEvent;
-import nz.ac.vuw.engr300.communications.model.RocketStatus;
 
 /**
  * Simple implementation of the template interface, used for importing and
  * stream any of the dummy data files provided.
- * 
+ *
  * @author Tim Salisbury
  */
 public class OpenRocketImporter implements RocketDataImporter {
@@ -32,6 +29,8 @@ public class OpenRocketImporter implements RocketDataImporter {
     // \\(s\\).*Altitude \\(m\\).*Total
     // velocity \\(m/s\\).*Total acceleration \\(m/s²\\).*Latitude \\(°\\).
     // *Longitude \\(°\\).*Angle of attack \\(°\\)\\n");
+
+    // NOTE: This has to be in order in which they appear in the exported OpenRocketData
     private static final List<String> REQUIRED_VALUES = Arrays.asList(
             "Time (s)",
             "Altitude (m)",
@@ -43,9 +42,10 @@ public class OpenRocketImporter implements RocketDataImporter {
             "Lateral acceleration (m/s²)",
             "Latitude (°)",
             "Longitude (°)",
-            "Angle of attack (°)");
-
-    private volatile boolean streamRunning = false;
+            "Angle of attack (°)",
+            "Roll rate (°/s)",
+            "Pitch rate (°/s)",
+            "Yaw rate (°/s)");
 
     private static final Pattern HEADER_REGEX;
 
@@ -56,8 +56,6 @@ public class OpenRocketImporter implements RocketDataImporter {
             headerlineBuilder.append(value).append(".*");
         });
 
-        // headerlineBuilder.append("\\n");
-
         String pattern = headerlineBuilder.toString();
         pattern = pattern.replaceAll("\\(", "\\\\(");
         pattern = pattern.replaceAll("\\)", "\\\\)");
@@ -66,6 +64,7 @@ public class OpenRocketImporter implements RocketDataImporter {
 
     private final List<Consumer<RocketData>> observers = new ArrayList<>();
     private final List<RocketData> data = new ArrayList<>();
+    private volatile boolean streamRunning = false;
 
     public OpenRocketImporter() {
 
@@ -103,18 +102,13 @@ public class OpenRocketImporter implements RocketDataImporter {
             Matcher eventRegexMatcher = EVENT_REGEX.matcher(line);
 
             if (statusRegexMatcher.find()) {
-                double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble)
+                // Get all of the values
+                final double[] values = Arrays.stream(line.split("\\s+")).map(Double::parseDouble)
                         .mapToDouble(Double::doubleValue).map(value -> Double.isNaN(value) ? 0 : value).toArray();
-                data.add(new RocketStatus(values[parameterIndices[0]], values[parameterIndices[1]],
-                        values[parameterIndices[2]], values[parameterIndices[3]], values[parameterIndices[4]],
-                        values[parameterIndices[5]],
-                        values[parameterIndices[6]],
-                        values[parameterIndices[7]],
-                        values[parameterIndices[8]],
-                        values[parameterIndices[9]],
-                        values[parameterIndices[10]],
-                        values[parameterIndices[11]],
-                        values[parameterIndices[12]]));
+                // Extract only the required ones
+                double[] actualValues = new double[parameterIndices.length];
+                Arrays.setAll(actualValues, i -> values[parameterIndices[i]]);
+                data.add(new RocketStatus(actualValues));
             } else if (eventRegexMatcher.find()) {
                 data.add(new RocketEvent(RocketEvent.EventType.valueOf(eventRegexMatcher.group(1)), // Event type
                         Double.parseDouble(eventRegexMatcher.group(2)) // Event time
