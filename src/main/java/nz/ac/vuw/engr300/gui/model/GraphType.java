@@ -18,7 +18,10 @@ public enum GraphType {
     LATERAL_ACCELERATION("Lateral Acceleration"),
     VERTICAL_ACCELERATION("Vertical Acceleration"),
     ALTITUDE("Altitude"),
-    WINDDIRECTION("Wind Direction");
+    WINDDIRECTION("Wind Direction"),
+    ROLL_RATE("Roll Rate"),
+    PITCH_RATE("Pitch Rate"),
+    YAW_RATE("Yaw Rate");
 
 
     private String label;

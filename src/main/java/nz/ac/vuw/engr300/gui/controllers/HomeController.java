@@ -85,6 +85,13 @@ public class HomeController implements Initializable {
     public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Acceleration ( M/S^2 )");
 
     @FXML
+    public RocketDataAngle rollRateCompass = new RocketDataAngle(false);
+    @FXML
+    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false);
+    @FXML
+    public RocketDataAngle yawRateCompass = new RocketDataAngle(false);
+
+    @FXML
     Label lbWeather;
     @FXML
     Label lbWeatherTemp;
@@ -217,6 +224,10 @@ public class HomeController implements Initializable {
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
 
+        rollRateCompass.setGraphType(GraphType.ROLL_RATE);
+        pitchRateCompass.setGraphType(GraphType.PITCH_RATE);
+        yawRateCompass.setGraphType(GraphType.YAW_RATE);
+
 
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
@@ -231,6 +242,10 @@ public class HomeController implements Initializable {
 
         this.graphs.add(lineChartAltitude);
         this.graphs.add(windCompass);
+
+        this.graphs.add(yawRateCompass);
+        this.graphs.add(pitchRateCompass);
+        this.graphs.add(yawRateCompass);
         // Initialize the graph table.
         buildTable();
     }
