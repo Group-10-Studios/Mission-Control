@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -30,9 +31,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
@@ -56,40 +57,64 @@ public class HomeController implements Initializable {
 
     private static final double BUTTON_HEIGHT = 30;
 
-    @FXML
-    public RocketDataAngle windCompass = new RocketDataAngle(true);
-
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
-
     @FXML
     Label weatherLabel;
-    @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )");
-    @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Velocity ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartTotalAcceleration =
-            new RocketDataLineChart("Time ( S )", "Acceleration ( M/S^2 )");
 
     @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Velocity ( M/S )");
+    public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
     @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Velocity ( M/S )");
+    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
     @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Velocity ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Acceleration ( M/S^2 )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Acceleration ( M/S^2 )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Acceleration ( M/S^2 )");
+    public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
 
     @FXML
-    public RocketDataAngle rollRateCompass = new RocketDataAngle(false);
+    public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false);
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M )",
+            GraphType.ALTITUDE);
     @FXML
-    public RocketDataAngle yawRateCompass = new RocketDataAngle(false);
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S )",
+            GraphType.TOTAL_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S^2 )",
+            GraphType.TOTAL_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S )",
+            GraphType.LONGITUDINAL_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S )",
+            GraphType.LATERAL_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S )",
+            GraphType.VERTICAL_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S^2 )",
+            GraphType.LONGITUDINAL_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S^2 )",
+            GraphType.LATERAL_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart(
+            "Time ( S )",
+            "Altitude ( M/S^2 )",
+            GraphType.VERTICAL_ACCELERATION);
 
     @FXML
     Label lbWeather;
@@ -189,11 +214,11 @@ public class HomeController implements Initializable {
      * Refresh on start is designed to wait on a separate thread then manually
      * update the positions of panels to match our dynamic design.
      */
-    private void refreshOnStart() {
+    public void refreshOnStart() {
         new Thread(() -> {
             try {
                 // Sleep for 350ms to wait for UI to load
-                Thread.sleep(350);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
             }
@@ -209,26 +234,6 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-
-        lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
-        lineChartAccelerationX.setGraphType(GraphType.LONGITUDINAL_ACCELERATION);
-        lineChartAccelerationY.setGraphType(GraphType.LATERAL_ACCELERATION);
-        lineChartAccelerationZ.setGraphType(GraphType.VERTICAL_ACCELERATION);
-
-
-        lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
-        lineChartVelocityX.setGraphType(GraphType.LONGITUDINAL_VELOCITY);
-        lineChartVelocityY.setGraphType(GraphType.LATERAL_VELOCITY);
-        lineChartVelocityZ.setGraphType(GraphType.VERTICAL_VELOCITY);
-
-        windCompass.setGraphType(GraphType.WINDDIRECTION);
-
-        rollRateCompass.setGraphType(GraphType.ROLL_RATE);
-        pitchRateCompass.setGraphType(GraphType.PITCH_RATE);
-        yawRateCompass.setGraphType(GraphType.YAW_RATE);
-
-
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
         this.graphs.add(lineChartVelocityX);
@@ -245,7 +250,7 @@ public class HomeController implements Initializable {
 
         this.graphs.add(yawRateCompass);
         this.graphs.add(pitchRateCompass);
-        this.graphs.add(yawRateCompass);
+        this.graphs.add(rollRateCompass);
         // Initialize the graph table.
         buildTable();
     }
@@ -257,10 +262,10 @@ public class HomeController implements Initializable {
      */
     private void buildTable() {
         int graphNo = 0;
-        VBox rowBox = new VBox(ROWS);
+        VBox rowBox = new VBox();
         rowBox.setSpacing(0);
         for (int i = 0; i < ROWS; i++) {
-            HBox colBox = new HBox(COLS);
+            HBox colBox = new HBox();
             colBox.setSpacing(0);
             for (int j = 0; j < COLS; j++) {
                 if (graphNo >= this.graphs.size()) {
@@ -286,6 +291,7 @@ public class HomeController implements Initializable {
         ButtonSelected buttonSelected = new ButtonSelected();
         for (String label : labels) {
             Button b = new Button(label);
+            b.setId("btn" + label.replace(" ", ""));
             b.setLayoutY(y);
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -395,27 +401,29 @@ public class HomeController implements Initializable {
      * file dialog to select a simulation data file. It will then load it into the
      * data importer and run the simulation as if it was live.
      */
-    public void runSim() throws InvocationTargetException, InterruptedException {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                simulationImporter.stop();
+    public void runSim() {
+        simulationImporter.stop();
 
-                JFileChooser fileChooser = new JFileChooser("src/main/resources");
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        simulationImporter.importData(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    graphs.forEach(g -> g.clear());
-                    simulationImporter.start();
-                }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a simulation to run.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                simulationImporter.importData(selectedFile.getAbsolutePath());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initStyle(StageStyle.DECORATED);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Failed to import simulation data!");
+                alert.setContentText(e.getMessage());
+
+                alert.showAndWait();
+                return;
             }
-        });
+            graphs.forEach(RocketGraph::clear);
+            simulationImporter.start();
+        }
     }
 
     /**
@@ -460,6 +468,7 @@ public class HomeController implements Initializable {
 
         // Update each graph relative to each other
         updateGraphsVertical();
+
 
         // Update text height relative to each other in pnDetails
         updatePanelPositionOffsetVertical(lbRocketHead, null, 0);
