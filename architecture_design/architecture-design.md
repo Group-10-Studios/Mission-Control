@@ -250,13 +250,23 @@ Schedules must be justified and supported by evidences; they must be either dire
 
 ### 5.1 Schedule
 
-Identify dates for key project deliverables:
+* 22/05/2020 Basic UI Implementation - On this date (performance assessment 1) a very minimum UI should be complete, with graphs on display.
+* 19/06/2020 Alpha Test - On this date (performance assessment 2) the software should be able to perform a dress rehearsal of a launch, including 
+the process of pulling information required to be downloaded and saving it before moving out to the site. This date also signifies the completion
+of a dynamic UI framework, which will allow for easy expansion in the future with automatic scaling of components.
+* x/x/2020 Simulation Integration - This date signifies the completion of integrating our Mission Control software with the Simulation team's software
+ being developed concurrently. 
+* x/x/2020 Avionics Integration - This date signifies the completion of integrating our Mission Control software with Hardware team's Avionics hardware
+and software being developed concurrently.
+* x/x/2020 Test Flight 1 - On this date a test flight should be conducted with involvement of all parties (Mission Control, Simulation, and Avionics).
+This test flight will be for purely testing purposes, and any gathered data from the test flight will be used to further improve the usability of our
+software.
+* x/x/2020 Test Flight 2 - Following the first test flight a second flight should be conducted on this date, with all feedback and gathered data taken
+onboard from the first flight to improve our software.   
+* x/x/2020 Deployment to Customer - This date signifies the completion of our software and the handover to the customer, Andre Geldenhuis. 
 
-1. prototype(s).
-1. first deployment to the client.
-1. further improvements required or specified by the client.
-
-(1 page).
+Note: Completion denotes that the majority of the work is complete. It would not make sense to put an exact date on the completion of a software
+system seeing as this is an ongoing project, and there may be changes to parts of the software at any given time. 
 
 ### 5.2 Budget and Procurement
 
@@ -305,6 +315,7 @@ One page glossary as required
 
 **Tim Salisbury:**
 - Section 4.4 Physical
+- Section 5.1 Schedule
 
 **Josh Harwood:**
 - Section 4.3 Process
