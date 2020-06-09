@@ -52,8 +52,14 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 3;
-    private static final double COLS = 4;
+    /**
+     * Represents the number of ROWS of graphs within pnContent.
+     */
+    public static final double ROWS = 3;
+    /**
+     * Represents the number of COLS of graphs within pnContent.
+     */
+    public static final double COLS = 4;
 
     private static final double BUTTON_HEIGHT = 30;
 
@@ -61,50 +67,32 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M )",
-            GraphType.ALTITUDE);
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )",
+                    GraphType.ALTITUDE);
     @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S )",
-            GraphType.TOTAL_VELOCITY);
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.TOTAL_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S^2 )",
-            GraphType.TOTAL_ACCELERATION);
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.TOTAL_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S )",
-            GraphType.X_VELOCITY);
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.X_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S )",
-            GraphType.Y_VELOCITY);
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.Y_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S )",
-            GraphType.Z_VELOCITY);
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.Z_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S^2 )",
-            GraphType.X_ACCELERATION);
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.X_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S^2 )",
-            GraphType.Y_ACCELERATION);
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.Y_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart(
-            "Time ( S )",
-            "Altitude ( M/S^2 )",
-            GraphType.Z_ACCELERATION);
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.Z_ACCELERATION);
     @FXML
     Label weatherLabel;
     @FXML
@@ -155,7 +143,6 @@ public class HomeController implements Initializable {
     @FXML
     Region pnWarnings;
 
-
     /**
      * Note must be Region to be a parent of all graph components.
      */
@@ -191,14 +178,14 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
-                lbWeatherStatus, windCompass);
+                        lbWeatherStatus, windCompass);
         wc.updateWeatherInfo();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();
-        refreshOnStart();
         bindGraphsToType();
         listGraphs();
+        refreshOnStart();
     }
 
     /**
@@ -208,7 +195,7 @@ public class HomeController implements Initializable {
     public void refreshOnStart() {
         new Thread(() -> {
             try {
-                // Sleep for 350ms to wait for UI to load
+                // Sleep for 1500ms to wait for UI to load
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
@@ -216,7 +203,7 @@ public class HomeController implements Initializable {
 
             // Pass bound width to begin application
             updatePanelPositions(apApp, apApp.getWidth());
-            updatePanelPositionsVertical(apApp, apApp.getHeight());
+            updatePanelPositionsVertical(apApp.getHeight());
         }).start();
     }
 
@@ -227,7 +214,6 @@ public class HomeController implements Initializable {
     private void bindGraphsToType() {
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
-
 
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
@@ -245,7 +231,6 @@ public class HomeController implements Initializable {
         // Initialize the graph table.
         buildTable();
     }
-
 
     /**
      * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
@@ -302,20 +287,24 @@ public class HomeController implements Initializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
-                    if (distanceMoved > BUTTON_HEIGHT/2) { //If the user has dragged the button past the halfway point of a button boundary
+                    if (distanceMoved > BUTTON_HEIGHT / 2) { // If the user has dragged the button past the halfway
+                                                             // point of a button boundary
                         String buttonBeingMovedLabel = b.getText();
                         int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
-                        int indexFurther = (int) Math.floor(distanceMoved/(BUTTON_HEIGHT-1));
+                        int indexFurther = (int) Math.floor(distanceMoved / (BUTTON_HEIGHT - 1));
                         int indexToReplace;
-                        if (buttonSelected.originalY - b.getLayoutY() < 0) { //Figuring out which direction the user is dragging. If this is true, the user is dragging downwards
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) { // Figuring out which direction the user is
+                                                                             // dragging. If this is true, the user is
+                                                                             // dragging downwards
                             indexToReplace = indexOfButtonBeingMoved + indexFurther;
                             if (indexToReplace > labels.size() - 1) {
-                                indexToReplace = labels.size() - 1; //If the user drags beyond the list, replace the last button
+                                indexToReplace = labels.size() - 1; // If the user drags beyond the list, replace the
+                                                                    // last button
                             }
                         } else {
                             indexToReplace = indexOfButtonBeingMoved - indexFurther;
                             if (indexToReplace < 0) {
-                                indexToReplace = 0; //If the user drags above the list, replace the first button
+                                indexToReplace = 0; // If the user drags above the list, replace the first button
                             }
                         }
                         String btnBeingReplaced = labels.get(indexToReplace);
@@ -325,10 +314,11 @@ public class HomeController implements Initializable {
                                 bt.setLayoutY(buttonSelected.originalY);
                             }
                         }
-                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); //Swap the two butons
+                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); // Swap the two butons
                         reorderGraphs(labels);
                     } else {
-                        b.setLayoutY(buttonSelected.originalY); //If the user barely drags the button (by mistake), then put it back
+                        b.setLayoutY(buttonSelected.originalY); // If the user barely drags the button (by mistake),
+                                                                // then put it back
                     }
                 }
             });
@@ -339,7 +329,7 @@ public class HomeController implements Initializable {
                     Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
                         chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                new CornerRadii(5.0), new BorderWidths(2.0))));
+                                        new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
@@ -432,19 +422,18 @@ public class HomeController implements Initializable {
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositionsVertical(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositionsVertical(t1);
+                        });
 
     }
 
     /**
      * Update the panel's positions to dynamically match the new application height.
      *
-     * @param rootPanel Region provided from the root panel within the listener.
      * @param newHeight New height value of the root panel.
      */
-    private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
+    private void updatePanelPositionsVertical(Number newHeight) {
         double height = (double) newHeight;
         updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, apWarnings);
 
@@ -459,7 +448,6 @@ public class HomeController implements Initializable {
 
         // Update each graph relative to each other
         updateGraphsVertical();
-
 
         // Update text height relative to each other in pnDetails
         updatePanelPositionOffsetVertical(lbRocketHead, null, 0);
@@ -493,9 +481,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositions(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositions(root, t1);
+                        });
     }
 
     /**
@@ -537,14 +525,14 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
+                        lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
