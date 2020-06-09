@@ -20,7 +20,6 @@ import org.testfx.api.FxToolkit;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.service.locator.BoundsLocatorException;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -94,9 +93,13 @@ public class GeneralGuiTests extends ApplicationTest {
     }
 
     /**
+     *  Checks that a node is visible on screen, and when it is, this function will click on it. After 8 seconds,
+     *  if the node is not visible then the function will return false.
      *
+     * @param nodeId    The ID of the node to check for on the UI.
+     * @param robot     The robot injected to run tests.
      */
-    private static boolean checkForNode(FxRobot robot, String nodeId) {
+    private static boolean checkAndClickOnNode(FxRobot robot, String nodeId) {
         try {
             WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
                 try {
@@ -156,7 +159,7 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param simulationRunTime How long we should let the simulation run for.
      */
     private static boolean runSimulation(FxRobot robot, String simulationFile) {
-        if (!checkForNode(robot, "#btnRunSim")) {
+        if (!checkAndClickOnNode(robot, "#btnRunSim")) {
             fail("Run simulation button not found!");
         }
 
