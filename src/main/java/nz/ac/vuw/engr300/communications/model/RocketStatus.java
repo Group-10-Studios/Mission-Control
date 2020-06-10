@@ -14,15 +14,15 @@ public class RocketStatus implements RocketData {
     // NOTE: This list has to be in order of the list of required fields in OpenRocketImporter
     private double time;
     private double altitude;
-    private double verticalAcceleration;
-    private double verticalVelocity;
+    private double accelerationZ;
+    private double velocityZ;
     private double totalVelocity;
     private double totalAcceleration;
-    private double lateralVelocity;
-    private double lateralAcceleration;
+    private double velocityY;
+    private double accelerationY;
     // Removed as we have no data for it
-//    private double longitudinalVelocity;
-//    private double longitudinalAcceleration;
+//    private double velocityX;
+//    private double accelerationX;
     private double latitude;
     private double longitude;
     private double angleOfAttack;
@@ -44,8 +44,8 @@ public class RocketStatus implements RocketData {
      */
     public RocketStatus(double time, double altitude, double totalVelocity,
                         double totalAcceleration, double latitude, double longitude,
-                        double angleOfAttack, double lateralVelocity, double lateralAcceleration,
-                        double verticalAcceleration, double verticalVelocity,
+                        double angleOfAttack, double velocityY, double accelerationY,
+                        double accelerationZ, double VelocityZ,
                         double rollRate, double pitchRate, double yawRate) {
         this.time = time;
         this.altitude = altitude;
@@ -54,10 +54,10 @@ public class RocketStatus implements RocketData {
         this.latitude = latitude;
         this.longitude = longitude;
         this.angleOfAttack = angleOfAttack;
-        this.lateralVelocity = lateralVelocity;
-        this.lateralAcceleration = lateralAcceleration;
-        this.verticalAcceleration = verticalAcceleration;
-        this.verticalVelocity = verticalVelocity;
+        this.velocityY = velocityY;
+        this.accelerationY = accelerationY;
+        this.accelerationZ = accelerationZ;
+        this.velocityZ = VelocityZ;
         this.rollRate = rollRate;
         this.pitchRate = pitchRate;
         this.yawRate = yawRate;
@@ -109,20 +109,20 @@ public class RocketStatus implements RocketData {
         return angleOfAttack;
     }
 
-    public double getLateralVelocity() {
-        return lateralVelocity;
+    public double getVelocityY() {
+        return velocityY;
     }
 
-    public double getLateralAcceleration() {
-        return lateralAcceleration;
+    public double getAccelerationY() {
+        return accelerationY;
     }
 
-    public double getVerticalAcceleration() {
-        return verticalAcceleration;
+    public double getAccelerationZ() {
+        return accelerationZ;
     }
 
-    public double getVerticalVelocity() {
-        return verticalVelocity;
+    public double getVelocityZ() {
+        return velocityZ;
     }
 
     public double getRollRate() {

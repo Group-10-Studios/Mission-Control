@@ -182,6 +182,19 @@ public class HomeController implements Initializable {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+
+//                lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
+//                lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
+
+                lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
+                lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
+
+                lineChartAccelerationZ.addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
+                lineChartVelocityZ.addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
+
+                yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
+                pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
+                rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             }
         });
     }
