@@ -97,9 +97,22 @@ checkstyle:
     - shell
   script:
     - wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.32/checkstyle-8.32-all.jar
-    - java -jar checkstyle-8.32-all.jar -c checkstyle.xml src/
+    - result=$(java -jar checkstyle-8.32-all.jar -c checkstyle.xml src/)
     # Cleanup following running checkstyle
     - rm checkstyle-8.32-all.jar
+    - |
+      expected_result="Starting audit...\nAudit done."
+    - |
+      if [ "$result" != "$expected_result" ]; then
+        >&2 echo "Checkstyle has Failed"
+        echo "$result" | while IFS= read -r line; do
+          echo "$line"
+        done
+        $(exit 1)
+      fi
+  allow_failure: false
+        
+    
 
 pages:
   stage: DeployPages
