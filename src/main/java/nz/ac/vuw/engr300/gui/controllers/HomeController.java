@@ -690,7 +690,7 @@ public class HomeController implements Initializable {
      * 
      * @author Ahad Rahman
      */
-    class ButtonSelected {
+    static class ButtonSelected {
         double originalY;
         double nextY;
     }
