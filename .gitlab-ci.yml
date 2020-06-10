@@ -100,8 +100,9 @@ checkstyle:
     - result=$(java -jar checkstyle-8.32-all.jar -c checkstyle.xml src/)
     # Cleanup following running checkstyle
     - rm checkstyle-8.32-all.jar
-    - |
-      expected_result="Starting audit...\nAudit done."
+    # Define passing result
+    - expected_result="Starting audit...\nAudit done."
+    # Check actual matches expected
     - |
       if [ "$result" != "$expected_result" ]; then
         >&2 echo "Checkstyle has Failed"
