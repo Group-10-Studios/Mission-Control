@@ -42,6 +42,10 @@ public class WarningsController {
         this.lbWarning2 = w2;
         anyWarnings = false;
 
+        setDataForWarnings(wGiven);
+    }
+
+    private static void setDataForWarnings(WeatherData wGiven) {
         w = wGiven;
     }
 

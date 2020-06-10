@@ -86,7 +86,7 @@ public class WeatherController {
         return w;
     }
 
-    public void setWeatherData() throws FileNotFoundException {
+    public static void setWeatherData() throws FileNotFoundException {
         WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
         w = wi.getWeather(0);
     }
