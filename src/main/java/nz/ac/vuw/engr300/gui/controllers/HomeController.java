@@ -203,13 +203,13 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
-                        lbWeatherStatus, windCompass);
-        wc.updateWeatherInfo();
-
-        WarningsController warningC = null;
         try {
-            warningC = new WarningsController(lbWarning1, lbWarning2);
+            // For the weather controller
+            WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+                    lbWeatherStatus, windCompass);
+            wc.updateWeatherInfo();
+             // For the warnings controller
+            WarningsController warningC = new WarningsController(lbWarning1, lbWarning2);
             warningC.checkWindSpeed();
             warningC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
