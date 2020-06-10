@@ -101,10 +101,12 @@ checkstyle:
     # Cleanup following running checkstyle
     - rm checkstyle-8.32-all.jar
     # Define passing result
-    - expected_result="Starting audit...\nAudit done."
-    # Check actual matches expected
+    - expected_result="Starting audit...Audit done."
+    # Check actual matches expected - Need to alias results to remove newlines for comparison
+    # Without the stripping of newlines it can't compare the results.
     - |
-      if [ "$result" != "$expected_result" ]; then
+      test_res=${result//$'\n'/}
+      if [ "$test_res" != "$expected_result" ]; then
         >&2 echo "Checkstyle has Failed"
         echo "$result" | while IFS= read -r line; do
           echo "$line"
