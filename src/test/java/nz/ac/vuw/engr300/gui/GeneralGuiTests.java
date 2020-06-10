@@ -241,6 +241,7 @@ public class GeneralGuiTests extends ApplicationTest {
         primaryStage.requestFocus();
 
         stage = primaryStage;
+        stage.setMaximized(true);
         new HomeView(primaryStage);
         stage.show();
 
