@@ -55,7 +55,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
         this.setGraphType(graphType);
 
-        this.setId("graph" + graphType.getLabel().replace(" ", ""));
+        this.setId(graphType.getGraphID());
     }
 
     @Override
