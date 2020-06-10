@@ -7,6 +7,7 @@ package nz.ac.vuw.engr300.gui.model;
  * @author Nathan Duckett
  */
 public enum GraphType {
+    // See https://en.wikipedia.org/wiki/Aircraft_principal_axes
     TOTAL_VELOCITY("Total Velocity"),
     X_VELOCITY("X Velocity"),
     Y_VELOCITY("Y Velocity"),
@@ -16,6 +17,9 @@ public enum GraphType {
     Y_ACCELERATION("Y Acceleration"),
     Z_ACCELERATION("Z Acceleration"),
     ALTITUDE("Altitude"),
+    ROLL_RATE("Roll Rate"),
+    PITCH_RATE("Pitch Rate"),
+    YAW_RATE("Yaw Rate"),
     WINDDIRECTION("Wind Direction");
 
 
@@ -49,5 +53,14 @@ public enum GraphType {
         }
 
         return null;
+    }
+    
+    /**
+     * Get a generated GraphID based on this Graph's label.
+     * 
+     * @return String ID representation of the graph.
+     */
+    public String getGraphID() {
+        return "graph" + this.getLabel().replace(" ", "");
     }
 }

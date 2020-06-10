@@ -15,6 +15,8 @@ import nz.ac.vuw.engr300.gui.controllers.HomeController;
  */
 public class HomeView {
 
+    private Scene applicationScene;
+
     /**
      * Create a new HomeView and attach it to the stage.
      * 
@@ -29,22 +31,40 @@ public class HomeView {
 
         FXMLLoader loader = new FXMLLoader(layoutFile);
         try {
-
             root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             throw new Error(e);
         }
 
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+        this.applicationScene = new Scene(root);
+        stage.setScene(this.applicationScene);
+
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
-
+//        stage.setMaximized(true);
 
         stage.show();
         // Set minimum dimensions to 720p - Doesn't support below this
         stage.setMinHeight(720);
         stage.setMinWidth(1280);
+    }
+
+    /**
+     * Get the internal application scene height.
+     * 
+     * @return Double representation of the scene height.
+     */
+    public double getSceneHeight() {
+        return this.applicationScene.getHeight();
+    }
+
+    /**
+     * Get the internal application scene width.
+     * 
+     * @return Double representation of the scene width.
+     */
+    public double getSceneWidth() {
+        return this.applicationScene.getWidth();
     }
 }

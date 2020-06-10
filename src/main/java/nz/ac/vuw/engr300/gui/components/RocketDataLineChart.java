@@ -38,7 +38,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
      * @param ylabel    The y label
      */
     public RocketDataLineChart(@NamedArg("xLabel") String xlabel,
-                               @NamedArg("yLabel") String ylabel) {
+                               @NamedArg("yLabel") String ylabel, GraphType graphType) {
         super(new NumberAxis(), new NumberAxis());
         this.setLegendVisible(false);
         this.getXAxis().setLabel(xlabel);
@@ -53,6 +53,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
+        this.setGraphType(graphType);
+
+        this.setId(graphType.getGraphID());
     }
 
     @Override

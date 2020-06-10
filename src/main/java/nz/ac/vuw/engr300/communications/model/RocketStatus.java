@@ -1,5 +1,7 @@
 package nz.ac.vuw.engr300.communications.model;
 
+import java.lang.reflect.Field;
+
 /**
  * Implementation of RocketData that defines incoming data as status updates,
  * E.G. just providing information about the different measured metrics such as
@@ -9,26 +11,42 @@ package nz.ac.vuw.engr300.communications.model;
  */
 public class RocketStatus implements RocketData {
 
-    private final double time;
-    private final double altitude;
-    private final double totalVelocity;
-    private final double totalAcceleration;
-    private final double latitude;
-    private final double longitude;
-    private final double angleOfAttack;
+    // NOTE: This list has to be in order of the list of required fields in OpenRocketImporter
+    private double time;
+    private double altitude;
+    private double accelerationZ;
+    private double velocityZ;
+    private double totalVelocity;
+    private double totalAcceleration;
+    private double velocityY;
+    private double accelerationY;
+    // Removed as we have no data for it
+//    private double velocityX;
+//    private double accelerationX;
+    private double latitude;
+    private double longitude;
+    private double angleOfAttack;
+    private double rollRate;
+    private double pitchRate;
+    private double yawRate;
+
 
     /**
      * Create a new RocketStatus with the following information received from incoming data.
-     * @param time Time of this message.
-     * @param altitude Current Altitude of the rocket
-     * @param totalVelocity Total Velocity of the rocket
+     *
+     * @param time              Time of this message.
+     * @param altitude          Current Altitude of the rocket
+     * @param totalVelocity     Total Velocity of the rocket
      * @param totalAcceleration Total Acceleration of the rocket
-     * @param latitude Current latitude of the rocket
-     * @param longitude Current longitude of the rocket
-     * @param angleOfAttack Current angle the rocket is traveling
+     * @param latitude          Current latitude of the rocket
+     * @param longitude         Current longitude of the rocket
+     * @param angleOfAttack     Current angle the rocket is traveling
      */
-    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude,
-            double longitude, double angleOfAttack) {
+    public RocketStatus(double time, double altitude, double totalVelocity,
+                        double totalAcceleration, double latitude, double longitude,
+                        double angleOfAttack, double velocityY, double accelerationY,
+                        double accelerationZ, double VelocityZ,
+                        double rollRate, double pitchRate, double yawRate) {
         this.time = time;
         this.altitude = altitude;
         this.totalVelocity = totalVelocity;
@@ -36,7 +54,31 @@ public class RocketStatus implements RocketData {
         this.latitude = latitude;
         this.longitude = longitude;
         this.angleOfAttack = angleOfAttack;
+        this.velocityY = velocityY;
+        this.accelerationY = accelerationY;
+        this.accelerationZ = accelerationZ;
+        this.velocityZ = VelocityZ;
+        this.rollRate = rollRate;
+        this.pitchRate = pitchRate;
+        this.yawRate = yawRate;
     }
+
+    public RocketStatus(double... values) {
+        Class<? extends RocketStatus> clazz = this.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        if (values.length != fields.length) {
+            throw new RuntimeException("Incorrect number of values passed to Rocket Status!");
+        }
+        // Loop through and dynamically assign
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                fields[i].set(this, values[i]);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to access specific field!", e);
+            }
+        }
+    }
+
 
     @Override
     public double getTime() {
@@ -65,5 +107,33 @@ public class RocketStatus implements RocketData {
 
     public double getAngleOfAttack() {
         return angleOfAttack;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public double getAccelerationY() {
+        return accelerationY;
+    }
+
+    public double getAccelerationZ() {
+        return accelerationZ;
+    }
+
+    public double getVelocityZ() {
+        return velocityZ;
+    }
+
+    public double getRollRate() {
+        return rollRate;
+    }
+
+    public double getPitchRate() {
+        return pitchRate;
+    }
+
+    public double getYawRate() {
+        return yawRate;
     }
 }

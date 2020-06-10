@@ -1,10 +1,9 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.awt.EventQueue;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -15,10 +14,13 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -30,9 +32,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
@@ -46,42 +48,71 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
  * @author Nalin Aswani
  * @author Jake Mai
  * @author Nathan Duckett
+ * @author Ahad Rahman
  */
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final double ROWS = 3;
-    private static final double COLS = 4;
 
-    @FXML
-    public RocketDataAngle windCompass = new RocketDataAngle(true);
+    /**
+     * Represents the number of ROWS of graphs within pnContent.
+     */
+    public static final double ROWS = 4;
+    /**
+     * Represents the number of COLS of graphs within pnContent.
+     */
+    public static final double COLS = 4;
+
+    private static final double BUTTON_HEIGHT = 30;
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
-
+    @FXML
+    public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
+    @FXML
+    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
+    @FXML
+    public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
+    @FXML
+    public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
+    @FXML
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )",
+                    GraphType.ALTITUDE);
+    @FXML
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.TOTAL_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.TOTAL_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.X_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.Y_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+                    GraphType.Z_VELOCITY);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.X_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.Y_ACCELERATION);
+    @FXML
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+                    GraphType.Z_ACCELERATION);
     @FXML
     Label weatherLabel;
     @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )");
-    @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
-
-    @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
-    @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )");
-
-    @FXML
     Label lbWeather;
+    @FXML
+    Label lbWeatherTemp;
+    @FXML
+    Label lbWeatherHumid;
+    @FXML
+    Label lbWeatherPressure;
+    @FXML
+    Label lbWeatherStatus;
     @FXML
     Label lbWeatherHead;
     @FXML
@@ -129,7 +160,6 @@ public class HomeController implements Initializable {
      */
     private List<RocketGraph> graphs;
     private List<Button> pnNavButtons;
-
     /**
      * Stores the currently highlighted graph information for de-selection.
      */
@@ -144,6 +174,19 @@ public class HomeController implements Initializable {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+
+                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
+                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
+
+                lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
+                lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
+
+                lineChartAccelerationZ.addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
+                lineChartVelocityZ.addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
+
+                yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
+                pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
+                rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             }
         });
     }
@@ -159,37 +202,36 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        WeatherController wc = new WeatherController(lbWeather, windCompass);
-        wc.updateWindSpeed();
+        WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+                        lbWeatherStatus, windCompass);
+        wc.updateWeatherInfo();
 
         WarningsController warningC = new WarningsController(lbWarning1, lbWarning2);
         warningC.checkWindSpeed();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
-
         this.pnNavButtons = new ArrayList<>();
-
-        refreshOnStart();
         bindGraphsToType();
         listGraphs();
+        refreshOnStart();
     }
 
     /**
      * Refresh on start is designed to wait on a separate thread then manually
      * update the positions of panels to match our dynamic design.
      */
-    private void refreshOnStart() {
+    public void refreshOnStart() {
         new Thread(() -> {
             try {
-                // Sleep for 350ms to wait for UI to load
-                Thread.sleep(350);
+                // Sleep for 2000 to wait for UI to load
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
             }
 
             // Pass bound width to begin application
             updatePanelPositions(apApp, apApp.getWidth());
-            updatePanelPositionsVertical(apApp, apApp.getHeight());
+            updatePanelPositionsVertical(apApp.getHeight());
         }).start();
     }
 
@@ -198,20 +240,6 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
-        lineChartAltitude.setGraphType(GraphType.ALTITUDE);
-
-        lineChartTotalAcceleration.setGraphType(GraphType.TOTAL_ACCELERATION);
-        lineChartAccelerationX.setGraphType(GraphType.X_ACCELERATION);
-        lineChartAccelerationY.setGraphType(GraphType.Y_ACCELERATION);
-        lineChartAccelerationZ.setGraphType(GraphType.Z_ACCELERATION);
-
-
-        lineChartTotalVelocity.setGraphType(GraphType.TOTAL_VELOCITY);
-        lineChartVelocityX.setGraphType(GraphType.X_VELOCITY);
-        lineChartVelocityY.setGraphType(GraphType.Y_VELOCITY);
-        lineChartVelocityZ.setGraphType(GraphType.Z_VELOCITY);
-
-        windCompass.setGraphType(GraphType.WINDDIRECTION);
 
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
@@ -225,6 +253,10 @@ public class HomeController implements Initializable {
         this.graphs.add(lineChartAccelerationZ);
 
         this.graphs.add(lineChartAltitude);
+        this.graphs.add(yawRateCompass);
+        this.graphs.add(pitchRateCompass);
+        this.graphs.add(rollRateCompass);
+
         this.graphs.add(windCompass);
         // Initialize the graph table.
         buildTable();
@@ -236,10 +268,10 @@ public class HomeController implements Initializable {
      */
     private void buildTable() {
         int graphNo = 0;
-        VBox rowBox = new VBox(ROWS);
+        VBox rowBox = new VBox();
         rowBox.setSpacing(0);
         for (int i = 0; i < ROWS; i++) {
-            HBox colBox = new HBox(COLS);
+            HBox colBox = new HBox();
             colBox.setSpacing(0);
             for (int j = 0; j < COLS; j++) {
                 if (graphNo >= this.graphs.size()) {
@@ -261,9 +293,66 @@ public class HomeController implements Initializable {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         Pane nav = (Pane) pnNav;
         int y = 5;
+        reorderGraphs(labels);
+        ButtonSelected buttonSelected = new ButtonSelected();
         for (String label : labels) {
             Button b = new Button(label);
+            b.setId("btn" + label.replace(" ", ""));
             b.setLayoutY(y);
+            b.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.toFront();
+                    buttonSelected.originalY = b.getLayoutY();
+                    buttonSelected.y = b.getLayoutY() - mouseEvent.getSceneY();
+                }
+            });
+            b.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.y);
+                }
+            });
+            b.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
+
+                    if (distanceMoved > BUTTON_HEIGHT / 2) { // If the user has dragged the button past the halfway
+                                                             // point of a button boundary
+                        String buttonBeingMovedLabel = b.getText();
+                        int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
+                        int indexFurther = (int) Math.floor(distanceMoved / (BUTTON_HEIGHT - 1));
+                        int indexToReplace;
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) { // Figuring out which direction the user is
+                                                                             // dragging. If this is true, the user is
+                                                                             // dragging downwards
+                            indexToReplace = indexOfButtonBeingMoved + indexFurther;
+                            if (indexToReplace > labels.size() - 1) {
+                                indexToReplace = labels.size() - 1; // If the user drags beyond the list, replace the
+                                                                    // last button
+                            }
+                        } else {
+                            indexToReplace = indexOfButtonBeingMoved - indexFurther;
+                            if (indexToReplace < 0) {
+                                indexToReplace = 0; // If the user drags above the list, replace the first button
+                            }
+                        }
+                        String btnBeingReplaced = labels.get(indexToReplace);
+                        for (Button bt : pnNavButtons) {
+                            if (bt.getText().equals(btnBeingReplaced)) {
+                                b.setLayoutY(bt.getLayoutY());
+                                bt.setLayoutY(buttonSelected.originalY);
+                            }
+                        }
+                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); // Swap the two butons
+                        reorderGraphs(labels);
+                    } else {
+                        b.setLayoutY(buttonSelected.originalY); // If the user barely drags the button (by mistake),
+                                                                // then put it back
+                    }
+                }
+            });
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : this.graphs) {
@@ -271,7 +360,7 @@ public class HomeController implements Initializable {
                     Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
                         chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                new CornerRadii(5.0), new BorderWidths(2.0))));
+                                        new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
@@ -288,8 +377,21 @@ public class HomeController implements Initializable {
             nav.getChildren().add(b);
             // Add to button list for dynamics
             pnNavButtons.add(b);
-            y += 30;
+            y += BUTTON_HEIGHT;
         }
+    }
+
+    private void reorderGraphs(List<String> labels) {
+        for (int i = 0; i < labels.size(); i++) {
+            for (int j = 0; j < graphs.size(); j++) {
+                if (graphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
+                    RocketGraph temp = graphs.get(j);
+                    graphs.remove(j);
+                    graphs.add(i, temp);
+                }
+            }
+        }
+        buildTable();
     }
 
     /**
@@ -311,27 +413,29 @@ public class HomeController implements Initializable {
      * file dialog to select a simulation data file. It will then load it into the
      * data importer and run the simulation as if it was live.
      */
-    public void runSim() throws InvocationTargetException, InterruptedException {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                simulationImporter.stop();
+    public void runSim() {
+        simulationImporter.stop();
 
-                JFileChooser fileChooser = new JFileChooser("src/main/resources");
-                if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        simulationImporter.importData(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Failed to import simulation data!",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    graphs.forEach(g -> g.clear());
-                    simulationImporter.start();
-                }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a simulation to run.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                simulationImporter.importData(selectedFile.getAbsolutePath());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initStyle(StageStyle.DECORATED);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Failed to import simulation data!");
+                alert.setContentText(e.getMessage());
+
+                alert.showAndWait();
+                return;
             }
-        });
+            graphs.forEach(RocketGraph::clear);
+            simulationImporter.start();
+        }
     }
 
     /**
@@ -349,19 +453,18 @@ public class HomeController implements Initializable {
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositionsVertical(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositionsVertical(t1);
+                        });
 
     }
 
     /**
      * Update the panel's positions to dynamically match the new application height.
      *
-     * @param rootPanel Region provided from the root panel within the listener.
      * @param newHeight New height value of the root panel.
      */
-    private void updatePanelPositionsVertical(Region rootPanel, Number newHeight) {
+    private void updatePanelPositionsVertical(Number newHeight) {
         double height = (double) newHeight;
         updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, apWarnings);
 
@@ -384,6 +487,10 @@ public class HomeController implements Initializable {
         updatePanelPositionOffsetVertical(lbState, lbStateHead, 0);
         updatePanelPositionOffsetVertical(lbWeatherHead, lbState, 0);
         updatePanelPositionOffsetVertical(lbWeather, lbWeatherHead, 0);
+        updatePanelPositionOffsetVertical(lbWeatherTemp, lbWeather, 0);
+        updatePanelPositionOffsetVertical(lbWeatherHumid, lbWeatherTemp, 0);
+        updatePanelPositionOffsetVertical(lbWeatherPressure, lbWeatherHumid, 0);
+        updatePanelPositionOffsetVertical(lbWeatherStatus, lbWeatherPressure, 0);
     }
 
     /**
@@ -405,9 +512,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                    updatePanelPositions(root, t1);
-                });
+                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                            updatePanelPositions(root, t1);
+                        });
     }
 
     /**
@@ -449,20 +556,24 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                lbWeatherHead);
+                        lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
         updatePanelPositionOffset(lbRocketHead, null, 0);
         updatePanelPositionOffset(lbWeather, null, 0);
         updatePanelPositionOffset(lbWeatherHead, null, 0);
+        updatePanelPositionOffset(lbWeatherTemp, null, 0);
+        updatePanelPositionOffset(lbWeatherHumid, null, 0);
+        updatePanelPositionOffset(lbWeatherPressure, null, 0);
+        updatePanelPositionOffset(lbWeatherStatus, null, 0);
     }
 
     /**
@@ -577,4 +688,10 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
+}
+
+// records relative y co-ordinates.
+class ButtonSelected {
+    double originalY;
+    double y;
 }

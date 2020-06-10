@@ -24,6 +24,12 @@ stages:
     }
   - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
+# Storage of common variables between stages
+variables:
+  GUI_HEADLESS_TESTS: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
+  # This prefix only works on Windows to skip GUI Tests
+  NO_GUI_TEST: "-Dtest=!\"nz.ac.vuw.engr300.gui.**\""
+
 build:
   stage: Build
   tags:
@@ -35,11 +41,13 @@ build:
 unittest:
   stage: Test
   tags:
-    - shell
+    - nathan
+    - linux
   before_script:
     - *build_keys
   script:
-    - mvn test
+    - DISPLAY=:0 mvn clean test
+    - cat target/site/jacoco/index.html
   allow_failure: false
   artifacts:
     paths:
@@ -53,7 +61,7 @@ unittest_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn test
+    - mvn $NO_GUI_TEST clean test
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -116,11 +124,12 @@ pages:
 package:
   stage: BuildPackage
   tags:
-    - shell
+    - nathan
+    - linux
   before_script:
     - *build_keys
   script:
-    - mvn clean package
+    - DISPLAY=:0 mvn clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
@@ -134,7 +143,7 @@ package_windows:
   before_script:
     - *build_windows_keys
   script:
-    - mvn clean package
+    - mvn $NO_GUI_TEST clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version

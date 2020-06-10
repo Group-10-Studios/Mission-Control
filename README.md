@@ -1,4 +1,5 @@
 [![pipeline status](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/badges/master/pipeline.svg)](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/commits/master)
+[![coverage report](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/badges/master/coverage.svg)](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/commits/master)
 
 # Group 10 Mission Control
 

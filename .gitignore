@@ -74,9 +74,9 @@ _minted*
 /target/
 
 # Prevent uploading downloaded weather data into version control
-src/main/resources/output.json
 src/main/resources/WeatherData.json
 src/main/resources/keys.json
+src/main/resources/weather-data/weather-output.json
 
 **/*keys.json
 

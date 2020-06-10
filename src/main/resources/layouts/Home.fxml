@@ -48,7 +48,7 @@
                                 onAction="#runSim" prefHeight="32.0" prefWidth="218.0" text="Run Simulation"/>
                     </children>
                 </Pane>
-                <Pane fx:id="pnDetails" layoutX="14.0" layoutY="14.0" prefHeight="115.0" prefWidth="257.0"
+                <Pane fx:id="pnDetails" layoutX="14.0" layoutY="14.0" prefHeight="210.0" prefWidth="257.0"
                       style="-fx-background-color: #F6F6F6;">
                     <children>
                         <Label fx:id="lbRocketHead" layoutX="60.0" layoutY="5.0" text="Rocket: " textAlignment="CENTER"
@@ -59,16 +59,24 @@
                                textAlignment="CENTER" alignment="TOP_CENTER"/>
                         <Label fx:id="lbState" layoutX="87.0" layoutY="43.0" text="**************"
                                textAlignment="CENTER" alignment="TOP_CENTER"/>
-                        <Label fx:id="lbWeatherHead" layoutX="78.0" layoutY="52.0" text="Weather Condition"
+                        <Label fx:id="lbWeatherHead" layoutX="78.0" layoutY="52.0" text="Weather Condition:"
                                textAlignment="CENTER" alignment="TOP_CENTER"/>
                         <Label fx:id="lbWeather" layoutX="89.0" layoutY="69.0" text="*************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeatherTemp" layoutX="89.0" layoutY="100.0" text="************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeatherHumid" layoutX="107.0" layoutY="132.0" text="************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeatherPressure" layoutX="107.0" layoutY="160.0" text="************"
+                               textAlignment="CENTER" alignment="TOP_CENTER"/>
+                        <Label fx:id="lbWeatherStatus" layoutX="107.0" layoutY="192.0" text="************"
                                textAlignment="CENTER" alignment="TOP_CENTER"/>
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </Pane>
-                <Pane fx:id="pnNav" layoutX="14.0" layoutY="136.0" prefHeight="782.0" prefWidth="257.0"
+                <Pane fx:id="pnNav" layoutX="14.0" layoutY="200.0" prefHeight="550.0" prefWidth="257.0"
                       style="-fx-background-color: #F6F6F6;"/>
             </children>
             <effect>
