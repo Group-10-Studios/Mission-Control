@@ -37,7 +37,7 @@ public class WarningsController {
      */
     public void checkWindSpeed() {
         try {
-            WeatherImporter wi = new WeatherImporter("src/main/resources/output.json");
+            WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
             WeatherData w = wi.getWeather(0);
 
             // windspeed's unit extracted from weather data is meter per second
