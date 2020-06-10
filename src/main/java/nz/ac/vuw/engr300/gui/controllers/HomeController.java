@@ -67,7 +67,7 @@ public class HomeController implements Initializable {
     private static final double BUTTON_HEIGHT = 30;
 
     @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772);
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 500, 250);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
