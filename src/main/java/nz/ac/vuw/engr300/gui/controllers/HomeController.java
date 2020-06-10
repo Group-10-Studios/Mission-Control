@@ -1,6 +1,7 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,8 +207,15 @@ public class HomeController implements Initializable {
                         lbWeatherStatus, windCompass);
         wc.updateWeatherInfo();
 
-        WarningsController warningC = new WarningsController(lbWarning1, lbWarning2);
+        WarningsController warningC = null;
+        try {
+            warningC = new WarningsController(lbWarning1, lbWarning2);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert warningC != null;
         warningC.checkWindSpeed();
+        warningC.checkWeatherCondition();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();
