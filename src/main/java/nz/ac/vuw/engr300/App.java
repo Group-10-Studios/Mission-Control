@@ -27,7 +27,7 @@ public class App {
             if (javaFxMissing(e)) {
                 System.exit(2);
             }
-
+            e.printStackTrace();
             showError("RuntimeException");
             // Dump entire error message into log files.
             LOGGER.error(e.getMessage());

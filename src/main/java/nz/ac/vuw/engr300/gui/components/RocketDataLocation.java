@@ -33,6 +33,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
 
     public RocketDataLocation(double centerLatitude, double centerLongitude, int graphicsWidth, int graphicsHeight) {
         canvas = new Canvas(getWidth(), getHeight());
+        this.getChildren().add(canvas);
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
         this.graphicsWidth = graphicsWidth;
@@ -44,6 +45,9 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             e.printStackTrace();
         }
         updateAngleDistanceInfo(-41.228890, 174.799470);
+
+        widthProperty().addListener(e -> canvas.setWidth(getWidth()));
+        heightProperty().addListener(e -> canvas.setHeight(getHeight()));
     }
 
 //
@@ -130,16 +134,12 @@ public class RocketDataLocation extends Pane implements RocketGraph {
 
     @Override
     protected void layoutChildren() {
+        super.layoutChildren();
         GraphicsContext g = canvas.getGraphicsContext2D();
-        Image img = new Image(filename);
+        Image img = new Image("file:" + filename);
 
-//        try {
-//            img = ImageIO.read(new File(filename));
-//            g.drawImage(img);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         g.drawImage(img, 0, 0);
+
         g.setFill(Color.BLUE);
         g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
                 MARKER_SIZE); // Center
