@@ -27,33 +27,26 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     private String filename;
     private double angle;
     private double hypotenuse;
-    public int graphicsWidth;
-    public int graphicsHeight;
+    public double graphicsWidth;
+    public double graphicsHeight;
     private String api_key;
 
-    public RocketDataLocation(double centerLatitude, double centerLongitude, int graphicsWidth, int graphicsHeight) {
-        canvas = new Canvas(getWidth(), getHeight());
+    public RocketDataLocation(double centerLatitude, double centerLongitude) {
+        canvas = new Canvas(getWidth() * 2, getHeight());
         this.getChildren().add(canvas);
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        this.graphicsWidth = graphicsWidth;
-        this.graphicsHeight = graphicsHeight;
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         try {
             this.api_key = KeyImporter.getKey("maps");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        updateAngleDistanceInfo(-41.228890, 174.799470);
+        updateAngleDistanceInfo(-41.226816, 174.797074);
 
-        widthProperty().addListener(e -> canvas.setWidth(getWidth()));
+        widthProperty().addListener(e -> canvas.setWidth(getWidth() * 2));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));
     }
-
-//
-//    public void draw(Graphics g) {
-//
-//    }
 
     public void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
         angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
@@ -137,10 +130,11 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         super.layoutChildren();
         GraphicsContext g = canvas.getGraphicsContext2D();
         Image img = new Image("file:" + filename);
-
+        this.graphicsWidth = img.getWidth();
+        this.graphicsHeight = img.getHeight();
         g.drawImage(img, 0, 0);
 
-        g.setFill(Color.BLUE);
+        g.setFill(Color.GREEN);
         g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
                 MARKER_SIZE); // Center
         double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
