@@ -338,6 +338,22 @@ user -> ve
 @enduml
 ```
 
+### Display Wind Speed Warning
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor rocket
+rectangle mission-control {
+   user -> (Warnings pane) : views
+   rocket -> (Real time wind speed info)
+   (Real time wind speed info) .> (Expected windspeed) : checks against
+   (Expected windspeed) .> (Warnings pane) : Display warning if greater than expected
+}
+@enduml
+```
+
 
 ### 3.3 Usability Requirements
 
