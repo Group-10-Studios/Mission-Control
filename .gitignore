@@ -77,6 +77,7 @@ _minted*
 src/main/resources/WeatherData.json
 src/main/resources/keys.json
 src/main/resources/weather-data/weather-output.json
+src/test/resources/test-weather-data/weather-output.json
 
 **/*keys.json
 

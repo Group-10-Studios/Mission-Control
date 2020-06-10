@@ -16,7 +16,8 @@ public enum GraphType {
     Y_ACCELERATION("Y Acceleration"),
     Z_ACCELERATION("Z Acceleration"),
     ALTITUDE("Altitude"),
-    WINDDIRECTION("Wind Direction");
+    WINDDIRECTION("Wind Direction"),
+    ROCKET_LOCATION("Rocket Location");
 
 
     private String label;
