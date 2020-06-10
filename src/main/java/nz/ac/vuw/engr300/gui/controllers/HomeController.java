@@ -228,8 +228,8 @@ public class HomeController implements Initializable {
     public void refreshOnStart() {
         new Thread(() -> {
             try {
-                // Sleep for 350ms to wait for UI to load
-                Thread.sleep(1500);
+                // Sleep for number of graphs * 333ms to wait for UI to load
+                Thread.sleep(GraphType.values().length * 333);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
             }

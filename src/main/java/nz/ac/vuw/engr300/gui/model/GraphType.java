@@ -17,10 +17,10 @@ public enum GraphType {
     Y_ACCELERATION("Y Acceleration"),
     Z_ACCELERATION("Z Acceleration"),
     ALTITUDE("Altitude"),
-    WINDDIRECTION("Wind Direction"),
     ROLL_RATE("Roll Rate"),
     PITCH_RATE("Pitch Rate"),
-    YAW_RATE("Yaw Rate");
+    YAW_RATE("Yaw Rate"),
+    WINDDIRECTION("Wind Direction");
 
 
     private String label;
