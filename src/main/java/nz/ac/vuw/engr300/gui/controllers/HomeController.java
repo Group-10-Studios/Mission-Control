@@ -2,7 +2,10 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.Animation;
@@ -57,15 +60,11 @@ public class HomeController implements Initializable {
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
-    Label weatherLabel;
-
-    @FXML
     public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
     @FXML
     public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
     @FXML
     public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
-
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
@@ -113,7 +112,8 @@ public class HomeController implements Initializable {
             "Time ( S )",
             "Altitude ( M/S^2 )",
             GraphType.Z_ACCELERATION);
-
+    @FXML
+    Label weatherLabel;
     @FXML
     Label lbWeather;
     @FXML
@@ -183,8 +183,8 @@ public class HomeController implements Initializable {
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
 
-//                lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
-//                lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
+                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
+                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
 
                 lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
                 lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
@@ -322,15 +322,19 @@ public class HomeController implements Initializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
-                    if (distanceMoved > BUTTON_HEIGHT/2) { //If the user has dragged the button past the halfway point of a button boundary
+                    //If the user has dragged the button past the halfway point of a button boundary
+                    if (distanceMoved > BUTTON_HEIGHT / 2) {
                         String buttonBeingMovedLabel = b.getText();
                         int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
-                        int indexFurther = (int) Math.floor(distanceMoved/(BUTTON_HEIGHT-1));
+                        int indexFurther = (int) Math.floor(distanceMoved / (BUTTON_HEIGHT - 1));
                         int indexToReplace;
-                        if (buttonSelected.originalY - b.getLayoutY() < 0) { //Figuring out which direction the user is dragging. If this is true, the user is dragging downwards
+                        //Figuring out which direction the user is dragging. If this is true, the user
+                        // is dragging downwards
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) {
                             indexToReplace = indexOfButtonBeingMoved + indexFurther;
                             if (indexToReplace > labels.size() - 1) {
-                                indexToReplace = labels.size() - 1; //If the user drags beyond the list, replace the last button
+                                //If the user drags beyond the list, replace the last button
+                                indexToReplace = labels.size() - 1;
                             }
                         } else {
                             indexToReplace = indexOfButtonBeingMoved - indexFurther;
@@ -348,7 +352,8 @@ public class HomeController implements Initializable {
                         Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); //Swap the two butons
                         reorderGraphs(labels);
                     } else {
-                        b.setLayoutY(buttonSelected.originalY); //If the user barely drags the button (by mistake), then put it back
+                        //If the user barely drags the button (by mistake), then put it back
+                        b.setLayoutY(buttonSelected.originalY);
                     }
                 }
             });

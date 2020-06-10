@@ -1,5 +1,20 @@
 package nz.ac.vuw.engr300.gui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
@@ -22,20 +37,6 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
-
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * General tests for the UI.
@@ -93,11 +94,11 @@ public class GeneralGuiTests extends ApplicationTest {
     }
 
     /**
-     *  Checks that a node is visible on screen, and when it is, this function will click on it. After 8 seconds,
-     *  if the node is not visible then the function will return false.
+     * Checks that a node is visible on screen, and when it is, this function will click on it. After 8 seconds,
+     * if the node is not visible then the function will return false.
      *
-     * @param nodeId    The ID of the node to check for on the UI.
-     * @param robot     The robot injected to run tests.
+     * @param nodeId The ID of the node to check for on the UI.
+     * @param robot  The robot injected to run tests.
      */
     private static boolean checkAndClickOnNode(FxRobot robot, String nodeId) {
         try {
