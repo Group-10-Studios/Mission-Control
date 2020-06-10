@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.importers.KeyImporter;
+import nz.ac.vuw.engr300.importers.MapImageImporter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,18 +32,18 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     public double graphicsHeight;
     private String api_key;
 
-    public RocketDataLocation(double centerLatitude, double centerLongitude) {
-        canvas = new Canvas(getWidth() * 2, getHeight());
-        this.getChildren().add(canvas);
+    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         try {
             this.api_key = KeyImporter.getKey("maps");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        updateAngleDistanceInfo(-41.226816, 174.797074);
+        MapImageImporter.importImage(api_key, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
+        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
+        canvas = new Canvas(getWidth() * 2, getHeight());
+        this.getChildren().add(canvas);
 
         widthProperty().addListener(e -> canvas.setWidth(getWidth() * 2));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));

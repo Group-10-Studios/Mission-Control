@@ -61,7 +61,7 @@ public class HomeController implements Initializable {
     public RocketDataAngle windCompass = new RocketDataAngle(true);
 
     @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772);
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 500, 250);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
@@ -220,6 +220,7 @@ public class HomeController implements Initializable {
 
         windCompass.setGraphType(GraphType.WINDDIRECTION);
         rocketLocation.setGraphType(GraphType.ROCKET_LOCATION);
+        rocketLocation.updateAngleDistanceInfo(-41.227776, 174.799334);
 
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
