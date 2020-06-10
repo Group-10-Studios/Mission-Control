@@ -29,7 +29,7 @@ public class WarningsController {
 
     private static WeatherData w;
 
-    private static boolean anyWarnings = false;
+    private boolean anyWarnings;
 
     /**
      *
@@ -40,6 +40,7 @@ public class WarningsController {
     public WarningsController(Label w1, Label w2) throws FileNotFoundException {
         this.lbWarning1 = w1;
         this.lbWarning2 = w2;
+        anyWarnings = false;
 
         WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
         w = wi.getWeather(0);
