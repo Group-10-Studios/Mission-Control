@@ -18,9 +18,9 @@ public class WarningsController {
      * @author: Nalin Aswani
      */
 
-    private final double maxWindSpeed = 15.0; //The maximum wind speed for UI to not throw warning.
-    private final Paint colourGreen = Color.web("#008000", 0.8);
-    private final Paint colourRed = Color.web("#ff0000", 0.8);
+    private static final double maxWindSpeed = 15.0; //The maximum wind speed for UI to not throw warning.
+    private static final Paint colourGreen = Color.web("#008000", 0.8);
+    private static final Paint colourRed = Color.web("#ff0000", 0.8);
     @FXML
     private Label lbWarning1;
     @FXML
