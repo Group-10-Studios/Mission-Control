@@ -1,10 +1,11 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.awt.EventQueue;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.Animation;
@@ -52,10 +53,11 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
+
     /**
      * Represents the number of ROWS of graphs within pnContent.
      */
-    public static final double ROWS = 3;
+    public static final double ROWS = 4;
     /**
      * Represents the number of COLS of graphs within pnContent.
      */
@@ -64,6 +66,12 @@ public class HomeController implements Initializable {
     private static final double BUTTON_HEIGHT = 30;
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    @FXML
+    public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
+    @FXML
+    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
+    @FXML
+    public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
@@ -162,6 +170,19 @@ public class HomeController implements Initializable {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+
+                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
+                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
+
+                lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
+                lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
+
+                lineChartAccelerationZ.addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
+                lineChartVelocityZ.addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
+
+                yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
+                pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
+                rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             }
         });
     }
@@ -195,8 +216,8 @@ public class HomeController implements Initializable {
     public void refreshOnStart() {
         new Thread(() -> {
             try {
-                // Sleep for 1500ms to wait for UI to load
-                Thread.sleep(1500);
+                // Sleep for 2000 to wait for UI to load
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Error while sleeping to auto-refresh display position", e);
             }
@@ -213,8 +234,6 @@ public class HomeController implements Initializable {
      */
     private void bindGraphsToType() {
 
-        windCompass.setGraphType(GraphType.WINDDIRECTION);
-
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
         this.graphs.add(lineChartVelocityX);
@@ -227,6 +246,10 @@ public class HomeController implements Initializable {
         this.graphs.add(lineChartAccelerationZ);
 
         this.graphs.add(lineChartAltitude);
+        this.graphs.add(yawRateCompass);
+        this.graphs.add(pitchRateCompass);
+        this.graphs.add(rollRateCompass);
+
         this.graphs.add(windCompass);
         // Initialize the graph table.
         buildTable();
@@ -287,6 +310,7 @@ public class HomeController implements Initializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
+
                     if (distanceMoved > BUTTON_HEIGHT / 2) { // If the user has dragged the button past the halfway
                                                              // point of a button boundary
                         String buttonBeingMovedLabel = b.getText();

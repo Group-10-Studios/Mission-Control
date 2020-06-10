@@ -18,6 +18,7 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
  */
 public class RocketDataAngle extends Gauge implements RocketGraph {
     private GraphType type;
+    private boolean isCompass;
 
     /**
      * Constructs a new RocketDataAngle component, where the boolean
@@ -34,13 +35,14 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      */
     public RocketDataAngle(@NamedArg("isCompass") boolean isCompass, GraphType graphType) {
         super();
+        this.isCompass = isCompass;
         // Make it pretty!
         this.setBorderPaint(Gauge.DARK_COLOR);
-        this.setMinValue(0);
-        this.setMaxValue(359);
+        this.setMinValue(isCompass ? 0 : -180);
+        this.setMaxValue(isCompass ? 359 : 180);
         this.setAutoScale(false);
-        this.setStartAngle(180);
-        this.setAngleRange(360);
+        this.setStartAngle(isCompass ? 180 : 270);
+        this.setAngleRange(isCompass ? 360 : 180);
         this.setMinorTickMarksVisible(false);
         this.setMediumTickMarksVisible(false);
         this.setMajorTickMarksVisible(false);
@@ -49,8 +51,8 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
             this.setCustomTickLabels("N", "", "", "", "NE", "", "", "", "", "E", "", "", "", "SE", "", "", "", "", "S",
                     "", "", "", "SW", "", "", "", "", "W", "", "", "", "NW", "", "", "", "");
         } else {
-            this.setCustomTickLabels("0", "", "", "", "45", "", "", "", "", "90", "", "", "", "135", "", "", "", "",
-                    "180", "", "", "", "225", "", "", "", "", "270", "", "", "", "315", "", "", "", "");
+            this.setCustomTickLabels("-180", "", "", "", "", "", "", "", "", "-90", "", "", "", "", "", "", "", "",
+                    "0", "", "", "", "", "", "", "", "", "90", "", "", "", "", "", "", "", "", "180");
         }
 
         this.setCustomTickLabelFontSize(48);
@@ -88,14 +90,14 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      * @param angle The angle to set the finger.
      */
     public void setAngle(double angle) {
-        Platform.runLater(() -> super.setValue(angle % 360));
+        Platform.runLater(() -> super.setValue(angle));
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return Gauge.class.getResource("gauge.css").toExternalForm();
     }
-    
+
     @Override
     public void clear() {
         // Do nothing for now - not needed.
@@ -103,13 +105,18 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
     }
 
     @Override
-    public void setGraphType(GraphType g) {
-        this.type = g;
-        this.setTitle(g.getLabel());
+    public GraphType getGraphType() {
+        return this.type;
     }
 
     @Override
-    public GraphType getGraphType() {
-        return this.type;
+    public void setGraphType(GraphType g) {
+        this.type = g;
+        if (isCompass) {
+            this.setTitle(g.getLabel());
+        } else {
+            this.setSubTitle(g.getLabel());
+        }
+
     }
 }
