@@ -210,12 +210,12 @@ public class HomeController implements Initializable {
         WarningsController warningC = null;
         try {
             warningC = new WarningsController(lbWarning1, lbWarning2);
+            warningC.checkWindSpeed();
+            warningC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        assert warningC != null;
-        warningC.checkWindSpeed();
-        warningC.checkWeatherCondition();
+
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();
