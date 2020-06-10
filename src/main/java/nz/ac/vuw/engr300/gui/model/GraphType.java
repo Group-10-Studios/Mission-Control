@@ -7,16 +7,15 @@ package nz.ac.vuw.engr300.gui.model;
  * @author Nathan Duckett
  */
 public enum GraphType {
-    //X, Y, Z renamed to Longitudinal, Lateral, and Vertical respectively.
     // See https://en.wikipedia.org/wiki/Aircraft_principal_axes
     TOTAL_VELOCITY("Total Velocity"),
-    LONGITUDINAL_VELOCITY("Longitudinal Velocity"),
-    LATERAL_VELOCITY("Lateral Velocity"),
-    VERTICAL_VELOCITY("Vertical Velocity"),
+    X_VELOCITY("X Velocity"),
+    Y_VELOCITY("Y Velocity"),
+    Z_VELOCITY("Z Velocity"),
     TOTAL_ACCELERATION("Total Acceleration"),
-    LONGITUDINAL_ACCELERATION("Longitudinal Acceleration"),
-    LATERAL_ACCELERATION("Lateral Acceleration"),
-    VERTICAL_ACCELERATION("Vertical Acceleration"),
+    X_ACCELERATION("X Acceleration"),
+    Y_ACCELERATION("Y Acceleration"),
+    Z_ACCELERATION("Z Acceleration"),
     ALTITUDE("Altitude"),
     WINDDIRECTION("Wind Direction"),
     ROLL_RATE("Roll Rate"),

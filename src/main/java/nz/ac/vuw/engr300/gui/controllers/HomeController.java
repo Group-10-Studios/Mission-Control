@@ -1,8 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.awt.EventQueue;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,32 +87,32 @@ public class HomeController implements Initializable {
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S )",
-            GraphType.LONGITUDINAL_VELOCITY);
+            GraphType.X_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S )",
-            GraphType.LATERAL_VELOCITY);
+            GraphType.Y_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S )",
-            GraphType.VERTICAL_VELOCITY);
+            GraphType.Z_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S^2 )",
-            GraphType.LONGITUDINAL_ACCELERATION);
+            GraphType.X_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S^2 )",
-            GraphType.LATERAL_ACCELERATION);
+            GraphType.Y_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart(
             "Time ( S )",
             "Altitude ( M/S^2 )",
-            GraphType.VERTICAL_ACCELERATION);
+            GraphType.Z_ACCELERATION);
 
     @FXML
     Label lbWeather;
