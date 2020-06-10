@@ -67,12 +67,12 @@ public class OpenRocketImporterTests {
         importer.importData("src/test/resources/FullyCorrectTestData.csv");
         List<RocketData> data = importer.getData();
 
-//        testRocketEvent(data.get(0), 0.1, RocketEvent.EventType.LAUNCH);
-//        testRocketStatus(data.get(1), 0.11, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7);
-//        testRocketEvent(data.get(2), 0.2, RocketEvent.EventType.LIFTOFF);
-//        testRocketStatus(data.get(3), 0.22, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7);
-//        testRocketEvent(data.get(4), 0.3, RocketEvent.EventType.LAUNCHROD);
-//        testRocketStatus(data.get(5), 0.33, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7);
+        //testRocketEvent(data.get(0), 0.1, RocketEvent.EventType.LAUNCH);
+        //testRocketStatus(data.get(1), 0.11, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7);
+        //testRocketEvent(data.get(2), 0.2, RocketEvent.EventType.LIFTOFF);
+        //testRocketStatus(data.get(3), 0.22, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7);
+        //testRocketEvent(data.get(4), 0.3, RocketEvent.EventType.LAUNCHROD);
+        //testRocketStatus(data.get(5), 0.33, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7);
         assertEquals(0.1, data.get(0).getTime());
         assertEquals(0.11, data.get(1).getTime());
         assertEquals(0.2, data.get(2).getTime());

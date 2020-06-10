@@ -11,7 +11,8 @@ import java.lang.reflect.Field;
  */
 public class RocketStatus implements RocketData {
 
-    // NOTE: This list has to be in order of the list of required fields in OpenRocketImporter
+    // NOTE: This list has to be in order of the list of required fields in
+    // OpenRocketImporter
     private double time;
     private double altitude;
     private double accelerationZ;
@@ -21,8 +22,8 @@ public class RocketStatus implements RocketData {
     private double velocityY;
     private double accelerationY;
     // Removed as we have no data for it
-//    private double velocityX;
-//    private double accelerationX;
+    // private double velocityX;
+    // private double accelerationX;
     private double latitude;
     private double longitude;
     private double angleOfAttack;
@@ -30,9 +31,9 @@ public class RocketStatus implements RocketData {
     private double pitchRate;
     private double yawRate;
 
-
     /**
-     * Create a new RocketStatus with the following information received from incoming data.
+     * Create a new RocketStatus with the following information received from
+     * incoming data.
      *
      * @param time              Time of this message.
      * @param altitude          Current Altitude of the rocket
@@ -42,11 +43,9 @@ public class RocketStatus implements RocketData {
      * @param longitude         Current longitude of the rocket
      * @param angleOfAttack     Current angle the rocket is traveling
      */
-    public RocketStatus(double time, double altitude, double totalVelocity,
-                        double totalAcceleration, double latitude, double longitude,
-                        double angleOfAttack, double velocityY, double accelerationY,
-                        double accelerationZ, double VelocityZ,
-                        double rollRate, double pitchRate, double yawRate) {
+    public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude,
+                    double longitude, double angleOfAttack, double velocityY, double accelerationY,
+                    double accelerationZ, double velocityZ, double rollRate, double pitchRate, double yawRate) {
         this.time = time;
         this.altitude = altitude;
         this.totalVelocity = totalVelocity;
@@ -57,12 +56,17 @@ public class RocketStatus implements RocketData {
         this.velocityY = velocityY;
         this.accelerationY = accelerationY;
         this.accelerationZ = accelerationZ;
-        this.velocityZ = VelocityZ;
+        this.velocityZ = velocityZ;
         this.rollRate = rollRate;
         this.pitchRate = pitchRate;
         this.yawRate = yawRate;
     }
 
+    /**
+     * Create a new RocketStatus with the information received from incoming data in a dynamic nature.
+     * 
+     * @param values Array of double values to be assigned to each field.
+     */
     public RocketStatus(double... values) {
         Class<? extends RocketStatus> clazz = this.getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -78,7 +82,6 @@ public class RocketStatus implements RocketData {
             }
         }
     }
-
 
     @Override
     public double getTime() {

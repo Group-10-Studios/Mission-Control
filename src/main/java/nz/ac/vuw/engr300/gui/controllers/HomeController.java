@@ -171,8 +171,10 @@ public class HomeController implements Initializable {
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
 
-                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus) data).getXAcceleration());
-                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus) data).getXVelocity());
+                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus)
+                // data).getXAcceleration());
+                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus)
+                // data).getXVelocity());
 
                 lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
                 lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
@@ -297,33 +299,33 @@ public class HomeController implements Initializable {
                 public void handle(MouseEvent mouseEvent) {
                     b.toFront();
                     buttonSelected.originalY = b.getLayoutY();
-                    buttonSelected.y = b.getLayoutY() - mouseEvent.getSceneY();
+                    buttonSelected.nextY = b.getLayoutY() - mouseEvent.getSceneY();
                 }
             });
             b.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.y);
+                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.nextY);
                 }
             });
             b.setOnMouseReleased(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
-
-                    if (distanceMoved > BUTTON_HEIGHT / 2) { // If the user has dragged the button past the halfway
-                                                             // point of a button boundary
+                    // If the user has dragged the button past the halfway point of a button
+                    // boundary
+                    if (distanceMoved > BUTTON_HEIGHT / 2) {
                         String buttonBeingMovedLabel = b.getText();
                         int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
                         int indexFurther = (int) Math.floor(distanceMoved / (BUTTON_HEIGHT - 1));
                         int indexToReplace;
-                        if (buttonSelected.originalY - b.getLayoutY() < 0) { // Figuring out which direction the user is
-                                                                             // dragging. If this is true, the user is
-                                                                             // dragging downwards
+                        // Figuring out which direction the user is dragging. If this is true, the user
+                        // is dragging downwards
+                        if (buttonSelected.originalY - b.getLayoutY() < 0) {
                             indexToReplace = indexOfButtonBeingMoved + indexFurther;
                             if (indexToReplace > labels.size() - 1) {
-                                indexToReplace = labels.size() - 1; // If the user drags beyond the list, replace the
-                                                                    // last button
+                                // If the user drags beyond the list, replace the last button
+                                indexToReplace = labels.size() - 1;
                             }
                         } else {
                             indexToReplace = indexOfButtonBeingMoved - indexFurther;
@@ -338,11 +340,12 @@ public class HomeController implements Initializable {
                                 bt.setLayoutY(buttonSelected.originalY);
                             }
                         }
-                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace); // Swap the two butons
+                        // Swap the two butons
+                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace);
                         reorderGraphs(labels);
                     } else {
-                        b.setLayoutY(buttonSelected.originalY); // If the user barely drags the button (by mistake),
-                                                                // then put it back
+                        // If the user barely drags the button (by mistake), then put it back
+                        b.setLayoutY(buttonSelected.originalY);
                     }
                 }
             });
@@ -681,10 +684,14 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
-}
-
-// records relative y co-ordinates.
-class ButtonSelected {
-    double originalY;
-    double y;
+    
+    /**
+     * Records relative y coordinates.
+     * 
+     * @author Ahad Rahman
+     */
+    static class ButtonSelected {
+        double originalY;
+        double nextY;
+    }
 }
