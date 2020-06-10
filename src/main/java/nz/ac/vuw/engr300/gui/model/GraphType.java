@@ -54,4 +54,13 @@ public enum GraphType {
 
         return null;
     }
+    
+    /**
+     * Get a generated GraphID based on this Graph's label.
+     * 
+     * @return String ID representation of the graph.
+     */
+    public String getGraphID() {
+        return "graph" + this.getLabel().replace(" ", "");
+    }
 }
