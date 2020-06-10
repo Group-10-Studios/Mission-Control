@@ -42,6 +42,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.weather.model.WeatherData;
 
 /**
  * Represents the controller for the Home application view.
@@ -208,8 +209,12 @@ public class HomeController implements Initializable {
             WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
                     lbWeatherStatus, windCompass);
             wc.updateWeatherInfo();
+
+            // Getting the weather data to give, than to import the data constantly.
+            WeatherData weatherToGive = wc.getWeatherData();
+
              // For the warnings controller
-            WarningsController warningC = new WarningsController(lbWarning1, lbWarning2);
+            WarningsController warningC = new WarningsController(weatherToGive, lbWarning1, lbWarning2);
             warningC.checkWindSpeed();
             warningC.checkWeatherCondition();
         } catch (FileNotFoundException e) {

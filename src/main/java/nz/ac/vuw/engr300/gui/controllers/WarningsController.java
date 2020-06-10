@@ -37,13 +37,12 @@ public class WarningsController {
      * @param w2 The second warnings label.
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
-    public WarningsController(Label w1, Label w2) throws FileNotFoundException {
+    public WarningsController(WeatherData wGiven, Label w1, Label w2) throws FileNotFoundException {
         this.lbWarning1 = w1;
         this.lbWarning2 = w2;
         anyWarnings = false;
 
-        WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
-        w = wi.getWeather(0);
+        w = wGiven;
     }
 
     /**
