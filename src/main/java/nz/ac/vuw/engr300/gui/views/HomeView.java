@@ -42,7 +42,7 @@ public class HomeView {
 
         HomeController controller = loader.getController();
         stage.setOnCloseRequest(e -> controller.shutdown());
-//        stage.setMaximized(true);
+        // stage.setMaximized(true);
 
         stage.show();
         // Set minimum dimensions to 720p - Doesn't support below this
