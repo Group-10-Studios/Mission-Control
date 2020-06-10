@@ -102,7 +102,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     private static boolean checkAndClickOnNode(FxRobot robot, String nodeId) {
         try {
-            WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
+            WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, () -> {
                 try {
                     Node node = robot.lookup(nodeId).queryAs(Node.class);
                     if (node.isVisible()) {
