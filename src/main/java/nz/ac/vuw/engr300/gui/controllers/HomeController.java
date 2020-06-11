@@ -36,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
@@ -45,6 +46,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
+import org.apache.log4j.Logger;
 
 /**
  * Represents the controller for the Home application view.
@@ -57,6 +59,8 @@ import nz.ac.vuw.engr300.weather.model.WeatherData;
 public class HomeController implements Initializable {
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class);
+
 
     /**
      * Represents the number of ROWS of graphs within pnContent.
@@ -229,7 +233,7 @@ public class HomeController implements Initializable {
             warnC.checkWindSpeed();
             warnC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
 
         scaleItemHeight(apApp);
