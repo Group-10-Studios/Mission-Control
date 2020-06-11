@@ -116,7 +116,7 @@ class DynamicGuiTests {
             Region graphRegion = getRegionByID(robot, graphID);
             assertWidths(graphWidth, graphRegion);
             // Disable height until startup bug fixed
-//            assertHeights(graphHeight, graphRegion);
+            // assertHeights(graphHeight, graphRegion);
         }
     }
 

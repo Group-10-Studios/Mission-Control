@@ -3,10 +3,14 @@ package nz.ac.vuw.engr300.gui.controllers;
 import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+//import javafx.stage.StageStyle;
+import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.commons.text.WordUtils;
+import org.apache.log4j.Logger;
+
 
 /**
  * Represents a separate weather controller in the GUI.
@@ -15,6 +19,7 @@ import org.apache.commons.text.WordUtils;
  * @author Jake Mai
  */
 public class WeatherController {
+    private static final Logger LOGGER = Logger.getLogger(App.class);
 
     private final RocketDataAngle windCompass;
     @FXML

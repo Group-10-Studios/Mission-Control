@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import org.apache.log4j.Logger;
 
 /**
  * Static access class to load JSON data into the application. Access this using
@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
  *
  */
 public class JsonImporter {
+
+    private static final Logger LOGGER = Logger.getLogger(JsonImporter.class);
 
     /**
      * Load the specified JSON file into the application.
@@ -32,7 +34,7 @@ public class JsonImporter {
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IOException caught!", e);
         }
 
         return null;
