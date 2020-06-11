@@ -135,5 +135,9 @@ public class WarningsController {
         //if there were not it returns false.
         return anyWarnings;
     }
+
+    public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
+        items.add(new RocketAlert(alert, title, description));
+    }
 }
 

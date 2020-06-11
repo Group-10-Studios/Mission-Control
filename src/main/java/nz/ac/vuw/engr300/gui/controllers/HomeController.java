@@ -39,6 +39,7 @@ import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
@@ -159,6 +160,7 @@ public class HomeController implements Initializable {
     @FXML
     Region pnWarnings;
 
+    private WarningsController warnC;
     private WeatherController wc;
 
     /**
@@ -196,7 +198,8 @@ public class HomeController implements Initializable {
                 pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
                 rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             } else if (data instanceof RocketEvent) {
-                
+                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Rocket Event: ",
+                        ((RocketEvent) data).getEventType().toString());
             }
         });
     }
@@ -223,9 +226,9 @@ public class HomeController implements Initializable {
 
              // For the warnings controller
 //            WarningsController warningC = new WarningsController(weatherToGive, lbWarning1, lbWarning2);
-            WarningsController warningC = new WarningsController(weatherToGive, pnWarnings);
-            warningC.checkWindSpeed();
-            warningC.checkWeatherCondition();
+            warnC = new WarningsController(weatherToGive, pnWarnings);
+            warnC.checkWindSpeed();
+            warnC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
