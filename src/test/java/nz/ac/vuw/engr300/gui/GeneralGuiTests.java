@@ -1,20 +1,5 @@
 package nz.ac.vuw.engr300.gui;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
@@ -37,6 +22,20 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.service.query.EmptyNodeQueryException;
 import org.testfx.util.WaitForAsyncUtils;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * General tests for the UI.
@@ -223,6 +222,10 @@ public class GeneralGuiTests extends ApplicationTest {
                 keyCodes.add(KeyCode.CAPS);
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
                 keyCodes.add(KeyCode.CAPS);
+            } else if (s.equals("-")) {
+                keyCodes.add(KeyCode.SUBTRACT);
+            } else if (s.equals("_")) {
+                keyCodes.add(KeyCode.UNDERSCORE);
             } else {
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
             }
@@ -337,7 +340,7 @@ public class GeneralGuiTests extends ApplicationTest {
     public void test_highlight_graphs(FxRobot robot) {
         for (GraphType g : GraphType.values()) {
 
-            String btnId = "#" + g.getGraphID();
+            String btnId = "#btn" + g.getLabel().replace(" ", "");
             String graphId = "#" + g.getGraphID();
             checkHighlight(btnId, graphId, robot);
         }
