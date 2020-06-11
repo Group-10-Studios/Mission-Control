@@ -86,14 +86,13 @@ public class WeatherController {
             String formattedForecast = WordUtils.capitalize(forecast);
             lbWeatherStatus.setText("Weather status: " + formattedForecast);
         } catch (FileNotFoundException e) {
-//            Alert alert = new Alert(Alert.AlertType.WARNING);
-//            alert.initStyle(StageStyle.DECORATED);
-//            alert.setTitle("Warning");
-//            alert.setHeaderText("Missing weather data!");
-//            alert.setContentText(e.getMessage());
-//            alert.showAndWait();
-//            return;
-//            Dump entire error message into log files.
+            // Alert alert = new Alert(Alert.AlertType.WARNING);
+            // alert.initStyle(StageStyle.DECORATED);
+            // alert.setTitle("Warning");
+            // alert.setHeaderText("Missing weather data!");
+            // alert.setContentText(e.getMessage());
+            // alert.showAndWait();
+            // return;
             LOGGER.error(e.getMessage(), e);
         }
     }
