@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -119,7 +120,7 @@ public class WarningsController {
     }
 
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
-        items.add(new RocketAlert(alert, title, description));
+        Platform.runLater(() -> items.add(new RocketAlert(alert, title, description)));
     }
 }
 
