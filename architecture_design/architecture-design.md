@@ -345,7 +345,7 @@ One page glossary as required
 - Section 4.5 Scenarios
 - Section 4.2.3/4.2.4 Development - Expansion on CI functionality
 - Section 4.2.6 Package Diagram
-- Section 5.2
+- Section 5.2 Budget and Procurement
 
 **Nalin Aswani:**
 - Section 4.1 Logical
