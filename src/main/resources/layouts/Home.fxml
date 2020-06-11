@@ -87,12 +87,6 @@
             <children>
                 <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0"
                       style="-fx-background-color: #F6F6F6;">
-                    <children>
-                        <Label layoutX="10.0" layoutY="4.0" text="Warnings"/>
-                        <Label fx:id="lbWarning1" layoutX="10.0" layoutY="19.0" text="1) Windspeed..."/>
-                        <Label fx:id="lbWarning2" layoutX="10.0" layoutY="79.0" text="2) Forecast..."
-                               textAlignment="CENTER" alignment="TOP_CENTER"/>
-                    </children>
                 </Pane>
             </children>
             <effect>

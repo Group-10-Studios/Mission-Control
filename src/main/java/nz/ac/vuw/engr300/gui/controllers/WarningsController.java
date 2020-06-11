@@ -61,7 +61,7 @@ public class WarningsController {
         p.widthProperty().addListener((observableValue, number, t1) -> {
             list.setPrefWidth(t1.doubleValue());
         });
-        items = FXCollections.observableArrayList (new RocketAlert("Test1", "TestDescription!", RocketAlert.AlertLevel.ERROR));
+        items = FXCollections.observableArrayList ();
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
@@ -77,21 +77,27 @@ public class WarningsController {
      * If it is not, then throw a warning in the warnings panel.
      */
     public void checkWindSpeed() {
-
-//        // windspeed's unit extracted from weather data is meter per second
-//        // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
-//        // windpseed * 3.6
-//        Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
-//        if (winSpeedMetric > maxWindSpeed) {
+        // windspeed's unit extracted from weather data is meter per second
+        // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
+        // windpseed * 3.6
+        Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
+        if (winSpeedMetric > maxWindSpeed) {
 //            lbWarning1.setText("WINDSPEED WARNING:\n  Expected less than " + maxWindSpeed +
 //                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
 //            lbWarning1.setTextFill(colourRed); //Sets it red if warnings.
-//            anyWarnings = true;
-//        } else {
+            RocketAlert ra = new RocketAlert("WINDSPEED WARNING:",
+                    "Expected = " + maxWindSpeed +
+                            "\nWas actually = " + winSpeedMetric + "km/h", RocketAlert.AlertLevel.WARNING);
+            items.add(ra);
+            anyWarnings = true;
+        } else {
 //            lbWarning1.setText("Windspeed: Everything is ok!\n  Less than " + maxWindSpeed +
 //                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
 //            lbWarning1.setTextFill(colourGreen); //Sets it green if no warnings
-//        }
+            RocketAlert ra = new RocketAlert("Windspeed: ",
+                    winSpeedMetric + "km/h", RocketAlert.AlertLevel.WARNING);
+            items.add(ra);
+        }
     }
 
     /**
@@ -101,16 +107,24 @@ public class WarningsController {
     public void checkWeatherCondition() {
         String currentWeather = w.getCondition().getWeatherDescription();
 
-//        if (currentWeather.contains("rain")) {
+        if (currentWeather.contains("rain")) {
 //            lbWarning2.setText("WEATHER WARNING:\n  Forecast = " + currentWeather +
 //                    "\n  Not safe to launch.");
 //            lbWarning2.setTextFill(colourRed); //Sets it red if warnings.
-//            anyWarnings = true;
-//        } else {
+            RocketAlert ra = new RocketAlert("WEATHER WARNING:",
+                    "Forecast = " + currentWeather +
+                     "\n  Not safe to launch.", RocketAlert.AlertLevel.WARNING);
+            items.add(ra);
+            anyWarnings = true;
+        } else {
 //            lbWarning2.setText("Weather forecast: Everything is ok!\n  Forecast = " + currentWeather +
 //                    "\n  Safe to launch.");
 //            lbWarning2.setTextFill(colourGreen); //Sets it green if no warnings
-//        }
+            RocketAlert ra = new RocketAlert("Weather forecast:",
+                    "Forecast = " + currentWeather +
+                            "\n  Safe to launch.", RocketAlert.AlertLevel.ALERT);
+            items.add(ra);
+        }
     }
 
     /**
