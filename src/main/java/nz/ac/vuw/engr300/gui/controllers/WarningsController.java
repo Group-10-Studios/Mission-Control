@@ -1,20 +1,15 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
-import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Pane;
-
 import java.io.FileNotFoundException;
 
 public class WarningsController {
@@ -29,24 +24,21 @@ public class WarningsController {
     private static final double maxWindSpeed = 15.0; //The maximum wind speed for UI to not throw warning.
     private static final Paint colourGreen = Color.web("#008000", 0.8);
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
-
-//    @FXML
+    private static WeatherData w;
+    //    @FXML
 //    private Label lbWarning1;
 //    @FXML
 //    private Label lbWarning2;
     @FXML
     private Pane pnWarnings;
-
-    private static WeatherData w;
-
     private boolean anyWarnings;
 
     private ObservableList<RocketAlert> items;
 
     /**
+     * //     * @param w1 The first warnings label.
+     * //     * @param w2 The second warnings label.
      *
-//     * @param w1 The first warnings label.
-//     * @param w2 The second warnings label.
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
     public WarningsController(WeatherData wGiven, Region p) throws FileNotFoundException {
@@ -55,13 +47,14 @@ public class WarningsController {
         this.pnWarnings = (Pane) p;
         anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
+        list.setStyle("-fx-background-insets: 0 ;");
         p.heightProperty().addListener((observableValue, number, t1) -> {
             list.setPrefHeight(t1.doubleValue());
         });
         p.widthProperty().addListener((observableValue, number, t1) -> {
             list.setPrefWidth(t1.doubleValue());
         });
-        items = FXCollections.observableArrayList ();
+        items = FXCollections.observableArrayList();
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
@@ -85,17 +78,17 @@ public class WarningsController {
 //            lbWarning1.setText("WINDSPEED WARNING:\n  Expected less than " + maxWindSpeed +
 //                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
 //            lbWarning1.setTextFill(colourRed); //Sets it red if warnings.
-            RocketAlert ra = new RocketAlert("WINDSPEED WARNING:",
-                    "Expected = " + maxWindSpeed +
-                            "\nWas actually = " + winSpeedMetric + "km/h", RocketAlert.AlertLevel.WARNING);
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WINDSPEED WARNING:",
+                    "Expected = " + maxWindSpeed,
+                    "Was actually = " + winSpeedMetric + "km/h");
             items.add(ra);
             anyWarnings = true;
         } else {
 //            lbWarning1.setText("Windspeed: Everything is ok!\n  Less than " + maxWindSpeed +
 //                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
 //            lbWarning1.setTextFill(colourGreen); //Sets it green if no warnings
-            RocketAlert ra = new RocketAlert("Windspeed: ",
-                    winSpeedMetric + "km/h", RocketAlert.AlertLevel.WARNING);
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING,
+                    "Windspeed: ", winSpeedMetric + "km/h");
             items.add(ra);
         }
     }
@@ -111,18 +104,17 @@ public class WarningsController {
 //            lbWarning2.setText("WEATHER WARNING:\n  Forecast = " + currentWeather +
 //                    "\n  Not safe to launch.");
 //            lbWarning2.setTextFill(colourRed); //Sets it red if warnings.
-            RocketAlert ra = new RocketAlert("WEATHER WARNING:",
-                    "Forecast = " + currentWeather +
-                     "\n  Not safe to launch.", RocketAlert.AlertLevel.WARNING);
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WEATHER WARNING:",
+                    "Forecast = " + currentWeather,
+                    "Not safe to launch.");
             items.add(ra);
             anyWarnings = true;
         } else {
 //            lbWarning2.setText("Weather forecast: Everything is ok!\n  Forecast = " + currentWeather +
 //                    "\n  Safe to launch.");
 //            lbWarning2.setTextFill(colourGreen); //Sets it green if no warnings
-            RocketAlert ra = new RocketAlert("Weather forecast:",
-                    "Forecast = " + currentWeather +
-                            "\n  Safe to launch.", RocketAlert.AlertLevel.ALERT);
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.ALERT, "Weather forecast:",
+                    "Forecast = " + currentWeather, "Safe to launch.");
             items.add(ra);
         }
     }
@@ -130,9 +122,10 @@ public class WarningsController {
     /**
      * This method checks for any warnings to point out in the weather data.
      * e.g If wind speed is too high, or if forecast is raining.
+     *
      * @return True if there were any warnings.
      */
-    public boolean checkForAnyWarnings(){
+    public boolean checkForAnyWarnings() {
         //ensures that the warnings start off as false before running this method
         anyWarnings = false;
         checkWindSpeed();

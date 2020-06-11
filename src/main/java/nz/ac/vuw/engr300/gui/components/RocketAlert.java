@@ -1,15 +1,15 @@
 package nz.ac.vuw.engr300.gui.components;
 
-import javafx.geometry.Orientation;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -22,26 +22,37 @@ import javafx.scene.paint.Color;
 public class RocketAlert extends VBox {
 
     private Label title = new Label();
-    private Label description = new Label();
 
-    public RocketAlert(String title, String description, AlertLevel level) {
+    public RocketAlert(AlertLevel level, String title, String... descriptions) {
         this.setAlignment(Pos.TOP_CENTER);
         this.title.setText(title);
-        this.description.setText(description);
-
+        this.title.setStyle("-fx-font-weight: bold");
         this.getChildren().add(this.title);
-        this.getChildren().add(this.description);
+        for (String description : descriptions) {
+            this.getChildren().add(new Label(description));
+        }
 
         this.setMaxHeight(VBox.USE_PREF_SIZE);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, new CornerRadii(5), BorderWidths.DEFAULT)));
+        this.setBorder(new Border(new BorderStroke(level.getColor(),
+                BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3.3))));
+
 
     }
 
 
     public enum AlertLevel {
-        ERROR,      // Red
-        WARNING,    // Yellow
-        ALERT       // Green
+        ERROR(Color.RED),
+        WARNING(Color.ORANGE),
+        ALERT(Color.valueOf("#4267B2"));    // Blue
+
+        private final Color color;
+
+        AlertLevel(Color color) {
+            this.color = color;
+        }
+
+        public Color getColor() {
+            return color;
+        }
     }
 }

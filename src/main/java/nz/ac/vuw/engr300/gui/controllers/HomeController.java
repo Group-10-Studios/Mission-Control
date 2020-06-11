@@ -37,6 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
@@ -84,7 +85,7 @@ public class HomeController implements Initializable {
                     GraphType.TOTAL_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
-            "Acceleration ( M/S^2 )",
+            "Acceleration (m/s²)",
                     GraphType.TOTAL_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
@@ -158,6 +159,8 @@ public class HomeController implements Initializable {
     @FXML
     Region pnWarnings;
 
+    private WeatherController wc;
+
     /**
      * Note must be Region to be a parent of all graph components.
      */
@@ -192,6 +195,8 @@ public class HomeController implements Initializable {
                 yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
                 pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
                 rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
+            } else if (data instanceof RocketEvent) {
+                
             }
         });
     }
@@ -209,7 +214,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // For the weather controller
-            WeatherController wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+            wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
                     lbWeatherStatus, windCompass);
             wc.updateWeatherInfo();
 
