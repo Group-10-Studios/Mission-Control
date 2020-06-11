@@ -101,12 +101,8 @@ unittest:
   before_script:
     - *build_keys
   script:
-    - DISPLAY=:0 mvn clean test $NO_GUI_TEST
-    - cat target/site/jacoco/index.html
+    - mvn clean test $NO_GUI_TEST
   allow_failure: false
-  artifacts:
-    paths:
-      - target/site/jacoco/
 
 unittest_windows:
   stage: UnitTests
