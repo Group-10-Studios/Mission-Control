@@ -51,6 +51,8 @@ JavaDocs
 repo
 rebased
 TestFX
+cron
+MacOS
 
 # Package references
 communications.importers

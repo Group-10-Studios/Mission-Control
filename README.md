@@ -14,7 +14,7 @@ After cloning our repo you can run the following commands using maven on our pro
 
 When testing the software using `mvn clean test` this will run our Unit tests and our GUI integration tests.
 Currently we use [TestFX](https://github.com/TestFX/TestFX) as our testing framework which has a bug which
-prevents our tests from passing on macOS machines. This is due to mouse permissions and being unable to correctly utilize the hardware.
+prevents our tests from passing on MacOS machines. This is due to mouse permissions and being unable to correctly utilize the hardware.
 
 The tests can pass on Windows and Linux operating systems - as shown in our CI pipeline.
 
