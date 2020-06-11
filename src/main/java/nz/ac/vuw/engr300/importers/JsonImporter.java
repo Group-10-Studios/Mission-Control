@@ -2,14 +2,12 @@ package nz.ac.vuw.engr300.importers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import nz.ac.vuw.engr300.App;
-import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import org.apache.log4j.Logger;
 
 /**
  * Static access class to load JSON data into the application. Access this using
