@@ -2,8 +2,8 @@ package nz.ac.vuw.engr300.importers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import java.io.FileNotFoundException;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 
 /**
  * Provide basic lazy implementation to access API keys from configuration
@@ -20,8 +20,9 @@ public class KeyImporter {
      *
      * @param keyName API name to retrieve the key value from.
      * @return String containing the API key for the application.
-     * @throws FileNotFoundException Throws FileNotFoundException if the keys.json
-     *                               can't be found.
+     * @throws KeyNotFoundException Throws KeyNotFoundException if the keys.json is not there,
+     *                              or if the key you're after does not exist, and also if
+     *                              keys.json fails to parse.
      */
     public static String getKey(String keyName) throws KeyNotFoundException {
         if (keyIndex == null) {
