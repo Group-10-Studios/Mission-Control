@@ -50,6 +50,7 @@ pre-built
 JavaDocs
 repo
 rebased
+TestFX
 
 # Package references
 communications.importers
@@ -57,3 +58,6 @@ gui.controllers
 
 I.e.
 e.g.
+
+# NZ spelling to bypass on Readme
+utilize

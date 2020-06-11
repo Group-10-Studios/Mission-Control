@@ -14,7 +14,7 @@ After cloning our repo you can run the following commands using maven on our pro
 
 When testing the software using `mvn clean test` this will run our Unit tests and our GUI integration tests.
 Currently we use [TestFX](https://github.com/TestFX/TestFX) as our testing framework which has a bug which
-prevents our tests from passing on MacOS machines. This is due to mouse permissions and being unable to correctly utilize the hardware.
+prevents our tests from passing on macOS machines. This is due to mouse permissions and being unable to correctly utilize the hardware.
 
 The tests can pass on Windows and Linux operating systems - as shown in our CI pipeline.
 
@@ -85,4 +85,4 @@ These are automatically generated from the latest version from the `master` bran
 
 - Our current Epic's show 0% completion this is a [known issue](https://gitlab.com/gitlab-org/gitlab/-/issues/215091) with GitLab and GitLab EE. This will be patched on 22nd May according to the issue post. This will be delayed depending on how fast the University can deploy the update to the Gitlab instance. Until then it will show 0% completion on our Epic's which does not reflect our progress.
 - We have been time tracking using GitLab issues and milestones. These can be viewed within `Issues>Milestones>Closed` or [here](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/milestones?sort=due_date_desc&state=closed). This outlines our previous sprints where you can see completed tickets, time spent during the week and other information. These can also be viewed in `Issues>Boards` where you can then select the board for each sprint to view the previous information of completed work.
-- We have a cron-job updating the [wiki here](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/wikis/Time-Tracking-by-Team-Member) which shows the time which team members have spent on tickets and in each group meeting based on each sprint for each week. This is an easier way to view our time spent than inside our milestones.
+- We have a cron job updating the [wiki here](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/wikis/Time-Tracking-by-Team-Member) which shows the time which team members have spent on tickets and in each group meeting based on each sprint for each week. This is an easier way to view our time spent than inside our milestones.
