@@ -30,7 +30,7 @@ stages:
 # Storage of common variables between stages
 variables:
   GUI_HEADLESS_TESTS: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
-  # This prefix only works on Windows to skip GUI Tests
+  # This prefix will skip GUI tests
   NO_GUI_TEST: "-DexcludePackage=nz.ac.vuw.engr300.gui.**"
 
 build:
@@ -127,7 +127,7 @@ full_tests:
   before_script:
     - *build_keys
   dependencies:
-    - gui_test
+    - unittest
   script:
     - DISPLAY=:0 mvn clean test
     - cat target/site/jacoco/index.html
