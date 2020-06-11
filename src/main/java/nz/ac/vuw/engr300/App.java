@@ -21,7 +21,7 @@ public class App {
         } catch (Error e) {
             showError("error");
             // Dump entire error message into log files.
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
             System.exit(1);
         } catch (RuntimeException e) {
             if (javaFxMissing(e)) {
@@ -30,7 +30,7 @@ public class App {
 
             showError("RuntimeException");
             // Dump entire error message into log files.
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
             System.exit(1);
         }
     }

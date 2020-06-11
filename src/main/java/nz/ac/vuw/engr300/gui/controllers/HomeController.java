@@ -75,31 +75,32 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time ( S )", "Altitude ( M )",
+    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
                     GraphType.ALTITUDE);
     @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
                     GraphType.TOTAL_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
+            "Acceleration ( M/S^2 )",
                     GraphType.TOTAL_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
                     GraphType.X_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
                     GraphType.Y_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S )",
+    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
                     GraphType.Z_VELOCITY);
     @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
                     GraphType.X_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
                     GraphType.Y_ACCELERATION);
     @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time ( S )", "Altitude ( M/S^2 )",
+    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
                     GraphType.Z_ACCELERATION);
     @FXML
     Label weatherLabel;
