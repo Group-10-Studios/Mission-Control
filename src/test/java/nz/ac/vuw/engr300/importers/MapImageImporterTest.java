@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class MapImageImporterTest {
     public static void initTestKeys() {
         try {
             API_KEY = KeyImporter.getKey("maps");
-        } catch (FileNotFoundException e) {
+        } catch (KeyNotFoundException e) {
             System.err.println("Can't run tests as the 'keys.json' file is missing");
             System.exit(1);
         }

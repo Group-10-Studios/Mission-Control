@@ -3,6 +3,7 @@ package nz.ac.vuw.engr300.weather;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.FileNotFoundException;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,7 +21,7 @@ class PullWeatherApiTest {
     public static void initTestKeys() {
         try {
             API_KEY = KeyImporter.getKey("weather");
-        } catch (FileNotFoundException e) {
+        } catch (KeyNotFoundException e) {
             System.err.println("Can't run tests as the 'keys.json' file is missing");
             System.exit(1);
         }

@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 
@@ -28,7 +29,7 @@ class MapImageCurrentLocationDemo extends JPanel {
     static {
         try {
             API_KEY = KeyImporter.getKey("maps");
-        } catch (FileNotFoundException e) {
+        } catch (KeyNotFoundException e) {
             e.printStackTrace();
         }
     }

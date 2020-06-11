@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,8 +29,8 @@ public class MapImageImporter {
         String apiKey = null;
         try {
             apiKey = KeyImporter.getKey("maps");
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+        } catch (KeyNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
             System.out.println("Unable to retrieve the map as your keys.json file is missing");
             System.exit(1);
         }

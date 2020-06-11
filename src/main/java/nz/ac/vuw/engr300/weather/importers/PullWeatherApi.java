@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import org.apache.log4j.Logger;
 
@@ -33,8 +34,8 @@ public class PullWeatherApi {
         String apiKey = null;
         try {
             apiKey = KeyImporter.getKey("weather");
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
+        } catch (KeyNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
             System.out.println("Unable to retrieve weather as your keys.json file is missing");
             System.exit(1);
         }
