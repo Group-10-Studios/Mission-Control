@@ -2,7 +2,9 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
@@ -80,7 +82,13 @@ public class WeatherController {
             String formattedForecast = WordUtils.capitalize(forecast);
             lbWeatherStatus.setText("Weather status: " + formattedForecast);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initStyle(StageStyle.DECORATED);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Missing weather data!");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
         }
     }
 }
