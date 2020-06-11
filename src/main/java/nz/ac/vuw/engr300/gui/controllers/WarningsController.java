@@ -38,7 +38,7 @@ public class WarningsController {
      *
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
-    public WarningsController(Pane p) {
+    public WarningsController(WeatherData weatherData, Pane p) throws FileNotFoundException {
         this.pnWarnings = p;
         anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
@@ -53,6 +53,7 @@ public class WarningsController {
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
+        setDataForWarnings(weatherData);
     }
 
     private static void setDataForWarnings(WeatherData weatherData) {
@@ -118,25 +119,8 @@ public class WarningsController {
         return anyWarnings;
     }
 
-    /**
-     * Adds a alert to the ListView displaying all alerts.
-     *
-     * @param alert         The alert level.
-     * @param title         The title of the alert.
-     * @param description   The description of the alert.
-     */
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
-        Platform.runLater(() -> items.add(new RocketAlert(alert, title, description)));
-    }
-
-    /**
-     * Sets the weather data.
-     *
-     * @param data      The weather data.
-     */
-    public void setWeatherData(WeatherData data) {
-        weatherData = data;
-        setDataForWarnings(weatherData);
+        Platform.runLater(()->items.add(new RocketAlert(alert, title, description)));
     }
 }
 

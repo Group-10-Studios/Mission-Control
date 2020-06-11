@@ -181,7 +181,6 @@ public class HomeController implements Initializable {
      * Create a new HomeController subscribing the graphs to the data sources.
      */
     public HomeController() {
-        warnC = new WarningsController(pnWarnings);
         simulationImporter.subscribeObserver((data) -> {
             if (data instanceof RocketStatus) {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
@@ -230,7 +229,7 @@ public class HomeController implements Initializable {
             WeatherData weatherToGive = wc.getWeatherData();
 
             // For the warnings controller
-            warnC.setWeatherData(weatherToGive);
+            warnC = new WarningsController(weatherToGive, pnWarnings);
             warnC.checkWindSpeed();
             warnC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
