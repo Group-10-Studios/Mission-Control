@@ -93,7 +93,7 @@ public class WeatherController {
 //            alert.setContentText(e.getMessage());
 //            alert.showAndWait();
 //            return;
-            // Dump entire error message into log files.
+//            Dump entire error message into log files.
             LOGGER.error(e.getMessage(), e);
         }
     }
