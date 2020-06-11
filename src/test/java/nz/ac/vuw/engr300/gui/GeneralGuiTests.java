@@ -223,6 +223,10 @@ public class GeneralGuiTests extends ApplicationTest {
                 keyCodes.add(KeyCode.CAPS);
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
                 keyCodes.add(KeyCode.CAPS);
+            } else if (s.equals("-")) {
+                keyCodes.add(KeyCode.SUBTRACT);
+            } else if (s.equals("_")) {
+                keyCodes.add(KeyCode.UNDERSCORE);
             } else {
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
             }
@@ -338,7 +342,7 @@ public class GeneralGuiTests extends ApplicationTest {
         for (GraphType g : GraphType.values()) {
 
             String btnId = "#btn" + g.getLabel().replace(" ", "");
-            String graphId = "#graph" + g.getLabel().replace(" ", "");
+            String graphId = "#" + g.getGraphID();
             checkHighlight(btnId, graphId, robot);
         }
     }
