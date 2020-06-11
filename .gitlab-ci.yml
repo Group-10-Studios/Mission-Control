@@ -2,7 +2,10 @@
 
 stages:
   - Build
-  - Test
+  - DocsCheck
+  - StaticAnalysis
+  - UnitTests
+  - IntegrationTests
   - DeployPages
   - BuildPackage
 
@@ -28,7 +31,7 @@ stages:
 variables:
   GUI_HEADLESS_TESTS: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
   # This prefix only works on Windows to skip GUI Tests
-  NO_GUI_TEST: "-Dtest=!\"nz.ac.vuw.engr300.gui.**\""
+  NO_GUI_TEST: "-DexcludePackage=nz.ac.vuw.engr300.gui.**"
 
 build:
   stage: Build
@@ -38,34 +41,9 @@ build:
     - mvn compile
   allow_failure: false
 
-unittest:
-  stage: Test
-  tags:
-    - nathan
-    - linux
-  before_script:
-    - *build_keys
-  script:
-    - DISPLAY=:0 mvn clean test
-    - cat target/site/jacoco/index.html
-  allow_failure: false
-  artifacts:
-    paths:
-      - target/site/jacoco/
-
-unittest_windows:
-  stage: Test
-  tags:
-    - nathan
-    - windows
-  before_script:
-    - *build_windows_keys
-  script:
-    - mvn $NO_GUI_TEST clean test
-
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
-  stage: Test
+  stage: DocsCheck
   tags:
     - shell
   script:
@@ -73,7 +51,7 @@ verify_javadoc:
   allow_failure: false
 
 spell_check:
-  stage: Test
+  stage: DocsCheck
   tags:
     - shell
   script:
@@ -85,14 +63,14 @@ spell_check:
   allow_failure: false
 
 find_bugs:
-  stage: Test
+  stage: StaticAnalysis
   tags:
     - shell
   script:
     - mvn clean compile spotbugs:check
 
 checkstyle:
-  stage: Test
+  stage: StaticAnalysis
   tags:
     - shell
   script:
@@ -115,7 +93,48 @@ checkstyle:
       fi
   allow_failure: false
         
-    
+unittest:
+  stage: UnitTests
+  tags:
+    - nathan
+    - linux
+  before_script:
+    - *build_keys
+  script:
+    - DISPLAY=:0 mvn clean test $NO_GUI_TEST
+    - cat target/site/jacoco/index.html
+  allow_failure: false
+  artifacts:
+    paths:
+      - target/site/jacoco/
+
+unittest_windows:
+  stage: UnitTests
+  tags:
+    - nathan
+    - windows
+  before_script:
+    - *build_windows_keys
+  script:
+    - mvn $NO_GUI_TEST clean test
+
+# Runs both unit and integration tests for coverage.
+full_tests:
+  stage: IntegrationTests
+  tags:
+    - nathan
+    - linux
+  before_script:
+    - *build_keys
+  dependencies:
+    - gui_test
+  script:
+    - DISPLAY=:0 mvn clean test
+    - cat target/site/jacoco/index.html
+  allow_failure: false
+  artifacts:
+    paths:
+      - target/site/jacoco/
 
 pages:
   stage: DeployPages
@@ -137,6 +156,11 @@ pages:
     paths:
       - public
 
+##
+## NOTE: ALL packaging skips GUI tests as they rely on tests passing first
+## This is for stability purposes.
+##
+
 package:
   stage: BuildPackage
   tags:
@@ -144,8 +168,10 @@ package:
     - linux
   before_script:
     - *build_keys
+  dependencies:
+    - unittest
   script:
-    - DISPLAY=:0 mvn clean package
+    - mvn $NO_GUI_TEST clean package
   artifacts:
     paths:
       # Only add the full mission-control jar wildcard the version
@@ -158,6 +184,8 @@ package_windows:
     - windows
   before_script:
     - *build_windows_keys
+  dependencies:
+    - unittest_windows
   script:
     - mvn $NO_GUI_TEST clean package
   artifacts:
