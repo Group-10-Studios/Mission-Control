@@ -158,7 +158,7 @@ public class HomeController implements Initializable {
     @FXML
     Region apWarnings;
     @FXML
-    Region pnWarnings;
+    Pane pnWarnings;
 
     private WarningsController warnC;
     private WeatherController wc;
@@ -224,8 +224,7 @@ public class HomeController implements Initializable {
             // Getting the weather data to give, than to import the data constantly.
             WeatherData weatherToGive = wc.getWeatherData();
 
-             // For the warnings controller
-//            WarningsController warningC = new WarningsController(weatherToGive, lbWarning1, lbWarning2);
+            // For the warnings controller
             warnC = new WarningsController(weatherToGive, pnWarnings);
             warnC.checkWindSpeed();
             warnC.checkWeatherCondition();

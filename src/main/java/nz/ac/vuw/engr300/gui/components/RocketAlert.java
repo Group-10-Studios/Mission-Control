@@ -23,6 +23,15 @@ public class RocketAlert extends VBox {
 
     private Label title = new Label();
 
+    /**
+     * Constructor for the Rocket Alert used to display events/warnings/alerts on the right hand side pane. Note,
+     * that descriptions is any number of strings. This is because we want multiline descriptions to have all
+     * lines centered in the component.
+     *
+     * @param level             The alert level of this alert.
+     * @param title             The title of this alert.
+     * @param descriptions      The descriptions of this alert.
+     */
     public RocketAlert(AlertLevel level, String title, String... descriptions) {
         this.setAlignment(Pos.TOP_CENTER);
         this.title.setText(title);

@@ -1,15 +1,16 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-//import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.commons.text.WordUtils;
 import org.apache.log4j.Logger;
+import java.io.FileNotFoundException;
+
+//import javafx.stage.StageStyle;
 
 
 /**
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
  */
 public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
-
+    private static WeatherData w; //this is all the weather data stored
     private final RocketDataAngle windCompass;
     @FXML
     private Label lbWindSpeed;
@@ -29,18 +30,18 @@ public class WeatherController {
     private Label lbWeatherPressure;
     private Label lbWeatherStatus;
 
-    private static WeatherData w; //this is all the weather data stored
-
     /**
      * Create a new WeatherController that stores weather data.
-     * @param wl represents Wind Speed
-     * @param wa represents Temperature
-     * @param wh represents Air Humidity
-     * @param wp represents Air Pressure
-     * @param ws represents weather status
+     *
+     * @param wl          represents Wind Speed
+     * @param wa          represents Temperature
+     * @param wh          represents Air Humidity
+     * @param wp          represents Air Pressure
+     * @param ws          represents weather status
      * @param windCompass represents Wind Direction
      */
-    public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass) throws FileNotFoundException {
+    public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass)
+            throws FileNotFoundException {
         this.lbWindSpeed = wl;
         this.lbWeatherTemp = wa;
         this.lbWeatherHumidity = wh;
@@ -49,6 +50,11 @@ public class WeatherController {
         this.windCompass = windCompass;
 
         setWeatherData();
+    }
+
+    public static void setWeatherData() throws FileNotFoundException {
+        WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
+        w = wi.getWeather(0);
     }
 
     /**
@@ -87,12 +93,7 @@ public class WeatherController {
         lbWeatherStatus.setText("Weather status: " + formattedForecast);
     }
 
-    public WeatherData getWeatherData(){
+    public WeatherData getWeatherData() {
         return w;
-    }
-
-    public static void setWeatherData() throws FileNotFoundException {
-        WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
-        w = wi.getWeather(0);
     }
 }

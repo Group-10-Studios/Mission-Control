@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
@@ -24,11 +23,8 @@ public class WarningsController {
     private static final double maxWindSpeed = 15.0; //The maximum wind speed for UI to not throw warning.
     private static final Paint colourGreen = Color.web("#008000", 0.8);
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
-    private static WeatherData w;
-    //    @FXML
-//    private Label lbWarning1;
-//    @FXML
-//    private Label lbWarning2;
+    private static WeatherData weatherData;
+
     @FXML
     private Pane pnWarnings;
     private boolean anyWarnings;
@@ -41,10 +37,8 @@ public class WarningsController {
      *
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
-    public WarningsController(WeatherData wGiven, Region p) throws FileNotFoundException {
-//        this.lbWarning1 = w1;
-//        this.lbWarning2 = w2;
-        this.pnWarnings = (Pane) p;
+    public WarningsController(WeatherData weatherData, Pane p) throws FileNotFoundException {
+        this.pnWarnings = p;
         anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
         list.setStyle("-fx-background-insets: 0 ;");
@@ -58,11 +52,11 @@ public class WarningsController {
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
-        setDataForWarnings(wGiven);
+        setDataForWarnings(weatherData);
     }
 
-    private static void setDataForWarnings(WeatherData wGiven) {
-        w = wGiven;
+    private static void setDataForWarnings(WeatherData weatherData) {
+        WarningsController.weatherData = weatherData;
     }
 
     /**
@@ -73,20 +67,14 @@ public class WarningsController {
         // windspeed's unit extracted from weather data is meter per second
         // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
         // windpseed * 3.6
-        Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
+        Double winSpeedMetric = Math.round((weatherData.getWindSpeed() * 3.6) * 100.0) / 100.0;
         if (winSpeedMetric > maxWindSpeed) {
-//            lbWarning1.setText("WINDSPEED WARNING:\n  Expected less than " + maxWindSpeed +
-//                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
-//            lbWarning1.setTextFill(colourRed); //Sets it red if warnings.
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WINDSPEED WARNING:",
                     "Expected = " + maxWindSpeed,
                     "Was actually = " + winSpeedMetric + "km/h");
             items.add(ra);
             anyWarnings = true;
         } else {
-//            lbWarning1.setText("Windspeed: Everything is ok!\n  Less than " + maxWindSpeed +
-//                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
-//            lbWarning1.setTextFill(colourGreen); //Sets it green if no warnings
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING,
                     "Windspeed: ", winSpeedMetric + "km/h");
             items.add(ra);
@@ -98,21 +86,15 @@ public class WarningsController {
      * If it is not, then throw a warning in the warnings panel.
      */
     public void checkWeatherCondition() {
-        String currentWeather = w.getCondition().getWeatherDescription();
+        String currentWeather = weatherData.getCondition().getWeatherDescription();
 
         if (currentWeather.contains("rain")) {
-//            lbWarning2.setText("WEATHER WARNING:\n  Forecast = " + currentWeather +
-//                    "\n  Not safe to launch.");
-//            lbWarning2.setTextFill(colourRed); //Sets it red if warnings.
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WEATHER WARNING:",
                     "Forecast = " + currentWeather,
                     "Not safe to launch.");
             items.add(ra);
             anyWarnings = true;
         } else {
-//            lbWarning2.setText("Weather forecast: Everything is ok!\n  Forecast = " + currentWeather +
-//                    "\n  Safe to launch.");
-//            lbWarning2.setTextFill(colourGreen); //Sets it green if no warnings
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.ALERT, "Weather forecast:",
                     "Forecast = " + currentWeather, "Safe to launch.");
             items.add(ra);
