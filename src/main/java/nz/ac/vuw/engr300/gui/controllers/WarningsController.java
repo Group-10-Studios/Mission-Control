@@ -1,11 +1,16 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 
@@ -22,26 +27,36 @@ public class WarningsController {
     private static final Paint colourGreen = Color.web("#008000", 0.8);
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
 
+//    @FXML
+//    private Label lbWarning1;
+//    @FXML
+//    private Label lbWarning2;
     @FXML
-    private Label lbWarning1;
-    @FXML
-    private Label lbWarning2;
+    private Pane pnWarnings;
 
     private static WeatherData w;
 
     private boolean anyWarnings;
 
+    private ObservableList<String> items;
+
     /**
      *
-     * @param w1 The first warnings label.
-     * @param w2 The second warnings label.
+//     * @param w1 The first warnings label.
+//     * @param w2 The second warnings label.
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
-    public WarningsController(WeatherData wGiven, Label w1, Label w2) throws FileNotFoundException {
-        this.lbWarning1 = w1;
-        this.lbWarning2 = w2;
+    public WarningsController(WeatherData wGiven, Region p) throws FileNotFoundException {
+//        this.lbWarning1 = w1;
+//        this.lbWarning2 = w2;
+        this.pnWarnings = (Pane) p;
         anyWarnings = false;
+        ListView<String> list = new ListView<String>();
+        items = FXCollections.observableArrayList (
+                "Single", "Double", "Suite", "Family App");
+        list.setItems(items);
 
+        pnWarnings.getChildren().add(list);
         setDataForWarnings(wGiven);
     }
 
@@ -55,20 +70,20 @@ public class WarningsController {
      */
     public void checkWindSpeed() {
 
-        // windspeed's unit extracted from weather data is meter per second
-        // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
-        // windpseed * 3.6
-        Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
-        if (winSpeedMetric > maxWindSpeed) {
-            lbWarning1.setText("WINDSPEED WARNING:\n  Expected less than " + maxWindSpeed +
-                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
-            lbWarning1.setTextFill(colourRed); //Sets it red if warnings.
-            anyWarnings = true;
-        } else {
-            lbWarning1.setText("Windspeed: Everything is ok!\n  Less than " + maxWindSpeed +
-                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
-            lbWarning1.setTextFill(colourGreen); //Sets it green if no warnings
-        }
+//        // windspeed's unit extracted from weather data is meter per second
+//        // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
+//        // windpseed * 3.6
+//        Double winSpeedMetric = Math.round((w.getWindSpeed() * 3.6) * 100.0) / 100.0;
+//        if (winSpeedMetric > maxWindSpeed) {
+//            lbWarning1.setText("WINDSPEED WARNING:\n  Expected less than " + maxWindSpeed +
+//                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
+//            lbWarning1.setTextFill(colourRed); //Sets it red if warnings.
+//            anyWarnings = true;
+//        } else {
+//            lbWarning1.setText("Windspeed: Everything is ok!\n  Less than " + maxWindSpeed +
+//                    "km/h,\n  Actual was " + winSpeedMetric + "km/h.");
+//            lbWarning1.setTextFill(colourGreen); //Sets it green if no warnings
+//        }
     }
 
     /**
@@ -78,16 +93,16 @@ public class WarningsController {
     public void checkWeatherCondition() {
         String currentWeather = w.getCondition().getWeatherDescription();
 
-        if (currentWeather.contains("rain")) {
-            lbWarning2.setText("WEATHER WARNING:\n  Forecast = " + currentWeather +
-                    "\n  Not safe to launch.");
-            lbWarning2.setTextFill(colourRed); //Sets it red if warnings.
-            anyWarnings = true;
-        } else {
-            lbWarning2.setText("Weather forecast: Everything is ok!\n  Forecast = " + currentWeather +
-                    "\n  Safe to launch.");
-            lbWarning2.setTextFill(colourGreen); //Sets it green if no warnings
-        }
+//        if (currentWeather.contains("rain")) {
+//            lbWarning2.setText("WEATHER WARNING:\n  Forecast = " + currentWeather +
+//                    "\n  Not safe to launch.");
+//            lbWarning2.setTextFill(colourRed); //Sets it red if warnings.
+//            anyWarnings = true;
+//        } else {
+//            lbWarning2.setText("Weather forecast: Everything is ok!\n  Forecast = " + currentWeather +
+//                    "\n  Safe to launch.");
+//            lbWarning2.setTextFill(colourGreen); //Sets it green if no warnings
+//        }
     }
 
     /**
@@ -106,3 +121,4 @@ public class WarningsController {
         return anyWarnings;
     }
 }
+

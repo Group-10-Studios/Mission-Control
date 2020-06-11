@@ -214,7 +214,8 @@ public class HomeController implements Initializable {
             WeatherData weatherToGive = wc.getWeatherData();
 
              // For the warnings controller
-            WarningsController warningC = new WarningsController(weatherToGive, lbWarning1, lbWarning2);
+//            WarningsController warningC = new WarningsController(weatherToGive, lbWarning1, lbWarning2);
+            WarningsController warningC = new WarningsController(weatherToGive, pnWarnings);
             warningC.checkWindSpeed();
             warningC.checkWeatherCondition();
         } catch (FileNotFoundException e) {
