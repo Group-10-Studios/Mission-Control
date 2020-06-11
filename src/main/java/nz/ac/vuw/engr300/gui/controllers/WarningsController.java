@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import javafx.scene.paint.Color;
@@ -38,7 +39,7 @@ public class WarningsController {
 
     private boolean anyWarnings;
 
-    private ObservableList<String> items;
+    private ObservableList<RocketAlert> items;
 
     /**
      *
@@ -51,9 +52,8 @@ public class WarningsController {
 //        this.lbWarning2 = w2;
         this.pnWarnings = (Pane) p;
         anyWarnings = false;
-        ListView<String> list = new ListView<String>();
-        items = FXCollections.observableArrayList (
-                "Single", "Double", "Suite", "Family App");
+        ListView<RocketAlert> list = new ListView<>();
+        items = FXCollections.observableArrayList (new RocketAlert("Test1", "TestDescription!", RocketAlert.AlertLevel.ERROR));
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
