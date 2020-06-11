@@ -337,8 +337,8 @@ public class GeneralGuiTests extends ApplicationTest {
     public void test_highlight_graphs(FxRobot robot) {
         for (GraphType g : GraphType.values()) {
 
-            String btnId = "#btn" + g.getLabel().replace(" ", "");
-            String graphId = "#graph" + g.getLabel().replace(" ", "");
+            String btnId = "#" + g.getGraphID();
+            String graphId = "#" + g.getGraphID();
             checkHighlight(btnId, graphId, robot);
         }
     }
