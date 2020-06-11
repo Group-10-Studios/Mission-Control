@@ -2,6 +2,8 @@ package nz.ac.vuw.engr300.importers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import nz.ac.vuw.engr300.App;
+import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,6 +20,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class JsonImporter {
 
+    private static final Logger LOGGER = Logger.getLogger(JsonImporter.class);
+
     /**
      * Load the specified JSON file into the application.
      * 
@@ -32,7 +36,7 @@ public class JsonImporter {
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("IOException caught!", e);
         }
 
         return null;

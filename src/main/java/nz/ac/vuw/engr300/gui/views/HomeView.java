@@ -33,7 +33,6 @@ public class HomeView {
         try {
             root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
             throw new Error(e);
         }
 
