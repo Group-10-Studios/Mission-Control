@@ -1,5 +1,7 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -53,6 +55,12 @@ public class WarningsController {
         this.pnWarnings = (Pane) p;
         anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
+        p.heightProperty().addListener((observableValue, number, t1) -> {
+            list.setPrefHeight(t1.doubleValue());
+        });
+        p.widthProperty().addListener((observableValue, number, t1) -> {
+            list.setPrefWidth(t1.doubleValue());
+        });
         items = FXCollections.observableArrayList (new RocketAlert("Test1", "TestDescription!", RocketAlert.AlertLevel.ERROR));
         list.setItems(items);
 

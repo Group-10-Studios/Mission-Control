@@ -1,6 +1,7 @@
 package nz.ac.vuw.engr300.gui.components;
 
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Border;
@@ -24,13 +25,14 @@ public class RocketAlert extends VBox {
     private Label description = new Label();
 
     public RocketAlert(String title, String description, AlertLevel level) {
-
+        this.setAlignment(Pos.TOP_CENTER);
         this.title.setText(title);
         this.description.setText(description);
-        Group group = new Group(this.title, this.description);
 
-        this.getChildren().add(group);
+        this.getChildren().add(this.title);
+        this.getChildren().add(this.description);
 
+        this.setMaxHeight(VBox.USE_PREF_SIZE);
         this.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, new CornerRadii(5), BorderWidths.DEFAULT)));
 
