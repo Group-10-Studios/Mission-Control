@@ -38,7 +38,7 @@ public class WarningsController {
      *
      * @throws FileNotFoundException in case there is an error reading the weather importer.
      */
-    public WarningsController(WeatherData weatherData, Pane p) throws FileNotFoundException {
+    public WarningsController(Pane p) {
         this.pnWarnings = p;
         anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
@@ -53,7 +53,6 @@ public class WarningsController {
         list.setItems(items);
 
         pnWarnings.getChildren().add(list);
-        setDataForWarnings(weatherData);
     }
 
     private static void setDataForWarnings(WeatherData weatherData) {
@@ -64,7 +63,7 @@ public class WarningsController {
      * Checks if the given wind speed is below a certain threshold.
      * If it is not, then throw a warning in the warnings panel.
      */
-    public void checkWindSpeed() {
+    private void checkWindSpeed() {
         // windspeed's unit extracted from weather data is meter per second
         // To convert it to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
         // windpseed * 3.6
@@ -82,11 +81,20 @@ public class WarningsController {
         }
     }
 
+    public void checkAllData(WeatherData data) {
+        if (data == null) {
+            return;
+        }
+        weatherData = data;
+        checkWeatherCondition();
+        checkWindSpeed();
+    }
+
     /**
      * Checks if the given weather condition is idea (e.g not raining)
      * If it is not, then throw a warning in the warnings panel.
      */
-    public void checkWeatherCondition() {
+    private void checkWeatherCondition() {
         String currentWeather = weatherData.getCondition().getWeatherDescription();
 
         if (currentWeather.contains("rain")) {
@@ -102,25 +110,25 @@ public class WarningsController {
         }
     }
 
-    /**
-     * This method checks for any warnings to point out in the weather data.
-     * e.g If wind speed is too high, or if forecast is raining.
-     *
-     * @return True if there were any warnings.
-     */
-    public boolean checkForAnyWarnings() {
-        //ensures that the warnings start off as false before running this method
-        anyWarnings = false;
-        checkWindSpeed();
-        checkWeatherCondition();
-
-        //if there are any warnings after running the check methods, then this returns true
-        //if there were not it returns false.
-        return anyWarnings;
-    }
+//    /**
+//     * This method checks for any warnings to point out in the weather data.
+//     * e.g If wind speed is too high, or if forecast is raining.
+//     *
+//     * @return True if there were any warnings.
+//     */
+//    public boolean checkForAnyWarnings() {
+//        //ensures that the warnings start off as false before running this method
+//        anyWarnings = false;
+//        checkWindSpeed();
+//        checkWeatherCondition();
+//
+//        //if there are any warnings after running the check methods, then this returns true
+//        //if there were not it returns false.
+//        return anyWarnings;
+//    }
 
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
-        Platform.runLater(()->items.add(new RocketAlert(alert, title, description)));
+        Platform.runLater(() -> items.add(new RocketAlert(alert, title, description)));
     }
 }
 

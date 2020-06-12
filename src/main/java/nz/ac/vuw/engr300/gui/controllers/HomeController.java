@@ -1,14 +1,5 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,7 +27,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
@@ -47,6 +37,15 @@ import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents the controller for the Home application view.
@@ -57,11 +56,6 @@ import org.apache.log4j.Logger;
  * @author Ahad Rahman
  */
 public class HomeController implements Initializable {
-    private static final double STANDARD_OFFSET = 10.0;
-    private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
-    private static final Logger LOGGER = Logger.getLogger(HomeController.class);
-
-
     /**
      * Represents the number of ROWS of graphs within pnContent.
      */
@@ -70,7 +64,9 @@ public class HomeController implements Initializable {
      * Represents the number of COLS of graphs within pnContent.
      */
     public static final double COLS = 4;
-
+    private static final double STANDARD_OFFSET = 10.0;
+    private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
+    private static final Logger LOGGER = Logger.getLogger(HomeController.class);
     private static final double BUTTON_HEIGHT = 30;
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
@@ -84,32 +80,32 @@ public class HomeController implements Initializable {
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
-                    GraphType.ALTITUDE);
+            GraphType.ALTITUDE);
     @FXML
     public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                    GraphType.TOTAL_VELOCITY);
+            GraphType.TOTAL_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
             "Acceleration (m/s²)",
-                    GraphType.TOTAL_ACCELERATION);
+            GraphType.TOTAL_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                    GraphType.X_VELOCITY);
+            GraphType.X_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                    GraphType.Y_VELOCITY);
+            GraphType.Y_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                    GraphType.Z_VELOCITY);
+            GraphType.Z_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                    GraphType.X_ACCELERATION);
+            GraphType.X_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                    GraphType.Y_ACCELERATION);
+            GraphType.Y_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                    GraphType.Z_ACCELERATION);
+            GraphType.Z_ACCELERATION);
     @FXML
     Label weatherLabel;
     @FXML
@@ -132,11 +128,6 @@ public class HomeController implements Initializable {
     Label lbState;
     @FXML
     Label lbStateHead;
-    @FXML
-    private Label lbWarning1;
-    @FXML
-    private Label lbWarning2;
-
     @FXML
     Label lblHeader;
     @FXML
@@ -163,7 +154,10 @@ public class HomeController implements Initializable {
     Region apWarnings;
     @FXML
     Pane pnWarnings;
-
+    @FXML
+    private Label lbWarning1;
+    @FXML
+    private Label lbWarning2;
     private WarningsController warnC;
     private WeatherController wc;
 
@@ -202,7 +196,8 @@ public class HomeController implements Initializable {
                 pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
                 rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             } else if (data instanceof RocketEvent) {
-                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Rocket Event: ",
+                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
+                        String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
                         ((RocketEvent) data).getEventType().toString());
             }
         });
@@ -219,6 +214,7 @@ public class HomeController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        WeatherData weatherToGive = null;
         try {
             // For the weather controller
             wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
@@ -226,16 +222,16 @@ public class HomeController implements Initializable {
             wc.updateWeatherInfo();
 
             // Getting the weather data to give, than to import the data constantly.
-            WeatherData weatherToGive = wc.getWeatherData();
-
-            // For the warnings controller
-            warnC = new WarningsController(weatherToGive, pnWarnings);
-            warnC.checkWindSpeed();
-            warnC.checkWeatherCondition();
+            weatherToGive = wc.getWeatherData();
         } catch (FileNotFoundException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
+
+
+        // For the warnings controller
+        warnC = new WarningsController(pnWarnings);
+        warnC.checkAllData(weatherToGive);
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();
@@ -389,7 +385,7 @@ public class HomeController implements Initializable {
                     Region chartRegion = (Region) chart;
                     if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
                         chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                                        new CornerRadii(5.0), new BorderWidths(2.0))));
+                                new CornerRadii(5.0), new BorderWidths(2.0))));
                         this.highlightedGraph = thisGraph;
                     } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
                         // Ensure the clicked type is thisGraph and check if it is already clicked.
@@ -482,9 +478,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemHeight(Region root) {
         root.heightProperty()
-                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                            updatePanelPositionsVertical(t1);
-                        });
+                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                    updatePanelPositionsVertical(t1);
+                });
 
     }
 
@@ -541,9 +537,9 @@ public class HomeController implements Initializable {
      */
     private void scaleItemWidth(Region root) {
         root.widthProperty()
-                        .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
-                            updatePanelPositions(root, t1);
-                        });
+                .addListener((ObservableValue<? extends Number> observableValue, Number number, Number t1) -> {
+                    updatePanelPositions(root, t1);
+                });
     }
 
     /**
@@ -585,14 +581,14 @@ public class HomeController implements Initializable {
 
         // Internal pnNav Buttons
         updatePanelsToWidth(pnExtras.getWidth() - (STANDARD_OFFSET * 2),
-                        this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
+                this.pnNavButtons.toArray(new Button[this.pnNavButtons.size()]));
         for (Button b : this.pnNavButtons) {
             updatePanelPositionOffset(b, null, STANDARD_OFFSET);
         }
 
         // internal left panel details text
         updatePanelsToWidth(pnDetails.getWidth(), lbRocketHead, lbRocketID, lbState, lbStateHead, lbWeather,
-                        lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
+                lbWeatherHead, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure, lbWeatherStatus);
         updatePanelPositionOffset(lbState, null, 0);
         updatePanelPositionOffset(lbStateHead, null, 0);
         updatePanelPositionOffset(lbRocketID, null, 0);
@@ -717,10 +713,10 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
-    
+
     /**
      * Records relative y coordinates.
-     * 
+     *
      * @author Ahad Rahman
      */
     static class ButtonSelected {
