@@ -24,11 +24,11 @@ public class WarningsController {
     private static final double maxWindSpeed = 15.0; //The maximum wind speed for UI to not throw warning.
     private static final Paint colourGreen = Color.web("#008000", 0.8);
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
-    private static WeatherData weatherData;
+    private WeatherData weatherData;
 
     @FXML
     private Pane pnWarnings;
-    private boolean anyWarnings;
+    // private boolean anyWarnings;
 
     private ObservableList<RocketAlert> items;
 
@@ -40,7 +40,7 @@ public class WarningsController {
      */
     public WarningsController(Pane p) {
         this.pnWarnings = p;
-        anyWarnings = false;
+        // anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
         list.setStyle("-fx-background-insets: 0 ;");
         p.heightProperty().addListener((observableValue, number, t1) -> {
@@ -55,8 +55,8 @@ public class WarningsController {
         pnWarnings.getChildren().add(list);
     }
 
-    private static void setDataForWarnings(WeatherData weatherData) {
-        WarningsController.weatherData = weatherData;
+    private void setDataForWarnings(WeatherData weatherData) {
+        this.weatherData = weatherData;
     }
 
     /**
@@ -73,7 +73,7 @@ public class WarningsController {
                     "Expected = " + maxWindSpeed,
                     "Was actually = " + winSpeedMetric + "km/h");
             items.add(ra);
-            anyWarnings = true;
+            // anyWarnings = true;
         } else {
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING,
                     "Windspeed: ", winSpeedMetric + "km/h");
@@ -81,11 +81,16 @@ public class WarningsController {
         }
     }
 
+    /**
+     * Checks the weather data against warning thresholds and displays an alert if they exceed.
+     *
+     * @param data  The weather data to check.
+     */
     public void checkAllData(WeatherData data) {
         if (data == null) {
             return;
         }
-        weatherData = data;
+        this.weatherData = data;
         checkWeatherCondition();
         checkWindSpeed();
     }
@@ -102,7 +107,7 @@ public class WarningsController {
                     "Forecast = " + currentWeather,
                     "Not safe to launch.");
             items.add(ra);
-            anyWarnings = true;
+            // anyWarnings = true;
         } else {
             RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.ALERT, "Weather forecast:",
                     "Forecast = " + currentWeather, "Safe to launch.");
@@ -110,25 +115,25 @@ public class WarningsController {
         }
     }
 
-//    /**
-//     * This method checks for any warnings to point out in the weather data.
-//     * e.g If wind speed is too high, or if forecast is raining.
-//     *
-//     * @return True if there were any warnings.
-//     */
-//    public boolean checkForAnyWarnings() {
-//        //ensures that the warnings start off as false before running this method
-//        anyWarnings = false;
-//        checkWindSpeed();
-//        checkWeatherCondition();
-//
-//        //if there are any warnings after running the check methods, then this returns true
-//        //if there were not it returns false.
-//        return anyWarnings;
-//    }
+    // /**
+    //  * This method checks for any warnings to point out in the weather data.
+    //  * e.g If wind speed is too high, or if forecast is raining.
+    //  *
+    //  * @return True if there were any warnings.
+    //  */
+    // public boolean checkForAnyWarnings() {
+    //     //ensures that the warnings start off as false before running this method
+    //     anyWarnings = false;
+    //     checkWindSpeed();
+    //     checkWeatherCondition();
+    //
+    //     //if there are any warnings after running the check methods, then this returns true
+    //     //if there were not it returns false.
+    //     return anyWarnings;
+    // }
 
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
-        Platform.runLater(() -> items.add(new RocketAlert(alert, title, description)));
+        Platform.runLater(() -> items.add(0, new RocketAlert(alert, title, description)));
     }
 }
 
