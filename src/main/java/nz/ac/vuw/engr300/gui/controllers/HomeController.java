@@ -2,6 +2,7 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -61,7 +62,7 @@ public class HomeController implements Initializable {
     public RocketDataAngle windCompass = new RocketDataAngle(true);
 
     @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 500, 250);
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 250, 250);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
@@ -149,7 +150,7 @@ public class HomeController implements Initializable {
     /**
      * Create a new HomeController subscribing the graphs to the data sources.
      */
-    public HomeController() {
+    public HomeController() throws FileNotFoundException {
         simulationImporter.subscribeObserver((data) -> {
             if (data instanceof RocketStatus) {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
