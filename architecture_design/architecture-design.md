@@ -147,15 +147,33 @@ To ensure we are developing quality code, all tickets/issues go through a Merge 
 This template gives the reviewers of the merge request sufficient information to ensure the code quality of the assignee is to a high standard.
 Merge requests must be approved by at least 2 other members before it can be merged into our master branch.
 
+We have created a coding standard which matches our needs using a custom Checkstyle definition. This is based on google code style with some of our own preferences.
+Our CI pipeline enforces all code matches this standard so we can ensure that code is consistent across all files within our repo. Our code is expected to have Javadocs
+created and to have correct spelling within documentation. For this our CI pipeline performs checks to verify all documentation is in order to keep up to date.
+
 #### 4.2.4 Test Planning
-All merge requests run CI / CD pipelines, which will ensure there are no build failures, all our unit tests pass, and build the JAR package for release for customers.
+All merge requests run CI / CD pipelines, which will ensure there are no build failures, all our tests pass, and build the JAR package for release for customers.
 We are also writing unit tests with high coverage for each feature we add, and running them on multiple operating systems to reduce the uncertainty of our code.
+
+We have expanded our test suites to include unit tests to focus on our components within the system and integration tests to perform actions on our GUI and ensure the system
+is correctly integrating with the GUI, providing a seamless experience for the customer.
 
 #### 4.2.5 Work logs / Tracker System
 We are using GitLab as our project management tool. We create boards for each sprint, filled with many issues where each developer is assigned 2-3 tickets per sprint.
 We estimate the time for each ticket and log our hours to be able to determine our time efficiency each sprint, and make consequential changes for the next sprint. 
 The burn-down chart assists us with this.
 We also use GitLab's Epics and assign tickets to certain Epics to be able to see how much progress we're making towards that.
+
+#### 4.2.6 Package Design
+![Package Diagram](assets/package_diagram.png)
+
+This package diagram outlines the structure we expect to follow for our development. This is refined over time through our iterations of sprints to ensure we have an understandable layout as we work.
+The focus on our package design is separation of services to try and decouple any logic from our GUI. This separation allows our code to be unit tested easier without relying on implemetation within
+the GUI.
+
+The packages focus on reusability within one another with our three main application components being able to be swapped out (gui, communications, weather). These are the three main components of the
+system which are supported by the other packages which provide shared code between all implementations. This decoupling ensures we do not reuse code we have already created and can swap out components
+as needed as we progress further in the application as requirements change.
 
 ### 4.3 Process
 Please view the UML State Diagram 'Architectural Process 4-3.png' in assets folder
@@ -308,7 +326,6 @@ One page glossary as required
 
 **Jake Mai:**
 - Section 1. Introduction
-- Section 4.5 Scenarios
 
 **Ahad Rahman:**
 - Section 4.2 Development
@@ -322,6 +339,8 @@ One page glossary as required
 
 **Nathan Duckett:**
 - Section 4.5 Scenarios
+- Section 4.2.3/4.2.4 Development - Expansion on CI functionality
+- Section 4.2.6 Package Diagram
 
 **Nalin Aswani:**
 - Section 4.1 Logical
