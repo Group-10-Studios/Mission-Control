@@ -22,7 +22,7 @@ public class HomeView {
      * 
      * @param stage Root application stage to have panels attached to.
      */
-    public HomeView(Stage stage) throws Exception {
+    public HomeView(Stage stage) {
         Parent root = null;
         URL layoutFile = getClass().getClassLoader().getResource("layouts/Home.fxml");
         if (layoutFile == null) {

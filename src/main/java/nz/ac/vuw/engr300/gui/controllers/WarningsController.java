@@ -33,10 +33,9 @@ public class WarningsController {
     private ObservableList<RocketAlert> items;
 
     /**
-     * //     * @param w1 The first warnings label.
-     * //     * @param w2 The second warnings label.
-     *
-     * @throws FileNotFoundException in case there is an error reading the weather importer.
+     * Warnings controller will create a list of Rocket Alerts.
+     * E.g for weather or for simulation runs.
+     * @param p the pane we want to append warnings to.
      */
     public WarningsController(Pane p) {
         this.pnWarnings = p;

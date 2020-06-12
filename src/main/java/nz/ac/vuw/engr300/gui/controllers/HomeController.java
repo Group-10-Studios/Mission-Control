@@ -54,16 +54,19 @@ import java.util.stream.Stream;
  * @author Jake Mai
  * @author Nathan Duckett
  * @author Ahad Rahman
+ * @author Tim Salisbury
  */
 public class HomeController implements Initializable {
     /**
      * Represents the number of ROWS of graphs within pnContent.
      */
     public static final double ROWS = 4;
+
     /**
      * Represents the number of COLS of graphs within pnContent.
      */
     public static final double COLS = 4;
+
     private static final double STANDARD_OFFSET = 10.0;
     private static final double HALF_OFFSET = STANDARD_OFFSET / 2;
     private static final Logger LOGGER = Logger.getLogger(HomeController.class);
@@ -158,6 +161,7 @@ public class HomeController implements Initializable {
     private Label lbWarning1;
     @FXML
     private Label lbWarning2;
+
     private WarningsController warnC;
     private WeatherController wc;
 
@@ -406,6 +410,10 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Reorders the graphs on the center panel.
+     * @param labels The labels we are comparing the graphs to.
+     */
     private void reorderGraphs(List<String> labels) {
         for (int i = 0; i < labels.size(); i++) {
             for (int j = 0; j < graphs.size(); j++) {
@@ -420,7 +428,7 @@ public class HomeController implements Initializable {
     }
 
     /**
-     * TODO This method will update the weather data label with the weather received
+     * This method will update the weather data label with the weather received
      * from the API.
      */
     private void updateDataRealTime() {
