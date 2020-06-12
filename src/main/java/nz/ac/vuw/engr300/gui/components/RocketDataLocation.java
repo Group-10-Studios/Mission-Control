@@ -32,19 +32,14 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     public double graphicsHeight;
     private String api_key;
 
-    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) {
+    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) throws FileNotFoundException {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        try {
-            this.api_key = KeyImporter.getKey("maps");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.api_key = KeyImporter.getKey("maps");
         MapImageImporter.importImage(api_key, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
-        canvas = new Canvas(getWidth() * 2, getHeight());
+        canvas = new Canvas(getWidth(), getHeight());
         this.getChildren().add(canvas);
-
         widthProperty().addListener(e -> canvas.setWidth(getWidth() * 2));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));
     }
