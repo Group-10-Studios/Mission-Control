@@ -140,7 +140,7 @@ pages:
   tags:
     - shell
   dependencies:
-    - unittest
+    - full_tests
   script:
     # First transfer generated testcoverage
     - mkdir public
