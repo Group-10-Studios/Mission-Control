@@ -290,14 +290,18 @@ system seeing as this is an ongoing project, and there may be changes to parts o
 
 #### 5.2.1 Budget
 
-Present a budget for the project (as a table), showing the amount of expenditure the project requires and the date(s) on which it will be incurred. Substantiate each budget item by reference to fulfilment of project goals (one paragraph per item).
-
-(1 page).
+We do not expect any expenditure for our project.
 
 #### 5.2.2 Procurement
 
-Present a table of goods or services that will be required to deliver project goals and specify how they are to be procured (e.g. from the School or from an external organisation). These may be software applications, libraries, training or other infrastructure, including open source software. Justify and substantiate procurement with reference to fulfilment of project goals, one paragraph per item.
-(1 page).
+| Product/Service | Source | Why we need this |
+| :-------------: | :----: | :--------------- |
+| LoRaWAN base station | Teams 1-6 (Hardware teams) | The goal of the Mission Control software is to communicate with the rocket and provide visualisation of what is going on. The choice of connection between the rocket and the mission control software is using LoRaWAN. The hardware teams are expected to create a basestation which will contain a LoRaWAN radio which our software will be able to interface with via USB serial. This is our main form of communication to the rocket and is such a necessary part for a successful launch. We expect this to be made available on the day of launch during collaboration with the other teams. |
+| SimulationListener | Teams 12-18 (Simulation teams) | A core functionality of the mission control software is to provide a go/no go functionality based on whether we are safe to fly. The simulation teams are expected to provide a Monte Carlo simulation which will allow multiple simulations to be run to check the landing zones and test if we are safe to launch. This is important information in our software's decision on whether it is safe to allow the rocket to fly. We rely on having a SimulationListener or a connection between the two different applications to communicate the results and safely determine if we can fly the rocket. |
+| Log4j | External Library (Maven) | Log4j is expected to be used to provide our logging services to output debug logs from our software and the rocket combined. This will allow us to monitor and track what is going on throughout the entire process so that we can record and monitor results at a later time. |
+| JavaFX | External Library (Maven) | JavaFX is our Graphics framework which will provide us with a GUI for the customer to interact with our software. This is an open source project which provides a Java based UI implementation so that we can visualize the data. |
+| Medusa | External Library (Maven) | Medusa is an open source framework which helps to provide visualizations within JavaFX. These are necessary to provide dials to show angles, compasses and our battery charges. This helps to provide a cleaner graph interface which we can use within the GUI. |
+| TestFX | External Library (Maven) | TestFX is an automated testing library which helps to speed up the process of testing JavaFX applications. This library is necessary to ensure that we can automate our testing of the GUI so that as we make changes we can ensure that all of the core functionality remains. |
 
 ### 5.3 Risks
 
@@ -341,6 +345,7 @@ One page glossary as required
 - Section 4.5 Scenarios
 - Section 4.2.3/4.2.4 Development - Expansion on CI functionality
 - Section 4.2.6 Package Diagram
+- Section 5.2 Budget and Procurement
 
 **Nalin Aswani:**
 - Section 4.1 Logical
