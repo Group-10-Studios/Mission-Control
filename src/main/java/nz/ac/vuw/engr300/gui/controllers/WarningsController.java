@@ -16,7 +16,7 @@ public class WarningsController {
 
     /**
      * Represents a separate warnings controller in the GUI.
-     * This is for the panel on the right hand side of the UI
+     * This is for the pane on the right hand side of the UI
      *
      * @author: Nalin Aswani
      */
@@ -60,7 +60,7 @@ public class WarningsController {
 
     /**
      * Checks if the given wind speed is below a certain threshold.
-     * If it is not, then throw a warning in the warnings panel.
+     * If it is not, then throw a warning in the warnings pane.
      */
     private void checkWindSpeed() {
         // windspeed's unit extracted from weather data is meter per second
@@ -96,7 +96,7 @@ public class WarningsController {
 
     /**
      * Checks if the given weather condition is idea (e.g not raining)
-     * If it is not, then throw a warning in the warnings panel.
+     * If it is not, then throw a warning in the warnings pane.
      */
     private void checkWeatherCondition() {
         String currentWeather = weatherData.getCondition().getWeatherDescription();
@@ -131,6 +131,12 @@ public class WarningsController {
     //     return anyWarnings;
     // }
 
+    /**
+     * Creates a new rocket alert which is appended to the warnings pane.
+     * @param alert The alert level we want the alert as (ERROR, WARNING, OR ALERT)
+     * @param title The title we want the rocket alert to be.
+     * @param description The description of the rocket alert.
+     */
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
         Platform.runLater(() -> items.add(0, new RocketAlert(alert, title, description)));
     }
