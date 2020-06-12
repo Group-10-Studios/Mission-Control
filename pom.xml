@@ -95,6 +95,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.1</version>
+				<configuration>
+					<excludes>
+						<!-- Provides an exclude pattern setting the variable -DexcludePackage -->
+						<!-- This means we can specify -DexcludePackage=nz.ac.vuw.engr300.gui.** to exclude GUI tests during unit tests -->
+						<exclude>${excludePackage}</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
