@@ -68,7 +68,7 @@ public class WarningsController {
         // windpseed * 3.6
         Double winSpeedMetric = Math.round((weatherData.getWindSpeed() * 3.6) * 100.0) / 100.0;
         if (winSpeedMetric > maxWindSpeed) {
-            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WINDSPEED WARNING:",
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.ERROR, "WINDSPEED WARNING:",
                     "Expected = " + maxWindSpeed,
                     "Was actually = " + winSpeedMetric + "km/h");
             items.add(ra);
@@ -102,7 +102,7 @@ public class WarningsController {
         String currentWeather = weatherData.getCondition().getWeatherDescription();
 
         if (currentWeather.contains("rain")) {
-            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.WARNING, "WEATHER WARNING:",
+            RocketAlert ra = new RocketAlert(RocketAlert.AlertLevel.ERROR, "WEATHER WARNING:",
                     "Forecast = " + currentWeather,
                     "Not safe to launch.");
             items.add(ra);
