@@ -344,12 +344,12 @@ user -> ve
 left to right direction
 skinparam packageStyle rectangle
 actor user
-actor rocket
+actor OpenWeatherAPI
 rectangle mission-control {
    user -> (Warnings pane) : views
-   rocket -> (Real time wind speed info)
-   (Real time wind speed info) .> (Expected windspeed) : checks against
-   (Expected windspeed) .> (Warnings pane) : Display warning if greater than expected
+   OpenWeatherAPI -> (Real time wind speed info)
+   (Real time wind speed info) .> (Safe windspeed limit) : checks against
+   (Safe windspeed limit) .> (Warnings pane) : Display warning if greater than safe limit
 }
 @enduml
 ```
