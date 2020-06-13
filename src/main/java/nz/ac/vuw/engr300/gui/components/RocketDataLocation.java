@@ -40,7 +40,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         canvas = new Canvas(getWidth(), getHeight());
         this.getChildren().add(canvas);
-        widthProperty().addListener(e -> canvas.setWidth(getWidth() * 2));
+        widthProperty().addListener(e -> canvas.setWidth(getWidth()));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));
     }
 
