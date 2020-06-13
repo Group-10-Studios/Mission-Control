@@ -17,6 +17,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -190,25 +191,26 @@ public class HomeController implements Initializable {
             }
         });
         new Thread(() -> {
-            double bLevel = 100.0;
-            while (bLevel >= 0) {
+            double b1Level = 100.0;
+            double b2Level = 100.0;
+            secondaryBattery.setBatteryLevel(b2Level);
+            while (b1Level >= 0) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
-                primaryBattery.setBatteryLevel(bLevel);
-                bLevel -= 1.0;
+                primaryBattery.setBatteryLevel(b1Level);
+                b1Level -= 1.0;
             }
-            bLevel = 100.0;
-            while (bLevel >= 0) {
+            while (b2Level >= 0) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
-                secondaryBattery.setBatteryLevel(bLevel);
-                bLevel -= 1.0;
+                secondaryBattery.setBatteryLevel(b2Level);
+                b2Level -= 1.0;
             }
         }).start();
 
@@ -238,11 +240,7 @@ public class HomeController implements Initializable {
     }
 
     private void addBatteryLevel() {
-        primaryBattery.setValue(72);
-        secondaryBattery.setValue(27);
-
         apWarnings.getChildren().add(gpWarnings);
-
         RowConstraints batteryRow = new RowConstraints(50);
 //        batteryRow.setPercentHeight(20);
         RowConstraints warningsRow = new RowConstraints();
@@ -264,10 +262,9 @@ public class HomeController implements Initializable {
 
         GridPane.setRowIndex(pnWarnings, 1);
         GridPane.setColumnIndex(pnWarnings, 0);
+
         GridPane.setColumnSpan(pnWarnings,2);
         gpWarnings.getChildren().add(pnWarnings);
-
-
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);

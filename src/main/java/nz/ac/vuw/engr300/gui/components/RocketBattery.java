@@ -1,11 +1,14 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import eu.hansolo.medusa.Fonts;
 import eu.hansolo.medusa.Gauge;
+import eu.hansolo.medusa.LcdFont;
 import eu.hansolo.medusa.Section;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
 public class RocketBattery extends Gauge implements RocketGraph {
@@ -18,8 +21,9 @@ public class RocketBattery extends Gauge implements RocketGraph {
         this.setGraphType(graphType);
         this.setId(graphType.getGraphID());
         this.setSkinType(SkinType.BATTERY);
-        this.sectionsVisibleProperty();
         this.setAnimated(true);
+        this.setCustomFontEnabled(true);
+        this.setCustomFont(Fonts.latoRegular(50.0));
 
 //        this.setSections(
 //                new Section(0, 20, Color.rgb(200, 0, 0, 0.8)),
