@@ -37,6 +37,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
@@ -66,6 +67,10 @@ public class HomeController implements Initializable {
     private static final double BUTTON_HEIGHT = 30;
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+
+    @FXML
+    public RocketBattery battery = new RocketBattery();
+
     @FXML
     public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
     @FXML
@@ -254,6 +259,7 @@ public class HomeController implements Initializable {
         this.graphs.add(rollRateCompass);
 
         this.graphs.add(windCompass);
+        this.graphs.add(battery);
         // Initialize the graph table.
         buildTable();
     }
