@@ -69,9 +69,6 @@ public class HomeController implements Initializable {
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
     @FXML
-    public RocketBattery battery = new RocketBattery();
-
-    @FXML
     public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
     @FXML
     public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
@@ -79,6 +76,8 @@ public class HomeController implements Initializable {
     public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
+    @FXML
+    public RocketBattery battery = new RocketBattery(GraphType.BATTERY);
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
                     GraphType.ALTITUDE);

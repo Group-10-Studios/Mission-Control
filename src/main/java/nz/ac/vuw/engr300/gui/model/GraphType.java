@@ -20,7 +20,8 @@ public enum GraphType {
     ROLL_RATE("Roll Rate"),
     PITCH_RATE("Pitch Rate"),
     YAW_RATE("Yaw Rate"),
-    WINDDIRECTION("Wind Direction");
+    WINDDIRECTION("Wind Direction"),
+    BATTERY("Battery");
 
 
     private String label;
