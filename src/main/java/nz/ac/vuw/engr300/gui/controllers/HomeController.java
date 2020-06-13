@@ -21,16 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -77,7 +68,9 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketBattery battery = new RocketBattery(GraphType.BATTERY);
+    public RocketBattery primaryBattery = new RocketBattery(GraphType.BATTERY);
+    @FXML
+    public RocketBattery ejectionChargeBattery = new RocketBattery(GraphType.BATTERY);
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
                     GraphType.ALTITUDE);
@@ -106,6 +99,10 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
                     GraphType.Z_ACCELERATION);
+    @FXML
+    public GridPane gpWarnings = new GridPane();
+
+
     @FXML
     Label weatherLabel;
     @FXML
@@ -152,9 +149,9 @@ public class HomeController implements Initializable {
     @FXML
     Region pnNav;
     @FXML
-    Region apWarnings;
+    AnchorPane apWarnings;
     @FXML
-    Region pnWarnings;
+    Pane pnWarnings;
 
     /**
      * Note must be Region to be a parent of all graph components.
@@ -214,6 +211,43 @@ public class HomeController implements Initializable {
         bindGraphsToType();
         listGraphs();
         refreshOnStart();
+        addBatteryLevel();
+    }
+
+    private void addBatteryLevel() {
+        primaryBattery.setValue(72);
+        ejectionChargeBattery.setValue(27);
+
+        apWarnings.getChildren().add(gpWarnings);
+
+        RowConstraints batteryRow = new RowConstraints(50);
+//        batteryRow.setPercentHeight(20);
+        RowConstraints warningsRow = new RowConstraints();
+        warningsRow.setVgrow(Priority.ALWAYS);
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(50);
+        gpWarnings.getRowConstraints().add(batteryRow);
+        gpWarnings.getRowConstraints().add(warningsRow);
+        gpWarnings.getColumnConstraints().add(column);
+        gpWarnings.getColumnConstraints().add(column);
+
+        GridPane.setRowIndex(primaryBattery, 0);
+        GridPane.setColumnIndex(primaryBattery, 0);
+        gpWarnings.getChildren().add(primaryBattery);
+
+        GridPane.setRowIndex(ejectionChargeBattery, 0);
+        GridPane.setColumnIndex(ejectionChargeBattery, 1);
+        gpWarnings.getChildren().add(ejectionChargeBattery);
+
+        GridPane.setRowIndex(pnWarnings, 1);
+        GridPane.setColumnIndex(pnWarnings, 0);
+        GridPane.setColumnSpan(pnWarnings,2);
+        gpWarnings.getChildren().add(pnWarnings);
+
+
+
+        apWarnings.getChildren().clear(); // cleaning the warnings ap
+        apWarnings.getChildren().add(gpWarnings);
     }
 
     /**
@@ -258,7 +292,6 @@ public class HomeController implements Initializable {
         this.graphs.add(rollRateCompass);
 
         this.graphs.add(windCompass);
-        this.graphs.add(battery);
         // Initialize the graph table.
         buildTable();
     }
