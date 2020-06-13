@@ -77,7 +77,9 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketBattery battery = new RocketBattery(GraphType.BATTERY);
+    public RocketBattery primaryBattery = new RocketBattery(GraphType.BATTERY);
+    @FXML
+    public RocketBattery secondaryBattery = new RocketBattery(GraphType.BATTERY);
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
                     GraphType.ALTITUDE);
@@ -192,6 +194,29 @@ public class HomeController implements Initializable {
                 rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
             }
         });
+        new Thread(() -> {
+            double bLevel = 100.0;
+            while (bLevel >= 0) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Error while updating primaryBattery percentage", e);
+                }
+                primaryBattery.setBatteryLevel(bLevel);
+                bLevel -= 1.0;
+            }
+            bLevel = 100.0;
+            while (bLevel >= 0) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Error while updating primaryBattery percentage", e);
+                }
+                secondaryBattery.setBatteryLevel(bLevel);
+                bLevel -= 1.0;
+            }
+        }).start();
+
     }
 
     /**
@@ -258,7 +283,8 @@ public class HomeController implements Initializable {
         this.graphs.add(rollRateCompass);
 
         this.graphs.add(windCompass);
-        this.graphs.add(battery);
+        this.graphs.add(primaryBattery);
+        this.graphs.add(secondaryBattery);
         // Initialize the graph table.
         buildTable();
     }
