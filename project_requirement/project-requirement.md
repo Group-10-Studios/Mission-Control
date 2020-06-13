@@ -338,6 +338,22 @@ user -> ve
 @enduml
 ```
 
+### Display Wind Speed Warning
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+actor OpenWeatherAPI
+rectangle mission-control {
+   user -> (Warnings pane) : views
+   OpenWeatherAPI -> (Real time wind speed info)
+   (Real time wind speed info) .> (Safe windspeed limit) : checks against
+   (Safe windspeed limit) .> (Warnings pane) : Display warning if greater than safe limit
+}
+@enduml
+```
+
 
 ### 3.3 Usability Requirements
 
