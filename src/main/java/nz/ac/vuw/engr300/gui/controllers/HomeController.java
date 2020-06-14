@@ -71,9 +71,6 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400);
 
-    @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400);
-
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
     public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);

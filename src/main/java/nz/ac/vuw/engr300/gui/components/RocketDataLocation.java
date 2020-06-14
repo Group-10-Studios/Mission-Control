@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
@@ -38,11 +39,14 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param imageHeight Image height.
      * @throws FileNotFoundException File not found thrown when map image is missing.
      */
-    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight)
-                    throws FileNotFoundException {
+    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        this.apiKey = KeyImporter.getKey("maps");
+        try {
+            this.apiKey = KeyImporter.getKey("maps");
+        } catch (KeyNotFoundException e) {
+            throw new Error("Maps key missing", e);
+        }
         MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         canvas = new Canvas(getWidth(), getHeight());
