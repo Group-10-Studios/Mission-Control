@@ -136,8 +136,11 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
         double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
         g.setFill(Color.RED);
-        g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal),
-        graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical),
-                MARKER_SIZE, MARKER_SIZE); // Center
+        double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
+        double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
+        int markerOffset = 40;
+
+        g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
+        g.strokeOval(x - markerOffset/2, y - markerOffset/2, MARKER_SIZE + markerOffset, MARKER_SIZE + markerOffset); // Center
     }
 }
