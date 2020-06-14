@@ -32,8 +32,7 @@ public class RocketStatus implements RocketData {
     private double yawRate;
 
     /**
-     * Create a new RocketStatus with the following information received from
-     * incoming data.
+     * Create a new RocketStatus with the following information received from incoming data.
      *
      * @param time              Time of this message.
      * @param altitude          Current Altitude of the rocket
@@ -42,6 +41,13 @@ public class RocketStatus implements RocketData {
      * @param latitude          Current latitude of the rocket
      * @param longitude         Current longitude of the rocket
      * @param angleOfAttack     Current angle the rocket is traveling
+     * @param velocityY         Y Velocity of the rocket
+     * @param accelerationY     Y Acceleration of the rocket
+     * @param accelerationZ     Z Acceleration of the rocket
+     * @param velocityZ         Z Velocity of the rocket
+     * @param rollRate          Roll Rate of the rocket
+     * @param pitchRate         Pitch Rate of the rocket
+     * @param yawRate           Yaw Rate of the rocket
      */
     public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude,
                     double longitude, double angleOfAttack, double velocityY, double accelerationY,
