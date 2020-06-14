@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import java.io.FileNotFoundException;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -9,12 +10,8 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.concurrent.CancellationException;
-
 /**
- * A component for the main ui that shows the current location of the rocket
+ * A component for the main ui that shows the current location of the rocket.
  *
  * @author Ahad Rahman
  */
@@ -30,13 +27,23 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     private double hypotenuse;
     public double graphicsWidth;
     public double graphicsHeight;
-    private String api_key;
+    private String apiKey;
 
-    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) throws FileNotFoundException {
+    /**
+     * Create a new RocketDataLocation panel which shows the rocket position on a map in the GUI.
+     * 
+     * @param centerLatitude Center latitude position.
+     * @param centerLongitude Center longitude position.
+     * @param imageWidth Image width.
+     * @param imageHeight Image height.
+     * @throws FileNotFoundException File not found thrown when map image is missing.
+     */
+    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight)
+                    throws FileNotFoundException {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        this.api_key = KeyImporter.getKey("maps");
-        MapImageImporter.importImage(api_key, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
+        this.apiKey = KeyImporter.getKey("maps");
+        MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         canvas = new Canvas(getWidth(), getHeight());
         this.getChildren().add(canvas);
@@ -64,8 +71,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         double theta2 = lat2 * Math.PI / 180.0;
         double deltaTheta = (lat2 - lat1) * Math.PI / 180.0;
         double deltaLambda = (long2 - long1) * Math.PI / 180.0;
-        double a = Math.sin(deltaTheta / 2.0) * Math.sin(deltaTheta / 2.0)
-                + Math.cos(theta1) * Math.cos(theta2) * Math.sin(deltaLambda / 2.0) * Math.sin(deltaLambda / 2.0);
+        double a = Math.sin(deltaTheta / 2.0) * Math.sin(deltaTheta / 2.0) + Math.cos(theta1) * Math.cos(theta2)
+                        * Math.sin(deltaLambda / 2.0) * Math.sin(deltaLambda / 2.0);
         double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         return r * c;
     }
@@ -125,19 +132,25 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     protected void layoutChildren() {
         super.layoutChildren();
         GraphicsContext g = canvas.getGraphicsContext2D();
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Image img = new Image("file:" + filename);
-        this.graphicsWidth = img.getWidth();
-        this.graphicsHeight = img.getHeight();
-        g.drawImage(img, 0, 0);
+        this.graphicsWidth = canvas.getWidth() * 0.98;
+        this.graphicsHeight = canvas.getHeight() * 0.98;
+        g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth, this.graphicsHeight);
 
         g.setFill(Color.GREEN);
         g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
-                MARKER_SIZE); // Center
+                        MARKER_SIZE); // Center
         double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
         double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-        g.setFill(Color.RED);
-        g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal),
-                graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical),
-                MARKER_SIZE, MARKER_SIZE); // Center
+        g.setFill(Color.valueOf("#4267B2"));
+        double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
+        double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
+        double markerOffset = 40;
+
+        g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
+        g.setStroke(Color.valueOf("#4267B2"));
+        g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
+                        MARKER_SIZE + markerOffset); // Center
     }
 }
