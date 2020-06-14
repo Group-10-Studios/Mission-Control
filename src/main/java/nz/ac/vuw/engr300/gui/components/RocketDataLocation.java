@@ -126,9 +126,9 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         super.layoutChildren();
         GraphicsContext g = canvas.getGraphicsContext2D();
         Image img = new Image("file:" + filename);
-        this.graphicsWidth = img.getWidth();
-        this.graphicsHeight = img.getHeight();
-        g.drawImage(img, 0, 0);
+        this.graphicsWidth = canvas.getWidth();
+        this.graphicsHeight = canvas.getHeight();
+        g.drawImage(img, 0, 0, this.graphicsWidth, this.graphicsHeight);
 
         g.setFill(Color.GREEN);
         g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
@@ -137,7 +137,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
         g.setFill(Color.RED);
         g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal),
-                graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical),
+        graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical),
                 MARKER_SIZE, MARKER_SIZE); // Center
     }
 }
