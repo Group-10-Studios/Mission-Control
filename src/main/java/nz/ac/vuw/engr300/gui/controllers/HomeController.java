@@ -1,8 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +169,7 @@ public class HomeController implements Initializable {
     /**
      * Create a new HomeController subscribing the graphs to the data sources.
      */
-    public HomeController() throws FileNotFoundException {
+    public HomeController() {
         simulationImporter.subscribeObserver((data) -> {
             if (data instanceof RocketStatus) {
                 lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());

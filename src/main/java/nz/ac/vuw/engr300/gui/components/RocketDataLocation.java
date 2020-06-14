@@ -1,6 +1,5 @@
 package nz.ac.vuw.engr300.gui.components;
 
-import java.io.FileNotFoundException;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -37,7 +36,6 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param centerLongitude Center longitude position.
      * @param imageWidth Image width.
      * @param imageHeight Image height.
-     * @throws FileNotFoundException File not found thrown when map image is missing.
      */
     public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) {
         this.centerLatitude = centerLatitude;
@@ -67,7 +65,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param long1 Longitude from
      * @param lat2  Latitude to
      * @param long2 Longitude to
-     * @return
+     * @return Double distance location between two locations.
      */
     public static double distanceBetweenTwoLocations(double lat1, double long1, double lat2, double long2) {
         double r = 6371e3;
@@ -88,7 +86,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param long1 Longitude from
      * @param lat2  Latitude to
      * @param long2 Longitude to
-     * @return
+     * @return A double angle between location one and two.
      */
     public static double angleBetweenTwoLocations(double lat1, double long1, double lat2, double long2) {
         double diffLong = (long2 - long1);

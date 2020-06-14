@@ -36,6 +36,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
      *
      * @param xlabel    The x label
      * @param ylabel    The y label
+     * @param graphType The GraphType this graph shows to represent its' ID.
      */
     public RocketDataLineChart(@NamedArg("xLabel") String xlabel,
                                @NamedArg("yLabel") String ylabel, GraphType graphType) {
