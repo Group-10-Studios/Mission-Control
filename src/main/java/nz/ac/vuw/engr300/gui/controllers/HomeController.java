@@ -39,6 +39,7 @@ import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
@@ -64,6 +65,9 @@ public class HomeController implements Initializable {
     public static final double COLS = 4;
 
     private static final double BUTTON_HEIGHT = 30;
+
+    @FXML
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 800, 600);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
@@ -254,6 +258,7 @@ public class HomeController implements Initializable {
         this.graphs.add(rollRateCompass);
 
         this.graphs.add(windCompass);
+        this.graphs.add(rocketLocation);
         // Initialize the graph table.
         buildTable();
     }

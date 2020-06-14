@@ -21,6 +21,7 @@ public enum GraphType {
     PITCH_RATE("Pitch Rate"),
     YAW_RATE("Yaw Rate"),
     WINDDIRECTION("Wind Direction");
+	ROCKET_LOCATION("Rocket Location");
 
 
     private String label;
