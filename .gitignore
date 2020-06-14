@@ -76,14 +76,11 @@ _minted*
 # Prevent uploading downloaded weather data into version control
 src/main/resources/WeatherData.json
 src/main/resources/keys.json
-<<<<<<< HEAD
 src/main/resources/output.json
 src/main/resources/weather-data/*.json
 src/test/resources/test-weather-data/*.json
 =======
-src/main/resources/weather-data/weather-output.json
-src/test/resources/test-weather-data/weather-output.json
->>>>>>> #92: Add rocket data location pane class
+>>>>>>> ea895c56c74c876e91bdb5047da541d47c25c862
 
 **/*keys.json
 
