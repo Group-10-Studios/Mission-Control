@@ -146,7 +146,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         g.setFill(Color.valueOf("#4267B2"));
         double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
         double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
-        int markerOffset = 40;
+        double markerOffset = 40;
 
         g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
         g.setStroke(Color.valueOf("#4267B2"));
