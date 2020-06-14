@@ -67,7 +67,8 @@ public class HomeController implements Initializable {
     private static final double BUTTON_HEIGHT = 30;
 
     @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400);
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400,
+                    GraphType.ROCKET_LOCATION);
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     @FXML
@@ -86,8 +87,7 @@ public class HomeController implements Initializable {
                     GraphType.TOTAL_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
-            "Acceleration ( M/S^2 )",
-                    GraphType.TOTAL_ACCELERATION);
+                    "Acceleration ( M/S^2 )", GraphType.TOTAL_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
                     GraphType.X_VELOCITY);
@@ -691,7 +691,7 @@ public class HomeController implements Initializable {
     private Region[] allGraphs() {
         return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
     }
-    
+
     /**
      * Records relative y coordinates.
      * 

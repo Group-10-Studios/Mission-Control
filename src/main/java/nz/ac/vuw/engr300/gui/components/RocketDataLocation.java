@@ -30,14 +30,17 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     private String apiKey;
 
     /**
-     * Create a new RocketDataLocation panel which shows the rocket position on a map in the GUI.
+     * Create a new RocketDataLocation panel which shows the rocket position on a
+     * map in the GUI.
      * 
-     * @param centerLatitude Center latitude position.
+     * @param centerLatitude  Center latitude position.
      * @param centerLongitude Center longitude position.
-     * @param imageWidth Image width.
-     * @param imageHeight Image height.
+     * @param imageWidth      Image width.
+     * @param imageHeight     Image height.
+     * @param g               The graph type for this graph.
      */
-    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight) {
+    public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight,
+                    GraphType g) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
         try {
@@ -51,6 +54,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         this.getChildren().add(canvas);
         widthProperty().addListener(e -> canvas.setWidth(getWidth()));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));
+
+        this.setGraphType(g);
     }
 
     public void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
