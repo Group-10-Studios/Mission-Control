@@ -13,7 +13,8 @@ public class App {
     private static final Logger LOGGER = Logger.getLogger(App.class);
 
     /**
-     * Main application to start the GUI.
+     * Run the Mission control software from here
+     * @param args - program arguments
      */
     public static void main(String[] args) {
         try {
