@@ -37,10 +37,10 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param centerLongitude Center longitude position.
      * @param imageWidth      Image width.
      * @param imageHeight     Image height.
-     * @param g               The graph type for this graph.
+     * @param graphType       The graph type for this graph.
      */
     public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight,
-                    GraphType g) {
+                    GraphType graphType) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
         try {
@@ -55,7 +55,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         widthProperty().addListener(e -> canvas.setWidth(getWidth()));
         heightProperty().addListener(e -> canvas.setHeight(getHeight()));
 
-        this.setGraphType(g);
+        this.setGraphType(graphType);
+        this.setId(graphType.getGraphID());
     }
 
     public void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
