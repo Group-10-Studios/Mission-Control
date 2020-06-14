@@ -48,7 +48,10 @@ public class RocketAlert extends VBox {
 
     }
 
-
+    /**
+     * Basic enum for representing the different levels of Alerts that can be displayed on the right
+     * hand side panel. This enum also controls the border colour of the alert.
+     */
     public enum AlertLevel {
         ERROR(Color.RED),
         WARNING(Color.ORANGE),
@@ -60,6 +63,11 @@ public class RocketAlert extends VBox {
             this.color = color;
         }
 
+        /**
+         * Gets the colour that the border of an alert of this level should be.
+         *
+         * @return      The colour of the border.
+         */
         public Color getColor() {
             return color;
         }
