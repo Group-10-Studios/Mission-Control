@@ -13,6 +13,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 /**
  * Basic component to display events/warnings/alerts on the events pane on the right side of the UI.
  *
@@ -22,6 +24,7 @@ import javafx.scene.paint.Color;
 public class RocketAlert extends VBox {
 
     private Label title = new Label();
+    private AlertLevel alertLevel;
 
     /**
      * Constructor for the Rocket Alert used to display events/warnings/alerts on the right hand side pane. Note,
@@ -45,7 +48,7 @@ public class RocketAlert extends VBox {
         this.setBorder(new Border(new BorderStroke(level.getColor(),
                 BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3.3))));
 
-
+        alertLevel = level;
     }
 
     /**
@@ -71,5 +74,9 @@ public class RocketAlert extends VBox {
         public Color getColor() {
             return color;
         }
+    }
+
+    public AlertLevel getAlertLevel(){
+        return this.alertLevel;
     }
 }

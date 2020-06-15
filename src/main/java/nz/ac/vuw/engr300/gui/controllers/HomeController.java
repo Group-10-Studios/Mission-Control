@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -49,10 +51,8 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.security.AllPermission;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -286,6 +286,13 @@ public class HomeController implements Initializable {
     }
 
     private void initialiseWarningsPane() {
+        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        goButton.setOnAction(this::onGo);
+        noGoButton.setOnAction(this::onNoGo);
         apWarnings.getChildren().add(gpWarnings);
         RowConstraints batteryRow = new RowConstraints();
         RowConstraints warningsRow = new RowConstraints();
@@ -330,6 +337,30 @@ public class HomeController implements Initializable {
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
+    }
+
+    private void onGo(ActionEvent actionEvent) {
+        if (warnC.hasErrors()) { // If errors, do not go
+            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
+            return;
+        } else if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Warnings exist");
+            alert.setContentText("Are you ok with running a simulation?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() != ButtonType.OK) {
+                return;
+            }
+        }
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
+                "Waiting for rocket to be armed", "(Pretending its armed)");
+        runSim();
+    }
+
+    private void onNoGo(ActionEvent actionEvent) {
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
     }
 
     private void addToGridPane(GridPane gridPane, Region child, int row, int col, int rowSpan, int colSpan) {
