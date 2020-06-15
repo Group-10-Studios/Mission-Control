@@ -76,9 +76,22 @@ See ISO/IEC/IEEE 42010 clause 5.3 and ISO/IEC/IEEE 12207 clause 6.4.4.3(2).
 For most systems this will be about 2 pages, including a table mapping concerns to stakeholder.
 
 ### 3.2 Architectural Viewpoints
-(1 page, 42010 5.4)
-
-Identify the architectural viewpoints you will use to present your system's architecture. Write one sentence to outline each viewpoint. Show which viewpoint frames which architectural concern.
+#### Logical
+The logical architectural view point is concerned with describing the functionalities that our software provides to the end users. To represent the
+logical view point UML class diagrams and state diagrams should be used.
+#### Development
+The development architectural view point is concerned with describing our system from a programmer's perspective, primarily showing the management side of
+the development process. To represent the development view point UML component and package diagrams should be used.  
+#### Process
+The process architectural view point is concerned with describing the dynamic aspects of our system, focusing on communication of our system and the run
+time behaviour of our system. To represent the process view point UML sequence, communication, and activity diagrams should be used.
+#### Physical
+The physical architectural view point is concerned with describing our system from a system engineers perspective, primarily focusing the topology
+of all of the software components on the physical layer and how they interact with each other. To represent the physical view point UML deployment diagrams
+should be used.
+#### Scenarios
+Then scenario architectural is represented using use cases. These use cases describe sequences of interactions between components, processes and actors of our
+system. The use cases are used to illustrate our system as a whole, furthermore validating our architectural design.  
 
 ### 4. Architectural Views
 
@@ -337,6 +350,7 @@ One page glossary as required
 **Tim Salisbury:**
 - Section 4.4 Physical
 - Section 5.1 Schedule
+- Section 3.2 Architectural Viewpoints
 
 **Josh Harwood:**
 - Section 4.3 Process
