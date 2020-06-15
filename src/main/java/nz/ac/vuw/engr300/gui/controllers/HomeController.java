@@ -285,6 +285,10 @@ public class HomeController implements Initializable {
         initialiseWarningsPane();
     }
 
+    /**
+     * Initialised the warnings pane, includes the batteries,
+     * the warnings and the go/no go buttons.
+     */
     private void initialiseWarningsPane() {
         goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -297,9 +301,9 @@ public class HomeController implements Initializable {
         RowConstraints batteryRow = new RowConstraints();
         RowConstraints warningsRow = new RowConstraints();
         RowConstraints goNoGoRow = new RowConstraints();
-        goNoGoRow.setPercentHeight(30);
+        goNoGoRow.setPercentHeight(15);
         batteryRow.setPercentHeight(10);
-        warningsRow.setPercentHeight(60);
+        warningsRow.setPercentHeight(75);
 
         Pane pnGoNoGo = new Pane();
         VBox hBgoNoGo = new VBox(15);
@@ -331,9 +335,6 @@ public class HomeController implements Initializable {
         addToGridPane(gpWarnings, secondaryBattery, 0, 1);
         addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
         addToGridPane(gpWarnings, hBgoNoGo, 2, 0, 1, 2);
-
-//        addToGridPane(gpWarnings, goButton, 2, 0);
-//        addToGridPane(gpWarnings, noGoButton, 2, 1);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);

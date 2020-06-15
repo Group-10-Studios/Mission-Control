@@ -76,6 +76,10 @@ public class RocketAlert extends VBox {
         }
     }
 
+    /**
+     * Gets the alert level of the current RocketAlert.
+     * @return the alert level of this RocketAlert.
+     */
     public AlertLevel getAlertLevel(){
         return this.alertLevel;
     }
