@@ -11,25 +11,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
-public class RocketBattery extends Gauge implements RocketGraph {
+public class RocketBattery extends Gauge {
 
-    private GraphType type;
-
-    public RocketBattery(GraphType graphType) {
+    public RocketBattery() {
         super();
-
-        this.setGraphType(graphType);
-        this.setId(graphType.getGraphID());
         this.setSkinType(SkinType.BATTERY);
         this.setAnimated(true);
         this.setCustomFontEnabled(true);
         this.setCustomFont(Fonts.latoRegular(50.0));
-
-//        this.setSections(
-//                new Section(0, 20, Color.rgb(200, 0, 0, 0.8)),
-//                new Section(20, 50, Color.rgb(200, 200, 0, 0.8)),
-//                new Section(50, 100, Color.rgb(0, 200, 0, 0.8))
-//        );
     }
 
     public void setBatteryLevel(double percentage) {
@@ -44,22 +33,8 @@ public class RocketBattery extends Gauge implements RocketGraph {
     }
 
     @Override
-    public void setGraphType(GraphType g) {
-        this.type = g;
-    }
-
-    @Override
     public String getUserAgentStylesheet() {
         return Gauge.class.getResource("gauge.css").toExternalForm();
     }
 
-    @Override
-    public GraphType getGraphType() {
-        return this.type;
-    }
-
-    @Override
-    public void clear() {
-
-    }
 }

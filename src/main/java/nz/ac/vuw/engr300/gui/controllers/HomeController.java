@@ -22,7 +22,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -69,9 +82,9 @@ public class HomeController implements Initializable {
     @FXML
     public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
     @FXML
-    public RocketBattery primaryBattery = new RocketBattery(GraphType.BATTERY);
+    public RocketBattery primaryBattery = new RocketBattery();
     @FXML
-    public RocketBattery secondaryBattery = new RocketBattery(GraphType.BATTERY);
+    public RocketBattery secondaryBattery = new RocketBattery();
     @FXML
     public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
                     GraphType.ALTITUDE);
@@ -174,11 +187,6 @@ public class HomeController implements Initializable {
                 lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
                 lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
 
-                // lineChartAccelerationX.addValue(data.getTime(), ((RocketStatus)
-                // data).getXAcceleration());
-                // lineChartVelocityX.addValue(data.getTime(), ((RocketStatus)
-                // data).getXVelocity());
-
                 lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
                 lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
 
@@ -242,7 +250,6 @@ public class HomeController implements Initializable {
     private void addBatteryLevel() {
         apWarnings.getChildren().add(gpWarnings);
         RowConstraints batteryRow = new RowConstraints(50);
-//        batteryRow.setPercentHeight(20);
         RowConstraints warningsRow = new RowConstraints();
         warningsRow.setVgrow(Priority.ALWAYS);
         ColumnConstraints column = new ColumnConstraints();
@@ -263,7 +270,7 @@ public class HomeController implements Initializable {
         GridPane.setRowIndex(pnWarnings, 1);
         GridPane.setColumnIndex(pnWarnings, 0);
 
-        GridPane.setColumnSpan(pnWarnings,2);
+        GridPane.setColumnSpan(pnWarnings, 2);
         gpWarnings.getChildren().add(pnWarnings);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
@@ -660,9 +667,9 @@ public class HomeController implements Initializable {
         // set right panel to be right of middle panel
         updatePanelPositionOffset(apWarnings, pnContent, HALF_OFFSET);
         apWarnings.setMinWidth(sidePanelWidth);
-        updatePanelsToWidth(apWarnings.getWidth() - (2 * STANDARD_OFFSET), pnWarnings);
+        updatePanelsToWidth(apWarnings.getWidth() - (2 * STANDARD_OFFSET), gpWarnings);
         // Must be relative to null to make internal to apWarnings
-        updatePanelPositionOffset(pnWarnings, null, HALF_OFFSET);
+        updatePanelPositionOffset(gpWarnings, null, HALF_OFFSET);
     }
 
     /**
