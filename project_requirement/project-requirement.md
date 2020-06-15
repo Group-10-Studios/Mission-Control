@@ -358,7 +358,7 @@ rectangle mission-control {
 ### 3.3 Usability Requirements
 
 - The Mission Control application is expected to be intuitive and and easy to pick up out of the box. If this 
-requirement is not met it could lead to misuse of the software as the user doesnt understand how the application works
+requirement is not met it could lead to misuse of the software as the user doesn't understand how the application works
 - The application should have user friendly buttons and/or components that won't case confusion to the user. If this 
 requirement is not is not met this could lead to failure of components or even potential harm to the user.
 - The application is also expected to have a quick and responsive feedback to the user, especially when a rocket is in 
