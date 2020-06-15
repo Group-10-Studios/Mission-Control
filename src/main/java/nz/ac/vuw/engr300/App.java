@@ -14,6 +14,8 @@ public class App {
 
     /**
      * Main application to start the GUI.
+     *
+     * @param args The command line arguments that this was launched with.
      */
     public static void main(String[] args) {
         try {

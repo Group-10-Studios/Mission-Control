@@ -34,8 +34,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     ="Altitude"/>
      * }
      *
-     * @param xlabel    The x label
-     * @param ylabel    The y label
+     * @param xlabel    The x label.
+     * @param ylabel    The y label.
+     * @param graphType The type of graph this is.
      */
     public RocketDataLineChart(@NamedArg("xLabel") String xlabel,
                                @NamedArg("yLabel") String ylabel, GraphType graphType) {
