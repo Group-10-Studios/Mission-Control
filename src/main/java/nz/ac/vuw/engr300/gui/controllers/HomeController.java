@@ -341,6 +341,11 @@ public class HomeController implements Initializable {
         apWarnings.getChildren().add(gpWarnings);
     }
 
+    /**
+     * Basic callback for when clicking on the Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
     private void onGo(ActionEvent actionEvent) {
         if (warnC.hasErrors()) { // If errors, do not go
             warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
@@ -362,11 +367,26 @@ public class HomeController implements Initializable {
         runSim();
     }
 
+    /**
+     * Basic callback function for when clicking the No Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
     private void onNoGo(ActionEvent actionEvent) {
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
         lbState.setText("No Go State");
     }
 
+    /**
+     * Adds a region to a GridPane at the specified row and col with specified row span and specified column span.
+     *
+     * @param gridPane  The parent GridPane
+     * @param child     The child region
+     * @param row       The row to add the region.
+     * @param col       The col to add the region.
+     * @param rowSpan   The row span to make the region.
+     * @param colSpan   The column span to make the region.
+     */
     private void addToGridPane(GridPane gridPane, Region child, int row, int col, int rowSpan, int colSpan) {
         GridPane.setRowIndex(child, row);
         GridPane.setColumnIndex(child, col);
@@ -375,6 +395,14 @@ public class HomeController implements Initializable {
         gridPane.getChildren().add(child);
     }
 
+    /**
+     * Adds a region to a GridPane at the specified row and col.
+     *
+     * @param gridPane  The parent GridPane
+     * @param child     The child region
+     * @param row       The row to add the region.
+     * @param col       The col to add the region.
+     */
     private void addToGridPane(GridPane gridPane, Region child, int row, int col) {
         addToGridPane(gridPane, child, row, col, 1, 1);
     }
@@ -612,6 +640,7 @@ public class HomeController implements Initializable {
      */
     public void shutdown() {
         simulationImporter.stop();
+        System.exit(1);
     }
 
     /**
