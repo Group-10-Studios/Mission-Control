@@ -13,6 +13,9 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 
 public class RocketBattery extends Gauge {
 
+    /**
+     * A RocketBattery object that represents one of the rocket's battery.
+     */
     public RocketBattery() {
         super();
         this.setSkinType(SkinType.BATTERY);
@@ -21,6 +24,10 @@ public class RocketBattery extends Gauge {
         this.setCustomFont(Fonts.latoRegular(50.0));
     }
 
+    /**
+     * Change the battery percentage.
+     * @param percentage - The new battery percentage
+     */
     public void setBatteryLevel(double percentage) {
         this.setValue(percentage);
         if (percentage > 0 && percentage <= 20) {
