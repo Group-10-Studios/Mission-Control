@@ -309,20 +309,20 @@ public class HomeController implements Initializable {
         batteryRow.setPercentHeight(10);
         warningsRow.setPercentHeight(75);
 
-        VBox hBgoNoGo = new VBox(15);
-        GridPane.setHgrow(hBgoNoGo, Priority.ALWAYS);
-        hBgoNoGo.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+        VBox vBoxGoNoGo = new VBox(15);
+        GridPane.setHgrow(vBoxGoNoGo, Priority.ALWAYS);
+        vBoxGoNoGo.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        hBgoNoGo.setPadding(new Insets(10));
+        vBoxGoNoGo.setPadding(new Insets(10));
 
         goButton.setMaxWidth(1000);
         noGoButton.setMaxWidth(1000);
-        hBgoNoGo.setMaxHeight(VBox.USE_PREF_SIZE);
+        vBoxGoNoGo.setMaxHeight(VBox.USE_PREF_SIZE);
 
-        hBgoNoGo.getChildren().add(goButton);
-        hBgoNoGo.getChildren().add(noGoButton);
+        vBoxGoNoGo.getChildren().add(goButton);
+        vBoxGoNoGo.getChildren().add(noGoButton);
         Pane pnGoNoGo = new Pane();
-        pnGoNoGo.getChildren().add(hBgoNoGo);
+        pnGoNoGo.getChildren().add(vBoxGoNoGo);
 
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
@@ -335,7 +335,7 @@ public class HomeController implements Initializable {
         addToGridPane(gpWarnings, primaryBattery, 0, 0);
         addToGridPane(gpWarnings, secondaryBattery, 0, 1);
         addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
-        addToGridPane(gpWarnings, hBgoNoGo, 2, 0, 1, 2);
+        addToGridPane(gpWarnings, vBoxGoNoGo, 2, 0, 1, 2);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
