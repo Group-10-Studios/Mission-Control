@@ -123,11 +123,9 @@ public class HomeController implements Initializable {
     @FXML
     public GridPane gpWarnings = new GridPane();
     @FXML
-    public Button goButton = new Button();
+    public Button goButton = new Button("Go");
     @FXML
-    public Button noGoButton = new Button();
-
-
+    public Button noGoButton = new Button("No Go");
     @FXML
     Label weatherLabel;
     @FXML
@@ -287,17 +285,23 @@ public class HomeController implements Initializable {
         apWarnings.getChildren().add(gpWarnings);
         RowConstraints batteryRow = new RowConstraints(50);
         RowConstraints warningsRow = new RowConstraints();
+        RowConstraints goNoGoRow = new RowConstraints();
+        goNoGoRow.setPercentHeight(20);
+
         warningsRow.setVgrow(Priority.ALWAYS);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
         gpWarnings.getRowConstraints().add(batteryRow);
         gpWarnings.getRowConstraints().add(warningsRow);
+        gpWarnings.getRowConstraints().add(goNoGoRow);
         gpWarnings.getColumnConstraints().add(column);
         gpWarnings.getColumnConstraints().add(column);
 
         addToGridPane(gpWarnings, primaryBattery, 0, 0);
         addToGridPane(gpWarnings, secondaryBattery, 0, 1);
         addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
+        addToGridPane(gpWarnings, goButton, 2, 0);
+        addToGridPane(gpWarnings, noGoButton, 2, 1);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
