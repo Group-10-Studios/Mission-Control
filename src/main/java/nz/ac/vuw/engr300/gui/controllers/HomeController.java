@@ -309,9 +309,7 @@ public class HomeController implements Initializable {
         batteryRow.setPercentHeight(10);
         warningsRow.setPercentHeight(75);
 
-        Pane pnGoNoGo = new Pane();
         VBox hBgoNoGo = new VBox(15);
-
         GridPane.setHgrow(hBgoNoGo, Priority.ALWAYS);
         hBgoNoGo.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -321,11 +319,10 @@ public class HomeController implements Initializable {
         noGoButton.setMaxWidth(1000);
         hBgoNoGo.setMaxHeight(VBox.USE_PREF_SIZE);
 
-
         hBgoNoGo.getChildren().add(goButton);
         hBgoNoGo.getChildren().add(noGoButton);
+        Pane pnGoNoGo = new Pane();
         pnGoNoGo.getChildren().add(hBgoNoGo);
-
 
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
