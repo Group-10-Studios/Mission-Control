@@ -9,6 +9,7 @@ import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
+import org.apache.log4j.Logger;
 
 /**
  * A component for the main ui that shows the current location of the rocket.
@@ -16,6 +17,7 @@ import nz.ac.vuw.engr300.importers.MapImageImporter;
  * @author Ahad Rahman
  */
 public class RocketDataLocation extends Pane implements RocketGraph {
+    private static final Logger LOGGER = Logger.getLogger(RocketDataLocation.class);
     private static final int MARKER_SIZE = 10;
 
     private Canvas canvas;
@@ -28,11 +30,12 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     public double graphicsWidth;
     public double graphicsHeight;
     private String apiKey;
+    private boolean apiKeyFound = true;
 
     /**
      * Create a new RocketDataLocation panel which shows the rocket position on a
      * map in the GUI.
-     * 
+     *
      * @param centerLatitude  Center latitude position.
      * @param centerLongitude Center longitude position.
      * @param imageWidth      Image width.
@@ -40,16 +43,17 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param graphType       The graph type for this graph.
      */
     public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight,
-                    GraphType graphType) {
-        this.centerLatitude = centerLatitude;
-        this.centerLongitude = centerLongitude;
+                              GraphType graphType) {
         try {
             this.apiKey = KeyImporter.getKey("maps");
+            MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
+            filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
+            this.centerLatitude = centerLatitude;
+            this.centerLongitude = centerLongitude;
         } catch (KeyNotFoundException e) {
-            throw new Error("Maps key missing", e);
+            apiKeyFound = false;
+            LOGGER.error("Maps key missing", e);
         }
-        MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
-        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         canvas = new Canvas(getWidth(), getHeight());
         this.getChildren().add(canvas);
         widthProperty().addListener(e -> canvas.setWidth(getWidth()));
@@ -59,9 +63,17 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         this.setId(graphType.getGraphID());
     }
 
+    /**
+     * Calculates the angle and euclidean distance between the launching point and current location of the rocket.
+     *
+     * @param newLatitude  - Rocket's new Latitude
+     * @param newLongitude - Rocket's new longitude
+     */
     public void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
-        angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
-        hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+        if (apiKeyFound) {
+            angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+            hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+        }
     }
 
     /**
@@ -80,7 +92,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         double deltaTheta = (lat2 - lat1) * Math.PI / 180.0;
         double deltaLambda = (long2 - long1) * Math.PI / 180.0;
         double a = Math.sin(deltaTheta / 2.0) * Math.sin(deltaTheta / 2.0) + Math.cos(theta1) * Math.cos(theta2)
-                        * Math.sin(deltaLambda / 2.0) * Math.sin(deltaLambda / 2.0);
+                * Math.sin(deltaLambda / 2.0) * Math.sin(deltaLambda / 2.0);
         double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         return r * c;
     }
@@ -141,24 +153,29 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         super.layoutChildren();
         GraphicsContext g = canvas.getGraphicsContext2D();
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Image img = new Image("file:" + filename);
         this.graphicsWidth = canvas.getWidth() * 0.98;
         this.graphicsHeight = canvas.getHeight() * 0.98;
-        g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth, this.graphicsHeight);
+        if (apiKeyFound) {
+            Image img = new Image("file:" + filename);
+            g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
+                    this.graphicsHeight);
+            g.setFill(Color.GREEN);
+            g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
+                    MARKER_SIZE); // Center
+            double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
+            double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
+            g.setFill(Color.valueOf("#4267B2"));
+            double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
+            double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
+            double markerOffset = 40;
 
-        g.setFill(Color.GREEN);
-        g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
-                        MARKER_SIZE); // Center
-        double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
-        double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-        g.setFill(Color.valueOf("#4267B2"));
-        double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
-        double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
-        double markerOffset = 40;
+            g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
+            g.setStroke(Color.valueOf("#4267B2"));
+            g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
+                    MARKER_SIZE + markerOffset); // Center
+        } else {
+            g.strokeText("Map Image API key not found", graphicsWidth / 4, graphicsHeight / 2);
+        }
 
-        g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
-        g.setStroke(Color.valueOf("#4267B2"));
-        g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
-                        MARKER_SIZE + markerOffset); // Center
     }
 }
