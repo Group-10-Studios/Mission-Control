@@ -34,20 +34,20 @@ public class RocketStatus implements RocketData {
     /**
      * Create a new RocketStatus with the following information received from incoming data.
      *
-     * @param time              Time of this message.
-     * @param altitude          Current Altitude of the rocket
-     * @param totalVelocity     Total Velocity of the rocket
-     * @param totalAcceleration Total Acceleration of the rocket
-     * @param latitude          Current latitude of the rocket
-     * @param longitude         Current longitude of the rocket
-     * @param angleOfAttack     Current angle the rocket is traveling
-     * @param velocityY         Y Velocity of the rocket
-     * @param accelerationY     Y Acceleration of the rocket
-     * @param accelerationZ     Z Acceleration of the rocket
-     * @param velocityZ         Z Velocity of the rocket
-     * @param rollRate          Roll Rate of the rocket
-     * @param pitchRate         Pitch Rate of the rocket
-     * @param yawRate           Yaw Rate of the rocket
+     * @param time                  Time of this message.
+     * @param altitude              Current Altitude of the rocket.
+     * @param totalVelocity         The total velocity of the rocket.
+     * @param totalAcceleration     The total acceleration of the rocket.
+     * @param latitude              The current latitude of the rocket.
+     * @param longitude             The current longitude of the rocket.
+     * @param angleOfAttack         The angle of attack of the rocket.
+     * @param velocityY             The current Y velocity of the rocket.
+     * @param accelerationY         The current Y acceleration of the rocket.
+     * @param accelerationZ         The current Z acceleration of the rocket.
+     * @param velocityZ             The current Z velocity of the rocket.
+     * @param rollRate              The current roll rate of the rocket.
+     * @param pitchRate             The current pitch rate of the rocket.
+     * @param yawRate               The current yaw rate of the rocket.
      */
     public RocketStatus(double time, double altitude, double totalVelocity, double totalAcceleration, double latitude,
                     double longitude, double angleOfAttack, double velocityY, double accelerationY,

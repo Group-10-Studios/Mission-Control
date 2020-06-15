@@ -13,9 +13,9 @@ public class App {
     private static final Logger LOGGER = Logger.getLogger(App.class);
 
     /**
-     * Run the Mission control software from here to start the application.
-     * 
-     * @param args - program arguments
+     * Main application to start the GUI.
+     *
+     * @param args The command line arguments that this was launched with.
      */
     public static void main(String[] args) {
         try {

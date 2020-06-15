@@ -89,9 +89,6 @@
             <children>
                 <Pane fx:id="pnWarnings" layoutX="14.0" layoutY="14.0" prefHeight="1026.0" prefWidth="257.0"
                       style="-fx-background-color: #F6F6F6;">
-                    <children>
-                        <Label layoutX="10.0" layoutY="4.0" text="Warnings"/>
-                    </children>
                 </Pane>
             </children>
             <effect>
