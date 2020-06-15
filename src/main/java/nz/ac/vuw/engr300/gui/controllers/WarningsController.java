@@ -146,8 +146,8 @@ public class WarningsController {
      * @return True if there were any warnings.
      */
     public boolean hasWarnings() {
-        for(RocketAlert r : items) {
-            if (r.getAlertLevel() == RocketAlert.AlertLevel.WARNING){
+        for (RocketAlert r : items) {
+            if (r.getAlertLevel() == RocketAlert.AlertLevel.WARNING) {
                 return true;
             }
         }
@@ -159,8 +159,8 @@ public class WarningsController {
      * @return True if there were any errors.
      */
     public boolean hasErrors() {
-        for(RocketAlert r : items) {
-            if (r.getAlertLevel() == RocketAlert.AlertLevel.ERROR){
+        for (RocketAlert r : items) {
+            if (r.getAlertLevel() == RocketAlert.AlertLevel.ERROR) {
                 return true;
             }
         }
