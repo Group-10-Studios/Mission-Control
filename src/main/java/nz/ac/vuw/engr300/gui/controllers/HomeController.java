@@ -122,6 +122,10 @@ public class HomeController implements Initializable {
             GraphType.Z_ACCELERATION);
     @FXML
     public GridPane gpWarnings = new GridPane();
+    @FXML
+    public Button goButton = new Button();
+    @FXML
+    public Button noGoButton = new Button();
 
 
     @FXML
@@ -276,10 +280,10 @@ public class HomeController implements Initializable {
         bindGraphsToType();
         listGraphs();
         refreshOnStart();
-        addBatteryLevel();
+        initialiseWarningsPane();
     }
 
-    private void addBatteryLevel() {
+    private void initialiseWarningsPane() {
         apWarnings.getChildren().add(gpWarnings);
         RowConstraints batteryRow = new RowConstraints(50);
         RowConstraints warningsRow = new RowConstraints();
@@ -291,22 +295,24 @@ public class HomeController implements Initializable {
         gpWarnings.getColumnConstraints().add(column);
         gpWarnings.getColumnConstraints().add(column);
 
-        GridPane.setRowIndex(primaryBattery, 0);
-        GridPane.setColumnIndex(primaryBattery, 0);
-        gpWarnings.getChildren().add(primaryBattery);
-
-        GridPane.setRowIndex(secondaryBattery, 0);
-        GridPane.setColumnIndex(secondaryBattery, 1);
-        gpWarnings.getChildren().add(secondaryBattery);
-
-        GridPane.setRowIndex(pnWarnings, 1);
-        GridPane.setColumnIndex(pnWarnings, 0);
-
-        GridPane.setColumnSpan(pnWarnings, 2);
-        gpWarnings.getChildren().add(pnWarnings);
+        addToGridPane(gpWarnings, primaryBattery, 0, 0);
+        addToGridPane(gpWarnings, secondaryBattery, 0, 1);
+        addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
+    }
+
+    private void addToGridPane(GridPane gridPane, Region child, int row, int col, int rowSpan, int colSpan) {
+        GridPane.setRowIndex(child, row);
+        GridPane.setColumnIndex(child, col);
+        GridPane.setRowSpan(child, rowSpan);
+        GridPane.setColumnSpan(child, colSpan);
+        gridPane.getChildren().add(child);
+    }
+
+    private void addToGridPane(GridPane gridPane, Region child, int row, int col) {
+        addToGridPane(gridPane, child, row, col, 1, 1);
     }
 
     /**
