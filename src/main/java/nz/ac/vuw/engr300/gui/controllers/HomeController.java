@@ -189,6 +189,11 @@ public class HomeController implements Initializable {
 
     private WarningsController warnC;
     private WeatherController wc;
+    
+    /**
+     * Separate thread to run the battery timers on.
+     */
+    private Thread batteryThread;
 
     /**
      * Note must be Region to be a parent of all graph components.
@@ -225,7 +230,7 @@ public class HomeController implements Initializable {
                         ((RocketEvent) data).getEventType().toString());
             }
         });
-        new Thread(() -> {
+        this.batteryThread = new Thread(() -> {
             double b1Level = 100.0;
             double b2Level = 100.0;
             secondaryBattery.setBatteryLevel(b2Level);
@@ -233,6 +238,7 @@ public class HomeController implements Initializable {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
                 primaryBattery.setBatteryLevel(b1Level);
@@ -242,12 +248,14 @@ public class HomeController implements Initializable {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
                 secondaryBattery.setBatteryLevel(b2Level);
                 b2Level -= 1.0;
             }
-        }).start();
+        });
+        this.batteryThread.start();
 
     }
 
@@ -612,6 +620,7 @@ public class HomeController implements Initializable {
      */
     public void shutdown() {
         simulationImporter.stop();
+        this.batteryThread.interrupt();
     }
 
     /**
