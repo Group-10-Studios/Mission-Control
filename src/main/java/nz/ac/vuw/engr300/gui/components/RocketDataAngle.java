@@ -32,6 +32,7 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
      *
      * @param isCompass Whether or not this compass is displaying an angle or a
      *                  direction.
+     * @param graphType The graph type of this component.
      */
     public RocketDataAngle(@NamedArg("isCompass") boolean isCompass, GraphType graphType) {
         super();
