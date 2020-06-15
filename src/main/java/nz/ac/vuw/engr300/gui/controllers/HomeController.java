@@ -6,15 +6,20 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -47,9 +52,11 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.security.AllPermission;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -127,7 +134,10 @@ public class HomeController implements Initializable {
     @FXML
     public GridPane gpWarnings = new GridPane();
 
-
+    @FXML
+    public Button goButton = new Button("  Go   ");
+    @FXML
+    public Button noGoButton = new Button("No Go");
     @FXML
     Label weatherLabel;
     @FXML
@@ -183,6 +193,11 @@ public class HomeController implements Initializable {
 
     private WarningsController warnC;
     private WeatherController wc;
+    
+    /**
+     * Separate thread to run the battery timers on.
+     */
+    private Thread batteryThread;
 
     /**
      * Note must be Region to be a parent of all graph components.
@@ -219,7 +234,7 @@ public class HomeController implements Initializable {
                         ((RocketEvent) data).getEventType().toString());
             }
         });
-        new Thread(() -> {
+        this.batteryThread = new Thread(() -> {
             double b1Level = 100.0;
             double b2Level = 100.0;
             secondaryBattery.setBatteryLevel(b2Level);
@@ -227,6 +242,7 @@ public class HomeController implements Initializable {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
                 primaryBattery.setBatteryLevel(b1Level);
@@ -236,12 +252,14 @@ public class HomeController implements Initializable {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     throw new RuntimeException("Error while updating primaryBattery percentage", e);
                 }
                 secondaryBattery.setBatteryLevel(b2Level);
                 b2Level -= 1.0;
             }
-        }).start();
+        });
+        this.batteryThread.start();
 
     }
 
@@ -280,37 +298,125 @@ public class HomeController implements Initializable {
         bindGraphsToType();
         listGraphs();
         refreshOnStart();
-        addBatteryLevel();
+        initialiseWarningsPane();
     }
 
-    private void addBatteryLevel() {
+    /**
+     * Initialised the warnings pane, includes the batteries,
+     * the warnings and the go/no go buttons.
+     */
+    private void initialiseWarningsPane() {
+        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        goButton.setOnAction(this::onGo);
+        noGoButton.setOnAction(this::onNoGo);
         apWarnings.getChildren().add(gpWarnings);
-        RowConstraints batteryRow = new RowConstraints(50);
+        RowConstraints batteryRow = new RowConstraints();
         RowConstraints warningsRow = new RowConstraints();
-        warningsRow.setVgrow(Priority.ALWAYS);
+        RowConstraints goNoGoRow = new RowConstraints();
+        goNoGoRow.setPercentHeight(15);
+        batteryRow.setPercentHeight(10);
+        warningsRow.setPercentHeight(75);
+
+        VBox goNoGoBox = new VBox(15);
+        GridPane.setHgrow(goNoGoBox, Priority.ALWAYS);
+        goNoGoBox.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        goNoGoBox.setPadding(new Insets(10));
+
+        goButton.setMaxWidth(1000);
+        noGoButton.setMaxWidth(1000);
+        goNoGoBox.setMaxHeight(VBox.USE_PREF_SIZE);
+
+        goNoGoBox.getChildren().add(goButton);
+        goNoGoBox.getChildren().add(noGoButton);
+        Pane pnGoNoGo = new Pane();
+        pnGoNoGo.getChildren().add(goNoGoBox);
+
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
         gpWarnings.getRowConstraints().add(batteryRow);
         gpWarnings.getRowConstraints().add(warningsRow);
+        gpWarnings.getRowConstraints().add(goNoGoRow);
         gpWarnings.getColumnConstraints().add(column);
         gpWarnings.getColumnConstraints().add(column);
 
-        GridPane.setRowIndex(primaryBattery, 0);
-        GridPane.setColumnIndex(primaryBattery, 0);
-        gpWarnings.getChildren().add(primaryBattery);
-
-        GridPane.setRowIndex(secondaryBattery, 0);
-        GridPane.setColumnIndex(secondaryBattery, 1);
-        gpWarnings.getChildren().add(secondaryBattery);
-
-        GridPane.setRowIndex(pnWarnings, 1);
-        GridPane.setColumnIndex(pnWarnings, 0);
-
-        GridPane.setColumnSpan(pnWarnings, 2);
-        gpWarnings.getChildren().add(pnWarnings);
+        addToGridPane(gpWarnings, primaryBattery, 0, 0);
+        addToGridPane(gpWarnings, secondaryBattery, 0, 1);
+        addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
+        addToGridPane(gpWarnings, goNoGoBox, 2, 0, 1, 2);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
+    }
+
+    /**
+     * Basic callback for when clicking on the Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
+    private void onGo(ActionEvent actionEvent) {
+        if (warnC.hasErrors()) { // If errors, do not go
+            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
+            return;
+        } else if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Warnings exist");
+            alert.setContentText("Are you ok with running a simulation?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() != ButtonType.OK) {
+                return;
+            }
+        }
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
+                "Waiting for rocket to be armed", "(Pretending its armed)");
+        lbState.setText("Go State");
+        runSim();
+    }
+
+    /**
+     * Basic callback function for when clicking the No Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
+    private void onNoGo(ActionEvent actionEvent) {
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
+        lbState.setText("No Go State");
+    }
+
+    /**
+     * Adds a region to a GridPane at the specified row and col with specified row span and specified column span.
+     *
+     * @param gridPane  The parent GridPane
+     * @param child     The child region
+     * @param row       The row to add the region.
+     * @param col       The col to add the region.
+     * @param rowSpan   The row span to make the region.
+     * @param colSpan   The column span to make the region.
+     */
+    private void addToGridPane(GridPane gridPane, Region child, int row, int col, int rowSpan, int colSpan) {
+        GridPane.setRowIndex(child, row);
+        GridPane.setColumnIndex(child, col);
+        GridPane.setRowSpan(child, rowSpan);
+        GridPane.setColumnSpan(child, colSpan);
+        gridPane.getChildren().add(child);
+    }
+
+    /**
+     * Adds a region to a GridPane at the specified row and col.
+     *
+     * @param gridPane  The parent GridPane
+     * @param child     The child region
+     * @param row       The row to add the region.
+     * @param col       The col to add the region.
+     */
+    private void addToGridPane(GridPane gridPane, Region child, int row, int col) {
+        addToGridPane(gridPane, child, row, col, 1, 1);
     }
 
     /**
@@ -548,6 +654,7 @@ public class HomeController implements Initializable {
      */
     public void shutdown() {
         simulationImporter.stop();
+        this.batteryThread.interrupt();
     }
 
     /**
@@ -570,7 +677,7 @@ public class HomeController implements Initializable {
      */
     private void updatePanelPositionsVertical(Number newHeight) {
         double height = (double) newHeight;
-        updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, apWarnings);
+        updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, gpWarnings);
 
         // pnWarnings can have 5/6 of height space
         updatePanelsToHeight((height * 5) / 6, pnWarnings);

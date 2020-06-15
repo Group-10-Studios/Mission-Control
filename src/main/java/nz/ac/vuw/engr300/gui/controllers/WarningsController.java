@@ -140,5 +140,31 @@ public class WarningsController {
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
         Platform.runLater(() -> items.add(0, new RocketAlert(alert, title, description)));
     }
+
+    /**
+     * Checks if there were any warnings across all the rocket alerts.
+     * @return True if there were any warnings.
+     */
+    public boolean hasWarnings() {
+        for (RocketAlert r : items) {
+            if (r.getAlertLevel() == RocketAlert.AlertLevel.WARNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if there were any errors across all the rocket alerts.
+     * @return True if there were any errors.
+     */
+    public boolean hasErrors() {
+        for (RocketAlert r : items) {
+            if (r.getAlertLevel() == RocketAlert.AlertLevel.ERROR) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
