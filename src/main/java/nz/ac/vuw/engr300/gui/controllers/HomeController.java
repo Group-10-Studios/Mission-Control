@@ -358,11 +358,13 @@ public class HomeController implements Initializable {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
+        lbState.setText("Go State");
         runSim();
     }
 
     private void onNoGo(ActionEvent actionEvent) {
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
+        lbState.setText("No Go State");
     }
 
     private void addToGridPane(GridPane gridPane, Region child, int row, int col, int rowSpan, int colSpan) {
