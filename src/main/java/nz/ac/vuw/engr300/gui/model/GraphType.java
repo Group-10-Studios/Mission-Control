@@ -2,26 +2,17 @@ package nz.ac.vuw.engr300.gui.model;
 
 /**
  * GraphType is an Enum to provide representation for a panel in accessible
- * terms for the side panel. Each
+ * terms for the side panel. Each panel uses the GraphType as a form of ID to
+ * represent which graph it is in operations.
  *
  * @author Nathan Duckett
  */
 public enum GraphType {
     // See https://en.wikipedia.org/wiki/Aircraft_principal_axes
-    TOTAL_VELOCITY("Total Velocity"),
-    X_VELOCITY("X Velocity"),
-    Y_VELOCITY("Y Velocity"),
-    Z_VELOCITY("Z Velocity"),
-    TOTAL_ACCELERATION("Total Acceleration"),
-    X_ACCELERATION("X Acceleration"),
-    Y_ACCELERATION("Y Acceleration"),
-    Z_ACCELERATION("Z Acceleration"),
-    ALTITUDE("Altitude"),
-    ROLL_RATE("Roll Rate"),
-    PITCH_RATE("Pitch Rate"),
-    YAW_RATE("Yaw Rate"),
-    WINDDIRECTION("Wind Direction");
-
+    TOTAL_VELOCITY("Total Velocity"), X_VELOCITY("X Velocity"), Y_VELOCITY("Y Velocity"), Z_VELOCITY("Z Velocity"),
+    TOTAL_ACCELERATION("Total Acceleration"), X_ACCELERATION("X Acceleration"), Y_ACCELERATION("Y Acceleration"),
+    Z_ACCELERATION("Z Acceleration"), ALTITUDE("Altitude"), ROLL_RATE("Roll Rate"), PITCH_RATE("Pitch Rate"),
+    YAW_RATE("Yaw Rate"), WINDDIRECTION("Wind Direction"), ROCKET_LOCATION("Rocket Location");
 
     private String label;
 
@@ -54,7 +45,7 @@ public enum GraphType {
 
         return null;
     }
-    
+
     /**
      * Get a generated GraphID based on this Graph's label.
      * 

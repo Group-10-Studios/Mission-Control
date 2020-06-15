@@ -39,6 +39,7 @@ import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
@@ -78,6 +79,10 @@ public class HomeController implements Initializable {
     private static final Logger LOGGER = Logger.getLogger(HomeController.class);
     private static final double BUTTON_HEIGHT = 30;
 
+    @FXML
+    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400,
+                    GraphType.ROCKET_LOCATION);
+
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
 
     @FXML
@@ -100,8 +105,7 @@ public class HomeController implements Initializable {
             GraphType.TOTAL_VELOCITY);
     @FXML
     public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
-            "Acceleration (m/s²)",
-            GraphType.TOTAL_ACCELERATION);
+                    "Acceleration ( M/S² )", GraphType.TOTAL_ACCELERATION);
     @FXML
     public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
             GraphType.X_VELOCITY);
@@ -333,6 +337,7 @@ public class HomeController implements Initializable {
      * later but for now can set the values.
      */
     private void bindGraphsToType() {
+        rocketLocation.updateAngleDistanceInfo(-41.227776, 174.799334);
 
         this.graphs = new ArrayList<>();
         this.graphs.add(lineChartTotalVelocity);
@@ -351,6 +356,7 @@ public class HomeController implements Initializable {
         this.graphs.add(rollRateCompass);
 
         this.graphs.add(windCompass);
+        this.graphs.add(rocketLocation);
         // Initialize the graph table.
         buildTable();
     }

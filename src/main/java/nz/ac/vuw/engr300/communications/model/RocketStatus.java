@@ -32,8 +32,7 @@ public class RocketStatus implements RocketData {
     private double yawRate;
 
     /**
-     * Create a new RocketStatus with the following information received from
-     * incoming data.
+     * Create a new RocketStatus with the following information received from incoming data.
      *
      * @param time                  Time of this message.
      * @param altitude              Current Altitude of the rocket.

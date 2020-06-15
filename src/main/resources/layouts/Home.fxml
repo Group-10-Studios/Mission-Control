@@ -13,6 +13,8 @@
 
 <?import nz.ac.vuw.engr300.gui.components.RocketDataAngle?>
 <?import eu.hansolo.medusa.Gauge?>
+<?import nz.ac.vuw.engr300.gui.components.RocketDataLocation?>
+
 <AnchorPane id="AnchorPane" fx:id="apApp" prefHeight="948.0" prefWidth="1909.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.vuw.engr300.gui.controllers.HomeController">
     <children>

@@ -79,6 +79,8 @@ src/main/resources/keys.json
 src/main/resources/output.json
 src/main/resources/weather-data/*.json
 src/test/resources/test-weather-data/*.json
+=======
+>>>>>>> ea895c56c74c876e91bdb5047da541d47c25c862
 
 **/*keys.json
 
