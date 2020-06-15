@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -293,17 +295,23 @@ public class HomeController implements Initializable {
         warningsRow.setPercentHeight(60);
 
         Pane pnGoNoGo = new Pane();
-        HBox hBgoNoGo = new HBox();
-        hBgoNoGo.setAlignment(Pos.CENTER);
-//        HBox.setHgrow(hBgoNoGo, Priority.ALWAYS);
+        VBox hBgoNoGo = new VBox(15);
+
+        GridPane.setHgrow(hBgoNoGo, Priority.ALWAYS);
+        hBgoNoGo.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        hBgoNoGo.setPadding(new Insets(10));
+
+        goButton.setMaxWidth(1000);
+        noGoButton.setMaxWidth(1000);
+        hBgoNoGo.setMaxHeight(VBox.USE_PREF_SIZE);
+
 
         hBgoNoGo.getChildren().add(goButton);
         hBgoNoGo.getChildren().add(noGoButton);
         pnGoNoGo.getChildren().add(hBgoNoGo);
-//        pnGoNoGo.getChildren().add(goButton);
-//        pnGoNoGo.getChildren().add(noGoButton);
 
-//        warningsRow.setVgrow(Priority.ALWAYS);
+
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
         gpWarnings.getRowConstraints().add(batteryRow);
@@ -315,7 +323,7 @@ public class HomeController implements Initializable {
         addToGridPane(gpWarnings, primaryBattery, 0, 0);
         addToGridPane(gpWarnings, secondaryBattery, 0, 1);
         addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
-        addToGridPane(gpWarnings, pnGoNoGo, 2, 0, 1, 2);
+        addToGridPane(gpWarnings, hBgoNoGo, 2, 0, 1, 2);
 
 //        addToGridPane(gpWarnings, goButton, 2, 0);
 //        addToGridPane(gpWarnings, noGoButton, 2, 1);
