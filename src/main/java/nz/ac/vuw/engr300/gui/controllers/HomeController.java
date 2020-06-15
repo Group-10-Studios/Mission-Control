@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -122,8 +123,9 @@ public class HomeController implements Initializable {
             GraphType.Z_ACCELERATION);
     @FXML
     public GridPane gpWarnings = new GridPane();
+
     @FXML
-    public Button goButton = new Button("Go");
+    public Button goButton = new Button("  Go   ");
     @FXML
     public Button noGoButton = new Button("No Go");
     @FXML
@@ -283,12 +285,25 @@ public class HomeController implements Initializable {
 
     private void initialiseWarningsPane() {
         apWarnings.getChildren().add(gpWarnings);
-        RowConstraints batteryRow = new RowConstraints(50);
+        RowConstraints batteryRow = new RowConstraints();
         RowConstraints warningsRow = new RowConstraints();
         RowConstraints goNoGoRow = new RowConstraints();
-        goNoGoRow.setPercentHeight(20);
+        goNoGoRow.setPercentHeight(30);
+        batteryRow.setPercentHeight(10);
+        warningsRow.setPercentHeight(60);
 
-        warningsRow.setVgrow(Priority.ALWAYS);
+        Pane pnGoNoGo = new Pane();
+        HBox hBgoNoGo = new HBox();
+        hBgoNoGo.setAlignment(Pos.CENTER);
+//        HBox.setHgrow(hBgoNoGo, Priority.ALWAYS);
+
+        hBgoNoGo.getChildren().add(goButton);
+        hBgoNoGo.getChildren().add(noGoButton);
+        pnGoNoGo.getChildren().add(hBgoNoGo);
+//        pnGoNoGo.getChildren().add(goButton);
+//        pnGoNoGo.getChildren().add(noGoButton);
+
+//        warningsRow.setVgrow(Priority.ALWAYS);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
         gpWarnings.getRowConstraints().add(batteryRow);
@@ -300,8 +315,10 @@ public class HomeController implements Initializable {
         addToGridPane(gpWarnings, primaryBattery, 0, 0);
         addToGridPane(gpWarnings, secondaryBattery, 0, 1);
         addToGridPane(gpWarnings, pnWarnings, 1, 0, 1, 2);
-        addToGridPane(gpWarnings, goButton, 2, 0);
-        addToGridPane(gpWarnings, noGoButton, 2, 1);
+        addToGridPane(gpWarnings, pnGoNoGo, 2, 0, 1, 2);
+
+//        addToGridPane(gpWarnings, goButton, 2, 0);
+//        addToGridPane(gpWarnings, noGoButton, 2, 1);
 
         apWarnings.getChildren().clear(); // cleaning the warnings ap
         apWarnings.getChildren().add(gpWarnings);
@@ -574,7 +591,7 @@ public class HomeController implements Initializable {
      */
     private void updatePanelPositionsVertical(Number newHeight) {
         double height = (double) newHeight;
-        updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, apWarnings);
+        updatePanelsToHeight(height - pnBanner.getHeight(), apNav, pnContent, gpWarnings);
 
         // pnWarnings can have 5/6 of height space
         updatePanelsToHeight((height * 5) / 6, pnWarnings);
