@@ -457,7 +457,7 @@ system seeing as this is an ongoing project, and there may be changes to parts o
 
 ### 5.2 Budget
 
-Present a budget for the project (table), and justify each budget item (one paragraph per item, one page overall).
+We do not expect any expenditure for our project.
 
 ### 5.3 Risks
 
@@ -505,6 +505,7 @@ A one page statement of contributions, including a list of each member of the gr
 - Section 1.3.1
 - Use cases in section 3.2
 - Section 3.4
+- Section 5.2 (Copied from Architecture Design Document)
 
 **Ahad Rahman:**
 - Section 1.3.4
