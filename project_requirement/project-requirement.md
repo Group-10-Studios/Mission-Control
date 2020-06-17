@@ -384,10 +384,20 @@ You should use right tools, preferably PlantUML, to draw your URL diagrams which
 
 ### 3.6 Design constraints
 
-see 9.5.15 and 9.5.16. for most systems, this will be around one page.
+System design constraints imposed on the project can be broken down into external standards, regulatory requirement and project limitations.
 
-> 9.5.15 Design constraints<br>
-> Specify constraints on the system design imposed by external standards, regulatory requirements, or project limitations.
+__Design constraints imposed by external standards:
+ - COVID-19: Due the to impact of the COVID-19 Pandemic, our group members are put under more stress, concerning about the safety and well-being of ourselves and families. This also means that we are unable to organise in-person group meetings and stand-ups.
+ - Workload from other courses: most of our team members are also taking three other third-year courses which contain very heavy workload, this will affect the amount of time we are able to spend on this project.
+
+__Design constraints imposed by regulatory requirements:
+ - Health and Safety constraints: the project must strictly abide by all Health and Safety laws.
+
+__Design constraints imposed by project limitations:
+ - Time constraint: the project follows a fixed time frame from March-2020 (start of the project) until October-2020 (product delivery), half of the project will be done in Trimester 1 and the other half on Trimester 2. We decided to have weekly sprint for our project and hold a retrospective every two weeks. This means that the amount of workload each sprint has to be carefully estimated so that it is evenly distributed among group members, not too overwhelming that we could not finish in a week time, but it also has to meet the project deadline. We would expect to have a working software prototype by the end of Trimester 1. 
+ - Costs constraint: this software project has no predicted costs. Each member has our own device to work on, no extra equipment or software license is required.
+ - Skills contraint: since our group members are all third-year students, even though some members do have industrial experience, some other members might have limited skills and experience in terms of group collaboration and good coding skills/practices.
+
 >
 > 9.5.16 Standards compliance<br>
 > Specify the requirements derived from existing standards or regulations, including:
