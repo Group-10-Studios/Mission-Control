@@ -357,10 +357,26 @@ rectangle mission-control {
 
 ### 3.3 Usability Requirements
 
-See 9.5.12. for most systems this will be around one page.
+- The Mission Control application is expected to be intuitive and easy to pick up out of the box. If this 
+requirement is not met it could lead to misuse of the software as the user doesn't understand how the application works
+- The application should provide user friendly buttons and/or components that won't cause confusion to the user. If this 
+requirement is not met this could lead to failure of components or even potential harm to the user.
+- The application is also expected to have a quick and responsive feedback to the user, especially when a rocket is in 
+flight. If this requirement is not met it could lead to a delayed response by the user which could result in harm to
+the components or bystanders. 
+- The application is expected to be stable even when given unexpected inputs, and broken data. Failure to meet this
+requirement would lead to loss of control of the rocket.
+- The application will display warnings such as low battery, high winds, unsafe landing generated from the simulation.
+Failure to prompt the user of these warnings could result in an unsafe launch of the rocket leading to loss of hardware
+or potential harm to bystanders.
+- The application will display key events from the rocket for the user. This will help the user to understand what is
+happening with the rocket when it is out of view, for example parachute deployed.
 
-> **9.5.12 Usability requirements**<br>
-> Define usability (quality in use) requirements. Usability requirements and objectives for the software system include measurable effectiveness, efficiency, and satisfaction criteria in specific contexts of use.
+During development we will coordinate with the customer to make sure that the mission control application meets these
+requirements.
+
+
+
 
 ### 3.4 Performance requirements
 
@@ -508,6 +524,7 @@ A one page statement of contributions, including a list of each member of the gr
 
 **Josh Harwood**
 - 3.1 External interfaces
+- 3.3 Usability Requirements
 - Use cases in section 3.2
 
 **Nalin Aswani**
