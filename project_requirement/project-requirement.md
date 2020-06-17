@@ -527,6 +527,7 @@ A one page statement of contributions, including a list of each member of the gr
 
 **Josh Harwood**
 - 3.1 External interfaces
+- 3.3 Usability Requirements
 - Use cases in section 3.2
 
 **Nalin Aswani**
