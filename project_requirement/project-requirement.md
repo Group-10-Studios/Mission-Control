@@ -387,7 +387,7 @@ You should use right tools, preferably PlantUML, to draw your URL diagrams which
 System design constraints imposed on the project can be broken down into external standards, regulatory requirement and project limitations.
 
 **Design constraints imposed by external standards:**
- - Java Coding Standard: the project will strictly conform to the Google coding conventions from Google Java Style that can be found [here](https://github.com/user/repo/blob/branch/other_file.md). The original authors of this style guide are Max Vetrenko, Ruslan Diachenko and Roman Ivanov, one of our group member Nathan Duckett has made some customisations to this style check. Code committed by all members will have to conform to this coding standard to ensure format consistency, else the pipeline will fail as this is integrated into our CI/CD.
+ - Java Coding Standard: the project will strictly conform to the Google coding conventions from Google Java Style that can be found [here](https://google.github.io/styleguide/javaguide.html). The original authors of this style guide are Max Vetrenko, Ruslan Diachenko and Roman Ivanov, one of our group member Nathan Duckett has made some customisations to this style check. Code committed by all members will have to conform to this coding standard to ensure format consistency, else the pipeline will fail as this is integrated into our CI/CD.
  - Bugs Spotting Standard: the project will must conform to the Bugs Spotting Standard, which is a Java static analyser to find vulnerable code. The standard is also integrated into the CI/CD pipeline, ensuring committed code from all members comply to this standard to minimise bugs.
 
 **Design constraints imposed by regulatory requirements:**
