@@ -416,14 +416,47 @@ System design constraints imposed on the project can be broken down into externa
 
 ### 3.7 Nonfunctional system attributes
 
-Present the systemic (aka nonfunctional) requirements of the product (see ISO/IEC 25010).
-List up to twenty systemic requirements / attributes.
-Write a short natural language description of the top nonfunctional requirements (approx. five pages).
+ - Compatibility
+ - Maintainability
+ - Open Source
+ - Platform compatibility
+ - Reliability
+ - Security
+ - Usability
+
+**Compatibility**
+This Mission Control software project, along with the Avionics Control hardware and Monte Carlo Simulations software projects, all contribute to the final goal of launching a hobby rocket successfully. Therefore, it is extremely crucial for our software to be compatible with the Avionics Control and the Monte Carlo Simulations.
+As mentioned previously, our software will communicate back and forth with the rocket components from using a hardware interface via LoRa WAN radio signal. Data collected from the rocket along with the weather data gathered by our Mission Control software will be analysed, displayed on the GUI and then fetched to the Simulation software using SimulationListeners inside OpenRocket.
+A good compatibility between three projects ensures the information exchange is carried out smoothly and uninterrupted between the hardware and software components, determining the success of the final goal.
+
+**Maintainability**
+The software should follow a strict style guideline to ensure consistency and readability.
+The code should be written in a way to maximize reusability and minimize redundancy.
+The software code should be well documented with JavaDocs in place.
+Features should be added and removed efficiently with minimal impact on the overall software.
+
+**Open Source**
+The software should be open source, free to use and can be modified by other rocket hobbyists for their own rocket projects.
+
+**Platform compatibility**
+The software should be able to run on different Operating System platforms, including Microsoft Windows, MacOS and Linux.
+
+**Reliability**
+The software should perform reliably without crashing, a lot of testing will be done to ensure the reliability of the code.
+Displayed data reflecting the rocket and weather information should be accurate and be updated as often as possible.
+In an event of an unexpected failure or crash, the software should have a crash log so that the programmers will be able to find the bug that causes the crash, in order to prevent it from happening again.
+
+**Security**
+All user input will be sanitized properly to minimize the risk of any potential malicious input from users.
+API keys used will not be included with the project to avoid any potential misuse.
+
+**Usability**
+Since the target clients of the software are rocket hobbyists, the software is designed to be used by users with a certain level of technical knowledge. However, the software still needs to be designed in a way so that it is easy to use. The User Interface should be reasonably intuitive to grasp and navigate, displaying most of the relevant information that the user needs for a rocket launch.
 
 
 ### 3.8 Physical and Environmental Requirements
 
-For systems with hardware components, identify the physical characteristics of that hardware (9.4.10) and environment conditions in which it must operate (9.4.11).  Depending on the project, this section may be from one page up to 5 pages.
+This is a Mission Control software project, therefore there are no physical or environmental requirements.
 
 ### 3.9 Supporting information
 

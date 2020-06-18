@@ -59,6 +59,7 @@ rebased
 TestFX
 cron
 MacOS
+Linux
 CI/CD
 
 # Package references
@@ -70,6 +71,11 @@ e.g.
 
 # NZ spelling to bypass on Readme
 utilize
+maximize
+minimize
+reusability
+redundancy
+sanitize
 
 # Other terms
 COVID-19
