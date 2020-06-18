@@ -400,20 +400,19 @@ You should use right tools, preferably PlantUML, to draw your URL diagrams which
 
 ### 3.6 Design constraints
 
-see 9.5.15 and 9.5.16. for most systems, this will be around one page.
+System design constraints imposed on the project can be broken down into external standards, regulatory requirement and project limitations.
 
-> 9.5.15 Design constraints<br>
-> Specify constraints on the system design imposed by external standards, regulatory requirements, or project limitations.
->
-> 9.5.16 Standards compliance<br>
-> Specify the requirements derived from existing standards or regulations, including:
->
-> a) Report format;<br>
-> b) Data naming;<br>
-> c) Accounting procedures;<br>
-> d) Audit tracing.
->
-> For example, this could specify the requirement for software to trace processing activity. Such traces are needed for some applications to meet minimum regulatory or financial standards. An audit trace requirement may, for example, state that all changes to a payroll database shall be recorded in a trace file with before and after values.
+**Design constraints imposed by external standards:**
+ - Java Coding Standard: the project will strictly conform to the Google coding conventions from Google Java Style that can be found [here](https://google.github.io/styleguide/javaguide.html). The original authors of this style guide are Max Vetrenko, Ruslan Diachenko and Roman Ivanov, one of our group member Nathan Duckett has made some customisations to this style check. Code committed by all members will have to conform to this coding standard to ensure format consistency, else the pipeline will fail as this is integrated into our CI/CD.
+ - Bugs Spotting Standard: the project will must conform to the Bugs Spotting Standard, which is a Java static analyser to find vulnerable code. The standard is also integrated into the CI/CD pipeline, ensuring committed code from all members comply to this standard to minimise bugs.
+
+**Design constraints imposed by regulatory requirements:**
+ - Health and Safety constraints: the project must strictly abide by all Health and Safety laws.
+
+**Design constraints imposed by project limitations:**
+ - Time constraint: the project follows a fixed time frame from March 2020 (start of the project) until October 2020 (product delivery), half of the project will be done in Trimester 1 and the other half on Trimester 2. We decided to have weekly sprint for our project and hold a retrospective every two weeks. This means that the amount of workload each sprint has to be carefully estimated so that it is evenly distributed among group members, not too overwhelming that we could not finish in a week time, but it also has to meet the project deadline. We would expect to have a working software prototype by the end of Trimester 1. 
+ - Costs constraint: this software project has no predicted costs. Each member has our own device to work on, no extra equipment or software license is required.
+ - Skills constraint: since our group members are all third-year students, even though some members do have industrial experience, some other members might have limited skills and experience in terms of group collaboration and good coding skills/practices.
 
 ### 3.7 Nonfunctional system attributes
 

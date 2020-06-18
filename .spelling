@@ -25,6 +25,12 @@ Craig
 Anslow
 Roger
 Cliffe
+Max
+Vetrenko
+Ruslan
+Diachenko
+Roman
+Ivanov
 
 # Tech terms
 LoRa
@@ -53,6 +59,7 @@ rebased
 TestFX
 cron
 MacOS
+CI/CD
 
 # Package references
 communications.importers
@@ -63,3 +70,6 @@ e.g.
 
 # NZ spelling to bypass on Readme
 utilize
+
+# Other terms
+COVID-19
