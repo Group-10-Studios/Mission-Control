@@ -61,6 +61,11 @@ cron
 MacOS
 Linux
 CI/CD
+Catalina
+Manjaro
+Ubuntu
+LTS
+gitignore
 
 # Package references
 communications.importers
