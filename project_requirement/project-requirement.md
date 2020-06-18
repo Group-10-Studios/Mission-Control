@@ -416,14 +416,47 @@ System design constraints imposed on the project can be broken down into externa
 
 ### 3.7 Nonfunctional system attributes
 
-Present the systemic (aka nonfunctional) requirements of the product (see ISO/IEC 25010).
-List up to twenty systemic requirements / attributes.
-Write a short natural language description of the top nonfunctional requirements (approx. five pages).
+ - Compatibility
+ - Maintainability
+ - Open Source
+ - Platform compatibility
+ - Reliability
+ - Security
+ - Usability
+
+**Compatibility**
+This Mission Control software project, along with the Avionics Control hardware and Monte Carlo Simulations software projects all contribute to the final goal of launching a hobby rocket successfully. Therefore, it is extremely crucial for our software to be compatible with the Avionics Control and the Monte Carlo Simulations.
+As mentioned previously, our software will communicate back and forth with the rocket component from using a hardware interface via LoRa WAN radio signal. Data collected from the rocket along with the weather data gathered by our Mission Control software will be analysed, displayed on the GUI and then fetched to the Simulation software using SimulationListeners inside OpenRocket.
+A good compatibility between three projects ensures the information exchange is carried out smoothly and uninterupted between the hardware and software components, determining the success of the final goal.
+
+**Maintainability**
+
+
+
+**Open Source**
+
+
+
+**Platform compatibility**
+
+
+
+**Reliability**
+
+
+
+**Security**
+
+
+
+**Usability**
+
+
 
 
 ### 3.8 Physical and Environmental Requirements
 
-For systems with hardware components, identify the physical characteristics of that hardware (9.4.10) and environment conditions in which it must operate (9.4.11).  Depending on the project, this section may be from one page up to 5 pages.
+This is a Mission Control software project, therefore there are no physical or environmental requirements.
 
 ### 3.9 Supporting information
 
