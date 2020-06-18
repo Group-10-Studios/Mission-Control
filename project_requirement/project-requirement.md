@@ -427,7 +427,7 @@ System design constraints imposed on the project can be broken down into externa
 **Compatibility**
 This Mission Control software project, along with the Avionics Control hardware and Monte Carlo Simulations software projects, all contribute to the final goal of launching a hobby rocket successfully. Therefore, it is extremely crucial for our software to be compatible with the Avionics Control and the Monte Carlo Simulations.
 As mentioned previously, our software will communicate back and forth with the rocket components from using a hardware interface via LoRa WAN radio signal. Data collected from the rocket along with the weather data gathered by our Mission Control software will be analysed, displayed on the GUI and then fetched to the Simulation software using SimulationListeners inside OpenRocket.
-A good compatibility between three projects ensures the information exchange is carried out smoothly and uninterupted between the hardware and software components, determining the success of the final goal.
+A good compatibility between three projects ensures the information exchange is carried out smoothly and uninterrupted between the hardware and software components, determining the success of the final goal.
 
 **Maintainability**
 The software should follow a strict style guideline to ensure consistency and readability.
@@ -444,7 +444,7 @@ The software should be able to run on different Operating System platforms, incl
 **Reliability**
 The software should perform reliably without any glitching or crashing, a lot of testing will be done to ensure the reliability of the code.
 Displayed data reflecting the rocket and weather information should be accurate and be updated as often as possible.
-In an event of an unpexpected failure or crash, the software should have a crash log so that the programmers will be able to find the bug that causes the crash, in order to prevent it from happening again.
+In an event of an unexpected failure or crash, the software should have a crash log so that the programmers will be able to find the bug that causes the crash, in order to prevent it from happening again.
 
 **Security**
 The software should not require any user input, this would minimise the risk of any malicious input from the users.
