@@ -447,7 +447,7 @@ Displayed data reflecting the rocket and weather information should be accurate 
 In an event of an unexpected failure or crash, the software should have a crash log so that the programmers will be able to find the bug that causes the crash, in order to prevent it from happening again.
 
 **Security**
-The software should not require any user input, this would minimise the risk of any malicious input from the users.
+All user input will be sanitized properly to minimize the risk of any potential malicious input from users.
 API keys used will not be included with the project to avoid any potential misuse.
 
 **Usability**
