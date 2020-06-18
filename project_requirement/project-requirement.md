@@ -506,11 +506,11 @@ API keys and local data files are added to our project's gitignore file to keep 
 
 **Usability**
 The requirement will be verified judging by the user-friendliness and accessibility.
-+General UI tests will be in place.
-+Users are able to customize the graphs order by click and drag the buttons on the navigation pane.
-+Graph is highlighted when selected.
-+Window pane is designed to be as dynamic, graphs, text and panes are automatically resized when the the user adjusts the window size.
-+Meetings with the client will be organized to gather feedback on the UI design as well the usability feedback on the software.
+ - General UI tests will be in place.
+ - Users are able to customize the graphs order by click and drag the buttons on the navigation pane.
+ - Graph is highlighted when selected.
+ - Window pane is designed to be as dynamic, graphs, text and panes are automatically resized when the the user adjusts the window size.
+ - Meetings with the client will be organized to gather feedback on the UI design as well the usability feedback on the software.
 
 ## 5. Development schedule.
 
