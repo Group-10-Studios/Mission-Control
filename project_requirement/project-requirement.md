@@ -432,7 +432,7 @@ A good compatibility between three projects ensures the information exchange is 
 **Maintainability**
 The software should follow a strict style guideline to ensure consistency and readability.
 The code should be written in a way to maximise reusability and minimise redundancy.
-The software code should be well documented with Javadoc in place.
+The software code should be well documented with JavaDocs in place.
 Features should be added and removed efficiently with minimal impact on the overall software.
 
 **Open Source**
@@ -448,7 +448,7 @@ In an event of an unpexpected failure or crash, the software should have a crash
 
 **Security**
 The software should not require any user input, this would minimise the risk of any malicious input from the users.
-API keys used will not be included with the project to advoid any potential misuse.
+API keys used will not be included with the project to avoid any potential misuse.
 
 **Usability**
 Since the target clients of the software are rocket hobbyists, the software is designed to be used by users with a certain level of technical knowledge. However, the software still needs to be designed in a way so that it is easy to use. The User Interface should be reasonably intuitive to grasp and navigate, displaying most of the relevant information that the user needs for a rocket launch.
