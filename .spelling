@@ -65,7 +65,7 @@ Catalina
 Manjaro
 Ubuntu
 LTS
-.gitignore
+gitignore
 
 # Package references
 communications.importers

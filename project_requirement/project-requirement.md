@@ -502,7 +502,7 @@ General UI tests and unit tests have been implemented to guarantee the reliabili
 
 **Security**
 Input sanitization will be implemented to filter out invalid or potential malicious input from users. This will be verified through unit tests.
-API keys and local data files are added to .gitignore file to keep them from being pushed to our GitLab repository.
+API keys and local data files are added to our project's gitignore file to keep them from being pushed to our GitLab repository.
 
 **Usability**
 The requirement will be verified judging by the user-friendliness and accessibility.
