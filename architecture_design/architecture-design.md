@@ -362,6 +362,7 @@ One page glossary as required
 
 **Jake Mai:**
 - Section 1. Introduction
+- Section 5.4: Health and Safety
 
 **Ahad Rahman:**
 - Section 4.2 Development
