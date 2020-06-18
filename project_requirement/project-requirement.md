@@ -376,8 +376,6 @@ During development we will coordinate with the customer to make sure that the mi
 requirements.
 
 
-
-
 ### 3.4 Performance requirements
 
 Our application expects to support one user at a time connected at one terminal. The software expects to have a connection made to the rocket via LoRaWAN.
@@ -464,7 +462,55 @@ see 9.5.19.
 
 ## 4. Verification
 
-3 pages outlining how you will verify that the product meets the most important specific requirements. The format of this section should parallel section 3 of your document (see 9.5.18). Wherever possible (especially systemic requirements) you should indicate testable acceptance criteria.
+### External Interface (Section 3.1)
+The only external interface required is LoRa WAN - a low-powered wide area network which will be used to transfer data between the rocket components to our Mission Control software. Verification for this interface will be conducted when the Avionics teams are ready to test their projects.
+
+### Functions (Section 3.2)
+Functions and use cases can be tested and verified by running the actual software and simulations. By the end of Trimester 1 (first half of the project), we should have a functional software prototype with all (if not most) of the use cases implemented and would be able to test them all.
+
+### Usability Requirements (Section 3.3)
+Overall verification for the usability requirements can be achieved through weekly team meetings, reviews and unit testings.
+Meetings with the client will also be organized accordingly to ensure that the software development is heading towards the right direction.
+
+### Performance Requirements (Section 3.4)
+Most of these requirements laid out in Section 3.4 can be verified through manual and automated testings. All of these should be tested by the end of Trimester 1 with the demo prototype. Data transfer from LoRa WAN will be tested accordingly when Avionics teams are ready with their prototype.
+
+### Logical database requirements (Section 3.5)
+This requirement will be verified through source code analysis to build a code structure and associations between classes. The UML diagram illustrated in section 3.5 should resemble this structure and classes associations.
+
+### Design Constraints (Section 3.6)
+This requirement will be verified through weekly team meetings and retrospectives every two weeks. Any change to the design constraints will be thoroughly discussed between group members and updated accordingly in section 3.6.
+
+### Nonfunctional system attributes (Section 3.7)
+**Compatibility**
+This requirement can be verified by testing the compatibility of the Mission Control software with Avionics and Monte Carlo Simulations teams. Whether if the communication and data transfer is carried out smoothly and uninterrupted without any lost or corrupted data packet. This will be achieved through manual and automated unit testings when other teams have their product prototypes ready.
+
+**Maintainability**
+The requirement can be verified through:
++A customised Java Coding Standard from Google Java Style. This standard is modified and implemented as a style check in the pipeline by one of our team member: Nathan Duckett.
++Code is well documented, JavaDocs are used appropriately.
++Every commit from each member must pass the pipeline, code commit must also be reviewed and approved by at least two other group members to ensure consistency as well as quality.
+
+**Open Source**
+At the end of the project when the product is delivered, the source code of our software will be released to the public. Other users have the rights to use, study, change, and distribute the software to anyone for any purpose. 
+
+**Platform compatibility**
+The requirement is verified by tesing the software on different Operating System platforms. We have already tested our software prototype on different system platforms, including: Microsoft Windows 10 Professional, MacOS Catalina 10.15.5, Linux Manjaro 20.0.3, Linux Ubuntu 20.04 LTS.
+
+**Reliability**
+General UI tests and unit tests have been implemented to guarantee the reliability of the software. Constant manual testings are carried out by all members to spot bugs and abnormal behaviours. Errors and crashes are also logged for future debugging.
+
+**Security**
+Input sanitization will be implemented to filter out invalid or potential malicious input from users. This will be verified through unit tests.
+API keys and local data files are added to .gitignore file to keep them from being pushed to our GitLab repository.
+
+**Usability**
+The requirement will be verified judging by the user-friendliness and accessibility.
++General UI tests will be in place.
++Users are able to customize the graphs order by click and drag the buttons on the navigation pane.
++Graph is highlighted when selected.
++Window pane is designed to be as dynamic, graphs, text and panes are automatically resized when the the user adjusts the window size.
++Meetings with the client will be organized to gather feedback on the UI design as well the usability feedback on the software.
 
 ## 5. Development schedule.
 
@@ -547,6 +593,10 @@ A one page statement of contributions, including a list of each member of the gr
 - Section 1.3.3
 - Use cases in section 3.2
 - Section 5.4
+- Section 4
+- Section 3.6
+- Section 3.7
+- Section 3.8
 
 **Tim Salisbury:**
 - Section 1.1
