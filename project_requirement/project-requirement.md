@@ -431,7 +431,7 @@ A good compatibility between three projects ensures the information exchange is 
 
 **Maintainability**
 The software should follow a strict style guideline to ensure consistency and readability.
-The code should be written in a way to maximise reusability and minimise redundancy.
+The code should be written in a way to maximize reusability and minimize redundancy.
 The software code should be well documented with JavaDocs in place.
 Features should be added and removed efficiently with minimal impact on the overall software.
 
@@ -442,7 +442,7 @@ The software should be open source, free to use and can be modified by other roc
 The software should be able to run on different Operating System platforms, including Microsoft Windows, MacOS and Linux.
 
 **Reliability**
-The software should perform reliably without any glitching or crashing, a lot of testing will be done to ensure the reliability of the code.
+The software should perform reliably without crashing, a lot of testing will be done to ensure the reliability of the code.
 Displayed data reflecting the rocket and weather information should be accurate and be updated as often as possible.
 In an event of an unexpected failure or crash, the software should have a crash log so that the programmers will be able to find the bug that causes the crash, in order to prevent it from happening again.
 
