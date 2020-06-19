@@ -280,8 +280,13 @@ _For each subsection, make clear what (if anything) has changed from the require
 Schedules must be justified and supported by evidences; they must be either direct client requirements or direct consequences of client requirements. If the requirements document did not contain justifications or supporting evidences, then both must be provided here.
 
 ### 5.1 Schedule
-
+* 13/05/2020 Initial Prototype UI Proposal to Customer - On this date the initial prototype UI should be proposed to the customer. This will
+allow for crucial feedback on our prototype to ensure we are on the right track and building a satisfactory product.
 * 22/05/2020 Basic UI Implementation - On this date (performance assessment 1) a very minimum UI should be complete, with graphs on display.
+* 18/06/2020 UI Proposal to Customer - Following the initial prototype UI proposal and our basic UI implementation on this
+date a much more refined and more official UI implementation should be proposed to the customer. During this meeting with the customer a 
+demonstration of all functionalities implemented should be conducted for the customer. This demonstration, and the feedback from the customer,
+ will solidify and validate our UI implementation in preparation for the Alpha Test on 19/06/2020.
 * 19/06/2020 Alpha Test - On this date (performance assessment 2) the software should be able to perform a dress rehearsal of a launch, including 
 the process of pulling information required to be downloaded and saving it before moving out to the site. This date also signifies the completion
 of a dynamic UI framework, which will allow for easy expansion in the future with automatic scaling of components.
