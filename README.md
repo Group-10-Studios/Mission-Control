@@ -29,7 +29,7 @@ required to access our API services, refer to API Keys to see the format.
 
 ### API Keys
 
-Inside the file `src/main/resources/key.json` it requires the following information:
+Inside the file `src/main/resources/keys.json` it requires the following information:
 
 ```json
 {
