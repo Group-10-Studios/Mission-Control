@@ -26,6 +26,7 @@ import static nz.ac.vuw.engr300.gui.util.UIUtil.*;
  * Represents a Home Screen view which the application will default to.
  *
  * @author Nathan Duckett
+ * @author Tim Salisbury
  */
 public class HomeView implements View {
 
@@ -67,6 +68,9 @@ public class HomeView implements View {
         stage.setMinWidth(1280);
     }
 
+    /**
+     * Initializes the main root grid.
+     */
     private void initializeGrid() {
         // 50 pixel first row for banner
         addPixelHeightRows(root, 50);
@@ -96,6 +100,11 @@ public class HomeView implements View {
         setupCenterPanel(contentGrid);
     }
 
+    /**
+     * Initializes the center panel by creating a GridPane that holds the content and then constructs a graph view.
+     *
+     * @param contentGrid   The GridPae that will contain the center panel.
+     */
     private void setupCenterPanel(GridPane contentGrid){
         GridPane centerPanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(centerPanel, contentGrid, 0, 1, Insets.EMPTY);
@@ -103,6 +112,12 @@ public class HomeView implements View {
         this.graphView = new GraphView(centerPanel);
     }
 
+    /**
+     * Initializes the right hand side panel (Information Panel), this is done by creating a GridPane that is passed to a
+     * InformationView object in the constructor.
+     *
+     * @param contentGrid   The content GridPane that will contain the right handside panel.
+     */
     private void setupRightHandSidePanel(GridPane contentGrid) {
         GridPane rightHandSidePanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(rightHandSidePanel, contentGrid, 0, 2, Insets.EMPTY);
@@ -127,6 +142,12 @@ public class HomeView implements View {
 //        addNodeToGrid(goNoGoVBox, rightHandSidePanel, 2, 0, Insets.EMPTY);
     }
 
+    /**
+     * Initializes the left hand side panel (Navigation Panel), this is done by creating a GridPane that is passed to a
+     * NavigationView object in the constructor.
+     *
+     * @param contentGrid   The content GridPane that will contain the left handside panel.
+     */
     private void setupLeftHandSidePanel(GridPane parent){
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(leftHandSidePanel, parent, 0, 0, Insets.EMPTY);
