@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
  */
 public class NavigationView implements View {
 
-    private GridPane root;
+    private final GridPane root;
 
     public NavigationView(GridPane root) {
         this.root = root;

@@ -1,26 +1,19 @@
 package nz.ac.vuw.engr300.gui.views;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.stream.IntStream;
-
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import nz.ac.vuw.engr300.gui.controllers.HomeController;
 import nz.ac.vuw.engr300.gui.util.Colours;
-import nz.ac.vuw.engr300.gui.util.UIUtil;
-
-import static nz.ac.vuw.engr300.gui.util.UIUtil.*;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.addPercentColumns;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.addPercentRows;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.addPixelHeightRows;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.createGridPane;
 
 /**
  * Represents a Home Screen view which the application will default to.
@@ -30,9 +23,9 @@ import static nz.ac.vuw.engr300.gui.util.UIUtil.*;
  */
 public class HomeView implements View {
 
-    private Scene applicationScene;
+    private final Scene applicationScene;
 
-    private GridPane root;
+    private final GridPane root;
 
     private NavigationView navigationView;
     private InformationView informationView;
@@ -40,7 +33,7 @@ public class HomeView implements View {
 
     /**
      * Create a new HomeView and attach it to the stage.
-     * 
+     *
      * @param stage Root application stage to have panels attached to.
      */
     public HomeView(Stage stage) {
@@ -58,8 +51,8 @@ public class HomeView implements View {
         stage.setMinHeight(720);
         stage.setMinWidth(1280);
 
-//        HomeController controller = loader.getController();
-//        stage.setOnCloseRequest(e -> controller.shutdown());
+        //HomeController controller = loader.getController();
+        //stage.setOnCloseRequest(e -> controller.shutdown());
         // stage.setMaximized(true);
 
         stage.show();
@@ -103,9 +96,9 @@ public class HomeView implements View {
     /**
      * Initializes the center panel by creating a GridPane that holds the content and then constructs a graph view.
      *
-     * @param contentGrid   The GridPae that will contain the center panel.
+     * @param contentGrid The GridPae that will contain the center panel.
      */
-    private void setupCenterPanel(GridPane contentGrid){
+    private void setupCenterPanel(GridPane contentGrid) {
         GridPane centerPanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(centerPanel, contentGrid, 0, 1, Insets.EMPTY);
 
@@ -113,75 +106,82 @@ public class HomeView implements View {
     }
 
     /**
-     * Initializes the right hand side panel (Information Panel), this is done by creating a GridPane that is passed to a
-     * InformationView object in the constructor.
+     * Initializes the right hand side panel (Information Panel), this is done by creating a GridPane that is
+     * passed to a InformationView object in the constructor.
      *
-     * @param contentGrid   The content GridPane that will contain the right handside panel.
+     * @param contentGrid The content GridPane that will contain the right handside panel.
      */
     private void setupRightHandSidePanel(GridPane contentGrid) {
         GridPane rightHandSidePanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(rightHandSidePanel, contentGrid, 0, 2, Insets.EMPTY);
 
         this.informationView = new InformationView(rightHandSidePanel);
-//        // One column, 100 percent of width
-//        addPercentColumns(rightHandSidePanel, 100);
-//        // 20 for batteries, 60 for warnings, 20 for go/no go
-//        addPercentRows(rightHandSidePanel, 20, 60, 20);
-//
-//        // Add Batteries and warning sections of right hand side panel
-//        addNodeToGrid(new Label("BATTERIES"), rightHandSidePanel, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
-//        addNodeToGrid(new Label("WARNINGS"), rightHandSidePanel, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
-//
-//        // Create and populate go no go at bottom of right hand side
-//        VBox goNoGoVBox = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
-//        // Literally just for setting background colour
-//        goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//        // Set it to hug the warnings above it
-//        GridPane.setValignment(goNoGoVBox, VPos.TOP);
-//        addNodeToGrid(goNoGoVBox, rightHandSidePanel, 2, 0, Insets.EMPTY);
+
+        //********** CODE LEFT FOR REFERENCE - DELETE WHEN DONE **********
+
+        //// One column, 100 percent of width
+        //addPercentColumns(rightHandSidePanel, 100);
+        //// 20 for batteries, 60 for warnings, 20 for go/no go
+        //addPercentRows(rightHandSidePanel, 20, 60, 20);
+        //
+        //// Add Batteries and warning sections of right hand side panel
+        //addNodeToGrid(new Label("BATTERIES"), rightHandSidePanel, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        //addNodeToGrid(new Label("WARNINGS"), rightHandSidePanel, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
+        //
+        //// Create and populate go no go at bottom of right hand side
+        //VBox goNoGoVBox = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
+        //// Literally just for setting background colour
+        //goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
+        // CornerRadii.EMPTY, Insets.EMPTY)));
+        //
+        //// Set it to hug the warnings above it
+        //GridPane.setValignment(goNoGoVBox, VPos.TOP);
+        //addNodeToGrid(goNoGoVBox, rightHandSidePanel, 2, 0, Insets.EMPTY);
     }
 
     /**
      * Initializes the left hand side panel (Navigation Panel), this is done by creating a GridPane that is passed to a
      * NavigationView object in the constructor.
      *
-     * @param contentGrid   The content GridPane that will contain the left handside panel.
+     * @param contentGrid The content GridPane that will contain the left handside panel.
      */
-    private void setupLeftHandSidePanel(GridPane parent){
+    private void setupLeftHandSidePanel(GridPane parent) {
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(leftHandSidePanel, parent, 0, 0, Insets.EMPTY);
 
         this.navigationView = new NavigationView(leftHandSidePanel);
-//        // One column, 100 percent of width
-//        addPercentColumns(leftHandSidePanel, 100);
-//        // 20 for weather, 60 for nav buttons, 20 for run sim
-//        addPercentRows(leftHandSidePanel, 20, 60, 20);
-//
-//        // Add weather to lefthand side GridPane
-//        addNodeToGrid(new Label("WEATHER"), leftHandSidePanel, 0, 0, Pos.CENTER, Color.ORANGE, Insets.EMPTY);
-//
-//        // Create and populate left hand side nav buttons
-//        VBox buttonVbox = UIUtil.createStandardVBox(5, new Insets(10, 10, 5, 10),
-//                IntStream.range(0, 10).mapToObj(i -> new Button("Btn" + i)).toArray(Region[]::new));
-//        // Literally just for setting background colour
-//        buttonVbox.setBackground(new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
-//        addNodeToGrid(buttonVbox, leftHandSidePanel, 1, 0, Insets.EMPTY);
-//
-//        // Create and populate runSim buttons at bottom of left hand side panel
-//        VBox runSimVbos = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
-//
-//        // Literally just for setting background colour
-//        runSimVbos.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//        // Set it to hug the nav buttons above it
-//        GridPane.setValignment(runSimVbos, VPos.TOP);
-//        addNodeToGrid(runSimVbos, leftHandSidePanel, 2, 0, Insets.EMPTY);
+
+        //********** CODE LEFT FOR REFERENCE - DELETE WHEN DONE **********
+        //// One column, 100 percent of width
+        //addPercentColumns(leftHandSidePanel, 100);
+        //// 20 for weather, 60 for nav buttons, 20 for run sim
+        //addPercentRows(leftHandSidePanel, 20, 60, 20);
+        //
+        //// Add weather to lefthand side GridPane
+        //addNodeToGrid(new Label("WEATHER"), leftHandSidePanel, 0, 0, Pos.CENTER, Color.ORANGE, Insets.EMPTY);
+        //
+        //// Create and populate left hand side nav buttons
+        //VBox buttonVbox = UIUtil.createStandardVBox(5, new Insets(10, 10, 5, 10),
+        //        IntStream.range(0, 10).mapToObj(i -> new Button("Btn" + i)).toArray(Region[]::new));
+        //// Literally just for setting background colour
+        //buttonVbox.setBackground(new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
+        //addNodeToGrid(buttonVbox, leftHandSidePanel, 1, 0, Insets.EMPTY);
+        //
+        //// Create and populate runSim buttons at bottom of left hand side panel
+        //VBox runSimVbos = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
+        //
+        //// Literally just for setting background colour
+        //runSimVbos.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW,
+        // CornerRadii.EMPTY, Insets.EMPTY)));
+        //
+        //// Set it to hug the nav buttons above it
+        //GridPane.setValignment(runSimVbos, VPos.TOP);
+        //addNodeToGrid(runSimVbos, leftHandSidePanel, 2, 0, Insets.EMPTY);
     }
 
     /**
      * Get the internal application scene height.
-     * 
+     *
      * @return Double representation of the scene height.
      */
     public double getSceneHeight() {
@@ -190,7 +190,7 @@ public class HomeView implements View {
 
     /**
      * Get the internal application scene width.
-     * 
+     *
      * @return Double representation of the scene width.
      */
     public double getSceneWidth() {
