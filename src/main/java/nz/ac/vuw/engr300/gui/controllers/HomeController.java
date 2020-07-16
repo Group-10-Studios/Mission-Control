@@ -87,50 +87,10 @@ public class HomeController implements Initializable {
     private static final double BUTTON_HEIGHT = 30;
 
     @FXML
-    public RocketDataLocation rocketLocation = new RocketDataLocation(-41.227938, 174.798772, 400, 400,
-                    GraphType.ROCKET_LOCATION);
-
-    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
-
-    @FXML
-    public RocketDataAngle rollRateCompass = new RocketDataAngle(false, GraphType.ROLL_RATE);
-    @FXML
-    public RocketDataAngle pitchRateCompass = new RocketDataAngle(false, GraphType.PITCH_RATE);
-    @FXML
-    public RocketDataAngle yawRateCompass = new RocketDataAngle(false, GraphType.YAW_RATE);
-    @FXML
-    public RocketDataAngle windCompass = new RocketDataAngle(true, GraphType.WINDDIRECTION);
-    @FXML
     public RocketBattery primaryBattery = new RocketBattery();
     @FXML
     public RocketBattery secondaryBattery = new RocketBattery();
-    @FXML
-    public RocketDataLineChart lineChartAltitude = new RocketDataLineChart("Time (s)", "Altitude (m)",
-            GraphType.ALTITUDE);
-    @FXML
-    public RocketDataLineChart lineChartTotalVelocity = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-            GraphType.TOTAL_VELOCITY);
-    @FXML
-    public RocketDataLineChart lineChartTotalAcceleration = new RocketDataLineChart("Time (s)",
-                    "Acceleration ( M/S² )", GraphType.TOTAL_ACCELERATION);
-    @FXML
-    public RocketDataLineChart lineChartVelocityX = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-            GraphType.X_VELOCITY);
-    @FXML
-    public RocketDataLineChart lineChartVelocityY = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-            GraphType.Y_VELOCITY);
-    @FXML
-    public RocketDataLineChart lineChartVelocityZ = new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-            GraphType.Z_VELOCITY);
-    @FXML
-    public RocketDataLineChart lineChartAccelerationX = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-            GraphType.X_ACCELERATION);
-    @FXML
-    public RocketDataLineChart lineChartAccelerationY = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-            GraphType.Y_ACCELERATION);
-    @FXML
-    public RocketDataLineChart lineChartAccelerationZ = new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-            GraphType.Z_ACCELERATION);
+    
     @FXML
     public GridPane gpWarnings = new GridPane();
 
@@ -213,27 +173,27 @@ public class HomeController implements Initializable {
      * Create a new HomeController subscribing the graphs to the data sources.
      */
     public HomeController() {
-        simulationImporter.subscribeObserver((data) -> {
-            if (data instanceof RocketStatus) {
-                lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
-
-                lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
-                lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
-
-                lineChartAccelerationZ.addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
-                lineChartVelocityZ.addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
-
-                yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
-                pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
-                rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
-            } else if (data instanceof RocketEvent) {
-                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
-                        String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
-                        ((RocketEvent) data).getEventType().toString());
-            }
-        });
+//        simulationImporter.subscribeObserver((data) -> {
+//            if (data instanceof RocketStatus) {
+//                lineChartAltitude.addValue(data.getTime(), ((RocketStatus) data).getAltitude());
+//                lineChartTotalAcceleration.addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
+//                lineChartTotalVelocity.addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
+//
+//                lineChartAccelerationY.addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
+//                lineChartVelocityY.addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
+//
+//                lineChartAccelerationZ.addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
+//                lineChartVelocityZ.addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
+//
+//                yawRateCompass.setAngle(((RocketStatus) data).getYawRate());
+//                pitchRateCompass.setAngle(((RocketStatus) data).getPitchRate());
+//                rollRateCompass.setAngle(((RocketStatus) data).getRollRate());
+//            } else if (data instanceof RocketEvent) {
+//                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
+//                        String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
+//                        ((RocketEvent) data).getEventType().toString());
+//            }
+//        });
         this.batteryThread = new Thread(() -> {
             double b1Level = 100.0;
             double b2Level = 100.0;
@@ -275,17 +235,17 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         WeatherData weatherToGive = null;
-        try {
-            // For the weather controller
-            wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
-                    lbWeatherStatus, windCompass);
-            wc.updateWeatherInfo();
-
-            // Getting the weather data to give, than to import the data constantly.
-            weatherToGive = wc.getWeatherData();
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+//        try {
+//            // For the weather controller
+//            wc = new WeatherController(lbWeather, lbWeatherTemp, lbWeatherHumid, lbWeatherPressure,
+//                    lbWeatherStatus, windCompass);
+//            wc.updateWeatherInfo();
+//
+//            // Getting the weather data to give, than to import the data constantly.
+//            weatherToGive = wc.getWeatherData();
+//        } catch (FileNotFoundException e) {
+//            LOGGER.error(e.getMessage(), e);
+//        }
 
 
 
@@ -295,7 +255,7 @@ public class HomeController implements Initializable {
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();
-        bindGraphsToType();
+//        bindGraphsToType();
         listGraphs();
         refreshOnStart();
         initialiseWarningsPane();
@@ -376,7 +336,7 @@ public class HomeController implements Initializable {
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
         lbState.setText("Go State");
-        runSim();
+//        runSim();
     }
 
     /**
@@ -436,35 +396,6 @@ public class HomeController implements Initializable {
             updatePanelPositions(apApp, apApp.getWidth());
             updatePanelPositionsVertical(apApp.getHeight());
         }).start();
-    }
-
-    /**
-     * Manually binds the graph type to the graphs. This could maybe be automated
-     * later but for now can set the values.
-     */
-    private void bindGraphsToType() {
-        rocketLocation.updateAngleDistanceInfo(-41.227776, 174.799334);
-
-        this.graphs = new ArrayList<>();
-        this.graphs.add(lineChartTotalVelocity);
-        this.graphs.add(lineChartVelocityX);
-        this.graphs.add(lineChartVelocityY);
-        this.graphs.add(lineChartVelocityZ);
-
-        this.graphs.add(lineChartTotalAcceleration);
-        this.graphs.add(lineChartAccelerationX);
-        this.graphs.add(lineChartAccelerationY);
-        this.graphs.add(lineChartAccelerationZ);
-
-        this.graphs.add(lineChartAltitude);
-        this.graphs.add(yawRateCompass);
-        this.graphs.add(pitchRateCompass);
-        this.graphs.add(rollRateCompass);
-
-        this.graphs.add(windCompass);
-        this.graphs.add(rocketLocation);
-        // Initialize the graph table.
-        buildTable();
     }
 
     /**
@@ -623,39 +554,39 @@ public class HomeController implements Initializable {
      * file dialog to select a simulation data file. It will then load it into the
      * data importer and run the simulation as if it was live.
      */
-    public void runSim() {
-        simulationImporter.stop();
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a simulation to run.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
-        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
-        if (selectedFile != null) {
-            try {
-                simulationImporter.importData(selectedFile.getAbsolutePath());
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initStyle(StageStyle.DECORATED);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Failed to import simulation data!");
-                alert.setContentText(e.getMessage());
-
-                alert.showAndWait();
-                return;
-            }
-            graphs.forEach(RocketGraph::clear);
-            simulationImporter.start();
-        }
-    }
+//    public void runSim() {
+//        simulationImporter.stop();
+//
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Select a simulation to run.");
+//        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+//        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
+//        if (selectedFile != null) {
+//            try {
+//                simulationImporter.importData(selectedFile.getAbsolutePath());
+//            } catch (Exception e) {
+//                Alert alert = new Alert(Alert.AlertType.WARNING);
+//                alert.initStyle(StageStyle.DECORATED);
+//                alert.setTitle("Warning");
+//                alert.setHeaderText("Failed to import simulation data!");
+//                alert.setContentText(e.getMessage());
+//
+//                alert.showAndWait();
+//                return;
+//            }
+//            graphs.forEach(RocketGraph::clear);
+//            simulationImporter.start();
+//        }
+//    }
 
     /**
      * Callback for when the cross at top right gets pressed, this function should
      * be used to cleanup any resources and close any ongoing threads.
      */
-    public void shutdown() {
-        simulationImporter.stop();
-        this.batteryThread.interrupt();
-    }
+//    public void shutdown() {
+//        simulationImporter.stop();
+//        this.batteryThread.interrupt();
+//    }
 
     /**
      * Scaling all the panel heights according to the current window size.
