@@ -39,6 +39,7 @@ public class WeatherController {
      * @param wp          represents Air Pressure
      * @param ws          represents weather status
      * @param windCompass represents Wind Direction
+     * @throws FileNotFoundException Thrown if the weather data file is missing from the system.
      */
     public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass)
             throws FileNotFoundException {

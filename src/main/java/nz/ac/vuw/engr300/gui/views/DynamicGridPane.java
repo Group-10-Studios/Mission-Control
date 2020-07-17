@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * DynamicGridPane is an extension of GridPane to allow for dynamic layouts of items inside.
- * This allows a list of regions to be added into the GridPane in left->right ordering. This includes
+ * This allows a list of regions to be added into the GridPane in left-to-right ordering. This includes
  * allowing for resizing a region within the GridPane. The columns are dynamically adjusted based on
  * the current width of the DynamicGridPane and the minimum specified graph width.
  *
