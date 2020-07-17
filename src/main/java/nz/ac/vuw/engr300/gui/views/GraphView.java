@@ -11,6 +11,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -24,8 +25,7 @@ public class GraphView implements View {
     private final GridPane root;
     private final DynamicGridPane contentPane;
     private List<RocketGraph> graphs;
-
-    private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    private final GraphController controller;
 
     /**
      * Create new GraphView.
@@ -34,10 +34,12 @@ public class GraphView implements View {
      */
     public GraphView(GridPane root) {
         this.root = root;
-        this.contentPane = new DynamicGridPane(allGraphs());
-        
         createGraphs();
+        this.contentPane = new DynamicGridPane(allGraphs());
+        this.controller = new GraphController();
+
         attachContentToScrollPane();
+        this.controller.subscribeGraphs(graphs);
     }
     
     /**
@@ -49,6 +51,15 @@ public class GraphView implements View {
         // Required to prevent horizontal scrolling and ensure it grows with width of root.
         scrollPane.setFitToWidth(true);
         UiUtil.addNodeToGrid(scrollPane, root, 0, 0);
+    }
+
+    /**
+     * Get the controller associated with this view.
+     *
+     * @return GraphController which is associated with this view for external access of functions.
+     */
+    public GraphController getController() {
+        return this.controller;
     }
     
     /**

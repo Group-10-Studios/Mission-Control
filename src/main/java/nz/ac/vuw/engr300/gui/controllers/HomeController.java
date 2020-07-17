@@ -402,30 +402,6 @@ public class HomeController implements Initializable {
     }
 
     /**
-     * Build a dynamic VBox/HBox table to hold our graphs in the centre of the
-     * screen.
-     */
-    private void buildTable() {
-        int graphNo = 0;
-        VBox rowBox = new VBox();
-        rowBox.setSpacing(0);
-        for (int i = 0; i < ROWS; i++) {
-            HBox colBox = new HBox();
-            colBox.setSpacing(0);
-            for (int j = 0; j < COLS; j++) {
-                if (graphNo >= this.graphs.size()) {
-                    break;
-                }
-                colBox.getChildren().add((Region) this.graphs.get(graphNo++));
-            }
-            rowBox.getChildren().add(colBox);
-        }
-
-        pnContent.getChildren().clear();
-        pnContent.getChildren().add(rowBox);
-    }
-
-    /**
      * List out all of the graphs in the side panel.
      */
     private void listGraphs() {
@@ -535,7 +511,6 @@ public class HomeController implements Initializable {
                 }
             }
         }
-        buildTable();
     }
 
     /**
@@ -552,49 +527,6 @@ public class HomeController implements Initializable {
         timeline.play();
     }
 
-    /*
-    /**
-     * Callback function for run simulation in main view, this function will open a
-     * file dialog to select a simulation data file. It will then load it into the
-     * data importer and run the simulation as if it was live.
-     */
-    /*
-    public void runSim() {
-        simulationImporter.stop();
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a simulation to run.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
-        File selectedFile = fileChooser.showOpenDialog(pnContent.getScene().getWindow());
-        if (selectedFile != null) {
-            try {
-                simulationImporter.importData(selectedFile.getAbsolutePath());
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initStyle(StageStyle.DECORATED);
-                alert.setTitle("Warning");
-                alert.setHeaderText("Failed to import simulation data!");
-                alert.setContentText(e.getMessage());
-
-                alert.showAndWait();
-                return;
-            }
-            graphs.forEach(RocketGraph::clear);
-            simulationImporter.start();
-        }
-    }
-
-    /*
-    /**
-     * Callback for when the cross at top right gets pressed, this function should
-     * be used to cleanup any resources and close any ongoing threads.
-     */
-    /*
-    public void shutdown() {
-        simulationImporter.stop();
-        this.batteryThread.interrupt();
-    }
-    */
     /**
      * Scaling all the panel heights according to the current window size.
      *
