@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.util.Colours;
+import nz.ac.vuw.engr300.gui.util.UiUtil;
+
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addPercentColumns;
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addPercentRows;
@@ -66,9 +68,9 @@ public class HomeView implements View {
      */
     private void initializeGrid() {
         // 50 pixel first row for banner
-        addPixelHeightRows(root, 50);
+        addPercentRows(root, 5);
         // second row takes up 100% of the remaining space
-        addPercentRows(root, 100);
+        addPercentRows(root, 95);
         // One column at 100% width
         addPercentColumns(root, 100);
 
@@ -99,8 +101,10 @@ public class HomeView implements View {
      * @param contentGrid The GridPae that will contain the center panel.
      */
     private void setupCenterPanel(GridPane contentGrid) {
-        GridPane centerPanel = createGridPane(10, 10, new Insets(10));
+        GridPane centerPanel = createGridPane(0, 0, Insets.EMPTY);
         addNodeToGrid(centerPanel, contentGrid, 0, 1, Insets.EMPTY);
+        UiUtil.addPercentRows(centerPanel, 100);
+        UiUtil.addPercentColumns(centerPanel, 100);
 
         this.graphView = new GraphView(centerPanel);
     }
@@ -145,9 +149,9 @@ public class HomeView implements View {
      *
      * @param contentGrid The content GridPane that will contain the left handside panel.
      */
-    private void setupLeftHandSidePanel(GridPane parent) {
+    private void setupLeftHandSidePanel(GridPane contentGrid) {
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
-        addNodeToGrid(leftHandSidePanel, parent, 0, 0, Insets.EMPTY);
+        addNodeToGrid(leftHandSidePanel, contentGrid, 0, 0, Insets.EMPTY);
 
         this.navigationView = new NavigationView(leftHandSidePanel);
 

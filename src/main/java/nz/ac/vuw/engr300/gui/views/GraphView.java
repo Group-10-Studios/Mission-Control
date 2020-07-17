@@ -3,16 +3,9 @@ package nz.ac.vuw.engr300.gui.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Insets;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
-import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -27,7 +20,8 @@ import nz.ac.vuw.engr300.gui.util.UiUtil;
  * @author Nathan Duckett
  */
 public class GraphView implements View {
-    private GridPane root;
+    private final GridPane root;
+    private final DynamicGridPane contentPane;
     private List<RocketGraph> graphs;
 
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
@@ -39,34 +33,21 @@ public class GraphView implements View {
      */
     public GraphView(GridPane root) {
         this.root = root;
+        this.contentPane = new DynamicGridPane(allGraphs());
         
         createGraphs();
-        buildGraphTilePane();
+        attachContentToScrollPane();
     }
     
     /**
-     * Build the Graph tile pane from the graphs stored inside the view.
+     * Attach the contentPane within a scroll pane.
      */
-    public void buildGraphTilePane() {
-        TilePane tile = new TilePane();
-        tile.setMaxHeight(2180);
-        tile.setMaxWidth(3840);
-        tile.setPrefColumns(4);
-        tile.setPrefRows(3);
-        
-        tile.setPrefTileWidth(250);
-        tile.setPrefTileHeight(250); 
-        for (Region g : allGraphs()) {
-            g.setMinWidth(100);
-            g.setMinHeight(100);
-            g.setMaxHeight(2180);
-            g.setMaxWidth(3840);
-            tile.getChildren().add(g);
-        }
-        tile.setBackground(new Background(new BackgroundFill(Color.RED,
-                        CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        UiUtil.addNodeToGrid(tile, root, 0, 0);
+    public void attachContentToScrollPane() {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(this.contentPane);
+        // Required to prevent horizontal scrolling and ensure it grows with width of root.
+        scrollPane.setFitToWidth(true);
+        UiUtil.addNodeToGrid(scrollPane, root, 0, 0);
     }
     
     /**
