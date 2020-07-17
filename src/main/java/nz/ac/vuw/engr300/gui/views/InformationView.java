@@ -8,9 +8,10 @@ import javafx.scene.layout.GridPane;
  * @author Tim Salisbury
  */
 public class InformationView implements View {
-    private GridPane root;
+    private final GridPane root;
 
     public InformationView(GridPane root) {
         this.root = root;
+        assert this.root != null;
     }
 }

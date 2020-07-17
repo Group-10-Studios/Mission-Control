@@ -93,6 +93,11 @@ public class HomeView implements View {
         setupRightHandSidePanel(contentGrid);
         setupLeftHandSidePanel(contentGrid);
         setupCenterPanel(contentGrid);
+
+        // Assert they are created - mainly to bypass Spot bugs issues.
+        assert this.navigationView != null;
+        assert this.graphView != null;
+        assert this.informationView != null;
     }
 
     /**

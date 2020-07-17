@@ -11,7 +11,6 @@ import java.util.List;
  * This allows a list of regions to be added into the GridPane in left-to-right ordering. This includes
  * allowing for resizing a region within the GridPane. The columns are dynamically adjusted based on
  * the current width of the DynamicGridPane and the minimum specified graph width.
- *
  * If a region can fit inside the row it will be added. However if there is not enough space for the
  * graph the other graphs inside the row will scale horizontally to fill the GridPane's horizontal space.
  *
@@ -175,7 +174,7 @@ public class DynamicGridPane extends GridPane {
      * @param currentWidth Current width of the GridPane to base the values from.
      */
     private void updateInternalDimensions(double currentWidth) {
-        this.columns = (int)(currentWidth / minRegionWidth);
+        this.columns = (int) (currentWidth / minRegionWidth);
         this.rows = calculatedRows();
     }
 }
