@@ -143,7 +143,7 @@ public class HomeView implements View {
      * Initializes the left hand side panel (Navigation Panel), this is done by creating a GridPane that is passed to a
      * NavigationView object in the constructor.
      *
-     * @param contentGrid The content GridPane that will contain the left handside panel.
+     * @param parent The content GridPane that will contain the left handside panel.
      */
     private void setupLeftHandSidePanel(GridPane parent) {
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
