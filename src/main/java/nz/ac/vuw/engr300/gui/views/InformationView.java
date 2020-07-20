@@ -14,6 +14,7 @@ import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
+import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
 import java.util.Optional;
@@ -91,6 +92,9 @@ public class InformationView implements View {
 
     private void setupRoot(GridPane root) {
         this.root = root;
+
+        this.root.setBackground(new Background(new BackgroundFill(Colours.SHADE_COLOUR,
+                CornerRadii.EMPTY, Insets.EMPTY)));
 
         // One column, 100 percent of width
         UiUtil.addPercentColumns(this.root, 100);
