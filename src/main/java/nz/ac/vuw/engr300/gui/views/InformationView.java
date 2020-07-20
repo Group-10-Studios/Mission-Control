@@ -1,20 +1,25 @@
 package nz.ac.vuw.engr300.gui.views;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+
+import javafx.scene.control.Button;
+
+import javafx.scene.layout.Background;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import nz.ac.vuw.engr300.gui.components.RocketAlert;
+
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
-
-import java.util.Optional;
 
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 

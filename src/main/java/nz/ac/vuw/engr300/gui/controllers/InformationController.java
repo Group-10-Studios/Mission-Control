@@ -54,7 +54,7 @@ public class InformationController {
      * be used to cleanup any resources and close any ongoing threads.
      */
     public void shutdown() {
-//        simulationImporter.stop();
+        // simulationImporter.stop();
         this.batteryThread.interrupt();
     }
 
@@ -65,7 +65,7 @@ public class InformationController {
      */
     public void onNoGo(ActionEvent actionEvent) {
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
-//        lbState.setText("No Go State");
+        // lbState.setText("No Go State");simula
     }
 
     /**
@@ -90,7 +90,7 @@ public class InformationController {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
-//        lbState.setText("Go State");
-//        runSim();
+        // lbState.setText("Go State");
+        // runSim();
     }
 }
