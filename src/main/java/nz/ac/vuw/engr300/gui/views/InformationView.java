@@ -153,4 +153,13 @@ public class InformationView implements View {
 //        lbState.setText("No Go State");
     }
 
+    /**
+     * Callback for when the cross at top right gets pressed, this function should
+     * be used to cleanup any resources and close any ongoing threads.
+     */
+    public void shutdown() {
+//        simulationImporter.stop();
+        this.batteryThread.interrupt();
+    }
+
 }
