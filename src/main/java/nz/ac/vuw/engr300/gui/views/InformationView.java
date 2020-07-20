@@ -1,14 +1,21 @@
 package nz.ac.vuw.engr300.gui.views;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
+import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
+
+import java.util.Optional;
 
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
@@ -27,6 +34,8 @@ public class InformationView implements View {
 
     public RocketBattery primaryBattery = new RocketBattery();
     public RocketBattery secondaryBattery = new RocketBattery();
+
+    public WarningsController warnC;
 
     /**
      * Add Batteries and warning sections of right hand side panel.
@@ -70,7 +79,14 @@ public class InformationView implements View {
     }
 
     private void setupWarnings() {
-        addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
+        Pane pnWarnings = new Pane();
+//        addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
+        addNodeToGrid(pnWarnings, root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
+        // For the warnings controller
+        warnC = new WarningsController(pnWarnings);
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
+
+//        warnC.checkAllData(weatherToGive);
     }
 
     private void setupBatteries() {
@@ -80,6 +96,7 @@ public class InformationView implements View {
     }
 
     private void setupGoNoGo() {
+
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
         // Literally just for setting background colour
@@ -100,5 +117,40 @@ public class InformationView implements View {
         UiUtil.addPercentRows(this.root, 20, 60, 20);
     }
 
+    /**
+     * Basic callback for when clicking on the Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
+    private void onGo(ActionEvent actionEvent) {
+        if (warnC.hasErrors()) { // If errors, do not go
+            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
+            return;
+        } else if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Warnings exist");
+            alert.setContentText("Are you ok with running a simulation?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() != ButtonType.OK) {
+                return;
+            }
+        }
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
+                "Waiting for rocket to be armed", "(Pretending its armed)");
+//        lbState.setText("Go State");
+//        runSim();
+    }
+
+    /**
+     * Basic callback function for when clicking the No Go button.
+     *
+     * @param actionEvent   The action event representing the event.
+     */
+    private void onNoGo(ActionEvent actionEvent) {
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
+//        lbState.setText("No Go State");
+    }
 
 }
