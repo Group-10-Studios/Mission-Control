@@ -37,6 +37,10 @@ public class InformationView implements View {
 
     public WarningsController warnC;
 
+    public Button goButton = new Button("  Go   ");
+
+    public Button noGoButton = new Button("No Go");
+
     /**
      * Add Batteries and warning sections of right hand side panel.
      * @param root The root Gridpane where we will be adding nodes to.
@@ -84,8 +88,7 @@ public class InformationView implements View {
         addNodeToGrid(pnWarnings, root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
         // For the warnings controller
         warnC = new WarningsController(pnWarnings);
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
-
+//        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Something");
 //        warnC.checkAllData(weatherToGive);
     }
 
@@ -96,9 +99,17 @@ public class InformationView implements View {
     }
 
     private void setupGoNoGo() {
+        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        goButton.setOnAction(this::onGo);
+        noGoButton.setOnAction(this::onNoGo);
 
         // Create and populate go no go at bottom of right hand side
-        VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
+        VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
+                goButton, noGoButton);
         // Literally just for setting background colour
         goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
