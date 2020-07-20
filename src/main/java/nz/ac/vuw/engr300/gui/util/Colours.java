@@ -31,7 +31,8 @@ public class Colours {
      * @return          The hex string to colour.
      */
     public static String toHexString(Color value) {
-        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue()) + format(value.getOpacity()))
+        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue())
+                + format(value.getOpacity()))
                 .toUpperCase();
     }
 }

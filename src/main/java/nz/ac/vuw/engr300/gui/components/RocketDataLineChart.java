@@ -54,7 +54,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         this.setBackground(new Background(new BackgroundFill(Colours.BACKGROUND_COLOUR,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        this.series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: " + Colours.toHexString(Colours.PRIMARY_COLOUR) + ";");
+        this.series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: " +
+                Colours.toHexString(Colours.PRIMARY_COLOUR) + ";");
         this.setGraphType(graphType);
 
         this.setId(graphType.getGraphID());
