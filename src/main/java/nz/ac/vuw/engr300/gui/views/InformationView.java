@@ -34,9 +34,39 @@ public class InformationView implements View {
      */
     public InformationView(GridPane root) {
         setupRoot(root);
+        runBatteryThread();
         setupBatteries();
         setupWarnings();
         setupGoNoGo();
+    }
+
+    private void runBatteryThread() {
+        this.batteryThread = new Thread(() -> {
+            double b1Level = 100.0;
+            double b2Level = 100.0;
+            secondaryBattery.setBatteryLevel(b2Level);
+            while (b1Level >= 0) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Error while updating primaryBattery percentage", e);
+                }
+                primaryBattery.setBatteryLevel(b1Level);
+                b1Level -= 1.0;
+            }
+            while (b2Level >= 0) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Error while updating primaryBattery percentage", e);
+                }
+                secondaryBattery.setBatteryLevel(b2Level);
+                b2Level -= 1.0;
+            }
+        });
+        this.batteryThread.start();
     }
 
     private void setupWarnings() {
