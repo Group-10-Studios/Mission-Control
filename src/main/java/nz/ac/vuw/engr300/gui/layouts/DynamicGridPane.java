@@ -1,4 +1,4 @@
-package nz.ac.vuw.engr300.gui.views;
+package nz.ac.vuw.engr300.gui.layouts;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
