@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
@@ -24,7 +21,7 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 /**
  * Represents the right panel, which displays general information.
  *
- * @author Tim Salisbury, Nalin Aswani, Jake Mai
+ * @author Tim Salisbury, Nalin Aswani, Jake Mai, Nathan Duckett
  */
 public class InformationView implements View {
     private GridPane root;
@@ -45,7 +42,6 @@ public class InformationView implements View {
      */
     public InformationView(GridPane root) {
         setupRoot(root);
-//        runBatteryThread();
         setupBatteries();
         setupWarnings();
         setupGoNoGo();
@@ -53,13 +49,9 @@ public class InformationView implements View {
 
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
-//        addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
-        addNodeToGrid(pnWarnings, root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
+        addNodeToGrid(pnWarnings, root, 1, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);
-
-//        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Something");
-//        warnC.checkAllData(weatherToGive);
     }
 
     private void setupBatteries() {
@@ -74,7 +66,6 @@ public class InformationView implements View {
         noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-//        goButton.setOnAction(this::onGo);
         goButton.setOnAction(e -> infController.onGo(e));
         noGoButton.setOnAction(e -> infController.onNoGo(e));
 
