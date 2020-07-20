@@ -102,6 +102,14 @@ public class UiUtil {
 
     /**
      * Helper function for proof of concept - not needed otherwise.
+     *
+     * @param child      The child to add.
+     * @param parent     The parent to add the child to.
+     * @param row        The row to add the child at.
+     * @param column     The column to add the child at.
+     * @param alignment  The alignment of the child within the wrapper.
+     * @param fill Background colour to fill the wrapper with.
+     * @param insets The insets to set the child at.
      */
     public static void addNodeToGrid(Node child, GridPane parent, int row, int column, Pos alignment,
                                      Color fill, Insets insets) {
