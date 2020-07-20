@@ -39,6 +39,7 @@ public class InformationView implements View {
         // Add Batteries and warning sections of right hand side panel
 //        addNodeToGrid(new Label("BATTERIES"), root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         addNodeToGrid(primaryBattery, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(secondaryBattery, root, 0, 1, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
 
         // Create and populate go no go at bottom of right hand side
