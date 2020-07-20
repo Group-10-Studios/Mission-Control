@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
@@ -19,6 +20,14 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 public class InformationView implements View {
     private GridPane root;
 
+    /**
+     * Separate thread to run the battery timers on.
+     */
+    private Thread batteryThread;
+
+    public RocketBattery primaryBattery = new RocketBattery();
+    public RocketBattery secondaryBattery = new RocketBattery();
+
     public InformationView(GridPane root) {
         this.root = root;
 
@@ -28,7 +37,8 @@ public class InformationView implements View {
         UiUtil.addPercentRows(root, 20, 60, 20);
 
         // Add Batteries and warning sections of right hand side panel
-        addNodeToGrid(new Label("BATTERIES"), root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+//        addNodeToGrid(new Label("BATTERIES"), root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(primaryBattery, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
 
         // Create and populate go no go at bottom of right hand side
