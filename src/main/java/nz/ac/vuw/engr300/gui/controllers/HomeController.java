@@ -47,6 +47,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.log4j.Logger;
 import java.io.File;
@@ -286,7 +287,7 @@ public class HomeController implements Initializable {
 
         VBox goNoGoBox = new VBox(15);
         GridPane.setHgrow(goNoGoBox, Priority.ALWAYS);
-        goNoGoBox.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+        goNoGoBox.setBackground(new Background(new BackgroundFill(Colours.BACKGROUND_COLOUR,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         goNoGoBox.setPadding(new Insets(10));
 

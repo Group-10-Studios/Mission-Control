@@ -12,4 +12,26 @@ public class Colours {
     public static final Color WARNING_INFO = Color.valueOf("#4267B2");
     public static final Color WARNING_WARN = Color.ORANGE;
     public static final Color WARNING_ERROR = Color.RED;
+
+    /**
+     * Formats an integer to a hex string.
+     *
+     * @param val   The integer to format.
+     * @return      The formatted string.
+     */
+    private static String format(double val) {
+        String in = Integer.toHexString((int) Math.round(val * 255));
+        return in.length() == 1 ? "0" + in : in;
+    }
+
+    /**
+     * Converts a colour to a hex string.
+     *
+     * @param value     The colour to convert.
+     * @return          The hex string to colour.
+     */
+    public static String toHexString(Color value) {
+        return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue()) + format(value.getOpacity()))
+                .toUpperCase();
+    }
 }
