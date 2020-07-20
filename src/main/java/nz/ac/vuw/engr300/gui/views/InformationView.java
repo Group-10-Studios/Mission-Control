@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
+import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -31,6 +32,7 @@ public class InformationView implements View {
     public RocketBattery secondaryBattery = new RocketBattery();
 
     public WarningsController warnC;
+    public InformationController infController;
 
     public Button goButton = new Button("  Go   ");
 
@@ -53,7 +55,8 @@ public class InformationView implements View {
 //        addNodeToGrid(new Label("WARNINGS"), root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
         addNodeToGrid(pnWarnings, root, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
         // For the warnings controller
-        warnC = new WarningsController(pnWarnings);
+        infController = new InformationController(pnWarnings);
+
 //        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Something");
 //        warnC.checkAllData(weatherToGive);
     }
@@ -70,8 +73,9 @@ public class InformationView implements View {
         noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        goButton.setOnAction(this::onGo);
-        noGoButton.setOnAction(this::onNoGo);
+//        goButton.setOnAction(this::onGo);
+        goButton.setOnAction(e -> infController.onGo(e));
+        noGoButton.setOnAction(e -> infController.onNoGo(e));
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
@@ -92,42 +96,6 @@ public class InformationView implements View {
         UiUtil.addPercentColumns(this.root, 100);
         // 20 for batteries, 60 for warnings, 20 for go/no go
         UiUtil.addPercentRows(this.root, 20, 60, 20);
-    }
-
-    /**
-     * Basic callback for when clicking on the Go button.
-     *
-     * @param actionEvent   The action event representing the event.
-     */
-    private void onGo(ActionEvent actionEvent) {
-        if (warnC.hasErrors()) { // If errors, do not go
-            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
-            return;
-        } else if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Warnings exist");
-            alert.setContentText("Are you ok with running a simulation?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() != ButtonType.OK) {
-                return;
-            }
-        }
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
-                "Waiting for rocket to be armed", "(Pretending its armed)");
-//        lbState.setText("Go State");
-//        runSim();
-    }
-
-    /**
-     * Basic callback function for when clicking the No Go button.
-     *
-     * @param actionEvent   The action event representing the event.
-     */
-    private void onNoGo(ActionEvent actionEvent) {
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
-//        lbState.setText("No Go State");
     }
 
 }
