@@ -52,6 +52,9 @@ public class InformationView implements View {
         setupGoNoGo();
     }
 
+    /**
+     * Create new Warnings pane on the right hand side root panel,
+     */
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
         addNodeToGrid(pnWarnings, root, 1, 0);
@@ -59,12 +62,18 @@ public class InformationView implements View {
         infController = new InformationController(pnWarnings);
     }
 
+    /**
+     * Create new Batteries Level pane on the top right hand side root panel.
+     */
     private void setupBatteries() {
         // Create and populate batteries in a HBox
         HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
         addNodeToGrid(batteryHBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
 
+    /**
+     * Create Go/NoGo button at the bottom of the right hand side root panel using VBox.
+     */
     private void setupGoNoGo() {
         goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -86,6 +95,10 @@ public class InformationView implements View {
         addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
     }
 
+    /**
+     * Set up the root panel on the right hand side which wraps around other panes.
+     * @param root
+     */
     private void setupRoot(GridPane root) {
         this.root = root;
 
