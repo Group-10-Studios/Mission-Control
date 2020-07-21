@@ -188,6 +188,9 @@ The packages focus on reusability within one another with our three main applica
 system which are supported by the other packages which provide shared code between all implementations. This decoupling ensures we do not reuse code we have already created and can swap out components
 as needed as we progress further in the application as requirements change.
 
+Our GUI package has been split up by their respective JavaFX components to try and maintain a model-view-controller architecture.
+This is built up of Views which contain Layouts and Components placed inside to create our GUI. This is connected with their corresponding controllers to handle user interaction.
+
 ### 4.3 Process
 Please view the UML State Diagram 'Architectural Process 4-3.png' in assets folder
 
