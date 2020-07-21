@@ -53,7 +53,7 @@ public class InformationView implements View {
     }
 
     /**
-     * Create new Warnings pane on the right hand side root panel,
+     * Create new Warnings pane on the right hand side root panel.
      */
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
@@ -97,7 +97,7 @@ public class InformationView implements View {
 
     /**
      * Set up the root panel on the right hand side which wraps around other panes.
-     * @param root
+     * @param root The root Gridpane where we will be adding nodes to.
      */
     private void setupRoot(GridPane root) {
         this.root = root;
