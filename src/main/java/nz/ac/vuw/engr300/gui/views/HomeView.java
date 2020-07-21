@@ -121,7 +121,7 @@ public class HomeView implements View {
      * @param contentGrid The content GridPane that will contain the right handside panel.
      */
     private void setupRightHandSidePanel(GridPane contentGrid) {
-        GridPane rightHandSidePanel = createGridPane(10, 10, new Insets(10));
+        GridPane rightHandSidePanel = createGridPane(0, 10, new Insets(10));
         addNodeToGrid(rightHandSidePanel, contentGrid, 0, 2, Insets.EMPTY);
 
         this.informationView = new InformationView(rightHandSidePanel);
