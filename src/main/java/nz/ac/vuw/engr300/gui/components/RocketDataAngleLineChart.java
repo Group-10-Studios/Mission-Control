@@ -99,6 +99,7 @@ public class RocketDataAngleLineChart extends StackPane implements RocketGraph {
 
     @Override
     public void clear() {
-
+        this.angleComponent.clear();
+        this.graphComponent.clear();
     }
 }
