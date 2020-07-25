@@ -5,6 +5,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
@@ -50,9 +51,12 @@ public class GraphController {
                 getLineChartByGraphType(graphs, GraphType.Z_VELOCITY)
                         .addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
 
-                getAngleByGraphType(graphs, GraphType.YAW_RATE).setAngle(((RocketStatus) data).getYawRate());
-                getAngleByGraphType(graphs, GraphType.PITCH_RATE).setAngle(((RocketStatus) data).getPitchRate());
-                getAngleByGraphType(graphs, GraphType.ROLL_RATE).setAngle(((RocketStatus) data).getRollRate());
+                getAngleLineChartByGraphType(graphs, GraphType.YAW_RATE)
+                        .addValue(data.getTime(), ((RocketStatus) data).getYawRate());
+                getAngleLineChartByGraphType(graphs, GraphType.PITCH_RATE)
+                        .addValue(data.getTime(), ((RocketStatus) data).getPitchRate());
+                getAngleLineChartByGraphType(graphs, GraphType.ROLL_RATE)
+                        .addValue(data.getTime(), ((RocketStatus) data).getRollRate());
             }
         });
         LOGGER.debug("All graphs have been subscribed");
@@ -111,6 +115,19 @@ public class GraphController {
      */
     private RocketDataAngle getAngleByGraphType(List<RocketGraph> graphs, GraphType type) {
         return (RocketDataAngle) getGraphByGraphType(graphs, type);
+    }
+
+    /**
+     * Function interface to getGraphByGraphType which returns an UNCHECKED conversion to a RocketDataAngleLineChart.
+     * This is not checked and therefore could result in exceptions if used on a RocketGraph which doesn't match
+     * the expected type.
+     *
+     * @param graphs List of RocketGraph's to search for the specified type of graph.
+     * @param type GraphType to match against inside RocketGraphs.
+     * @return A RocketDataAngleLineChart which matches the expected type.
+     */
+    private RocketDataAngleLineChart getAngleLineChartByGraphType(List<RocketGraph> graphs, GraphType type) {
+        return (RocketDataAngleLineChart) getGraphByGraphType(graphs, type);
     }
 
     /**

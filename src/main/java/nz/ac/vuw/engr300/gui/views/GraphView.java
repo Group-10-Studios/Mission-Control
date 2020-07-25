@@ -6,7 +6,7 @@ import java.util.List;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import nz.ac.vuw.engr300.gui.components.RocketAngleLineChart;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -90,9 +90,12 @@ public class GraphView implements View {
 
         this.graphs.add(new RocketDataLineChart("Time (s)", "Altitude (m)",
                         GraphType.ALTITUDE));
-        this.graphs.add(new RocketAngleLineChart("Time (s)", "Yaw Rate ()", false, GraphType.YAW_RATE));
-        this.graphs.add(new RocketAngleLineChart("Time (s)", "Pitch Rate ()", false, GraphType.PITCH_RATE));
-        this.graphs.add(new RocketAngleLineChart("Time (s)", "Roll Rate ()", false, GraphType.ROLL_RATE));
+        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Yaw Rate (°/s)",
+                false, GraphType.YAW_RATE));
+        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Pitch Rate (°/s)",
+                false, GraphType.PITCH_RATE));
+        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Roll Rate (°/s)",
+                false, GraphType.ROLL_RATE));
 
         this.graphs.add(new RocketDataAngle(true, GraphType.WINDDIRECTION));
         

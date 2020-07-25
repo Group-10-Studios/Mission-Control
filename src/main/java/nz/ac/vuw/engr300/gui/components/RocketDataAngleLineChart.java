@@ -18,33 +18,32 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.Colours;
 
 /**
- *
+ *  A hybrid between RocketDataAngle and RocketDataLineChart. This component has the functionality of both, with
+ *  a button to switch between the two display modes.
  *
  * @author Tim Salisbury
  */
-public class RocketAngleLineChart extends StackPane implements RocketGraph {
+public class RocketDataAngleLineChart extends StackPane implements RocketGraph {
     private boolean compassView = true;
 
     private GraphType type;
-    private RocketDataAngle angleComponent;
-    private RocketDataLineChart graphComponent;
+
+    private final RocketDataAngle angleComponent;
+    private final RocketDataLineChart graphComponent;
 
     /**
-     * Constructs a new RocketDataLineChart, note this will be most likely
-     * initialized in fxml code. For example, {@code
-     *      <RocketDataLineChart xLabel="Time (s)" yLabel
-    ="Altitude"/>
-     * }
+     * Constructs a new RocketDataAngleLineChart.
      *
      * @param xlabel        The x label for the line chart component.
      * @param ylabel        The y label for the line chart component.
      * @param isCompass     Whether or not the angle component is a compass or angle.
      * @param graphType     The GraphType this graph shows to represent its' ID.
      */
-    public RocketAngleLineChart(String xlabel, String ylabel, boolean isCompass, GraphType graphType) {
+    public RocketDataAngleLineChart(String xlabel, String ylabel, boolean isCompass, GraphType graphType) {
         this.graphComponent = new RocketDataLineChart(xlabel, ylabel, graphType);
         this.angleComponent = new RocketDataAngle(isCompass, graphType);
 
+        // Make sure width and height remain the same - Don't remove
         widthProperty().addListener(e -> {
             graphComponent.setPrefWidth(this.getWidth());
             angleComponent.setPrefWidth(this.getWidth());
@@ -54,8 +53,11 @@ public class RocketAngleLineChart extends StackPane implements RocketGraph {
             angleComponent.setPrefHeight(this.getHeight());
         });
 
+        // Initial view
         this.getChildren().add(angleComponent);
         Button switchViewButton = new Button();
+
+        // Load the icon
         ImageView buttonIcon = new ImageView("file:src/main/resources/icons/switch_graph_mode_icon.png");
         switchViewButton.setGraphic(buttonIcon);
         StackPane.setMargin(switchViewButton, new Insets(10));
@@ -68,7 +70,7 @@ public class RocketAngleLineChart extends StackPane implements RocketGraph {
 
         this.getChildren().add(switchViewButton);
 
-
+        this.setGraphType(graphType);
         this.setId(graphType.getGraphID());
     }
 
@@ -92,7 +94,7 @@ public class RocketAngleLineChart extends StackPane implements RocketGraph {
 
     @Override
     public GraphType getGraphType() {
-        return null;
+        return type;
     }
 
     @Override
