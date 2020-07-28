@@ -25,7 +25,6 @@ public class NavigationView implements View {
 
     private final GridPane root;
 
-    public WeatherController weatherC;
     public NavigationController navigationC;
 
 
@@ -35,6 +34,7 @@ public class NavigationView implements View {
      */
     public NavigationView(GridPane root) {
         this.root = root;
+        navigationC = new NavigationController();
         setupRoot();
 //        setupBatteries();
         setupWeather();
@@ -50,7 +50,7 @@ public class NavigationView implements View {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        weatherC = new WeatherController();
+        WeatherController weatherC = navigationC.getWeatherC();
 
         Label l1 = new Label();
         Label l2 = new Label();
