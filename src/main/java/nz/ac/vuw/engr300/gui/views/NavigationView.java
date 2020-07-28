@@ -2,9 +2,11 @@ package nz.ac.vuw.engr300.gui.views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.NavigationController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
@@ -36,9 +38,8 @@ public class NavigationView implements View {
         this.root = root;
         navigationC = new NavigationController();
         setupRoot();
-//        setupBatteries();
         setupWeather();
-//        setupGoNoGo();
+        setupButtons();
     }
 
     /**
@@ -90,6 +91,19 @@ public class NavigationView implements View {
 //
 //        // For the warnings controller
 //        navigationC = new NavigationController();
+    }
+
+    public void setupButtons(){
+        Pane pnButtons = new Pane();
+
+        ButtonController buttonC = navigationC.getButtonC();
+
+        for(Button b : buttonC.getPnNavButtons()){
+            pnButtons.getChildren().add(b);
+        }
+
+        addNodeToGrid(pnButtons, root, 1, 0);
+
     }
 
     /**

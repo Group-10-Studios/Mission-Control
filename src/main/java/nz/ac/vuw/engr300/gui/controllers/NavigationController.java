@@ -15,4 +15,7 @@ public class NavigationController {
     public WeatherController getWeatherC() {
         return weatherC;
     }
+    public ButtonController getButtonC() {
+        return buttonC;
+    }
 }
