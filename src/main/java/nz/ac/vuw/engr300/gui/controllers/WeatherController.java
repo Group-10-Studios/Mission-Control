@@ -2,6 +2,7 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
@@ -22,36 +23,6 @@ import java.io.FileNotFoundException;
 public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
     private static WeatherData w; //this is all the weather data stored
-    private final RocketDataAngle windCompass;
-    @FXML
-    private Label lbWindSpeed;
-    private Label lbWeatherTemp;
-    private Label lbWeatherHumidity;
-    private Label lbWeatherPressure;
-    private Label lbWeatherStatus;
-
-    /**
-     * Create a new WeatherController that stores weather data.
-     *
-     * @param wl          represents Wind Speed
-     * @param wa          represents Temperature
-     * @param wh          represents Air Humidity
-     * @param wp          represents Air Pressure
-     * @param ws          represents weather status
-     * @param windCompass represents Wind Direction
-     * @throws FileNotFoundException Thrown if the weather data file is missing from the system.
-     */
-    public WeatherController(Label wl, Label wa, Label wh, Label wp, Label ws, RocketDataAngle windCompass)
-            throws FileNotFoundException {
-        this.lbWindSpeed = wl;
-        this.lbWeatherTemp = wa;
-        this.lbWeatherHumidity = wh;
-        this.lbWeatherPressure = wp;
-        this.lbWeatherStatus = ws;
-        this.windCompass = windCompass;
-
-        setWeatherData();
-    }
 
     public static void setWeatherData() throws FileNotFoundException {
         WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
@@ -66,32 +37,53 @@ public class WeatherController {
      * displayed on the UI.
      */
 
-    public void updateWeatherInfo() {
+    public void updateWeatherInfo(Label label, String metric) {
         // Original windspeed data from weather data is measured in meter per second
         // Windspeed is converted to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
         // windpseed * 3.6
         WeatherData currentData = getWeatherData();
-        Double winSpeedMetric = Math.round((currentData.getWindSpeed() * 3.6) * 100.0) / 100.0;
+        switch (metric) {
+            case "windspeed":
+                Double winSpeedMetric = Math.round((currentData.getWindSpeed() * 3.6) * 100.0) / 100.0;
+                label.setText("Windspeed: " + winSpeedMetric + " km/h");
+                break;
+            case "weathertemp":
+                // Temperature is converted from Kelvin to Celcius: temp - 273.15, displayed up to 1 decimal place.
+                Double tempMetric = Math.round((currentData.getTemp() - 273.15) * 10.0) / 10.0;
+                label.setText("Temperature: " + tempMetric + " degrees");
+                break;
+            case "humidity":
+                // Air Humidity is displayed in percentage, up to 1 decimal place.
+                Double humid = Math.round((currentData.getHumidity()) * 10.0) / 10.0;
+                label.setText("Humidity: " + humid + " %");
+                break;
+            case "airpressure":
+                // Air Pressure is displayed in millibar, up to 1 decimal place
+                Double pressure = Math.round((currentData.getPressure()) * 10.0) / 10.0;
+                label.setText("Air Pressure: " + pressure + " mb");
+                break;
+            case "forecast":
+                // Sky forecast (rainy, cloudy, etc.)
+                String forecast = currentData.getCondition().getWeatherDescription();
+                String formattedForecast = WordUtils.capitalize(forecast);
+                label.setText("Weather status: " + formattedForecast);
+                break;
+        }
+
+
+
+
+
         // Wind angle is displayed in the compass tile.
-        windCompass.setAngle(currentData.getWindAngle());
-        lbWindSpeed.setText("Windspeed: " + winSpeedMetric + " km/h");
+        //TODO: sort out this --> windCompass.setAngle(currentData.getWindAngle());
 
-        // Temperature is converted from Kelvin to Celcius: temp - 273.15, displayed up to 1 decimal place.
-        Double tempMetric = Math.round((currentData.getTemp() - 273.15) * 10.0) / 10.0;
-        lbWeatherTemp.setText("Temperature: " + tempMetric + " degrees");
 
-        // Air Humidity is displayed in percentage, up to 1 decimal place.
-        Double humid = Math.round((currentData.getHumidity()) * 10.0) / 10.0;
-        lbWeatherHumidity.setText("Humidity: " + humid + " %");
 
-        // Air Pressure is displayed in millibar, up to 1 decimal place
-        Double pressure = Math.round((currentData.getPressure()) * 10.0) / 10.0;
-        lbWeatherPressure.setText("Air Pressure: " + pressure + " mb");
 
-        // Sky forecast (rainy, cloudy, etc.)
-        String forecast = currentData.getCondition().getWeatherDescription();
-        String formattedForecast = WordUtils.capitalize(forecast);
-        lbWeatherStatus.setText("Weather status: " + formattedForecast);
+
+
+
+
     }
 
     public WeatherData getWeatherData() {
