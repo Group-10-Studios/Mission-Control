@@ -543,9 +543,18 @@ We do not expect any expenditure for our project.
 
 ### 5.3 Risks
 
-Identify the ten most important project risks to achieving project goals: their type, likelihood, impact, and mitigation strategies (3 pages).
-
-If the project will involve any work outside the ECS laboratories, i.e. off-campus activities, these should be included in the following section.
+| Risk Type | Likelihood | Impact | Mitigation Strategies |
+|------|-------|-------|-----|
+| One or multiple group member got sick or facing other emergency issues | Likely | Significant | Even though the lockdown is over and students are able to return to campus for physical lectures and meetings, we still have the option to work from home if desired, this will reduce the risk of any of us getting sick. In the case that a team member is not well or facing some personal issues, we can rearrange the workload so that others can cover the tasks of the sick member(s). We will also make an effort to keep documentation of what has been done and what is being worked on, along with having weekly stand-up meetings to discuss what is being worked on, and to keep all team members updated of the current situation. |
+| The risk of misuse of computer equipment which leads to physical injuries | Unlikely | Moderate | We will ensure that all group members take regular breaks to stretch, walk around, and rest their eyes, to avoid Occupational Overuse Syndrome (OOS) and Repetitive Strain Injury (RSI). This risk, however, is very less likely to happen as all of us are experienced computer users. |
+| Team member(s) have other commitments come up resulting in not having enough time to spend working on the project | Possible | Significant | We will keep open communication about outside commitments, so that only a reasonable time commitment is expected of each member per week. If necessary, we will adjust the duties of overburdened members to keep the workload reasonable. |
+| Current member(s) leave the project/new member(s) joining the project | Possible | Moderate | We will commit work regularly and keep clear documentation of progress, meeting minutes so that team member changes mean duties can be picked up smoothly, and that no work is lost. |
+| Personal equipment/Pipeline Server failure | Possible | Severe | As most of us are working remotely using our own devices and equipment, personal computers are crucial in order to do work. Fortunately, 4 out of 6 members have a secondary machine to work on. ECS computers at the university labs can also be used to complete the work. Our pipeline is currently running on a home server deployed by Nathan, one of our team members, he is putting in a lot of effort to ensure that the server for our pipeline is running 24/7. |
+| Natural Disasters (earthquake, pandemic, tsunami, etc.) | Possible | Catastrophic | We have absolutely no control over natural disasters. |
+| Changes to the project requirements/System modification is required | Possible | Moderate | We will maintain regular contact with the customer to ensure that we are aware and understand the customer’s needs and requirements, to avoid misunderstanding the project requirements. The code base will be modular and as flexible as possible, to ensure that changes to the requirements do not require large changes to our system, and modifications can be added. |
+| Project completion time was underestimated | Likely | Severe | We will regularly review the progress we have made at each weekly meeting to ensure that we are making sufficient progress on the project according to our plans. If we have underestimated the time requirement, this will become clear and we will be able to adjust accordingly. |
+| Team member(s) lack certain skills to complete the given task | Likely | Significant | We will try to keep communication open so that we are aware of each member's skills and abilities, along with their skill level in certain areas. Each members can assist each other on certain tasks if help is needed. |
+| Conflicts between team members | Possible | Severe | Mutual understanding and compromise are highly encouraged among us, if there are any disagreements between members, we will thoroughly discuss the matter and go with the decision agreed upon by the most members. |
 
 ### 5.4 Health and Safety
 
@@ -596,6 +605,7 @@ A one page statement of contributions, including a list of each member of the gr
 **Jake Mai:**
 - Section 1.3.3
 - Use cases in section 3.2
+- Section 5.3
 - Section 5.4
 - Section 4
 - Section 3.6
