@@ -607,6 +607,7 @@ A one page statement of contributions, including a list of each member of the gr
 **Jake Mai:**
 - Section 1.3.3
 - Use cases in section 3.2
+- Section 5.3
 - Section 5.4
 - Section 4
 - Section 3.6
