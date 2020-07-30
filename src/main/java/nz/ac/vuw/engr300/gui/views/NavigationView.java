@@ -126,8 +126,8 @@ public class NavigationView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         //TODO: Find out how to get the graphs
-        runSimButton.setOnAction(e -> graphC.runSim());
-        pastFlightsButton.setOnAction(e -> graphC.runSim());
+//        runSimButton.setOnAction(e -> graphC.runSim());
+//        pastFlightsButton.setOnAction(e -> graphC.runSim());
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
