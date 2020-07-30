@@ -1,11 +1,15 @@
 package nz.ac.vuw.engr300.gui.views;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.NavigationController;
@@ -97,28 +101,22 @@ public class NavigationView implements View {
         Pane pnButtons = new Pane();
 
         ButtonController buttonC = navigationC.getButtonC();
+        buttonC.updateButtons();
 
-        for(Button b : buttonC.getPnNavButtons()){
-            pnButtons.getChildren().add(b);
-        }
+        ListView<Button> list = new ListView<>();
+        ObservableList<Button> observableList = FXCollections.observableArrayList();
+        observableList.addAll(buttonC.getPnNavButtons());
+        list.setItems((observableList));
 
-        addNodeToGrid(pnButtons, root, 1, 0);
+        addNodeToGrid(list, root, 1, 0);
 
     }
 
-    /**
-     * Create new Batteries Level pane on the top right hand side root panel.
-     */
-//    private void setupBatteries() {
-//        // Create and populate batteries in a HBox
-//        HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), weatherC);
-//        addNodeToGrid(batteryHBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
-//    }
 
     /**
      * Create Go/NoGo button at the bottom of the right hand side root panel using VBox.
      */
-//    private void setupGoNoGo() {
+    private void setupGoNoGo() {
 //        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
 //                CornerRadii.EMPTY, Insets.EMPTY)));
 //        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
@@ -137,7 +135,7 @@ public class NavigationView implements View {
 //        // Set it to hug the warnings above it
 //        GridPane.setValignment(goNoGoVBox, VPos.TOP);
 //        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
-//    }
+    }
 
     /**
      * Set up the root panel on the right hand side which wraps around other panes.
