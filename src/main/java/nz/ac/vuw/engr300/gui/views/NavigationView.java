@@ -4,20 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
-import nz.ac.vuw.engr300.gui.controllers.InformationController;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.controllers.NavigationController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
@@ -30,8 +29,10 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 public class NavigationView implements View {
 
     private final GridPane root;
-
     public NavigationController navigationC;
+
+    public Button pastFlightsButton = new Button("Past Flights");
+    public Button runSimButton = new Button("Run Simulation");
 
 
     /**
@@ -55,7 +56,7 @@ public class NavigationView implements View {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        WeatherController weatherC = navigationC.getWeatherC();
+        WeatherController weatherC = navigationC.getWeatherController();
 
         Label l1 = new Label();
         Label l2 = new Label();
@@ -100,7 +101,7 @@ public class NavigationView implements View {
     public void setupButtons(){
         Pane pnButtons = new Pane();
 
-        ButtonController buttonC = navigationC.getButtonC();
+        ButtonController buttonC = navigationC.getButtonController();
         buttonC.updateButtons();
 
         ListView<Button> list = new ListView<>();
@@ -114,27 +115,30 @@ public class NavigationView implements View {
 
 
     /**
-     * Create Go/NoGo button at the bottom of the right hand side root panel using VBox.
+     *
      */
-    private void setupGoNoGo() {
-//        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
-//                CornerRadii.EMPTY, Insets.EMPTY)));
-//        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
-//                CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//        goButton.setOnAction(e -> infController.onGo(e));
-//        noGoButton.setOnAction(e -> infController.onNoGo(e));
-//
-//        // Create and populate go no go at bottom of right hand side
-//        VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-//                goButton, noGoButton);
-//        // Literally just for setting background colour
-//        goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
-//                CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//        // Set it to hug the warnings above it
-//        GridPane.setValignment(goNoGoVBox, VPos.TOP);
-//        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
+    private void setupSimulationButtons() {
+        GraphController graphC = navigationC.getGraphController();
+
+        pastFlightsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        runSimButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        //TODO: Find out how to get the graphs
+        runSimButton.setOnAction(e -> graphC.runSim());
+        pastFlightsButton.setOnAction(e -> graphC.runSim());
+
+        // Create and populate go no go at bottom of right hand side
+        VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
+                pastFlightsButton, runSimButton);
+        // Literally just for setting background colour
+        goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // Set it to hug the warnings above it
+        GridPane.setValignment(goNoGoVBox, VPos.TOP);
+        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
     }
 
     /**

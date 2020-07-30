@@ -1,21 +1,24 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import javafx.scene.layout.Pane;
-
 public class NavigationController {
 
-    private WeatherController weatherC;
-    private ButtonController buttonC;
+    private WeatherController weatherController;
+    private ButtonController buttonController;
+    private GraphController graphController;
 
     public NavigationController() {
-        weatherC = new WeatherController();
-        buttonC = new ButtonController();
+        weatherController = new WeatherController();
+        buttonController = new ButtonController();
+        graphController = new GraphController();
     }
 
-    public WeatherController getWeatherC() {
-        return weatherC;
+    public WeatherController getWeatherController() {
+        return weatherController;
     }
-    public ButtonController getButtonC() {
-        return buttonC;
+    public ButtonController getButtonController() {
+        return buttonController;
+    }
+    public GraphController getGraphController() {
+        return graphController;
     }
 }
