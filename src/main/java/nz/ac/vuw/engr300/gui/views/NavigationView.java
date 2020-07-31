@@ -47,6 +47,7 @@ public class NavigationView implements View {
         setupRoot();
         setupWeather();
         setupButtons();
+        setupSimulationButtons();
     }
 
     /**
@@ -130,19 +131,19 @@ public class NavigationView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         //TODO: Find out how to get the graphs
-//        runSimButton.setOnAction(e -> graphC.runSim());
-//        pastFlightsButton.setOnAction(e -> graphC.runSim());
+        runSimButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
+        pastFlightsButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
 
         // Create and populate go no go at bottom of right hand side
-        VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
+        VBox vBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 pastFlightsButton, runSimButton);
         // Literally just for setting background colour
-        goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
+        vBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         // Set it to hug the warnings above it
-        GridPane.setValignment(goNoGoVBox, VPos.TOP);
-        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
+        GridPane.setValignment(vBox, VPos.TOP);
+        addNodeToGrid(vBox, root, 2, 0, Insets.EMPTY);
     }
 
     /**
