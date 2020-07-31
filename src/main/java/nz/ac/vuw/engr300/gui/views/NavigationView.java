@@ -29,6 +29,7 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 public class NavigationView implements View {
 
     private final GridPane root;
+    private final GraphView graphView;
     public NavigationController navigationC;
 
     public Button pastFlightsButton = new Button("Past Flights");
@@ -39,7 +40,8 @@ public class NavigationView implements View {
      * Add Batteries and warning sections of right hand side panel.
      * @param root The root Gridpane where we will be adding nodes to.
      */
-    public NavigationView(GridPane root) {
+    public NavigationView(GridPane root, GraphView graphView) {
+        this.graphView = graphView;
         this.root = root;
         navigationC = new NavigationController();
         setupRoot();
@@ -102,7 +104,7 @@ public class NavigationView implements View {
         Pane pnButtons = new Pane();
 
         ButtonController buttonC = navigationC.getButtonController();
-        buttonC.updateButtons();
+        buttonC.updateButtons(graphView);
 
         ListView<Button> list = new ListView<>();
         ObservableList<Button> observableList = FXCollections.observableArrayList();

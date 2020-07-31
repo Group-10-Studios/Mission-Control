@@ -1,5 +1,7 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import nz.ac.vuw.engr300.gui.views.GraphView;
+
 public class NavigationController {
 
     private WeatherController weatherController;

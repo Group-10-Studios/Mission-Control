@@ -90,9 +90,9 @@ public class HomeView implements View {
 
         addNodeToGrid(contentGrid, root, 1, 0);
 
+        setupCenterPanel(contentGrid);
         setupRightHandSidePanel(contentGrid);
         setupLeftHandSidePanel(contentGrid);
-        setupCenterPanel(contentGrid);
 
         // Assert they are created - mainly to bypass Spot bugs issues.
         assert this.navigationView != null;
@@ -158,7 +158,7 @@ public class HomeView implements View {
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
         addNodeToGrid(leftHandSidePanel, contentGrid, 0, 0, Insets.EMPTY);
 
-        this.navigationView = new NavigationView(leftHandSidePanel);
+        this.navigationView = new NavigationView(leftHandSidePanel, graphView);
 
         //********** CODE LEFT FOR REFERENCE - DELETE WHEN DONE **********
         //// One column, 100 percent of width

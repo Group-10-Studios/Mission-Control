@@ -1,11 +1,12 @@
 package nz.ac.vuw.engr300.gui.views;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -26,6 +27,8 @@ public class GraphView implements View {
     private final DynamicGridPane contentPane;
     private List<RocketGraph> graphs;
     private final GraphController controller;
+
+    private GraphType highlightedGraph;
 
     /**
      * Create new GraphView.
@@ -60,6 +63,43 @@ public class GraphView implements View {
      */
     public GraphController getController() {
         return this.controller;
+    }
+
+    /**
+     * Get all of the RocketGraph's within this view.
+     *
+     * @return Unmodifiable list view of the rocket graphs.
+     */
+    public List<RocketGraph> getGraphs() {
+        return Collections.unmodifiableList(this.graphs);
+    }
+
+    /**
+     * Get the current highlighted rocket graph.
+     *
+     * @return The graph type of the highlighted graph.
+     */
+    public GraphType getHighlightedGraph() {
+        return this.highlightedGraph;
+    }
+
+    /**
+     * Highlight the specific graph with a border. Providing the chart region to highlight
+     * (apply border to) and the graphtype to store the current highlighted graph.
+     *
+     * @param chartRegion Region to place the border around when highlighted.
+     * @param graphToHighlight GraphType to record the current highlighted graph.
+     */
+    public void highlightGraph(Region chartRegion, GraphType graphToHighlight) {
+        if (graphToHighlight == this.highlightedGraph) {
+            chartRegion.setBorder(null);
+            this.highlightedGraph = null;
+
+        } else {
+            chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
+                    new CornerRadii(5.0), new BorderWidths(2.0))));
+            this.highlightedGraph = graphToHighlight;
+        }
     }
     
     /**

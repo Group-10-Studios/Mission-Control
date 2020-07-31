@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.views.GraphView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class ButtonController {
 
     private List<Button> pnNavButtons = new ArrayList<>();
 
-    public void updateButtons(){
+    public void updateButtons(GraphView graphView){
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
@@ -85,24 +86,15 @@ public class ButtonController {
             });
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
-//                for (RocketGraph chart : this.graphs) {
-//                    // Get the chart as a region to set the Border
-//                    Region chartRegion = (Region) chart;
-//                    if (chart.getGraphType() == thisGraph && thisGraph != this.highlightedGraph) {
-//                        chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-//                                new CornerRadii(5.0), new BorderWidths(2.0))));
-//                        this.highlightedGraph = thisGraph;
-//                    } else if (chart.getGraphType() == thisGraph && thisGraph == this.highlightedGraph) {
-//                        // Ensure the clicked type is thisGraph and check if it is already clicked.
-//                        chartRegion.setBorder(null);
-//
-//                        // Set the highlighted graph to null if already highlighted before.
-//                        // This is for turning off highlighting to re-enable.
-//                        this.highlightedGraph = null;
-//                    } else {
-//                        chartRegion.setBorder(null);
-//                    }
-//                }
+                for (RocketGraph chart : graphView.getGraphs()) {
+                    // Get the chart as a region to set the Border
+                    Region chartRegion = (Region) chart;
+                    if (chart.getGraphType() == thisGraph) {
+                        graphView.highlightGraph(chartRegion, thisGraph);
+                    } else {
+                        chartRegion.setBorder(null);
+                    }
+                }
             });
             pnNavButtons.add(b);
         }
