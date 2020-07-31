@@ -123,7 +123,7 @@ public class NavigationView implements View {
      *
      */
     private void setupSimulationButtons() {
-        GraphController graphC = navigationC.getGraphController();
+        GraphController graphC = graphView.getController();
 
         pastFlightsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
