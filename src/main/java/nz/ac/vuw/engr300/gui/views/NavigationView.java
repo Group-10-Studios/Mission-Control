@@ -106,13 +106,15 @@ public class NavigationView implements View {
         ButtonController buttonC = navigationC.getButtonController();
         buttonC.updateButtons(graphView);
 
-        ListView<Button> list = new ListView<>();
-        ObservableList<Button> observableList = FXCollections.observableArrayList();
-        observableList.addAll(buttonC.getPnNavButtons());
-        list.setItems((observableList));
+//        ListView<Button> list = new ListView<>();
+//        ObservableList<Button> observableList = FXCollections.observableArrayList();
+//        observableList.addAll(buttonC.getPnNavButtons());
+//        list.setItems((observableList));
+//
+//        addNodeToGrid(list, root, 1, 0);
 
-        addNodeToGrid(list, root, 1, 0);
-
+        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
+        addNodeToGrid(buttons, root, 1, 0);
     }
 
 

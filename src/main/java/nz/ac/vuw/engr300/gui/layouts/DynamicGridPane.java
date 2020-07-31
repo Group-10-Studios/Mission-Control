@@ -63,6 +63,18 @@ public class DynamicGridPane extends GridPane {
     }
 
     /**
+     * Add a new array of regions into the GridPane contents and update the contents once added.
+     *
+     * @param gridContents Array of regions to be added within this GridPane.
+     */
+    public void addGridContents(Region... gridContents) {
+        for (Region content : gridContents) {
+            addGridContent(content, false);
+        }
+        updateContents();
+    }
+
+    /**
      * Add a new region into the GridPane contents and update the contents once added.
      *
      * @param gridContent Region to be added within this GridPane.

@@ -75,6 +75,17 @@ public class GraphView implements View {
     }
 
     /**
+     * Update the graph contents to the provided list of graphs in this list.
+     *
+     * @param graphs List of rocket graphs
+     */
+    public void updateGraphs(List<RocketGraph> graphs) {
+        this.graphs = graphs;
+        this.contentPane.clearGridContents();
+        this.contentPane.addGridContents(allGraphs());
+    }
+
+    /**
      * Get the current highlighted rocket graph.
      *
      * @return The graph type of the highlighted graph.
