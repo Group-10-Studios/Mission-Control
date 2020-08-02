@@ -598,6 +598,8 @@ A one page statement of contributions, including a list of each member of the gr
 **Ahad Rahman:**
 - Section 1.3.4
 - Use cases in section 3.2
+- Section 1
+- General tidy-up and review
 
 **Jake Mai:**
 - Section 1.3.3
