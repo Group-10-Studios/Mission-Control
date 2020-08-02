@@ -12,12 +12,13 @@ All team members are expected to contribute equally to the document and list the
 
 <div style="page-break-after: always;"></div>
 
-# ENGR 301 Project *10* Project Proposal and Requirements Document
-#### Author list, a comma-separated list of the names of each member of the team.
+# ENGR 301/302 Project *10* Project Proposal and Requirements Document
+#### Ahad Rahman, Jake Mai, Nalin Aswani, Nathan Duckett, Tim Salisbury, Joshua Harwood
 
 ## 1. Introduction
 
-One page overall introduction including sections 1.1 and 1.2.
+As part of our ENGR 301/302 courses, our group project will create Mission Control Software to provide real-time rocket flight data to the user.
+This is a full year project, expected to last from March 2020 to October 2020.
 
 ### Client
 
@@ -101,8 +102,6 @@ We are aware that that our software system might be shared among the Hobby Rocke
 
 #### 1.3.4 Limitations
 
-One page on the limitations on the product (9.5.6)
-
 Limitations, in reference to this document, will be defined as any restrictions and/or shortcomings of our product that would have otherwise been more ideal given the project requirements.
 
 - **Weather:** Our mission control software should display the current weather. Not only does this help determine if the current conditions allow for safe flying, the wind data can help determine the probable landing position of the rocket. However, due to the inaccessibility of an internet connection at the launching site, obtaining real time weather data is not possible. Our mission control software allows us to download weather data beforehand, which will be used to display weather related information during the rocket's flight.
@@ -120,8 +119,6 @@ Limitations, in reference to this document, will be defined as any restrictions 
 References to other documents or standards. Follow the IEEE Citation  Reference scheme, available from the [IEEE website](https://www.ieee.org/) (please use the search box). (1 page, longer if required)
 
 ## 3. Specific requirements  
-
-20 pages outlining the requirements of the system. You should apportion these pages across the following subsections to focus on the most important parts of your product.
 
 ### 3.1 External interfaces
 
