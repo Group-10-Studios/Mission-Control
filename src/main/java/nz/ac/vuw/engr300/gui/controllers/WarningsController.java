@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
-import java.io.FileNotFoundException;
 
 public class WarningsController {
 

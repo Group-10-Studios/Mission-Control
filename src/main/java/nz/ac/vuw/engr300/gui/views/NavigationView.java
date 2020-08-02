@@ -1,13 +1,10 @@
 package nz.ac.vuw.engr300.gui.views;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
@@ -24,7 +21,7 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 /**
  * Represents the left panel, which displays navigation controls.
  *
- * @author Tim Salisbury
+ * @author Tim Salisbury, Ahad Rahman
  */
 public class NavigationView implements View {
 
@@ -51,7 +48,7 @@ public class NavigationView implements View {
     }
 
     /**
-     * Create new Warnings pane on the right hand side root panel.
+     * Display the weather at the top of the left panel
      */
     private void setupWeather(){
         try {
@@ -74,53 +71,21 @@ public class NavigationView implements View {
 
         VBox weatherVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), l1, l2, l3, l4, l5);
         addNodeToGrid(weatherVBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
-
-
-
-
-
-
-
-//
-//        //Setup the 5 labels that we want, with empty text
-//        String[] metrics = new String[] {"windspeed", "weathertemp", "humidity", "airpressure", "forecast"};
-//
-//        for (int i = 0; i < metrics.length; i++) {
-//            Label label = new Label();
-//            weatherC.updateWeatherInfo(label, metrics[i]);
-//        }
-//
-//        // VBox .. put the labels inside there
-//
-//
-//
-//
-//
-//
-//        // For the warnings controller
-//        navigationC = new NavigationController();
     }
 
+    /**
+     * Display the navigation buttons on the left panel
+     */
     public void setupButtons(){
-        Pane pnButtons = new Pane();
-
         ButtonController buttonC = navigationC.getButtonController();
         buttonC.updateButtons(graphView);
-
-//        ListView<Button> list = new ListView<>();
-//        ObservableList<Button> observableList = FXCollections.observableArrayList();
-//        observableList.addAll(buttonC.getPnNavButtons());
-//        list.setItems((observableList));
-//
-//        addNodeToGrid(list, root, 1, 0);
-
         VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
     }
 
 
     /**
-     *
+     * Displays the Run Flights and Simulation Buttons on the bottom of the left panel
      */
     private void setupSimulationButtons() {
         GraphController graphC = navigationC.getGraphController();
@@ -134,7 +99,6 @@ public class NavigationView implements View {
         runSimButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
         pastFlightsButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
 
-        // Create and populate go no go at bottom of right hand side
         VBox vBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 pastFlightsButton, runSimButton);
         // Literally just for setting background colour

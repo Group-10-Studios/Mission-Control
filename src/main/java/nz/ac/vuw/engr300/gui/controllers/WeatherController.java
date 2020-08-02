@@ -30,17 +30,13 @@ public class WeatherController {
     }
 
     /**
-     * updateWeatherInfo creates a new instance of WeatherImporter, process the
+     * Creates a new instance of WeatherImporter, process the
      * information from output.json and creates a new instance of Weather Data to
      * grab the specific weather condition: windspeed, temperature, humidity,
      * air pressure and weather status. The data will be formatted accordingly and
      * displayed on the UI.
      */
-
     public void updateWeatherInfo(Label label, String metric) {
-        // Original windspeed data from weather data is measured in meter per second
-        // Windspeed is converted to km/h: windspeed * 60 * 60 /1000 = windspeed * 3600/1000 =
-        // windpseed * 3.6
         WeatherData currentData = getWeatherData();
         switch (metric) {
             case "windspeed":
@@ -69,21 +65,6 @@ public class WeatherController {
                 label.setText("Weather status: " + formattedForecast);
                 break;
         }
-
-
-
-
-
-        // Wind angle is displayed in the compass tile.
-        //TODO: sort out this --> windCompass.setAngle(currentData.getWindAngle());
-
-
-
-
-
-
-
-
     }
 
     public WeatherData getWeatherData() {

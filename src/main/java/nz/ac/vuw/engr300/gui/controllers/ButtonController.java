@@ -2,19 +2,21 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Controller to handle the buttons that are linked to the graph on the left side panel
+ *
+ *
+ * @author Ahad Rahman
+ */
 public class ButtonController {
 
     private static final double BUTTON_HEIGHT = 30;
@@ -100,6 +102,7 @@ public class ButtonController {
         }
 
     }
+
     public Button[] getPnNavButtons() {
         return pnNavButtons.toArray(new Button[pnNavButtons.size()]);
     }
