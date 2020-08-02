@@ -88,7 +88,7 @@ public class NavigationView implements View {
      * Displays the Run Flights and Simulation Buttons on the bottom of the left panel
      */
     private void setupSimulationButtons() {
-        GraphController graphC = navigationC.getGraphController();
+        GraphController graphC = graphView.getController();
 
         pastFlightsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
