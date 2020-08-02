@@ -131,6 +131,7 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage("你好", latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            fail("Expected Error to be thrown on importImage");
         } catch (Error e) {
             assert (true);
         }
