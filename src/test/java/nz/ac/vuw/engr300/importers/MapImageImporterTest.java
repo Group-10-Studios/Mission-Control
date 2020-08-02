@@ -8,8 +8,7 @@ import javax.imageio.ImageIO;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests to verify that the imported image from TomTom is correct and valid.
