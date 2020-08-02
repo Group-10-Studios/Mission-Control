@@ -68,7 +68,7 @@ public class MapImageImporterTest {
     }
 
     /**
-     * Expects an illegal argument exception as the latitude is outside the valid range
+     * Expects an illegal argument exception as the latitude is outside the valid range.
      */
     @Test
     public void test_InvalidLatitude() {
@@ -86,7 +86,7 @@ public class MapImageImporterTest {
     }
 
     /**
-     * Expects an illegal argument exception as the longitude is outside the valid range
+     * Expects an illegal argument exception as the longitude is outside the valid range.
      */
     @Test
     public void test_InvalidLongitude() {
@@ -104,7 +104,7 @@ public class MapImageImporterTest {
     }
 
     /**
-     * Expects an illegal argument exception as the zoom level is outside the valid range
+     * Expects an illegal argument exception as the zoom level is outside the valid range.
      */
     @Test
     public void test_InvalidZoomLevel() {
@@ -121,7 +121,7 @@ public class MapImageImporterTest {
     }
 
     /**
-     * URL cannot contain non-ASCII characters, so by using chinese characters as the api key, an Error is thrown
+     * URL cannot contain non-ASCII characters, so by using chinese characters as the api key, an Error is thrown.
      */
     @Test
     public void test_InvalidCharacters() {
