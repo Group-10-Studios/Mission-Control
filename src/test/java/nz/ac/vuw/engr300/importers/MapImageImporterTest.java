@@ -1,8 +1,5 @@
 package nz.ac.vuw.engr300.importers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +8,8 @@ import javax.imageio.ImageIO;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests to verify that the imported image from TomTom is correct and valid.
@@ -68,6 +67,9 @@ public class MapImageImporterTest {
         assertEquals(true, f.exists());
     }
 
+    /**
+     * Expects an illegal argument exception as the latitude is outside the valid range
+     */
     @Test
     public void test_InvalidLatitude() {
         double latitude = -104.378432; // Latitude should be between -85 and 85
@@ -83,6 +85,9 @@ public class MapImageImporterTest {
         }
     }
 
+    /**
+     * Expects an illegal argument exception as the longitude is outside the valid range
+     */
     @Test
     public void test_InvalidLongitude() {
         double latitude = -64.378432; // Latitude should be between -85 and 85
@@ -98,6 +103,9 @@ public class MapImageImporterTest {
         }
     }
 
+    /**
+     * Expects an illegal argument exception as the zoom level is outside the valid range
+     */
     @Test
     public void test_InvalidZoomLevel() {
         double latitude = -40.303442;
@@ -108,6 +116,23 @@ public class MapImageImporterTest {
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
         } catch (IllegalArgumentException e) {
+            assert (true);
+        }
+    }
+
+    /**
+     * URL cannot contain non-ASCII characters, so by using chinese characters as the api key, an Error is thrown
+     */
+    @Test
+    public void test_InvalidCharacters() {
+        double latitude = -40.303442;
+        double longitude = 175.764319;
+        int zoomLevel = 16; // Number between 0-22
+        int imageWidth = 300; // Width of the output file
+        int imageHeight = 300; // Height of the output file
+        try {
+            MapImageImporter.importImage("你好", latitude, longitude, zoomLevel, imageWidth, imageHeight);
+        } catch (Error e) {
             assert (true);
         }
     }
