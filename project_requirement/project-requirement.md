@@ -354,6 +354,80 @@ rectangle mission-control {
 @enduml
 ```
 
+### Hide a graph
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+   user -> (Click hide icon in left panel)
+   (Click hide icon in left panel) -> (Mark graph invisible)
+   (Mark graph invisible) -> (Update display)
+   (Update display) .> user : views
+}
+@enduml
+```
+
+### Show a graph
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+   user -> (Click unhide icon in left panel)
+   (Click unhide icon in left panel) -> (Mark graph visible)
+   (Mark graph visible) -> (Update display)
+   (Update display) .> user : views
+}
+@enduml
+```
+
+### Switch between angle and graph view
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+   user -> (Click switch button in top right)
+   (Click switch button in top right) -> (Switches graph to other type)
+   (Switches graph to other type) -> (Update graph contents)
+   (Update graph contents) .> user : views
+}
+@enduml
+```
+
+### Set launch parameters
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+   user -> (Click set launch parameters)
+   (Click set launch parameters) -> (Open pop up to input parameters)
+   user .> (Open pop up to input parameters) : types
+   (Open pop up to input parameters) -> (Save parameters to configuration file)
+}
+@enduml
+```
+
+### Verify launch parameters
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor user
+rectangle mission-control {
+  user .> (Display RocketEvent saying parameter invalid) : views
+  (Load launch parameters) -> (Check current status against parameters)
+  (Check current status against parameters) .> (Display RocketEvent saying parameter invalid) : If the actual value invalidates parameter
+}
+@enduml
+```
+
 
 ### 3.3 Usability Requirements
 
