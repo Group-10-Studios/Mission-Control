@@ -30,7 +30,7 @@ public class ButtonController {
      */
     public void updateButtons(GraphView graphView) {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
-        ButtonSelected buttonSelected = new ButtonSelected();
+        //ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
         for (String label : labels) {
             Button b = new Button(label);
@@ -140,7 +140,7 @@ public class ButtonController {
      * @author Ahad Rahman
      */
     static class ButtonSelected {
-        double originalY;
-        double nextY;
+        //double originalY;
+        //double nextY;
     }
 }
