@@ -5,7 +5,11 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
@@ -48,9 +52,9 @@ public class NavigationView implements View {
     }
 
     /**
-     * Display the weather at the top of the left panel
+     * Display the weather at the top of the left panel.
      */
-    private void setupWeather(){
+    private void setupWeather() {
         try {
             WeatherController.setWeatherData();
         } catch (FileNotFoundException e) {
@@ -74,9 +78,9 @@ public class NavigationView implements View {
     }
 
     /**
-     * Display the navigation buttons on the left panel
+     * Display the navigation buttons on the left panel.
      */
-    public void setupButtons(){
+    public void setupButtons() {
         ButtonController buttonC = navigationC.getButtonController();
         buttonC.updateButtons(graphView);
         VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
@@ -85,7 +89,7 @@ public class NavigationView implements View {
 
 
     /**
-     * Displays the Run Flights and Simulation Buttons on the bottom of the left panel
+     * Displays the Run Flights and Simulation Buttons on the bottom of the left panel.
      */
     private void setupSimulationButtons() {
         GraphController graphC = graphView.getController();
@@ -99,15 +103,15 @@ public class NavigationView implements View {
         runSimButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
         pastFlightsButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
 
-        VBox vBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
+        VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 pastFlightsButton, runSimButton);
         // Literally just for setting background colour
-        vBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
+        vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         // Set it to hug the warnings above it
-        GridPane.setValignment(vBox, VPos.TOP);
-        addNodeToGrid(vBox, root, 2, 0, Insets.EMPTY);
+        GridPane.setValignment(vbox, VPos.TOP);
+        addNodeToGrid(vbox, root, 2, 0, Insets.EMPTY);
     }
 
     /**

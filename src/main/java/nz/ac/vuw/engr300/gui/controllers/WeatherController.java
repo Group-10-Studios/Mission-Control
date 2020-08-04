@@ -64,6 +64,8 @@ public class WeatherController {
                 String formattedForecast = WordUtils.capitalize(forecast);
                 label.setText("Weather status: " + formattedForecast);
                 break;
+            default:
+                break;
         }
     }
 

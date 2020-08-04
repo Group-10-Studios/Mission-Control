@@ -1,7 +1,7 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
 /**
- * Controller responsible for the controllers that make up the left side panel
+ * Controller responsible for the controllers that make up the left side panel.
  *
  * @author Ahad Rahman
  */
@@ -11,6 +11,9 @@ public class NavigationController {
     private ButtonController buttonController;
     private GraphController graphController;
 
+    /**
+     * Creates instances of the necessary controllers.
+     */
     public NavigationController() {
         weatherController = new WeatherController();
         buttonController = new ButtonController();
@@ -20,9 +23,11 @@ public class NavigationController {
     public WeatherController getWeatherController() {
         return weatherController;
     }
+
     public ButtonController getButtonController() {
         return buttonController;
     }
+    
     public GraphController getGraphController() {
         return graphController;
     }
