@@ -3,9 +3,14 @@ package nz.ac.vuw.engr300.gui.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;

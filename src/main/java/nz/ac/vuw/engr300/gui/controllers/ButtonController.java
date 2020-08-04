@@ -119,7 +119,7 @@ public class ButtonController {
      * @param labels The labels we are comparing the graphs to.
      */
     private void reorderGraphs(List<String> labels, GraphView graphView) {
-//        List<RocketGraph> originalGraphs = graphView.getGraphs();
+        // List<RocketGraph> originalGraphs = graphView.getGraphs();
         List<RocketGraph> updatedGraphs = new ArrayList<>(graphView.getGraphs());
         for (int i = 0; i < labels.size(); i++) {
             for (int j = 0; j < updatedGraphs.size(); j++) {
