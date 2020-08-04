@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
