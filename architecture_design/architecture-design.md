@@ -95,24 +95,13 @@ system. The use cases are used to illustrate our system as a whole, furthermore 
 
 ### 4. Architectural Views
 
-(5 sub-sections of 2 pages each sub-section, per 42010, 5.5, 5.6, with reference to Annex F of both 12207 and 15288)
-
-Describe your system's architecture in a series of architectural views, each view corresponding to one viewpoint.
-
-You should include views from the following viewpoints (from Kruchten's 4+1 model):
-
+To describe our system's architecture, we used Krutchen's 4+1 model.
+The following views are desribed from the follow viewpoints:
  * Logical
  * Development
  * Process
  * Physical
- * Scenarios - present scenarios illustrating how two of your most important use cases are supported by your architecture
-
-As appropriate you should include the following viewpoints:
-
- * Circuit Architecture
- * Hardware Architecture
-
-Each architectural view should include at least one architectural model. If architectural models are shared across views, refer back to the first occurrence of that model in your document, rather than including a separate section for the architectural models.
+ * Scenarios
 
 ### 4.1 Logical
 According to  Kruchten's 4+1 model, the Logical viewpoint looks at the End-user functionality. This section will refer heavily to Project Requirement section 1.3.2 (Product Functions) and Architecture Design section 4.3 (Process).
@@ -278,10 +267,6 @@ to be able to be reverted in the case of an emergency to stop the rocket from be
 
 ## 5. Development Schedule
 
-_For each subsection, make clear what (if anything) has changed from the requirements document._ If unchanged, these sections should be copied over from the requirements document, not simply cross-referenced.
-
-Schedules must be justified and supported by evidences; they must be either direct client requirements or direct consequences of client requirements. If the requirements document did not contain justifications or supporting evidences, then both must be provided here.
-
 ### 5.1 Schedule
 * 13/05/2020 Initial Prototype UI Proposal to Customer - On this date the initial prototype UI should be proposed to the customer. This will
 allow for crucial feedback on our prototype to ensure we are on the right track and building a satisfactory product.
@@ -379,7 +364,9 @@ One page glossary as required
 - Section 5.4: Health and Safety
 
 **Ahad Rahman:**
+- Section 4.0 Architectural Views
 - Section 4.2 Development
+- General tidy-up and review
 
 **Tim Salisbury:**
 - Section 4.4 Physical
