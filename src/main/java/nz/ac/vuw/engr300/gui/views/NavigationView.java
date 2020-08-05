@@ -103,6 +103,8 @@ public class NavigationView implements View {
         runSimButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
         pastFlightsButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
 
+        runSimButton.setId("btnRunSim");
+
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 pastFlightsButton, runSimButton);
         // Literally just for setting background colour
