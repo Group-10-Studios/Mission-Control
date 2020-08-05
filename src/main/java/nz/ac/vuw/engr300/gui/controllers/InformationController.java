@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 
@@ -14,7 +15,7 @@ public class InformationController {
      * Separate thread to run the battery timers on.
      */
     private Thread batteryThread;
-    private WarningsController warnC;
+    private static WarningsController warnC;
 
     public InformationController(Pane pnWarnings) {
         warnC = new WarningsController(pnWarnings);
@@ -92,5 +93,12 @@ public class InformationController {
                 "Waiting for rocket to be armed", "(Pretending its armed)");
         // lbState.setText("Go State");
         // runSim();
+    }
+
+    public static void createRocketDataAlert(RocketEvent data) {
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
+                String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
+                ((RocketEvent) data).getEventType().toString());
+
     }
 }

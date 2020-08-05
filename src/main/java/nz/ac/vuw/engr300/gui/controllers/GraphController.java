@@ -4,11 +4,13 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import org.apache.log4j.Logger;
 
@@ -57,6 +59,8 @@ public class GraphController {
                         .addValue(data.getTime(), ((RocketStatus) data).getPitchRate());
                 getAngleLineChartByGraphType(graphs, GraphType.ROLL_RATE)
                         .addValue(data.getTime(), ((RocketStatus) data).getRollRate());
+            } else if (data instanceof RocketEvent) {
+                InformationController.createRocketDataAlert((RocketEvent) data);
             }
         });
         LOGGER.debug("All graphs have been subscribed");
