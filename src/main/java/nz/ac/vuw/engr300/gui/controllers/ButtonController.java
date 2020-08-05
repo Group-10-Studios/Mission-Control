@@ -55,74 +55,17 @@ public class ButtonController {
         pnNavButtons.clear();
         List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
                 .map(GraphType::getLabel).collect(Collectors.toList());
-        ButtonSelected buttonSelected = new ButtonSelected();
+        //ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
-        reorderGraphs(labels);
         for (String label : labels) {
             NavigationButton nb = new NavigationButton(label);
             pnNavButtons.add(nb);
-            nb.setLayoutY(y);
-            NavigationButton b = nb;
-
-            b.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    b.toFront();
-                    buttonSelected.originalY = b.getLayoutY();
-                    buttonSelected.nextY = b.getLayoutY() - mouseEvent.getSceneY();
-                }
-            });
-            b.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.nextY);
-                }
-            });
-            b.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    double distanceMoved = Math.abs(buttonSelected.originalY - b.getLayoutY());
-                    // If the user has dragged the button past the halfway point of a button
-                    // boundary
-                    if (distanceMoved > BUTTON_HEIGHT / 2) {
-                        String buttonBeingMovedLabel = nb.getLabel();
-                        int indexOfButtonBeingMoved = labels.indexOf(buttonBeingMovedLabel);
-                        int indexFurther = (int) Math.floor(distanceMoved / (BUTTON_HEIGHT - 1));
-                        int indexToReplace;
-                        // Figuring out which direction the user is dragging. If this is true, the user
-                        // is dragging downwards
-                        if (buttonSelected.originalY - b.getLayoutY() < 0) {
-                            indexToReplace = indexOfButtonBeingMoved + indexFurther;
-                            if (indexToReplace > labels.size() - 1) {
-                                // If the user drags beyond the list, replace the last button
-                                indexToReplace = labels.size() - 1;
-                            }
-                        } else {
-                            indexToReplace = indexOfButtonBeingMoved - indexFurther;
-                            if (indexToReplace < 0) {
-                                indexToReplace = 0; // If the user drags above the list, replace the first button
-                            }
-                        }
-                        String btnBeingReplaced = labels.get(indexToReplace);
-                        for (NavigationButton bt : pnNavButtons) {
-                            if (bt.getLabel().equals(btnBeingReplaced)) {
-                                b.setLayoutY(bt.getLayoutY());
-                                bt.setLayoutY(buttonSelected.originalY);
-                            }
-                        }
-                        // Swap the two butons
-                        Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace);
-                        reorderGraphs(labels);
-                    }
-                }
-            });
-            
-            y += BUTTON_HEIGHT;
         }
 
         // Draw the buttons on the view.
         view.drawButtons();
     }
+
 
     /**
      * Get all the Navigation buttons within this controller to be displayed.
