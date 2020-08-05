@@ -38,6 +38,9 @@ public class WeatherController {
      */
     public void updateWeatherInfo(Label label, String metric) {
         WeatherData currentData = getWeatherData();
+        if (currentData == null) {
+            return;
+        }
         switch (metric) {
             case "windspeed":
                 Double winSpeedMetric = Math.round((currentData.getWindSpeed() * 3.6) * 100.0) / 100.0;
