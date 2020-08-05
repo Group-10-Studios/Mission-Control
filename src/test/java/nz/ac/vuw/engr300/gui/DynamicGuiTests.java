@@ -71,7 +71,7 @@ class DynamicGuiTests {
         checkVisibleByID(robot, "#centerPanel");
         checkVisibleByID(robot, getAllGraphIds());
         // Side panels
-        checkVisibleByID(robot,"#navigationView", "#informationView");
+        checkVisibleByID(robot, "#navigationView", "#informationView");
     }
 
     /**
