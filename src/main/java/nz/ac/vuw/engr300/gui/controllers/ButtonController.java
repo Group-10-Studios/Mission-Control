@@ -57,6 +57,7 @@ public class ButtonController {
                 .map(GraphType::getLabel).collect(Collectors.toList());
         ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
+        reorderGraphs(labels);
         for (String label : labels) {
             NavigationButton nb = new NavigationButton(label);
             pnNavButtons.add(nb);
