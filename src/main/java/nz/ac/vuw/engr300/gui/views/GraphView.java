@@ -45,6 +45,8 @@ public class GraphView implements View {
         this.root = root;
         createGraphs();
         this.contentPane = new DynamicGridPane(allGraphs());
+        // Set internal gridPane ID for dynamic GUI testing.
+        this.contentPane.setId("gridPane");
         this.controller = new GraphController();
 
         attachContentToScrollPane();

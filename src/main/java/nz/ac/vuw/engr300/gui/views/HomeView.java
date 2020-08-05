@@ -82,11 +82,16 @@ public class HomeView implements View {
         // Only need one row as content will fill the entire vertical space
         addPercentRows(contentGrid, 100);
 
-        // Need three columns, 20% column for nav, 60% for main content, 20% for warnings
-        addPercentColumns(contentGrid, 20, 60, 20);
+        // Need three columns, 1/6 column for nav, 2/3 for main content, 1/6 for warnings
+        double sidePanelPercent = (1d / 6d) * 100d;
+        double centerPanelPercent = (2d / 3d) * 100d;
+        addPercentColumns(contentGrid, sidePanelPercent, centerPanelPercent, sidePanelPercent);
 
 
         addNodeToGrid(title, root, 0, 0, Pos.CENTER, Colours.PRIMARY_COLOUR, Insets.EMPTY);
+        // NOTE:: This assumes that it is the only child added to root by this point to set ID.
+        // If this is changed DynamicGuiTests will break.
+        root.getChildren().get(0).setId("pnBanner");
 
         addNodeToGrid(contentGrid, root, 1, 0);
 
@@ -107,6 +112,7 @@ public class HomeView implements View {
      */
     private void setupCenterPanel(GridPane contentGrid) {
         GridPane centerPanel = createGridPane(0, 0, Insets.EMPTY);
+        centerPanel.setId("centerPanel");
         addNodeToGrid(centerPanel, contentGrid, 0, 1, Insets.EMPTY);
         UiUtil.addPercentRows(centerPanel, 100);
         UiUtil.addPercentColumns(centerPanel, 100);
@@ -122,6 +128,7 @@ public class HomeView implements View {
      */
     private void setupRightHandSidePanel(GridPane contentGrid) {
         GridPane rightHandSidePanel = createGridPane(0, 10, new Insets(10));
+        rightHandSidePanel.setId("informationView");
         addNodeToGrid(rightHandSidePanel, contentGrid, 0, 2, Insets.EMPTY);
 
         this.informationView = new InformationView(rightHandSidePanel);
@@ -156,6 +163,7 @@ public class HomeView implements View {
      */
     private void setupLeftHandSidePanel(GridPane contentGrid) {
         GridPane leftHandSidePanel = createGridPane(10, 10, new Insets(10));
+        leftHandSidePanel.setId("navigationView");
         addNodeToGrid(leftHandSidePanel, contentGrid, 0, 0, Insets.EMPTY);
 
         this.navigationView = new NavigationView(leftHandSidePanel, graphView);

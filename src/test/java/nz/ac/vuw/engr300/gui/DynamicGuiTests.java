@@ -2,19 +2,21 @@ package nz.ac.vuw.engr300.gui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.lang.reflect.Field;
 import java.util.stream.Stream;
+
+import javafx.application.Platform;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import nz.ac.vuw.engr300.gui.controllers.HomeController;
+import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
-import org.testfx.api.FxToolkit;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 
 /**
@@ -28,6 +30,8 @@ class DynamicGuiTests {
     private static double width;
     private static double height;
     private Stage stage;
+    private HomeView homeView;
+    private DynamicGridPane dynamicGridPane;
 
     /**
      * Start the application UI. This is run before each test.
@@ -37,15 +41,15 @@ class DynamicGuiTests {
     @Start
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        HomeView v = new HomeView(stage);
+        this.homeView = new HomeView(stage);
         width = stage.getWidth();
         height = stage.getHeight();
 
         // Make sure scene always matches stage
-        assertEquals(v.getSceneHeight(), height);
-        assertEquals(v.getSceneWidth(), width);
+        assertEquals(homeView.getSceneHeight(), height);
+        assertEquals(homeView.getSceneWidth(), width);
 
-        Thread.sleep(3000);
+        this.dynamicGridPane = getCurrentDynamicGridPane();
     }
 
     @Test
@@ -61,8 +65,13 @@ class DynamicGuiTests {
      * Test that the required panels are visible.
      */
     private void testPanelVisibility(FxRobot robot) {
-        checkVisibleByID(robot, getAllGraphIds());
+        // Title bar
         checkVisibleByID(robot, "#pnBanner");
+        // Center Graphs
+        checkVisibleByID(robot, "#centerPanel");
+        checkVisibleByID(robot, getAllGraphIds());
+        // Side panels
+        checkVisibleByID(robot,"#navigationView", "#informationView");
     }
 
     /**
@@ -76,17 +85,16 @@ class DynamicGuiTests {
     }
 
     /**
-     * Test the two sidepanels match their specified 1/6 width.
+     * Test the two side panels match their specified 1/6 width.
      * 
      * @param robot Injected FxRobot to find the object on the screen.
      */
     private void testSidePanelSize(FxRobot robot) {
         // Specified for side panels to be 1/6 screen size
-        // Need to -1 to account for offset adjustments (just works that way)
-        double panelWidth = (int) (width / 6) - 1;
+        double panelWidth = (int) (width / 6);
 
-        Region apNav = getRegionByID(robot, "#apNav");
-        Region apWarnings = getRegionByID(robot, "#apWarnings");
+        Region apNav = getRegionByID(robot, "#navigationView");
+        Region apWarnings = getRegionByID(robot, "#informationView");
         assertWidths(panelWidth, apNav, apWarnings);
     }
 
@@ -99,7 +107,7 @@ class DynamicGuiTests {
         // Specified for center panel to be 2/3 screen size
         double panelWidth = Math.ceil((width * 2) / 3);
 
-        Region pnContent = getRegionByID(robot, "#pnContent");
+        Region pnContent = getRegionByID(robot, "#centerPanel");
         assertWidths(panelWidth, pnContent);
     }
 
@@ -109,9 +117,9 @@ class DynamicGuiTests {
      * @param robot Injected FxRobot to find the object on the screen.
      */
     private void testGraphSizes(FxRobot robot) {
-        Region pnContent = getRegionByID(robot, "#pnContent");
-        double graphWidth = Math.ceil(pnContent.getWidth() / HomeController.COLS);
-        double graphHeight = Math.ceil(pnContent.getHeight() / HomeController.ROWS);
+        Region pnContent = getRegionByID(robot, "#gridPane");
+        double graphWidth = Math.floor(pnContent.getWidth() / this.dynamicGridPane.getColumns());
+        double graphHeight = Math.ceil(pnContent.getHeight() / this.dynamicGridPane.getRows());
         for (String graphID : getAllGraphIds()) {
             Region graphRegion = getRegionByID(robot, graphID);
             assertWidths(graphWidth, graphRegion);
@@ -150,7 +158,8 @@ class DynamicGuiTests {
      */
     private void assertWidths(double width, Region... regions) {
         for (Region r : regions) {
-            assertEquals(width, r.getWidth(), "Failed on " + r.getId());
+            // Delta is set to allow +-1 pixel sizing. This accounts for padding/offsets or rounding errors.
+            assertEquals(width, r.getWidth(), 1.0, "Failed on " + r.getId());
         }
     }
 
@@ -176,4 +185,21 @@ class DynamicGuiTests {
         return Stream.of(GraphType.values()).map(g -> "#" + g.getGraphID()).toArray(String[]::new);
     }
 
+    /**
+     * Get the dynamic GridPane being used within the content panel. This allows direct access to the graphs.
+     *
+     * @return DynamicGridPane which has been created and set in the center panel for application use.
+     * @throws NoSuchFieldException Thrown if the field values changes from graphView or contentPane
+     *                              within the respective classes.
+     * @throws IllegalAccessException Thrown if access is denied when retrieving the value of the field.
+     */
+    private DynamicGridPane getCurrentDynamicGridPane() throws NoSuchFieldException, IllegalAccessException {
+        Field graphViewField = homeView.getClass().getDeclaredField("graphView");
+        graphViewField.setAccessible(true);
+        GraphView graphView = (GraphView) graphViewField.get(homeView);
+
+        Field dynamicGridPaneField = graphView.getClass().getDeclaredField("contentPane");
+        dynamicGridPaneField.setAccessible(true);
+        return (DynamicGridPane) dynamicGridPaneField.get(graphView);
+    }
 }
