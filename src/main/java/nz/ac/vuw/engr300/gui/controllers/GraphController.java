@@ -59,8 +59,6 @@ public class GraphController {
                         .addValue(data.getTime(), ((RocketStatus) data).getPitchRate());
                 getAngleLineChartByGraphType(graphs, GraphType.ROLL_RATE)
                         .addValue(data.getTime(), ((RocketStatus) data).getRollRate());
-            } else if (data instanceof RocketEvent) {
-                InformationController.createRocketDataAlert((RocketEvent) data);
             }
         });
         LOGGER.debug("All graphs have been subscribed");
