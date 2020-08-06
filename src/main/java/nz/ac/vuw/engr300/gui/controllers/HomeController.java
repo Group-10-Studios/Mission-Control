@@ -252,11 +252,9 @@ public class HomeController implements Initializable {
         }
         */
 
-
-
         // For the warnings controller
         warnC = new WarningsController(pnWarnings);
-        warnC.checkAllData(weatherToGive);
+        warnC.checkAllData();
         scaleItemHeight(apApp);
         scaleItemWidth(apApp);
         this.pnNavButtons = new ArrayList<>();

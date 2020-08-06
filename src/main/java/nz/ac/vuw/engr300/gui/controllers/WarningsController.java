@@ -55,8 +55,8 @@ public class WarningsController {
         pnWarnings.getChildren().add(list);
     }
 
-    private void setDataForWarnings(WeatherData weatherData) {
-        this.weatherData = weatherData;
+    public void setDataForWarnings() {
+        this.weatherData = WeatherController.getInstance().getWeatherData();
     }
 
     /**
@@ -83,14 +83,8 @@ public class WarningsController {
 
     /**
      * Checks the weather data against warning thresholds and displays an alert if they exceed.
-     *
-     * @param data  The weather data to check.
      */
-    public void checkAllData(WeatherData data) {
-        if (data == null) {
-            return;
-        }
-        this.weatherData = data;
+    public void checkAllData() {
         checkWeatherCondition();
         checkWindSpeed();
     }

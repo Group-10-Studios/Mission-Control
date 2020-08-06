@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
  */
 public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
-    private static WeatherData w; //this is all the weather data stored
+    private WeatherData w; //this is all the weather data stored
 
     private static final WeatherController instance = new WeatherController();
 
@@ -30,7 +30,11 @@ public class WeatherController {
      * Private constructor to prevent weather controller being created outside of in here.
      */
     private WeatherController() {
-
+        try {
+            setWeatherData();
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Weather file not found", e);
+        }
     }
 
     /**
@@ -42,7 +46,7 @@ public class WeatherController {
         return instance;
     }
 
-    public static void setWeatherData() throws FileNotFoundException {
+    public void setWeatherData() throws FileNotFoundException {
         WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
         w = wi.getWeather(0);
     }

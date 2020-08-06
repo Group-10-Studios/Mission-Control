@@ -19,6 +19,8 @@ public class InformationController {
 
     public InformationController(Pane pnWarnings) {
         warnC = new WarningsController(pnWarnings);
+        warnC.setDataForWarnings();
+        warnC.checkAllData();
     }
 
     private void runBatteryThread(RocketBattery primaryBattery, RocketBattery secondaryBattery) {

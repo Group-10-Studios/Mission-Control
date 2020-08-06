@@ -55,11 +55,6 @@ public class NavigationView implements View {
      * Display the weather at the top of the left panel.
      */
     private void setupWeather() {
-        try {
-            WeatherController.setWeatherData();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         WeatherController weatherC = navigationC.getWeatherController();
 
         Label l1 = new Label();
