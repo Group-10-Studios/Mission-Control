@@ -45,7 +45,7 @@ public class GraphView implements View {
         this.root = root;
         createGraphs();
         this.contentPane = new DynamicGridPane(allGraphs());
-        this.controller = new GraphController();
+        this.controller = GraphController.getInstance();
 
         attachContentToScrollPane();
         this.controller.subscribeGraphs(graphs);

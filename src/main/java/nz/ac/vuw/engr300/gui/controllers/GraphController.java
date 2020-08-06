@@ -27,6 +27,23 @@ public class GraphController {
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    private static final GraphController instance = new GraphController();
+
+    /**
+     * Private constructor to prevent weather controller being created outside of in here.
+     */
+    private GraphController() {
+
+    }
+
+    /**
+     * Get the GraphController instance.
+     *
+     * @return GraphController instance for the app.
+     */
+    public static GraphController getInstance() {
+        return instance;
+    }
 
     /**
      * Subscribe all of the graphs to their appropriate data sources from the Simulation Listener.
@@ -171,5 +188,14 @@ public class GraphController {
     public void shutdown() {
         simulationImporter.stop();
         LOGGER.debug("GraphController shutdown called");
+    }
+
+    /**
+     * Get the Simulation Importer for this application.
+     *
+     * @return OpenRocketImporter which runs the simulation for the application.
+     */
+    public OpenRocketImporter getSimulationImporter() {
+        return this.simulationImporter;
     }
 }

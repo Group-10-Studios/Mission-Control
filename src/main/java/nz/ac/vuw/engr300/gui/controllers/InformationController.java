@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 
@@ -92,5 +93,18 @@ public class InformationController {
                 "Waiting for rocket to be armed", "(Pretending its armed)");
         // lbState.setText("Go State");
         // runSim();
+    }
+
+    /**
+     * Subscribe the warnings panel to RocketEvent's in the simulation importer.
+     */
+    public void subscribeToSimulation() {
+        GraphController.getInstance().getSimulationImporter().subscribeObserver((data) -> {
+            if (data instanceof RocketEvent) {
+                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
+                        String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
+                        ((RocketEvent) data).getEventType().toString());
+            }
+        });
     }
 }
