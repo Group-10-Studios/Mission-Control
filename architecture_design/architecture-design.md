@@ -390,6 +390,7 @@ One page glossary as required
 - Section 4.4 Physical
 - Section 5.1 Schedule
 - Section 3.2 Architectural Viewpoints
+- Section 3.1 Stakeholders
 
 **Josh Harwood:**
 - Section 4.3 Process
