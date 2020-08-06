@@ -71,9 +71,27 @@ This means that you should refer to information (e.g. risks, requirements, model
 
 ### 3.1 Stakeholders
 
-See ISO/IEC/IEEE 42010 clause 5.3 and ISO/IEC/IEEE 12207 clause 6.4.4.3(2).
+Our project consists of three primary stakeholders, the client (Andre Geldenhuis), ECS (School of Engineering and Computer Science),
+and the developers (Team 10)
 
-For most systems this will be about 2 pages, including a table mapping concerns to stakeholder.
+# Stakeholder Requirements
+
+## Client
+* The Mission Control software meets all defined requirements.
+* The Mission Control software follows the agreed upon license, and will be open source.
+* The Mission Control software is easy to use.
+* The Mission Control software can be easily extended once open sourced.
+
+## ECS
+* The Mission Control software follows the agreed upon license.
+* The Mission Control software fulfils the requirements of ENGR301/ENGR302.
+* The Mission Control software and team follow all guidelines set out by ECS.
+
+## Developers
+* The Mission Control software development environment shall allow for rapid development and extension.
+* The Mission Control software shall be split up into small, easy to maintain modules. 
+* The Mission Control software shall follow well defined software engineering principles, such as SOLID (Single-responsibility, Open–closed, Liskov substitution, Interface segregation, Dependency inversion).
+* The Mission Control software shall follow a pattern oriented software architecture. 
 
 ### 3.2 Architectural Viewpoints
 #### Logical
@@ -372,6 +390,7 @@ One page glossary as required
 - Section 4.4 Physical
 - Section 5.1 Schedule
 - Section 3.2 Architectural Viewpoints
+- Section 3.1 Stakeholders
 
 **Josh Harwood:**
 - Section 4.3 Process
