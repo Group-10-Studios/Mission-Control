@@ -17,6 +17,11 @@ public class InformationController {
     private Thread batteryThread;
     private WarningsController warnC;
 
+    /**
+     * Constructor for the Information controller. Creates a warnings controller, gets the weather for the warnings
+     * controller, then checks the weather if it is safe to launch.
+     * @param pnWarnings The pane needed for the warnings controller.
+     */
     public InformationController(Pane pnWarnings) {
         warnC = new WarningsController(pnWarnings);
         warnC.setDataForWarnings();
