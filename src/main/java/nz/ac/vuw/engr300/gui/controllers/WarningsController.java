@@ -113,23 +113,6 @@ public class WarningsController {
         }
     }
 
-    // /**
-    //  * This method checks for any warnings to point out in the weather data.
-    //  * e.g If wind speed is too high, or if forecast is raining.
-    //  *
-    //  * @return True if there were any warnings.
-    //  */
-    // public boolean checkForAnyWarnings() {
-    //     //ensures that the warnings start off as false before running this method
-    //     anyWarnings = false;
-    //     checkWindSpeed();
-    //     checkWeatherCondition();
-    //
-    //     //if there are any warnings after running the check methods, then this returns true
-    //     //if there were not it returns false.
-    //     return anyWarnings;
-    // }
-
     /**
      * Creates a new rocket alert which is appended to the warnings pane.
      * @param alert The alert level we want the alert as (ERROR, WARNING, OR ALERT)
