@@ -9,6 +9,7 @@ import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.commons.text.WordUtils;
 import org.apache.log4j.Logger;
+
 import java.io.FileNotFoundException;
 
 //import javafx.stage.StageStyle;
