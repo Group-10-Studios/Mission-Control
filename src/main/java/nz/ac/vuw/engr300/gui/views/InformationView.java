@@ -46,6 +46,8 @@ public class InformationView implements View {
      * @param root The root Gridpane where we will be adding nodes to.
      */
     public InformationView(GridPane root) {
+        this.goButton.setId("btnGo");
+        this.noGoButton.setId("btnNoGo");
         this.root = root;
         setupRoot();
         setupBatteries();
