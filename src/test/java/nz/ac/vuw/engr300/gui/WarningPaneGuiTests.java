@@ -76,7 +76,7 @@ public class WarningPaneGuiTests {
     }
 
     /**
-     * Tests that we are able to run the Go button and then run a simulation.
+     * Tests that we are able to run the Go button and then run a simulation, and a rocket alert comes up..
      *
      * @param robot The robot injected to run tests.
      */
