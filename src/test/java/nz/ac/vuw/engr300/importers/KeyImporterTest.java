@@ -24,4 +24,27 @@ public class KeyImporterTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void test_getAPIKeyForMaps() throws KeyNotFoundException {
+        String actual = KeyImporter.getKey("maps");
+        String expected = "";
+        try {
+            JsonObject expectedJson = JsonImporter.load("src/main/resources/keys.json").getAsJsonObject();
+            expected = expectedJson.get("maps").getAsString();
+        } catch (FileNotFoundException e) {
+            fail("Keys.json not found");
+        }
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test_getInvalidApiKey() {
+        try {
+            KeyImporter.getKey("api_key_that_does_not_exist");
+            fail("Expected a KeyNotFound Exception");
+        } catch (KeyNotFoundException e) {
+            assert (true);
+        }
+    }
+
 }
