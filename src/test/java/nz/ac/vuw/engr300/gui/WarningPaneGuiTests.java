@@ -36,7 +36,7 @@ public class WarningPaneGuiTests {
 
 
     /**
-     * Runs the simulation provided at {@code simulationFile} for {@code simulationRunTime}ms.
+     * Presses the go button.
      *
      * @param robot             The robot injected to run tests.
      * @param simulationFile    The simulation we wish to run.
@@ -56,15 +56,46 @@ public class WarningPaneGuiTests {
     }
 
     /**
-     * Tests that the run simulations button actually opens up a JFileChooser,
-     * lets you select a file, and then runs the simulation.
+     * Presses the go button.
      *
-     * @param robot The robot injected to run tests
+     * @param robot             The robot injected to run tests.
+     * @param simulationFile    The simulation we wish to run.
+     */
+    private static boolean pressNoGo(FxRobot robot, String simulationFile) {
+        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnNoGo")) {
+            fail("No Go button not found!");
+        }
+
+//        WaitForAsyncUtils.waitForFxEvents(5);
+
+//        GeneralGuiTests.copyPasteString(robot, simulationFile);
+//        WaitForAsyncUtils.waitForFxEvents();
+
+//        return !GeneralGuiTests.checkForAlertPopup(robot);
+        return true;
+    }
+
+    /**
+     * Tests that we are able to run the Go button and then run a simulation.
+     *
+     * @param robot The robot injected to run tests.
      */
     @Test
     public void test_press_go(FxRobot robot) {
         if (!pressGo(robot, fullyCorrectTestData)) {
             fail("Failed to press go");
+        }
+    }
+
+    /**
+     * Tests that we are able to press the No Go button and then a rocket alert comes up.
+     *
+     * @param robot The robot injected to run tests.
+     */
+    @Test
+    public void test_press_no_go(FxRobot robot) {
+        if (!pressNoGo(robot, fullyCorrectTestData)) {
+            fail("Failed to press no go");
         }
     }
 
