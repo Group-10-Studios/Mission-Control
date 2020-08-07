@@ -72,7 +72,7 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param robot The robot injected to run tests.
      * @return Whether or not an alert popup was visible.
      */
-    private static boolean checkForAlertPopup(FxRobot robot) {
+    public static boolean checkForAlertPopup(FxRobot robot) {
         try {
             WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
                 try {
@@ -100,7 +100,7 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param nodeId The ID of the node to check for on the UI.
      * @param robot  The robot injected to run tests.
      */
-    private static boolean checkAndClickOnNode(FxRobot robot, String nodeId) {
+    public static boolean checkAndClickOnNode(FxRobot robot, String nodeId) {
         try {
             WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, () -> {
                 try {
@@ -196,7 +196,7 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param robot  The robot injected to run tests.
      * @param string The string to copy and paste.
      */
-    private static void copyPasteString(FxRobot robot, String string) {
+    public static void copyPasteString(FxRobot robot, String string) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection(string);
         clipboard.setContents(stringSelection, stringSelection);

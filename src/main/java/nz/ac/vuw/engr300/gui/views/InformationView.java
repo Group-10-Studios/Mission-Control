@@ -46,6 +46,8 @@ public class InformationView implements View {
      * @param root The root Gridpane where we will be adding nodes to.
      */
     public InformationView(GridPane root) {
+        this.goButton.setId("btnGo");
+        this.noGoButton.setId("btnNoGo");
         this.root = root;
         setupRoot();
         setupBatteries();
@@ -58,6 +60,7 @@ public class InformationView implements View {
      */
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
+        pnWarnings.setId("pnWarnings");
         addNodeToGrid(pnWarnings, root, 1, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);
