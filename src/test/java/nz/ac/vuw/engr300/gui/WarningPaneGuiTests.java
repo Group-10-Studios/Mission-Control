@@ -13,7 +13,8 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(ApplicationExtension.class)
 public class WarningPaneGuiTests {
