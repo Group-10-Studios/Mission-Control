@@ -38,8 +38,8 @@ public class WarningPaneGuiTests {
     /**
      * Presses the go button.
      *
-     * @param robot             The robot injected to run tests.
-     * @param simulationFile    The simulation we wish to run.
+     * @param robot          The robot injected to run tests.
+     * @param simulationFile The simulation we wish to run.
      */
     private static boolean pressGo(FxRobot robot, String simulationFile) {
         if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnGo")) {
@@ -58,8 +58,8 @@ public class WarningPaneGuiTests {
     /**
      * Presses the go button.
      *
-     * @param robot             The robot injected to run tests.
-     * @param simulationFile    The simulation we wish to run.
+     * @param robot          The robot injected to run tests.
+     * @param simulationFile The simulation we wish to run.
      */
     private static boolean pressNoGo(FxRobot robot, String simulationFile) {
         if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnNoGo")) {
