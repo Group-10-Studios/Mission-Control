@@ -28,6 +28,8 @@ public class WarningsController {
     @FXML
     private Pane pnWarnings;
 
+    private Boolean anyWarnings;
+
     private ObservableList<RocketAlert> items;
 
     /**
@@ -82,7 +84,6 @@ public class WarningsController {
     /**
      * Checks the weather data against warning thresholds and displays an alert if they exceed.
      *
-     * @param data The weather data to check.
      */
     public void checkAllData() {
         if (weatherData != null) {
