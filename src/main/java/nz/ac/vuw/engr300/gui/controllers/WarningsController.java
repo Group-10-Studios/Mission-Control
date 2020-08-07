@@ -86,8 +86,13 @@ public class WarningsController {
      * Checks the weather data against warning thresholds and displays an alert if they exceed.
      */
     public void checkAllData() {
-        checkWeatherCondition();
-        checkWindSpeed();
+        if (weatherData != null) {
+            checkWeatherCondition();
+            checkWindSpeed();
+        }
+        else {
+            return;
+        }
     }
 
     /**
