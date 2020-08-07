@@ -46,12 +46,12 @@ public class WarningPaneGuiTests {
             fail("Go button not found!");
         }
 
-//        WaitForAsyncUtils.waitForFxEvents(5);
+        //        WaitForAsyncUtils.waitForFxEvents(5);
 
-//        GeneralGuiTests.copyPasteString(robot, simulationFile);
-//        WaitForAsyncUtils.waitForFxEvents();
+        //        GeneralGuiTests.copyPasteString(robot, simulationFile);
+        //        WaitForAsyncUtils.waitForFxEvents();
 
-//        return !GeneralGuiTests.checkForAlertPopup(robot);
+        //        return !GeneralGuiTests.checkForAlertPopup(robot);
         return true;
     }
 
@@ -66,12 +66,12 @@ public class WarningPaneGuiTests {
             fail("No Go button not found!");
         }
 
-//        WaitForAsyncUtils.waitForFxEvents(5);
+        //        WaitForAsyncUtils.waitForFxEvents(5);
 
-//        GeneralGuiTests.copyPasteString(robot, simulationFile);
-//        WaitForAsyncUtils.waitForFxEvents();
+        //        GeneralGuiTests.copyPasteString(robot, simulationFile);
+        //        WaitForAsyncUtils.waitForFxEvents();
 
-//        return !GeneralGuiTests.checkForAlertPopup(robot);
+        //        return !GeneralGuiTests.checkForAlertPopup(robot);
         return true;
     }
 
@@ -98,6 +98,4 @@ public class WarningPaneGuiTests {
             fail("Failed to press no go");
         }
     }
-
-
 }
