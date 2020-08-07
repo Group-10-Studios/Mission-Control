@@ -25,11 +25,8 @@ public class WarningsController {
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
     private WeatherData weatherData;
 
-    private Boolean anyWarnings;
-
     @FXML
     private Pane pnWarnings;
-    // private boolean anyWarnings;
 
     private ObservableList<RocketAlert> items;
 
