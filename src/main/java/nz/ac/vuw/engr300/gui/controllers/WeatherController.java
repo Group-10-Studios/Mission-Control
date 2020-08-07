@@ -9,6 +9,7 @@ import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.commons.text.WordUtils;
 import org.apache.log4j.Logger;
+
 import java.io.FileNotFoundException;
 
 //import javafx.stage.StageStyle;
@@ -22,11 +23,33 @@ import java.io.FileNotFoundException;
  */
 public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
-    private static WeatherData w; //this is all the weather data stored
+    private WeatherData weather; //this is all the weather data stored
 
-    public static void setWeatherData() throws FileNotFoundException {
+    private static final WeatherController instance = new WeatherController();
+
+    /**
+     * Private constructor to prevent weather controller being created outside of in here.
+     */
+    private WeatherController() {
+        try {
+            setWeatherData();
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Weather file not found", e);
+        }
+    }
+
+    /**
+     * Get the application's instance of WeatherController.
+     *
+     * @return WeatherController instance.
+     */
+    public static WeatherController getInstance() {
+        return instance;
+    }
+
+    public void setWeatherData() throws FileNotFoundException {
         WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
-        w = wi.getWeather(0);
+        weather = wi.getWeather(0);
     }
 
     /**
@@ -73,6 +96,6 @@ public class WeatherController {
     }
 
     public WeatherData getWeatherData() {
-        return w;
+        return weather;
     }
 }

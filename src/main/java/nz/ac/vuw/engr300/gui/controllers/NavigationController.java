@@ -15,9 +15,9 @@ public class NavigationController {
      * Creates instances of the necessary controllers.
      */
     public NavigationController() {
-        weatherController = new WeatherController();
+        weatherController = WeatherController.getInstance();
         buttonController = new ButtonController();
-        graphController = new GraphController();
+        graphController = GraphController.getInstance();
     }
 
     public WeatherController getWeatherController() {

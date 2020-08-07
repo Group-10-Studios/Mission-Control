@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 
@@ -16,8 +17,15 @@ public class InformationController {
     private Thread batteryThread;
     private WarningsController warnC;
 
+    /**
+     * Constructor for the Information controller. Creates a warnings controller, gets the weather for the warnings
+     * controller, then checks the weather if it is safe to launch.
+     * @param pnWarnings The pane needed for the warnings controller.
+     */
     public InformationController(Pane pnWarnings) {
         warnC = new WarningsController(pnWarnings);
+        warnC.setDataForWarnings();
+        warnC.checkAllData();
     }
 
     private void runBatteryThread(RocketBattery primaryBattery, RocketBattery secondaryBattery) {
@@ -90,5 +98,18 @@ public class InformationController {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
+    }
+
+    /**
+     * Subscribe the warnings panel to RocketEvent's in the simulation importer.
+     */
+    public void subscribeToSimulation() {
+        GraphController.getInstance().getSimulationImporter().subscribeObserver((data) -> {
+            if (data instanceof RocketEvent) {
+                warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT,
+                        String.format("Rocket Event @ t+%.2fs: ", data.getTime()),
+                        ((RocketEvent) data).getEventType().toString());
+            }
+        });
     }
 }

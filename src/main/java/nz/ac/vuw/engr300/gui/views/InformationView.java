@@ -61,6 +61,7 @@ public class InformationView implements View {
         addNodeToGrid(pnWarnings, root, 1, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);
+        infController.subscribeToSimulation();
     }
 
     /**
