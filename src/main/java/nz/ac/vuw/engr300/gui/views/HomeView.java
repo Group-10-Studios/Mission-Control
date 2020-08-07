@@ -132,27 +132,6 @@ public class HomeView implements View {
         addNodeToGrid(rightHandSidePanel, contentGrid, 0, 2, Insets.EMPTY);
 
         this.informationView = new InformationView(rightHandSidePanel);
-
-        //********** CODE LEFT FOR REFERENCE - DELETE WHEN DONE **********
-
-        //// One column, 100 percent of width
-        //addPercentColumns(rightHandSidePanel, 100);
-        //// 20 for batteries, 60 for warnings, 20 for go/no go
-        //addPercentRows(rightHandSidePanel, 20, 60, 20);
-        //
-        //// Add Batteries and warning sections of right hand side panel
-        //addNodeToGrid(new Label("BATTERIES"), rightHandSidePanel, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
-        //addNodeToGrid(new Label("WARNINGS"), rightHandSidePanel, 1, 0, Pos.CENTER, Color.MAGENTA, Insets.EMPTY);
-        //
-        //// Create and populate go no go at bottom of right hand side
-        //VBox goNoGoVBox = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
-        //// Literally just for setting background colour
-        //goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
-        // CornerRadii.EMPTY, Insets.EMPTY)));
-        //
-        //// Set it to hug the warnings above it
-        //GridPane.setValignment(goNoGoVBox, VPos.TOP);
-        //addNodeToGrid(goNoGoVBox, rightHandSidePanel, 2, 0, Insets.EMPTY);
     }
 
     /**
@@ -167,33 +146,6 @@ public class HomeView implements View {
         addNodeToGrid(leftHandSidePanel, contentGrid, 0, 0, Insets.EMPTY);
 
         this.navigationView = new NavigationView(leftHandSidePanel, graphView);
-
-        //********** CODE LEFT FOR REFERENCE - DELETE WHEN DONE **********
-        //// One column, 100 percent of width
-        //addPercentColumns(leftHandSidePanel, 100);
-        //// 20 for weather, 60 for nav buttons, 20 for run sim
-        //addPercentRows(leftHandSidePanel, 20, 60, 20);
-        //
-        //// Add weather to lefthand side GridPane
-        //addNodeToGrid(new Label("WEATHER"), leftHandSidePanel, 0, 0, Pos.CENTER, Color.ORANGE, Insets.EMPTY);
-        //
-        //// Create and populate left hand side nav buttons
-        //VBox buttonVbox = UIUtil.createStandardVBox(5, new Insets(10, 10, 5, 10),
-        //        IntStream.range(0, 10).mapToObj(i -> new Button("Btn" + i)).toArray(Region[]::new));
-        //// Literally just for setting background colour
-        //buttonVbox.setBackground(new Background(new BackgroundFill(Color.PURPLE, CornerRadii.EMPTY, Insets.EMPTY)));
-        //addNodeToGrid(buttonVbox, leftHandSidePanel, 1, 0, Insets.EMPTY);
-        //
-        //// Create and populate runSim buttons at bottom of left hand side panel
-        //VBox runSimVbos = createMinimumVerticalSizeVBox(5, new Insets(10), new Button("Btn0"), new Button("Btn1"));
-        //
-        //// Literally just for setting background colour
-        //runSimVbos.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW,
-        // CornerRadii.EMPTY, Insets.EMPTY)));
-        //
-        //// Set it to hug the nav buttons above it
-        //GridPane.setValignment(runSimVbos, VPos.TOP);
-        //addNodeToGrid(runSimVbos, leftHandSidePanel, 2, 0, Insets.EMPTY);
     }
 
     /**

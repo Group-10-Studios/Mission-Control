@@ -25,11 +25,8 @@ public class WarningsController {
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
     private WeatherData weatherData;
 
-    private Boolean anyWarnings;
-
     @FXML
     private Pane pnWarnings;
-    // private boolean anyWarnings;
 
     private ObservableList<RocketAlert> items;
 
@@ -114,23 +111,6 @@ public class WarningsController {
                     "Forecast = " + currentWeather, "Safe to launch.");
             items.add(ra);
         }
-    }
-
-    /**
-     * This method checks for any warnings to point out in the weather data.
-     * e.g If wind speed is too high, or if forecast is raining.
-     *
-     * @return True if there were any warnings.
-     */
-    public boolean checkForAnyWarnings() {
-        //ensures that the warnings start off as false before running this method
-        anyWarnings = false;
-        checkWindSpeed();
-        checkWeatherCondition();
-
-        //if there are any warnings after running the check methods, then this returns true
-        //if there were not it returns false.
-        return anyWarnings;
     }
 
     /**

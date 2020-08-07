@@ -134,7 +134,6 @@ public class DynamicGridPane extends GridPane {
      * @param height The height of the visible portion of this DynamicGridPane.
      */
     public void updateConstraints(int height) {
-        System.out.println(this.getHeight());
         this.getRowConstraints().clear();
         RowConstraints rc = new RowConstraints();
         rc.setPrefHeight(height / 3f);
