@@ -12,6 +12,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.util.Colours;
 
 
 /**
@@ -50,10 +51,11 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
         this.getXAxis().setAutoRanging(false);
 
-        this.setBackground(new Background(new BackgroundFill(Color.valueOf("#F6F6F6"),
+        this.setBackground(new Background(new BackgroundFill(Colours.BACKGROUND_COLOUR,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #4267B2;");
+        this.series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: "
+                + Colours.toHexString(Colours.PRIMARY_COLOUR) + ";");
         this.setGraphType(graphType);
 
         this.setId(graphType.getGraphID());

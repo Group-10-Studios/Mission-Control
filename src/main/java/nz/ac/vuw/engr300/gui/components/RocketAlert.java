@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.gui.util.Colours;
 
 import java.util.ArrayList;
 
@@ -56,9 +57,9 @@ public class RocketAlert extends VBox {
      * hand side panel. This enum also controls the border colour of the alert.
      */
     public enum AlertLevel {
-        ERROR(Color.RED),
-        WARNING(Color.ORANGE),
-        ALERT(Color.valueOf("#4267B2"));    // Blue
+        ERROR(Colours.WARNING_ERROR),
+        WARNING(Colours.WARNING_WARN),
+        ALERT(Colours.WARNING_INFO);    // Blue
 
         private final Color color;
 

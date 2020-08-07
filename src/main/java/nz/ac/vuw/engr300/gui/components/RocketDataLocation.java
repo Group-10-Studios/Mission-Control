@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 import org.apache.log4j.Logger;
@@ -164,13 +165,13 @@ public class RocketDataLocation extends Pane implements RocketGraph {
                     MARKER_SIZE); // Center
             double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
             double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-            g.setFill(Color.valueOf("#4267B2"));
+            g.setFill(Colours.PRIMARY_COLOUR);
             double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
             double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
             double markerOffset = 40;
 
             g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
-            g.setStroke(Color.valueOf("#4267B2"));
+            g.setStroke(Colours.PRIMARY_COLOUR);
             g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
                     MARKER_SIZE + markerOffset); // Center
         } else {
