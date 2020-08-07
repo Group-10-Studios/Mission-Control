@@ -2,6 +2,7 @@ package nz.ac.vuw.engr300.gui.layouts;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +125,22 @@ public class DynamicGridPane extends GridPane {
                     return;
                 }
             }
+        }
+    }
+
+    /**
+     * Update row constraints based on the provided height value from the scrollPane.
+     *
+     * @param height The height of the visible portion of this DynamicGridPane.
+     */
+    public void updateConstraints(int height) {
+        System.out.println(this.getHeight());
+        this.getRowConstraints().clear();
+        RowConstraints rc = new RowConstraints();
+        rc.setPrefHeight(height / 3f);
+        rc.setFillHeight(true);
+        for (int i = 0; i < rows; i++) {
+            this.getRowConstraints().add(rc);
         }
     }
 
