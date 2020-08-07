@@ -60,6 +60,7 @@ public class InformationView implements View {
      */
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
+        pnWarnings.setId("pnWarnings");
         addNodeToGrid(pnWarnings, root, 1, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);

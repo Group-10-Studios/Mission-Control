@@ -42,6 +42,7 @@ public class WarningsController {
         this.pnWarnings = p;
         // anyWarnings = false;
         ListView<RocketAlert> list = new ListView<>();
+        list.setId("rocketEventList");
         list.setStyle("-fx-background-insets: 0 ;");
         p.heightProperty().addListener((observableValue, number, t1) -> {
             list.setPrefHeight(t1.doubleValue());

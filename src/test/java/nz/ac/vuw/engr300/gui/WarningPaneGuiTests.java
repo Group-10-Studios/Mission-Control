@@ -1,5 +1,7 @@
 package nz.ac.vuw.engr300.gui;
 
+import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import java.io.File;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class WarningPaneGuiTests {
@@ -82,9 +83,12 @@ public class WarningPaneGuiTests {
      */
     @Test
     public void test_press_go(FxRobot robot) {
+        ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
+        int initialSize = rocketList.getItems().size();
         if (!pressGo(robot, fullyCorrectTestData)) {
             fail("Failed to press go");
         }
+        assertTrue(rocketList.getItems().size() > initialSize);
     }
 
     /**
@@ -94,8 +98,11 @@ public class WarningPaneGuiTests {
      */
     @Test
     public void test_press_no_go(FxRobot robot) {
+        ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
+        int initialSize = rocketList.getItems().size();
         if (!pressNoGo(robot, fullyCorrectTestData)) {
             fail("Failed to press no go");
         }
+        assertTrue(rocketList.getItems().size() > initialSize);
     }
 }
