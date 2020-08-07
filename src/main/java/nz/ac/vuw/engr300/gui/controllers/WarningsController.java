@@ -25,6 +25,8 @@ public class WarningsController {
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
     private WeatherData weatherData;
 
+    private Boolean anyWarnings;
+
     @FXML
     private Pane pnWarnings;
     // private boolean anyWarnings;
@@ -34,6 +36,7 @@ public class WarningsController {
     /**
      * Warnings controller will create a list of Rocket Alerts.
      * E.g for weather or for simulation runs.
+     *
      * @param p the pane we want to append warnings to.
      */
     public WarningsController(Pane p) {
@@ -82,7 +85,7 @@ public class WarningsController {
     /**
      * Checks the weather data against warning thresholds and displays an alert if they exceed.
      *
-     * @param data  The weather data to check.
+     * @param data The weather data to check.
      */
     public void checkAllData(WeatherData data) {
         if (data == null) {
@@ -115,8 +118,9 @@ public class WarningsController {
 
     /**
      * Creates a new rocket alert which is appended to the warnings pane.
-     * @param alert The alert level we want the alert as (ERROR, WARNING, OR ALERT)
-     * @param title The title we want the rocket alert to be.
+     *
+     * @param alert       The alert level we want the alert as (ERROR, WARNING, OR ALERT)
+     * @param title       The title we want the rocket alert to be.
      * @param description The description of the rocket alert.
      */
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
@@ -125,6 +129,7 @@ public class WarningsController {
 
     /**
      * Checks if there were any warnings across all the rocket alerts.
+     *
      * @return True if there were any warnings.
      */
     public boolean hasWarnings() {
@@ -138,6 +143,7 @@ public class WarningsController {
 
     /**
      * Checks if there were any errors across all the rocket alerts.
+     *
      * @return True if there were any errors.
      */
     public boolean hasErrors() {
