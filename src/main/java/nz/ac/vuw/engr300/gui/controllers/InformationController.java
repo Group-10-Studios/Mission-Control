@@ -98,8 +98,6 @@ public class InformationController {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
-        // lbState.setText("Go State");
-        // runSim();
     }
 
     /**

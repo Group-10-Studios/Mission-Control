@@ -25,11 +25,8 @@ public class WarningsController {
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
     private WeatherData weatherData;
 
-    private Boolean anyWarnings;
-
     @FXML
     private Pane pnWarnings;
-    // private boolean anyWarnings;
 
     private ObservableList<RocketAlert> items;
 
@@ -84,6 +81,8 @@ public class WarningsController {
 
     /**
      * Checks the weather data against warning thresholds and displays an alert if they exceed.
+     *
+     * @param data The weather data to check.
      */
     public void checkAllData() {
         if (weatherData != null) {

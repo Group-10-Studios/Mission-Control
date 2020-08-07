@@ -45,6 +45,8 @@ public class GraphView implements View {
         this.root = root;
         createGraphs();
         this.contentPane = new DynamicGridPane(allGraphs());
+        // Set internal gridPane ID for dynamic GUI testing.
+        this.contentPane.setId("gridPane");
         this.controller = GraphController.getInstance();
 
         attachContentToScrollPane();
@@ -60,6 +62,13 @@ public class GraphView implements View {
         // Required to prevent horizontal scrolling and ensure it grows with width of root.
         scrollPane.setFitToWidth(true);
         UiUtil.addNodeToGrid(scrollPane, root, 0, 0);
+
+        // Bind scrollPane visible height to the contentPane row size
+        // Updates row constraints based on the visible height to fill the correct space.
+        scrollPane.heightProperty().addListener((ov, n, t1) -> {
+            this.contentPane.updateConstraints(t1.intValue());
+        });
+        this.contentPane.updateConstraints((int) scrollPane.getHeight());
     }
 
     /**
