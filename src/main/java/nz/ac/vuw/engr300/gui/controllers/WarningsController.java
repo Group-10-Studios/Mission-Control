@@ -89,8 +89,7 @@ public class WarningsController {
         if (weatherData != null) {
             checkWeatherCondition();
             checkWindSpeed();
-        }
-        else {
+        } else {
             return;
         }
     }
