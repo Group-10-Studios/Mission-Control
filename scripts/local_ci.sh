@@ -63,7 +63,8 @@ function verify_docs () {
 	# Check if NPM is installed to run spellcheck
 	if [[ -x "$(command -v npm)" ]]; then
 		# This assumes you have nodeJS installed
-		npm install markdown-spellcheck 2>1 > /dev/null
+		# Install markdown spell check - ignore all warnings or outputs just because this isn't a npm project.
+		npm install markdown-spellcheck 2>/dev/null > /dev/null
 		if [[ "$verbose" == "true" ]]; then
 			./node_modules/markdown-spellcheck/bin/mdspell -r -n -a '**/*.md' '!**/node_modules/**/*.md'
 		else
@@ -134,7 +135,7 @@ function run_local_CI () {
 	verify_docs
 	echo "> Finding bugs"
 	find_bugs
-	echo "> Checking Checkstyle"
+	echo "> Running Checkstyle"
 	checkstyle
 	echo "> Running test suite"
 	run_tests
@@ -142,5 +143,15 @@ function run_local_CI () {
 	echo -e "\e[32mPipeline is passing as expected\e[0m"
 }
 
+# Get CLI parameters
 get_params $@
+# Verify the location contains pom.xml
+if [[ ! -f "pom.xml" ]]; then
+	cd ..
+	if [[ ! -f "pom.xml" ]]; then
+		echoRed "Could not find pom.xml where are you running this from? It should be from the root porject directory using 'bash scripts/local_ci.sh'"
+		exit 1
+	fi
+fi
+# Run CI checks
 run_local_CI
