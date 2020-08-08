@@ -1,28 +1,3 @@
-# ENGR 301: Architectural Design and Proof-of-Concept
-
-## Proof-of-Concept
-
-The aim of an architectural proof-of-concept (spike or walking skeleton) is to demonstrate the technical feasibility of your chosen architecture, to mitigate technical and project risks, and to plan and validate your technical and team processes (e.g., build systems, story breakdown, Kanban boards, acceptance testing, deployment).
-
-A walking skeleton is an initial technical attempt that will form the architectural foundation of your product. Since a walking skeleton is expected to be carried into your product, it must be completed to the quality standards expected for your final product. A walking skeleton should demonstrate all the technologies your program will rely on "end-to-end" &mdash; from the user interface down to the hardware.
-
-In the context of ENGR 301, a walking skeleton does not need to deliver any business value to your project: the aim is technical validation and risk mitigation.
-
-
-## Document
-
-The aim of the architectural design document is to describe the architecture and high-level design of the system your group is to build, to identify any critical technical issues with your design, and to explain how you have addressed the highest rated technical and architectural risks. The architecture document should also demonstrate your understanding of architectural techniques and architectural quality, using tools and associated notations as necessary to communicate the architecture precisely, unambiguously and clearly in a written technical document.
-
-Page specifications below are *limits not targets* and refer to the pages in the PDF generated from the markdown. Because the size of your document is necessarily limited, you should ensure that you focus your efforts on those architectural concerns that are most important to completing a successful system: if sections are at their page limit, indicate how many items would be expected in a complete specification.
-
-The ENGR 301 project architecture design document should be based on the standard ISO/IEC/IEEE 42010:2011(E) _Systems and software engineering &mdash; Architecture description_, plus appropriate sections from ISO/IEC/IEEE 29148:2018(E) _Systems and software engineering &mdash; Life cycle processes &mdash; Requirements engineering_; ISO/IEC/IEEE 15289:2017 _Systems and software engineering &mdash; Content of life-cycle information items (documentation)_; ISO/IEC/IEEE 15288:2015 _Systems and software engineering &mdash; System life-cycle processes_; ISO/IEC/IEEE 12207:2017 _Systems and software engineering &mdash; Software life cycle processes_ and ISO 25010 SQuaRE; with notations from ISO/ISE 19501 (UML). In particular, Annex F of ISO/IEC/IEEE 15288 and Annex F of ISO/IEC/IEEE 12207. These standards are available through the Victoria University Library subscription to the [IEEE Xplore Digital Library](https://ieeexplore.ieee.org/) (e.g., by visiting IEEE Xplore from a computer connected to the University network).
-
-The document should contain the sections listed below, and conform to the formatting rules listed at the end of this brief.
-
-All team members are expected to contribute equally to the document and list their contributions in the last section of the document (please make sure that your continued contribution to this document can be traced in GitLab). You should work on your document in your team's GitLab repository in a directory called "M2_Architecture". If more than one team member has contributed to a particular commit, all those team member IDs should be included in the first line of the git commit message. ``git blame``, ``git diff``, file histories, etc. will be tools used to assess individual contributions, so everyone is encouraged to contribute individually (your contribution should be made to many sections of the document, rather than focusing on just a single section), commit early and commit often.
-
----
-
 # ENGR 301 *Project 10* Architectural Design and Proof-of-Concept
 
 **Authors:** Nathan Duckett, Timothy Salisbury, Ahad Rahman, Joshua Harwood, Nalin Aswani, Jake (Quang) Mai.
@@ -114,7 +89,7 @@ system. The use cases are used to illustrate our system as a whole, furthermore 
 ### 4. Architectural Views
 
 To describe our system's architecture, we used Krutchen's 4+1 model.
-The following views are desribed from the follow viewpoints:
+The following views are described from the follow viewpoints:
  * Logical
  * Development
  * Process
@@ -155,7 +130,7 @@ However, we will still acknowledge each other's strengths, and try to assign tic
 
 #### 4.2.2 Development Methodology
 We realise the importance of being agile for software development, so we are following the Scrum methodology.
-This means we are breaking up work into weekly sprints, with the subsequent sprint plannings and reviews that follows. We also have fortnightly retrospectives with our senior manager.
+This means we are breaking up work into weekly sprints, with the subsequent sprint planning and reviews that follows. We also have fortnightly retrospectives with our senior manager.
 
 #### 4.2.3 Development Standards
 To ensure we are developing quality code, all tickets/issues go through a Merge Request process. When making a merge request, the assignee must follow a template which includes headings for:
@@ -168,7 +143,7 @@ This template gives the reviewers of the merge request sufficient information to
 Merge requests must be approved by at least 2 other members before it can be merged into our master branch.
 
 We have created a coding standard which matches our needs using a custom Checkstyle definition. This is based on google code style with some of our own preferences.
-Our CI pipeline enforces all code matches this standard so we can ensure that code is consistent across all files within our repo. Our code is expected to have Javadocs
+Our CI pipeline enforces all code matches this standard so we can ensure that code is consistent across all files within our repo. Our code is expected to have JavaDocs
 created and to have correct spelling within documentation. For this our CI pipeline performs checks to verify all documentation is in order to keep up to date.
 
 #### 4.2.4 Test Planning
@@ -188,10 +163,10 @@ We also use GitLab's Epics and assign tickets to certain Epics to be able to see
 ![Package Diagram](assets/package_diagram.png)
 
 This package diagram outlines the structure we expect to follow for our development. This is refined over time through our iterations of sprints to ensure we have an understandable layout as we work.
-The focus on our package design is separation of services to try and decouple any logic from our GUI. This separation allows our code to be unit tested easier without relying on implemetation within
+The focus on our package design is separation of services to try and decouple any logic from our GUI. This separation allows our code to be unit tested easier without relying on implementation within
 the GUI.
 
-The packages focus on reusability within one another with our three main application components being able to be swapped out (gui, communications, weather). These are the three main components of the
+The packages focus on reusability within one another with our three main application components being able to be swapped out (GUI, communications, weather). These are the three main components of the
 system which are supported by the other packages which provide shared code between all implementations. This decoupling ensures we do not reuse code we have already created and can swap out components
 as needed as we progress further in the application as requirements change.
 
@@ -320,7 +295,7 @@ We do not expect any expenditure for our project.
 
 | Product/Service | Source | Why we need this |
 | :-------------: | :----: | :--------------- |
-| LoRaWAN base station | Teams 1-6 (Hardware teams) | The goal of the Mission Control software is to communicate with the rocket and provide visualisation of what is going on. The choice of connection between the rocket and the mission control software is using LoRaWAN. The hardware teams are expected to create a basestation which will contain a LoRaWAN radio which our software will be able to interface with via USB serial. This is our main form of communication to the rocket and is such a necessary part for a successful launch. We expect this to be made available on the day of launch during collaboration with the other teams. |
+| LoRaWAN base station | Teams 1-6 (Hardware teams) | The goal of the Mission Control software is to communicate with the rocket and provide visualisation of what is going on. The choice of connection between the rocket and the mission control software is using LoRaWAN. The hardware teams are expected to create a base station which will contain a LoRaWAN radio which our software will be able to interface with via USB serial. This is our main form of communication to the rocket and is such a necessary part for a successful launch. We expect this to be made available on the day of launch during collaboration with the other teams. |
 | SimulationListener | Teams 12-18 (Simulation teams) | A core functionality of the mission control software is to provide a go/no go functionality based on whether we are safe to fly. The simulation teams are expected to provide a Monte Carlo simulation which will allow multiple simulations to be run to check the landing zones and test if we are safe to launch. This is important information in our software's decision on whether it is safe to allow the rocket to fly. We rely on having a SimulationListener or a connection between the two different applications to communicate the results and safely determine if we can fly the rocket. |
 | Log4j | External Library (Maven) | Log4j is expected to be used to provide our logging services to output debug logs from our software and the rocket combined. This will allow us to monitor and track what is going on throughout the entire process so that we can record and monitor results at a later time. |
 | JavaFX | External Library (Maven) | JavaFX is our Graphics framework which will provide us with a GUI for the customer to interact with our software. This is an open source project which provides a Java based UI implementation so that we can visualize the data. |
@@ -400,27 +375,8 @@ One page glossary as required
 - Section 4.2.3/4.2.4 Development - Expansion on CI functionality
 - Section 4.2.6 Package Diagram
 - Section 5.2 Budget and Procurement
+- General Tidy up
 
 **Nalin Aswani:**
 - Section 4.1 Logical
----
-
-## Formatting Rules
-
- * Write your document using [Markdown](https://gitlab.ecs.vuw.ac.nz/help/user/markdown#gitlab-flavored-markdown-gfm) in your team's GitLab repository.
- * Major sections should be separated by a horizontal rule.
-
-
-## Assessment
-
-This document will be weighted at 20% on the architectural proof-of-concept(s), and 80% on the architecture design.
-
-The proof-of-concept will be assessed for coverage (does it demonstrate all the technologies needed to build your project?) and quality (with an emphasis on simplicity, modularity, and modifiability).
-
-The document will be assessed by considering both presentation and content. Group and individual group members will be assessed by identical criteria, the group mark for the finished PDF and the individual mark on the contributions visible through `git blame`, `git diff`, file histories, etc.
-
-The presentation will be based on how easy it is to read, correct spelling, grammar, punctuation, clear diagrams, and so on.
-
-The content will be assessed according to its clarity, consistency, relevance, critical engagement and a demonstrated understanding of the material in the course. We look for evidence these traits are represented and assess the level of performance against these traits. Inspection of the GitLab Group is the essential form of assessing this document. While being comprehensive and easy to understand, this document must be reasonably concise too. You will be affected negatively by writing a report with too many pages (far more than what has been suggested for each section above).
-
 ---

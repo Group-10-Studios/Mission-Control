@@ -56,10 +56,7 @@ spell_check:
     - shell
   script:
     - npm install markdown-spellcheck
-    # Check README against AU - NZ doesn't work here
-    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-au *.md
-    # Check other documents in subfolders against NZ
-    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a --en-nz **/*.md
+    - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a '**/*.md' '!**/node_modules/**/*.md'
   allow_failure: false
 
 find_bugs:
