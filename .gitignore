@@ -374,3 +374,8 @@ nbdist/
 
 # End of https://www.gitignore.io/api/macos,intellij,netbeans
 
+## Local CI script requirements
+package-lock.json
+package.json
+node_modules/
+checkstyle-8.3.2-all.jar
