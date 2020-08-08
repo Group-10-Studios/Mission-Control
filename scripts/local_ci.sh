@@ -7,6 +7,19 @@
 ## in our CI pipeline implementation
 ## Author: Nathan Duckett
 
+function print_usage () {
+	echo "ENGR300 Group 10 Local CI pipeline Checker"
+	echo "------------------------------------------"
+	echo "This is supposed to help easily check if the pipeline will pass with the code by allowing you to run it locally."
+	echo "For normal execution just use 'bash scripts/local_ci.sh' from your root project directory"
+	echo ""
+	echo "CLI Options:"
+	echo "-v  | --verbose => Receive verbose output of all commands run during the pipeline"
+	echo "-h  | --headless => Run the script in headless mode so no GUI tests will execute"
+	echo "-vh | --verbose-headless => Run both verbose and headless mode together"
+	echo "-------------------------------------------------------------------------------"
+}
+
 # Function to get parameters from cli arguments
 function get_params () {
     # =====================================
@@ -15,6 +28,10 @@ function get_params () {
     PARAMS=""
     while (( "$#" )); do
     case "$1" in
+		-h|--help|-u|--usage)
+        print_usage
+        exit 0
+        ;;
         -v|--verbose)
         verbose="true"
         shift
