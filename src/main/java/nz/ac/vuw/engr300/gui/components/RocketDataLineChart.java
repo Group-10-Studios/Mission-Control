@@ -21,6 +21,7 @@ import nz.ac.vuw.engr300.gui.util.Colours;
  * @author Tim Salisbury
  */
 public class RocketDataLineChart extends LineChart<Number, Number> implements RocketGraph {
+    private boolean isVisible = true;
 
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
@@ -90,5 +91,15 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     @Override
     public GraphType getGraphType() {
         return this.type;
+    }
+
+    @Override
+    public void toggleVisibility() {
+        this.isVisible = !this.isVisible;
+    }
+
+    @Override
+    public boolean isGraphVisible() {
+        return this.isVisible;
     }
 }

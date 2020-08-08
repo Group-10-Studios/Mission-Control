@@ -145,7 +145,7 @@ public class HomeView implements View {
         leftHandSidePanel.setId("navigationView");
         addNodeToGrid(leftHandSidePanel, contentGrid, 0, 0, Insets.EMPTY);
 
-        this.navigationView = new NavigationView(leftHandSidePanel, graphView);
+        this.navigationView = new NavigationView(leftHandSidePanel);
     }
 
     /**
