@@ -193,4 +193,9 @@ public class OpenRocketImporter implements RocketDataImporter {
     public void unsubscribeObserver(Consumer<RocketData> observer) {
         this.observers.remove(observer);
     }
+
+    @Override
+    public void unsubscribeAllObservers() {
+        this.observers.clear();
+    }
 }

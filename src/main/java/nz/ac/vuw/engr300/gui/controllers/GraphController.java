@@ -265,6 +265,7 @@ public class GraphController {
     public void shutdown() {
         simulationImporter.stop();
         LOGGER.debug("GraphController shutdown called");
+        simulationImporter.unsubscribeAllObservers();
     }
 
     /**
