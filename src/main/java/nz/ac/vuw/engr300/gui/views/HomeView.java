@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
+import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -48,13 +50,10 @@ public class HomeView implements View {
         stage.setWidth(1280.0);
         stage.setHeight(720.0);
 
-        stage.show();
-
-        stage.setMinHeight(720);
-        stage.setMinWidth(1280);
-
-        //HomeController controller = loader.getController();
-        //stage.setOnCloseRequest(e -> controller.shutdown());
+        stage.setOnCloseRequest(e -> {
+            // This function will shutdown simulation importer for warnings controller as well.
+            GraphController.getInstance().shutdown();
+        });
         // stage.setMaximized(true);
 
         stage.show();
