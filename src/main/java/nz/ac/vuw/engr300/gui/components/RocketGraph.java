@@ -28,4 +28,16 @@ public interface RocketGraph {
      * Clears the current graph, and resets the X scale.
      */
     public void clear();
+
+    /**
+     * Get the status of this RocketGraph if it is visible or hidden.
+     *
+     * @return Boolean indicating if the graph is visible on the content grid.
+     */
+    public boolean isGraphVisible();
+
+    /**
+     * Switch the visibility status from visible-hidden and vice versa.
+     */
+    public void toggleVisibility();
 }

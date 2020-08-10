@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.MethodOrderer;
@@ -157,7 +158,6 @@ public class GeneralGuiTests extends ApplicationTest {
      *
      * @param robot             The robot injected to run tests.
      * @param simulationFile    The simulation we wish to run.
-     * @param simulationRunTime How long we should let the simulation run for.
      */
     private static boolean runSimulation(FxRobot robot, String simulationFile) {
         if (!checkAndClickOnNode(robot, "#btnRunSim")) {
@@ -255,6 +255,10 @@ public class GeneralGuiTests extends ApplicationTest {
     public void stop() throws Exception {
         FxToolkit.cleanupStages();
         stage.close();
+
+        // Do not remove this - we need to shutdown the controller first after each test
+        // This ensures no duplicate observers which can break graph values.
+        GraphController.getInstance().shutdown();
     }
 
     /**

@@ -20,6 +20,7 @@ import nz.ac.vuw.engr300.gui.util.Colours;
 public class RocketDataAngle extends Gauge implements RocketGraph {
     private GraphType type;
     private boolean isCompass;
+    private boolean isVisible = true;
 
     /**
      * Constructs a new RocketDataAngle component, where the boolean
@@ -120,5 +121,15 @@ public class RocketDataAngle extends Gauge implements RocketGraph {
             this.setSubTitle(g.getLabel());
         }
 
+    }
+
+    @Override
+    public void toggleVisibility() {
+        this.isVisible = !this.isVisible;
+    }
+
+    @Override
+    public boolean isGraphVisible() {
+        return this.isVisible;
     }
 }

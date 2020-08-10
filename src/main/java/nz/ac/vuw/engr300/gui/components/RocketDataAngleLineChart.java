@@ -25,6 +25,7 @@ import nz.ac.vuw.engr300.gui.util.Colours;
  */
 public class RocketDataAngleLineChart extends StackPane implements RocketGraph {
     private boolean compassView = true;
+    private boolean isVisible = true;
 
     private GraphType type;
 
@@ -101,5 +102,15 @@ public class RocketDataAngleLineChart extends StackPane implements RocketGraph {
     public void clear() {
         this.angleComponent.clear();
         this.graphComponent.clear();
+    }
+
+    @Override
+    public void toggleVisibility() {
+        this.isVisible = !this.isVisible;
+    }
+
+    @Override
+    public boolean isGraphVisible() {
+        return this.isVisible;
     }
 }

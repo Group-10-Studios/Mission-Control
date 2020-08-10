@@ -32,6 +32,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     public double graphicsHeight;
     private String apiKey;
     private boolean apiKeyFound = true;
+    private boolean isVisible = true;
 
     /**
      * Create a new RocketDataLocation panel which shows the rocket position on a
@@ -178,5 +179,15 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             g.strokeText("Map Image API key not found", graphicsWidth / 4, graphicsHeight / 2);
         }
 
+    }
+
+    @Override
+    public void toggleVisibility() {
+        this.isVisible = !this.isVisible;
+    }
+
+    @Override
+    public boolean isGraphVisible() {
+        return this.isVisible;
     }
 }

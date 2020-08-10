@@ -4,14 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -34,8 +28,6 @@ public class GraphView implements View {
     private List<RocketGraph> graphs;
     private final GraphController controller;
 
-    private GraphType highlightedGraph;
-
     /**
      * Create new GraphView.
      * 
@@ -50,7 +42,9 @@ public class GraphView implements View {
         this.controller = GraphController.getInstance();
 
         attachContentToScrollPane();
-        this.controller.subscribeGraphs(graphs);
+        this.controller.attachView(this);
+        this.controller.setGraphs(graphs);
+        this.controller.subscribeGraphs();
     }
     
     /**
@@ -67,17 +61,10 @@ public class GraphView implements View {
         // Updates row constraints based on the visible height to fill the correct space.
         scrollPane.heightProperty().addListener((ov, n, t1) -> {
             this.contentPane.updateConstraints(t1.intValue());
+            // Ensure contents are updated with new constraints
+            this.contentPane.updateContents();
         });
         this.contentPane.updateConstraints((int) scrollPane.getHeight());
-    }
-
-    /**
-     * Get the controller associated with this view.
-     *
-     * @return GraphController which is associated with this view for external access of functions.
-     */
-    public GraphController getController() {
-        return this.controller;
     }
 
     /**
@@ -100,34 +87,6 @@ public class GraphView implements View {
         this.contentPane.addGridContents(allGraphs());
     }
 
-    /**
-     * Get the current highlighted rocket graph.
-     *
-     * @return The graph type of the highlighted graph.
-     */
-    public GraphType getHighlightedGraph() {
-        return this.highlightedGraph;
-    }
-
-    /**
-     * Highlight the specific graph with a border. Providing the chart region to highlight
-     * (apply border to) and the graphtype to store the current highlighted graph.
-     *
-     * @param chartRegion Region to place the border around when highlighted.
-     * @param graphToHighlight GraphType to record the current highlighted graph.
-     */
-    public void highlightGraph(Region chartRegion, GraphType graphToHighlight) {
-        if (graphToHighlight == this.highlightedGraph) {
-            chartRegion.setBorder(null);
-            this.highlightedGraph = null;
-
-        } else {
-            chartRegion.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
-                    new CornerRadii(5.0), new BorderWidths(2.0))));
-            this.highlightedGraph = graphToHighlight;
-        }
-    }
-    
     /**
      * Manually binds the graph type to the graphs. This could maybe be automated
      * later but for now can set the values.
@@ -176,6 +135,6 @@ public class GraphView implements View {
      * @return Region array of graphs.
      */
     private Region[] allGraphs() {
-        return this.graphs.stream().map(g -> (Region) g).toArray(Region[]::new);
+        return this.graphs.stream().filter(RocketGraph::isGraphVisible).map(g -> (Region) g).toArray(Region[]::new);
     }
 }

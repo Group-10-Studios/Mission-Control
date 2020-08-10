@@ -3,6 +3,7 @@ package nz.ac.vuw.engr300.gui.controllers;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
+import nz.ac.vuw.engr300.gui.components.NavigationButton;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
@@ -21,40 +22,25 @@ public class ButtonController {
 
     private static final double BUTTON_HEIGHT = 30;
 
-    private List<Button> pnNavButtons = new ArrayList<>();
+    private List<NavigationButton> pnNavButtons = new ArrayList<>();
 
 
     /**
      * Updates the buttons and sets them to the appropriate graph.
-     * @param graphView GraphView to hold the graphs
      */
-    public void updateButtons(GraphView graphView) {
+    public void updateButtons() {
         List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
         //ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
         for (String label : labels) {
-            Button b = new Button(label);
-            b.setId("btn" + label.replace(" ", ""));
-            b.setLayoutY(y);
-            b.setOnAction(e -> {
-                GraphType thisGraph = GraphType.fromLabel(label);
-                for (RocketGraph chart : graphView.getGraphs()) {
-                    // Get the chart as a region to set the Border
-                    Region chartRegion = (Region) chart;
-                    if (chart.getGraphType() == thisGraph) {
-                        graphView.highlightGraph(chartRegion, thisGraph);
-                    } else {
-                        chartRegion.setBorder(null);
-                    }
-                }
-            });
-            pnNavButtons.add(b);
+            NavigationButton nb = new NavigationButton(label);
+            pnNavButtons.add(nb);
         }
 
     }
 
-    public Button[] getPnNavButtons() {
-        return pnNavButtons.toArray(new Button[pnNavButtons.size()]);
+    public NavigationButton[] getPnNavButtons() {
+        return pnNavButtons.toArray(new NavigationButton[pnNavButtons.size()]);
     }
 
     /**

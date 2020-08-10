@@ -30,7 +30,6 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 public class NavigationView implements View {
 
     private final GridPane root;
-    private final GraphView graphView;
     public NavigationController navigationC;
 
     public Button pastFlightsButton = new Button("Past Flights");
@@ -41,8 +40,7 @@ public class NavigationView implements View {
      * Add Batteries and warning sections of right hand side panel.
      * @param root The root Gridpane where we will be adding nodes to.
      */
-    public NavigationView(GridPane root, GraphView graphView) {
-        this.graphView = graphView;
+    public NavigationView(GridPane root) {
         this.root = root;
         navigationC = new NavigationController();
         setupRoot();
@@ -77,7 +75,7 @@ public class NavigationView implements View {
      */
     public void setupButtons() {
         ButtonController buttonC = navigationC.getButtonController();
-        buttonC.updateButtons(graphView);
+        buttonC.updateButtons();
         VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
     }
@@ -87,7 +85,7 @@ public class NavigationView implements View {
      * Displays the Run Flights and Simulation Buttons on the bottom of the left panel.
      */
     private void setupSimulationButtons() {
-        GraphController graphC = graphView.getController();
+        GraphController graphC = GraphController.getInstance();
 
         pastFlightsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -95,8 +93,8 @@ public class NavigationView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         //TODO: Find out how to get the graphs
-        runSimButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
-        pastFlightsButton.setOnAction(e -> graphC.runSim(graphView.getGraphs()));
+        runSimButton.setOnAction(e -> graphC.runSim());
+        pastFlightsButton.setOnAction(e -> graphC.runSim());
 
         runSimButton.setId("btnRunSim");
 
