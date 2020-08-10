@@ -61,6 +61,8 @@ public class GraphView implements View {
         // Updates row constraints based on the visible height to fill the correct space.
         scrollPane.heightProperty().addListener((ov, n, t1) -> {
             this.contentPane.updateConstraints(t1.intValue());
+            // Ensure contents are updated with new constraints
+            this.contentPane.updateContents();
         });
         this.contentPane.updateConstraints((int) scrollPane.getHeight());
     }

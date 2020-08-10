@@ -18,8 +18,14 @@ import java.util.List;
  * @author Nathan Duckett
  */
 public class DynamicGridPane extends GridPane {
+    private int previousScrollPaneHeight;
     private int columns;
     private int rows;
+    private float visibleRows;
+    /**
+     * Define the number of target rows to be visible on the screen (currently just 3 can change later)
+     */
+    private static final float defaultVisibleRowsTarget = 3;
     private int minRegionWidth;
     private final List<Region> internalGridContents;
 
@@ -48,6 +54,8 @@ public class DynamicGridPane extends GridPane {
         // Default to 2 columns based on application starting size can be changed later.
         this.columns = 2;
         this.rows = calculatedRows();
+        // Default to 3 visible rows
+        this.visibleRows = 3f;
 
         // Create a listener to calculate columns based on width changes and redraw the screen.
         this.widthProperty().addListener((ov, n, t1) -> {
@@ -57,6 +65,7 @@ public class DynamicGridPane extends GridPane {
 
         // Add all provided contents if any
         for (Region region: gridContents) {
+            region.setMaxWidth(Double.POSITIVE_INFINITY);
             addGridContent(region, false);
         }
 
@@ -114,6 +123,8 @@ public class DynamicGridPane extends GridPane {
         // Clear children first otherwise could duplicate add resulting in exception
         this.getChildren().clear();
         int regionNo = 0;
+        updateVisibleRows();
+        updateConstraints(-1);
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
@@ -134,9 +145,12 @@ public class DynamicGridPane extends GridPane {
      * @param height The height of the visible portion of this DynamicGridPane.
      */
     public void updateConstraints(int height) {
+        if (height != -1) {
+            this.previousScrollPaneHeight = height;
+        }
         this.getRowConstraints().clear();
         RowConstraints rc = new RowConstraints();
-        rc.setPrefHeight(height / 3f);
+        rc.setPrefHeight(this.previousScrollPaneHeight / visibleRows);
         rc.setFillHeight(true);
         for (int i = 0; i < rows; i++) {
             this.getRowConstraints().add(rc);
@@ -204,5 +218,24 @@ public class DynamicGridPane extends GridPane {
     private void updateInternalDimensions(double currentWidth) {
         this.columns = (int) (currentWidth / minRegionWidth);
         this.rows = calculatedRows();
+
+        updateVisibleRows();
+    }
+
+    /**
+     * Helper function to update the visible rows within this DynamicGridPane based on the number of regions present.
+     */
+    private void updateVisibleRows() {
+        // Loop up until the default visible target
+        for (int i = 1; i <= this.defaultVisibleRowsTarget; i++) {
+            // Set visible rows to the number of rows required to make columns visible
+            if (this.internalGridContents.size() <= this.columns * i) {
+                this.visibleRows = i;
+                // Break early to prevent overwriting row counts.
+                break;
+            } else {
+                this.visibleRows = this.defaultVisibleRowsTarget;
+            }
+        }
     }
 }
