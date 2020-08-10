@@ -23,7 +23,7 @@ public class DynamicGridPane extends GridPane {
     private int rows;
     private float visibleRows;
     /**
-     * Define the number of target rows to be visible on the screen (currently just 3 can change later)
+     * Define the number of target rows to be visible on the screen (currently just 3 can change later).
      */
     private static final float defaultVisibleRowsTarget = 3;
     private int minRegionWidth;
@@ -65,7 +65,6 @@ public class DynamicGridPane extends GridPane {
 
         // Add all provided contents if any
         for (Region region: gridContents) {
-            region.setMaxWidth(Double.POSITIVE_INFINITY);
             addGridContent(region, false);
         }
 
