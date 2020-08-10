@@ -6,7 +6,7 @@
 This software can be used as mission control for rocket launches based on the hardware developed by teams 1-6.
 
 ## Usage - Compile
-After cloning our repo you can run the following commands using maven on our project:
+After cloning our repo you can run the following commands using Maven on our project:
 
 - `mvn clean javafx:run` > This will run our mission control UI. This will allow you to run simulations, and use our software.
 - `mvn clean test` > This will run our test suite on your system.
@@ -41,7 +41,7 @@ Inside the file `src/main/resources/keys.json` it requires the following informa
 ### How to use:
 Our application supports loading in simulation data generated from OpenRocket. These files are stored in `src/main/resources/test-data/`.
 
-To use the application start using `mvn clean javafx:run` this will build and begin the java application.
+To use the application start using `mvn clean javafx:run` this will build and begin the Java application.
 
 **If the application positions look out of place resize the window slowly to dynamically update to fix the display.**
 
