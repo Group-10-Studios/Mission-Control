@@ -2,8 +2,9 @@ package nz.ac.vuw.engr300.importers;
 
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**

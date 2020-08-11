@@ -91,7 +91,7 @@ public class InformationView implements View {
 
         goButton.setOnAction(e -> infController.onGo(e));
         noGoButton.setOnAction(e -> infController.onNoGo(e));
-        launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters->{
+        launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));
 
