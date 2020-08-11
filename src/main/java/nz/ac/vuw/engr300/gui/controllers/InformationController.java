@@ -103,6 +103,10 @@ public class InformationController {
                 "Waiting for rocket to be armed", "(Pretending its armed)");
     }
 
+    /**
+     * Save LaunchParameters to json file.
+     * @param lp LaunchParameters object.
+     */
     public void saveLaunchParameters(LaunchParameters lp) {
         JsonExporter.save("src/main/resources/config/launch-parameters.json", lp);
     }
