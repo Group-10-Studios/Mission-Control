@@ -91,7 +91,9 @@ public class InformationView implements View {
 
         goButton.setOnAction(e -> infController.onGo(e));
         noGoButton.setOnAction(e -> infController.onNoGo(e));
-        launchConfigButton.setOnAction(e -> LaunchParameterView.display());
+        launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters->{
+            infController.saveLaunchParameters(parameters);
+        })));
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
@@ -103,8 +105,6 @@ public class InformationView implements View {
         // Set it to hug the warnings above it
         GridPane.setValignment(goNoGoVBox, VPos.TOP);
         addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
-
-
     }
 
     /**
