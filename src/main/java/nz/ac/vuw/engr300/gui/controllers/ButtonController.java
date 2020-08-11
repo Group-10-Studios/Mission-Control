@@ -39,6 +39,22 @@ public class ButtonController {
             Button b = new Button(label);
             b.setId("btn" + label.replace(" ", ""));
             b.setLayoutY(y);
+
+            b.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.toFront();
+                    buttonSelected.originalY = b.getLayoutY();
+                    buttonSelected.nextY = b.getLayoutY() - mouseEvent.getSceneY();
+                }
+            });
+            b.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    b.setLayoutY(mouseEvent.getSceneY() + buttonSelected.nextY);
+                }
+            });
+
             b.setOnAction(e -> {
                 GraphType thisGraph = GraphType.fromLabel(label);
                 for (RocketGraph chart : graphView.getGraphs()) {
