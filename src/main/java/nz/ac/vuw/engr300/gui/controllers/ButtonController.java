@@ -62,7 +62,7 @@ public class ButtonController {
             NavigationButton nb = new NavigationButton(label);
             pnNavButtons.add(nb);
             NavigationButton b = nb;
-            
+
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -112,9 +112,7 @@ public class ButtonController {
                         // Swap the two butons
                         Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace);
                         reorderGraphs(labels);
-                    } else {
-                        // If the user barely drags the button (by mistake), then put it back
-                        b.setLayoutY(buttonSelected.originalY);
+                        
                     }
                 }
             });
