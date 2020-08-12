@@ -7,14 +7,9 @@ import nz.ac.vuw.engr300.model.LaunchParameters;
  *
  * @author Ahad Rahman
  */
-public class NavigationController extends RocketController {
+public class NavigationController {
 
-    private static final NavigationController instance = new NavigationController();
 
-    //TODO doco
-    public static NavigationController getInstance() {
-        return instance;
-    }
 
     private WeatherController weatherController;
     private ButtonController buttonController;
@@ -22,7 +17,7 @@ public class NavigationController extends RocketController {
     /**
      * Creates instances of the necessary controllers.
      */
-    private NavigationController() {
+    public NavigationController() {
         weatherController = WeatherController.getInstance();
         buttonController = new ButtonController();
     }
@@ -35,9 +30,4 @@ public class NavigationController extends RocketController {
         return buttonController;
     }
 
-    @Override
-    public void setLaunchParameters(LaunchParameters launchParameters) {
-        super.setLaunchParameters(launchParameters);
-        weatherController.setLaunchParameters(launchParameters);
-    }
 }

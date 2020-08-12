@@ -13,7 +13,7 @@ import nz.ac.vuw.engr300.model.LaunchParameters;
 
 import java.util.Optional;
 
-public class InformationController extends RocketController {
+public class InformationController {
     /**
      * Separate thread to run the battery timers on.
      */

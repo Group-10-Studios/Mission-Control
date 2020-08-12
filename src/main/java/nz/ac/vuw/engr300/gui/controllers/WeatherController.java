@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
  * @author Nalin Aswani
  * @author Jake Mai
  */
-public class WeatherController extends RocketController {
+public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
     private WeatherData weather; //this is all the weather data stored
 

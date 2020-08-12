@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Nathan Duckett
  */
-public class GraphController extends RocketController {
+public class GraphController {
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();

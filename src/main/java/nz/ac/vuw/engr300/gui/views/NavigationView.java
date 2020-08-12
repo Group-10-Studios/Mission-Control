@@ -42,7 +42,7 @@ public class NavigationView implements View {
      */
     public NavigationView(GridPane root) {
         this.root = root;
-        navigationC = NavigationController.getInstance();
+        navigationC = new NavigationController();
         setupRoot();
         setupWeather();
         setupButtons();

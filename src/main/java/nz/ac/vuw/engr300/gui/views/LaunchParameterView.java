@@ -44,21 +44,11 @@ public class LaunchParameterView implements View {
      * @param parameters The LaunchParameters object.
      * @param callBack   Callback function to accept LaunchParameters.
      */
-    public LaunchParameterView(GridPane root, LaunchParameters parameters, Consumer<LaunchParameters> callBack) {
+    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
         this.root = root;
-        this.parameters = parameters;
+        this.parameters = LaunchParameters.getInstance();
         this.callBack = callBack;
         UiUtil.addPercentRows(root, 70, 30);
-    }
-
-    /**
-     * Secondary Constructor for when we don't have existing LaunchParameters so use default values.
-     *
-     * @param root     The root GridPane where we will be adding nodes to.
-     * @param callBack Callback function to accept LaunchParameters.
-     */
-    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
-        this(root, new LaunchParameters(), callBack);
     }
 
     /**
@@ -131,7 +121,7 @@ public class LaunchParameterView implements View {
      */
     private void initializeFields() {
         Class<LaunchParameters> clazz = LaunchParameters.class;
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = clazz.getFields();
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10));
         for (Field f : fields) {
             LaunchParameterInputField lpif = new LaunchParameterInputField(f, parameters);
