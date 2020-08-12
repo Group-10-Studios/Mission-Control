@@ -15,8 +15,8 @@ import java.lang.reflect.Field;
 public class LaunchParameterInputField extends GridPane {
 
     private TextField inputField;
-    private LaunchParameters parameters;
-    private Field field;
+    private final LaunchParameters parameters;
+    private final Field field;
 
     /**
      * Creates a LaunchParameterInputField.
@@ -35,7 +35,7 @@ public class LaunchParameterInputField extends GridPane {
             try {
                 inputField.setText(String.valueOf(field.getDouble(parameters)));
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Unable to access field in LaunchParameters", e);
             }
         }
     }
@@ -71,7 +71,7 @@ public class LaunchParameterInputField extends GridPane {
         try {
             field.setDouble(parameters, Double.parseDouble(inputField.getText()));
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to save field.", e);
         }
     }
 }

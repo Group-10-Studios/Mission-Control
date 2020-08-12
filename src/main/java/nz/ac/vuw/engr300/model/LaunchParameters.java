@@ -5,7 +5,7 @@ import nz.ac.vuw.engr300.importers.JsonImporter;
 import java.io.FileNotFoundException;
 
 /**
- * This class represents the different Launch Parameters.
+ * This class represents the different Launch Parameters, this is a global state.
  *
  * @author Ahad Rahman, Tim Salisbury
  */
@@ -15,15 +15,19 @@ public class LaunchParameters {
     public double latitude;
     public double longitude;
 
-
-
     private static LaunchParameters instance;
 
-    public static LaunchParameters getInstance(){
-        if (instance == null){
+    /**
+     * Get the LaunchParameters object.
+     *
+     * @return LaunchParameters instance for the global state.
+     */
+    public static LaunchParameters getInstance() {
+        if (instance == null) {
             try {
                 Gson gson = new Gson();
-                instance = gson.fromJson(JsonImporter.load("src/main/resources/config/launch-parameters.json"), LaunchParameters.class);
+                instance = gson.fromJson(JsonImporter.load("src/main/resources/config/launch-parameters.json"),
+                        LaunchParameters.class);
             } catch (FileNotFoundException e) {
                 instance = new LaunchParameters();
             }

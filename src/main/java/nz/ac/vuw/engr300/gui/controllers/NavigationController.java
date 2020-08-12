@@ -9,8 +9,6 @@ import nz.ac.vuw.engr300.model.LaunchParameters;
  */
 public class NavigationController {
 
-
-
     private WeatherController weatherController;
     private ButtonController buttonController;
 

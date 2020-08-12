@@ -41,7 +41,6 @@ public class LaunchParameterView implements View {
      * Creates a LaunchParameterView Object.
      *
      * @param root       The root GridPane where we will be adding nodes to.
-     * @param parameters The LaunchParameters object.
      * @param callBack   Callback function to accept LaunchParameters.
      */
     public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
@@ -95,8 +94,10 @@ public class LaunchParameterView implements View {
         pullData.setOnAction(e -> {
             saveLaunchParameters();
             try {
-                MapImageImporter.importImage(KeyImporter.getKey("maps"), parameters.latitude, parameters.longitude);
-                PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"), parameters.latitude, parameters.longitude);
+                MapImageImporter.importImage(KeyImporter.getKey("maps"),
+                        parameters.latitude, parameters.longitude);
+                PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
+                        parameters.latitude, parameters.longitude);
             } catch (Exception | Error exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
@@ -105,11 +106,12 @@ public class LaunchParameterView implements View {
                 alert.showAndWait();
             }
         });
-        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY,  pullDataDescription, pullData, save, exportWeather), 0, 1);
+        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY,  pullDataDescription,
+                pullData, save, exportWeather), 0, 1);
     }
 
     /**
-     *
+     * Saves the input field values to the parameters object.
      */
     private void saveLaunchParameters() {
         inputFields.forEach(LaunchParameterInputField::saveField);
