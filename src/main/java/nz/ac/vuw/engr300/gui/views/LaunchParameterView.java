@@ -97,7 +97,7 @@ public class LaunchParameterView implements View {
                 MapImageImporter.importImage(KeyImporter.getKey("maps"),
                         parameters.latitude, parameters.longitude);
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
-                        parameters.latitude, parameters.longitude);
+                        parameters.latitude, parameters.longitude, "src/main/resources/weather-data");
             } catch (Exception | Error exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
