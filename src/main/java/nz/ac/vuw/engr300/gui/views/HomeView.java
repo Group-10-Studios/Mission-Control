@@ -60,6 +60,7 @@ public class HomeView implements View {
         // Set minimum dimensions to 720p - Doesn't support below this
         stage.setMinHeight(720);
         stage.setMinWidth(1280);
+
     }
 
     /**

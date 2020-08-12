@@ -47,6 +47,16 @@ public class MapImageImporter {
      * @param apiKey TomTom API key.
      * @param latitude Latitude for center of image.
      * @param longitude Longitude for center of image.
+     */
+    public static void importImage(String apiKey, double latitude, double longitude) {
+        importImage(apiKey, latitude, longitude, 17, 400, 400);
+    }
+
+    /**
+     * Download an image with the following information to the application.
+     * @param apiKey TomTom API key.
+     * @param latitude Latitude for center of image.
+     * @param longitude Longitude for center of image.
      * @param zoomLevel Zoom level of this image - default should be 17
      * @param imageWidth Image width required
      * @param imageHeight Image height required.

@@ -41,6 +41,8 @@ public class InformationView implements View {
 
     public Button noGoButton = new Button("No Go");
 
+    public Button launchConfigButton = new Button("Launch Config");
+
     /**
      * Add Batteries and warning sections of right hand side panel.
      * @param root The root Gridpane where we will be adding nodes to.
@@ -52,7 +54,7 @@ public class InformationView implements View {
         setupRoot();
         setupBatteries();
         setupWarnings();
-        setupGoNoGo();
+        setupBottomButtons();
     }
 
     /**
@@ -79,18 +81,23 @@ public class InformationView implements View {
     /**
      * Create Go/NoGo button at the bottom of the right hand side root panel using VBox.
      */
-    private void setupGoNoGo() {
+    private void setupBottomButtons() {
         goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
+        launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+                CornerRadii.EMPTY, Insets.EMPTY)));
 
         goButton.setOnAction(e -> infController.onGo(e));
         noGoButton.setOnAction(e -> infController.onNoGo(e));
+        launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
+            infController.saveLaunchParameters(parameters);
+        })));
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-                goButton, noGoButton);
+                goButton, noGoButton, launchConfigButton);
         // Literally just for setting background colour
         goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));

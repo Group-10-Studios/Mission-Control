@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 /**
  * PullWeatherAPI connects to OpenWeatherAPI and pulls down the weather forecast
  * data. Data can be pulled every 3 hours.
- * 
+ *
  * @author Jake Mai
  * @author Ahad Rahman
  */
@@ -27,7 +27,7 @@ public class PullWeatherApi {
     /**
      * Make a request to the weather API and download the information into the
      * application.
-     * 
+     *
      * @param args Application Arguments
      */
     public static void main(String[] args) {
@@ -41,18 +41,16 @@ public class PullWeatherApi {
         }
         double latitude = -41.300442;
         double longitude = 174.780319;
-        String filepath = "src/main/resources/weather-data";
-        importWeatherData(apiKey, latitude, longitude, filepath);
+        importWeatherData(apiKey, latitude, longitude, "src/main/resources/weather-data");
     }
 
     /**
      * Import weather data. Downloads a weather data file into resources based on
      * the information provided.
-     * 
+     *
      * @param apiKey    OpenWeatherMap API key
      * @param latitude  Latitude of the position we require weather for.
      * @param longitude Longitude of the position we require weather for.
-     * @param filepath  Filepath for the root folder where to save this data.
      */
     public static void importWeatherData(String apiKey, double latitude, double longitude, String filepath) {
         if (latitude < -85.0 || latitude > 85.0) {

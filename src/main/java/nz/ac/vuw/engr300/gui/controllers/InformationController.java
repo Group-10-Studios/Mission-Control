@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -7,6 +8,8 @@ import javafx.scene.layout.Pane;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
+import nz.ac.vuw.engr300.importers.JsonExporter;
+import nz.ac.vuw.engr300.model.LaunchParameters;
 
 import java.util.Optional;
 
@@ -98,6 +101,14 @@ public class InformationController {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
+    }
+
+    /**
+     * Save LaunchParameters to json file.
+     * @param lp LaunchParameters object.
+     */
+    public void saveLaunchParameters(LaunchParameters lp) {
+        JsonExporter.save("src/main/resources/config/launch-parameters.json", lp);
     }
 
     /**
