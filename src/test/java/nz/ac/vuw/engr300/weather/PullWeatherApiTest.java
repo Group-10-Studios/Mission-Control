@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 class PullWeatherApiTest {
 
     public static String API_KEY;
-    public static final String FILEPATH = "src/test/resources/test-weather-data";
 
     /**
      * Initialize the API_KEY so that the test cases can use it during execution.
@@ -32,7 +31,7 @@ class PullWeatherApiTest {
         double latitude = -64.378432; // Latitude should be between -85 and 85
         double longitude = 165.764319; // Latitude should be between -180 and 180
         try {
-            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
+            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude);
         } catch (Error e) {
             fail();
         }
@@ -43,7 +42,7 @@ class PullWeatherApiTest {
         double latitude = -64.378432; // Latitude should be between -85 and 85
         double longitude = 195.764319; // Latitude should be between -180 and 180
         try {
-            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
+            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude);
             fail();
         } catch (IllegalArgumentException e) {
             assert (true);
@@ -55,7 +54,7 @@ class PullWeatherApiTest {
         double latitude = -104.378432; // Latitude should be between -85 and 85
         double longitude = 175.764319;
         try {
-            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude, FILEPATH);
+            PullWeatherApi.importWeatherData(API_KEY, latitude, longitude);
             fail();
         } catch (IllegalArgumentException e) {
             assert (true);
@@ -67,7 +66,7 @@ class PullWeatherApiTest {
         double latitude = -64.378432; // Latitude should be between -85 and 85
         double longitude = 165.764319; // Latitude should be between -180 and 180
         try {
-            PullWeatherApi.importWeatherData("invalid/filepath", latitude, longitude, FILEPATH);
+            PullWeatherApi.importWeatherData("invalid/filepath", latitude, longitude);
             fail();
         } catch (Error e) {
             assert (true);

@@ -41,8 +41,7 @@ public class PullWeatherApi {
         }
         double latitude = -41.300442;
         double longitude = 174.780319;
-        String filepath = "src/main/resources/weather-data";
-        importWeatherData(apiKey, latitude, longitude, filepath);
+        importWeatherData(apiKey, latitude, longitude);
     }
 
     /**
@@ -52,9 +51,8 @@ public class PullWeatherApi {
      * @param apiKey    OpenWeatherMap API key
      * @param latitude  Latitude of the position we require weather for.
      * @param longitude Longitude of the position we require weather for.
-     * @param filepath  Filepath for the root folder where to save this data.
      */
-    public static void importWeatherData(String apiKey, double latitude, double longitude, String filepath) {
+    public static void importWeatherData(String apiKey, double latitude, double longitude) {
         if (latitude < -85.0 || latitude > 85.0) {
             throw new IllegalArgumentException("Invalid latitude");
         }
@@ -76,7 +74,7 @@ public class PullWeatherApi {
 
             // Write data to json
             String filename = "weather-output.json";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename,
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/weather-data/" + filename,
                     StandardCharsets.UTF_8));
             writer.write(returnedData);
 

@@ -1,23 +1,30 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import nz.ac.vuw.engr300.model.LaunchParameters;
+
 /**
  * Controller responsible for the controllers that make up the left side panel.
  *
  * @author Ahad Rahman
  */
-public class NavigationController {
+public class NavigationController extends RocketController {
+
+    private static final NavigationController instance = new NavigationController();
+
+    //TODO doco
+    public static NavigationController getInstance() {
+        return instance;
+    }
 
     private WeatherController weatherController;
     private ButtonController buttonController;
-    private GraphController graphController;
 
     /**
      * Creates instances of the necessary controllers.
      */
-    public NavigationController() {
+    private NavigationController() {
         weatherController = WeatherController.getInstance();
         buttonController = new ButtonController();
-        graphController = GraphController.getInstance();
     }
 
     public WeatherController getWeatherController() {
@@ -27,8 +34,10 @@ public class NavigationController {
     public ButtonController getButtonController() {
         return buttonController;
     }
-    
-    public GraphController getGraphController() {
-        return graphController;
+
+    @Override
+    public void setLaunchParameters(LaunchParameters launchParameters) {
+        super.setLaunchParameters(launchParameters);
+        weatherController.setLaunchParameters(launchParameters);
     }
 }

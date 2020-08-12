@@ -42,6 +42,10 @@ public class MapImageImporter {
         importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight);
     }
 
+    //TODO Doco
+    public static void importImage(String apiKey, double latitude, double longitude) {
+        importImage(apiKey, latitude, longitude, 17, 400, 400);
+    }
     /**
      * Download an image with the following information to the application.
      * @param apiKey TomTom API key.

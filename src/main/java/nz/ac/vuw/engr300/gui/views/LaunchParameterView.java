@@ -2,18 +2,28 @@ package nz.ac.vuw.engr300.gui.views;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
+import nz.ac.vuw.engr300.importers.KeyImporter;
+import nz.ac.vuw.engr300.importers.MapImageImporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
+import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
+import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -23,31 +33,52 @@ import java.util.function.Consumer;
  */
 public class LaunchParameterView implements View {
     private final GridPane root;
-    private LaunchParameters parameters;
-    private Consumer<LaunchParameters> callBack;
-    private List<LaunchParameterInputField> inputFields = new ArrayList<>();
+    private final LaunchParameters parameters;
+    private final Consumer<LaunchParameters> callBack;
+    private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
 
     /**
      * Creates a LaunchParameterView Object.
      *
-     * @param root The root GridPane where we will be adding nodes to.
+     * @param root       The root GridPane where we will be adding nodes to.
      * @param parameters The LaunchParameters object.
-     * @param callBack Callback function to accept LaunchParameters.
+     * @param callBack   Callback function to accept LaunchParameters.
      */
     public LaunchParameterView(GridPane root, LaunchParameters parameters, Consumer<LaunchParameters> callBack) {
         this.root = root;
         this.parameters = parameters;
         this.callBack = callBack;
-        UiUtil.addPercentRows(root, 80, 20);
+        UiUtil.addPercentRows(root, 70, 30);
     }
 
     /**
      * Secondary Constructor for when we don't have existing LaunchParameters so use default values.
-     * @param root The root GridPane where we will be adding nodes to.
+     *
+     * @param root     The root GridPane where we will be adding nodes to.
      * @param callBack Callback function to accept LaunchParameters.
      */
     public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
         this(root, new LaunchParameters(), callBack);
+    }
+
+    /**
+     * Display the Launch Configurations popup window.
+     *
+     * @param callBack Callback function to accept LaunchParameters.
+     */
+    public static void display(Consumer<LaunchParameters> callBack) {
+        Stage popupwindow = new Stage();
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.setTitle("Launch Parameters");
+        GridPane root = new GridPane();
+        Scene scene = new Scene(root, 350, 550);
+
+        popupwindow.setResizable(false);
+        // TODO: Load in previous launch parameters here
+        LaunchParameterView l = new LaunchParameterView(root, callBack);
+        popupwindow.setScene(scene);
+        l.initialize();
+        popupwindow.showAndWait();
     }
 
     /**
@@ -62,14 +93,37 @@ public class LaunchParameterView implements View {
      * Initialize buttons for popup window.
      */
     private void initializeButtons() {
+        Label pullDataDescription = new Label("Save and then pull weather and map information based on "
+                + "the current latitude and longitude.");
+        pullDataDescription.setWrapText(true);
+        Button pullData = new Button("Save and Pull data");
         Button exportWeather = new Button("Export Weather Data");
         Button save = new Button("Save");
-        save.setOnAction(e -> {
-            inputFields.forEach(LaunchParameterInputField::saveField);
-            callBack.accept(parameters);
 
+        save.setOnAction(e -> saveLaunchParameters());
+
+        pullData.setOnAction(e -> {
+            saveLaunchParameters();
+            try {
+                MapImageImporter.importImage(KeyImporter.getKey("maps"), parameters.latitude, parameters.longitude);
+                PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"), parameters.latitude, parameters.longitude);
+            } catch (Exception | Error exception) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error fetching Data");
+                alert.setHeaderText("Failed to fetch Map or Weather data");
+                alert.setContentText(exception.getMessage());
+                alert.showAndWait();
+            }
         });
-        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY, exportWeather, save), 0, 1);
+        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY,  pullDataDescription, pullData, save, exportWeather), 0, 1);
+    }
+
+    /**
+     *
+     */
+    private void saveLaunchParameters() {
+        inputFields.forEach(LaunchParameterInputField::saveField);
+        callBack.accept(parameters);
     }
 
     /**
@@ -89,24 +143,5 @@ public class LaunchParameterView implements View {
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(vbox);
         root.add(scrollPane, 0, 0);
-    }
-
-    /**
-     * Display the Launch Configurations popup window.
-     * @param callBack Callback function to accept LaunchParameters.
-     */
-    public static void display(Consumer<LaunchParameters> callBack) {
-        Stage popupwindow = new Stage();
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Launch Parameters");
-        GridPane root = new GridPane();
-        Scene scene = new Scene(root, 350, 400);
-
-        popupwindow.setResizable(false);
-        // TODO: Load in previous launch parameters here
-        LaunchParameterView l = new LaunchParameterView(root, callBack);
-        popupwindow.setScene(scene);
-        l.initialize();
-        popupwindow.showAndWait();
     }
 }

@@ -17,7 +17,7 @@ public class HomeController {
         return instance;
     }
 
-    private HomeController(){
+    private HomeController() {
         this.loadLaunchConfiguration();
     }
 
@@ -29,7 +29,9 @@ public class HomeController {
         } catch (FileNotFoundException e) {
             parameters = new LaunchParameters();
         }
-
+        NavigationController.getInstance().setLaunchParameters(parameters);
+        GraphController.getInstance().setLaunchParameters(parameters);
+        // TODO: Give InformationView Launch parameters
     }
 
 }

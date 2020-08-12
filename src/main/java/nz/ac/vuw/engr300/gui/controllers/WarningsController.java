@@ -11,7 +11,7 @@ import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 
-public class WarningsController {
+public class WarningsController extends RocketController {
 
     /**
      * Represents a separate warnings controller in the GUI.
