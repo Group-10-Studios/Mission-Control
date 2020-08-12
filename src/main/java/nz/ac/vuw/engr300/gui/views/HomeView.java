@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
+import nz.ac.vuw.engr300.gui.controllers.HomeController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
@@ -35,6 +36,8 @@ public class HomeView implements View {
     private InformationView informationView;
     private GraphView graphView;
 
+    private HomeController homeController;
+
     /**
      * Create a new HomeView and attach it to the stage.
      *
@@ -60,6 +63,8 @@ public class HomeView implements View {
         // Set minimum dimensions to 720p - Doesn't support below this
         stage.setMinHeight(720);
         stage.setMinWidth(1280);
+
+        this.homeController = HomeController.getInstance();
     }
 
     /**
