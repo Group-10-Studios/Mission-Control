@@ -61,6 +61,7 @@ public class ButtonController {
         for (String label : labels) {
             NavigationButton nb = new NavigationButton(label);
             pnNavButtons.add(nb);
+            nb.setLayoutY(y);
             NavigationButton b = nb;
 
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -115,6 +116,8 @@ public class ButtonController {
                     }
                 }
             });
+            
+            y += BUTTON_HEIGHT;
         }
 
         // Draw the buttons on the view.
