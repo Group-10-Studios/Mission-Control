@@ -1,6 +1,5 @@
 package nz.ac.vuw.engr300.communications.importers;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;

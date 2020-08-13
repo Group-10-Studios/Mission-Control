@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests to verify that CsvConfiguration and CsvTableDefinition work as expected.
@@ -87,7 +89,7 @@ public class CsvConfigurationTests {
             Float timeValue = table.matchValueToColumn(contents.get(0), "time", Float.class);
             fail("Did not throw error on invalid type cast based on column");
         } catch (Error e) {
-            assert(true);
+            assert (true);
         }
     }
 }
