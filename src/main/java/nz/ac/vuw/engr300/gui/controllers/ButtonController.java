@@ -89,7 +89,6 @@ public class ButtonController {
                         // Swap the two butons
                         Collections.swap(labels, indexOfButtonBeingMoved, indexToReplace);
                         reorderGraphs(labels);
-                        
                     }
                 }
             });
