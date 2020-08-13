@@ -78,11 +78,7 @@ public class NavigationView implements View {
     public void setupButtons() {
         ButtonController buttonC = navigationC.getButtonController();
         buttonC.updateButtons();
-        Pane buttons = new Pane();
-        for (Region r: buttonC.getPnNavButtons()) {
-            buttons.getChildren().add(r);
-        }
-//        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
+        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
     }
 

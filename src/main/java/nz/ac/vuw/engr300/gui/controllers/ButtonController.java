@@ -26,6 +26,24 @@ public class ButtonController {
 
     private List<NavigationButton> pnNavButtons = new ArrayList<>();
 
+    private static final ButtonController instance = new ButtonController();
+
+    /**
+     * Private constructor to prevent Graph controller being created outside of in here.
+     */
+    private ButtonController() {
+
+    }
+
+    /**
+     * Get the ButtonController instance.
+     *
+     * @return ButtonController instance for the app.
+     */
+    public static ButtonController getInstance() {
+        return instance;
+    }
+
 
     /**
      * Updates the buttons and sets them to the appropriate graph.
@@ -93,7 +111,7 @@ public class ButtonController {
                     }
                 }
             });
-            
+//            pnNavButtons.add(b);
             y += BUTTON_HEIGHT;
         }
 
@@ -101,6 +119,18 @@ public class ButtonController {
 
     public NavigationButton[] getPnNavButtons() {
         return pnNavButtons.toArray(new NavigationButton[pnNavButtons.size()]);
+    }
+
+    public void reorderButtons(String buttonToMove, boolean moveUp) {
+        List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+        int indexOfButtonBeingMoved = labels.indexOf(buttonToMove);
+        System.out.println(indexOfButtonBeingMoved);
+        if (moveUp) {
+            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved - 1);
+        } else {
+            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved + 1);
+        }
+        reorderGraphs(labels);
     }
 
     /**

@@ -17,7 +17,7 @@ public class NavigationController {
      */
     public NavigationController() {
         weatherController = WeatherController.getInstance();
-        buttonController = new ButtonController();
+        buttonController = ButtonController.getInstance();
     }
 
     public WeatherController getWeatherController() {

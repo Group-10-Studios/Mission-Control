@@ -41,7 +41,7 @@ public class GraphController {
     private GraphType highlightedGraph;
 
     /**
-     * Private constructor to prevent weather controller being created outside of in here.
+     * Private constructor to prevent Graph controller being created outside of in here.
      */
     private GraphController() {
 
