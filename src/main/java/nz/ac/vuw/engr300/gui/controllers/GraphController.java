@@ -211,6 +211,15 @@ public class GraphController {
         // getAngleByGraphType(GraphType.WINDDIRECTION).setAngle(currentWindAngle);
         LOGGER.debug("The wind angle has been updated to: " + currentWindAngle);
     }
+    
+    /**
+     * Get all the graphs within the controller.
+     * 
+     * @return List of RocketGraphs within the controller.
+     */
+    public List<RocketGraph> getAllGraphs() {
+        return this.graphs;
+    }
 
     /**
      * Highlight the specified graphType provided. If this graph type is already highlighted it will unhighlight it.

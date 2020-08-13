@@ -61,6 +61,10 @@ public class NavigationButton extends GridPane {
         this.add(graphButton, 0, 0);
         this.add(hideButton, 1, 0);
     }
+    
+    public String getLabel() {
+        return this.graphButton.getText();
+    }
 
     /**
      * Configure the internal column constraints to display the buttons.
