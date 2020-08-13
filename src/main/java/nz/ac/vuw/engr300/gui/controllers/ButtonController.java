@@ -77,6 +77,18 @@ public class ButtonController {
         return pnNavButtons.toArray(new NavigationButton[pnNavButtons.size()]);
     }
 
+    public void reorderButtons(String buttonToMove, boolean moveUp) {
+        List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+        int indexOfButtonBeingMoved = labels.indexOf(buttonToMove);
+        System.out.println(indexOfButtonBeingMoved);
+        if (moveUp) {
+            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved - 1);
+        } else {
+            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved + 1);
+        }
+        reorderGraphs(labels);
+    }
+
     /**
      * Attach a view to this controller for updating the contents during changes.
      *
