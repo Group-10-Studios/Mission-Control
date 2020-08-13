@@ -1,0 +1,9 @@
+{
+  "simulation-outgoing": {
+    "col_split": "\t",
+    "headers": {
+      "time": "string",
+      "angle": "double"
+    }
+  }
+}
