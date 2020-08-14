@@ -49,6 +49,13 @@ public class LaunchParameterInputField extends GridPane {
         numberField.textProperty().addListener((observableValue, s, t1) -> {
             if (!t1.matches("^-?\\d*\\.?\\d*?$")) {
                 numberField.setText(t1.replaceAll("[^-?\\d*\\.?]", ""));
+
+                int first = t1.indexOf(".") + 1;
+
+                String afterReplace = t1.substring(0, first)
+                        + t1.substring(first).replaceAll("\\.", "");
+                numberField.setText(afterReplace);
+
             }
         });
         return numberField;
