@@ -14,6 +14,8 @@ public class LaunchParameters {
     public double maximumWindSpeed;
     public double latitude;
     public double longitude;
+    public int testInteger;
+    public String testString;
 
     private static LaunchParameters instance;
 
