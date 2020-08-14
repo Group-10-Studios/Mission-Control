@@ -1,5 +1,8 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import com.sun.javafx.scene.control.InputField;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -15,7 +18,7 @@ import java.lang.reflect.Field;
  */
 public class LaunchParameterInputField extends GridPane {
 
-    private final TextField inputField;
+    private final Control inputField;
     private final LaunchParameters parameters;
     private final Field field;
 
@@ -38,7 +41,19 @@ public class LaunchParameterInputField extends GridPane {
         this.add(inputField, 1, 0);
 
 
-        inputField.setText(getValueFromField());
+        setInputFieldValue();
+    }
+
+    private void setInputFieldValue() {
+        try {
+            if (field.getType().equals(boolean.class)) {
+                ((CheckBox) inputField).setSelected(field.getBoolean(parameters));
+            } else {
+                ((TextField) inputField).setText(getValueFromField());
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to set input field to value.", e);
+        }
     }
 
     private String getValueFromField() {
@@ -49,14 +64,16 @@ public class LaunchParameterInputField extends GridPane {
         }
     }
 
-    private TextField createInputField() {
+    private Control createInputField() {
         switch (field.getType().getName()) {
             case "double":
                 return createDoubleInputField();
             case "int":
                 return createIntegerInputField();
+            case "boolean":
+                return new CheckBox();
             default:
-                return createStringInputField();
+                return new TextField();
         }
     }
 
@@ -92,10 +109,6 @@ public class LaunchParameterInputField extends GridPane {
         return numberField;
     }
 
-    private TextField createStringInputField() {
-        return new TextField();
-    }
-
     /**
      * Formats a string to be appropriately titled, from camel case to title case.
      *
@@ -114,13 +127,16 @@ public class LaunchParameterInputField extends GridPane {
         try {
             switch (field.getType().getName()) {
                 case "double":
-                    field.setDouble(parameters, Double.parseDouble(inputField.getText()));
+                    field.setDouble(parameters, Double.parseDouble(((TextField) inputField).getText()));
                     break;
                 case "int":
-                    field.setInt(parameters, Integer.parseInt(inputField.getText()));
+                    field.setInt(parameters, Integer.parseInt(((TextField) inputField).getText()));
+                    break;
+                case "boolean":
+                    field.setBoolean(parameters, ((CheckBox) inputField).isSelected());
                     break;
                 default:
-                    field.set(parameters, inputField.getText());
+                    field.set(parameters, ((TextField) inputField).getText());
                     break;
             }
         } catch (Exception e) {
