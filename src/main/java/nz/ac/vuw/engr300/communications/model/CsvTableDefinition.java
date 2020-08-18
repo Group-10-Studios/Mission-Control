@@ -151,6 +151,43 @@ public class CsvTableDefinition {
     }
 
     /**
+     * Get the number of rows within this table.
+     *
+     * @return Integer representing the number of rows within this CSV table.
+     */
+    public int size() {
+        return this.contentRows.size();
+    }
+
+    /**
+     * Get the latest data from the table contents if it exists, otherwise returns null.
+     *
+     * @return List of object representing the row data for the last added row.
+     */
+    public List<Object> latestData() {
+        if (size() > 0) {
+            return this.contentRows.get(size() - 1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the latest data from the table for the specified column if it exists otherwise returns null.
+     *
+     * @param columnName Name of the column to retrieve the value of.
+     * @return Object stored within the specified column for the latest data.
+     */
+    public Object latestData(String columnName) {
+        List<Object> latestData = latestData();
+        if (latestData == null) {
+            return null;
+        }
+
+        return latestData.get(getCsvIndexOf(columnName));
+    }
+
+    /**
      * Get the current delimiter this table uses.
      *
      * @return String delimiter used to parse incoming CSV.
