@@ -10,7 +10,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
+import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
@@ -34,6 +37,7 @@ public class GraphController {
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    private final SerialCommunications serialCommunications = new SerialCommunications();
     private static final GraphController instance = new GraphController();
 
     private List<RocketGraph> graphs;
@@ -124,6 +128,15 @@ public class GraphController {
                         .addValue(data.getTime(), ((RocketStatus) data).getRollRate());
             }
         });
+
+        CsvTableDefinition table = CsvConfiguration.getInstance().getTable("incoming-avionics");
+        serialCommunications.subscribeObserver(data -> {
+            long timestamp = table.matchValueToColumn(data.get(0), "time_stamp", Long.class);
+            double accel_y = table.matchValueToColumn(data.get(table.getCsvIndexOf("IMU_accel_y")), "IMU_accel_y", Double.class);
+            getLineChartByGraphType(GraphType.Y_ACCELERATION)
+                    .addValue(timestamp, accel_y);
+        });
+        serialCommunications.startListening();
         LOGGER.debug("All graphs have been subscribed");
     }
 
@@ -266,6 +279,8 @@ public class GraphController {
         simulationImporter.stop();
         LOGGER.debug("GraphController shutdown called");
         simulationImporter.unsubscribeAllObservers();
+        serialCommunications.stopListening();
+        serialCommunications.unsubscribeAllObservers();
     }
 
     /**

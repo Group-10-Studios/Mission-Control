@@ -16,10 +16,11 @@ import java.util.function.Consumer;
  *
  * @author Nathan Duckett
  */
-public class SerialCommunications implements RocketDataImporter {
-    private final List<Consumer<RocketData>> observers = new ArrayList<>();
+public class SerialCommunications {
+    private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private boolean systemRunning = true;
     private Thread listenThread;
+    private long previousTimeStamp = -1;
 
     /**
      * Contents for the serialApplicationThread which handles the incoming data and sending
@@ -50,7 +51,13 @@ public class SerialCommunications implements RocketDataImporter {
                     if (table != null) {
                         table.addRow(stringBuilder.toString());
                         // Send information to observers
-                        RocketData data = parseIncomingData(table.latestData());
+                        List<Object> data = table.latestData();
+                        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("time_stamp")),
+                                "time_stamp", Long.class);
+                        // Check if previous time stamp exists otherwise start from 0
+                        long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
+                        previousTimeStamp = timestamp;
+                        data.set(0, difference);
                         observers.forEach(observer -> observer.accept(data));
                     }
 
@@ -59,19 +66,10 @@ public class SerialCommunications implements RocketDataImporter {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         comPort.closePort();
-    }
-
-    /**
-     * Method to parse the Object list within a CSV row into a RocketData object to interface with our graphs.
-     *
-     * @param incomingData List of objects contained within the data extracted from serial.
-     * @return RocketData object which can be used to update graph values.
-     */
-    private RocketData parseIncomingData(List<Object> incomingData) {
-
-        return null;
     }
 
     /**
@@ -105,17 +103,16 @@ public class SerialCommunications implements RocketDataImporter {
         s.stopListening();
     }
 
-    @Override
-    public void subscribeObserver(Consumer<RocketData> observer) {
+    public void subscribeObserver(Consumer<List<Object>> observer) {
         this.observers.add(observer);
     }
 
-    @Override
-    public void unsubscribeObserver(Consumer<RocketData> observer) {
+
+    public void unsubscribeObserver(Consumer<List<Object>> observer) {
         this.observers.remove(observer);
     }
 
-    @Override
+
     public void unsubscribeAllObservers() {
         this.observers.clear();
     }

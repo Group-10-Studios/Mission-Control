@@ -120,6 +120,9 @@ public class CsvTableDefinition {
             case "int": {
                 return Integer.parseInt(content);
             }
+            case "long": {
+                return Long.parseLong(content);
+            }
             default:
                 return content;
         }
@@ -268,6 +271,9 @@ public class CsvTableDefinition {
                 }
                 case "int": {
                     return Integer.class;
+                }
+                case "long": {
+                    return Long.class;
                 }
                 default:
                     return Object.class;
