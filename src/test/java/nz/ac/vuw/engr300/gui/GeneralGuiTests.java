@@ -24,6 +24,7 @@ import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.MethodOrderer;
@@ -343,7 +344,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_highlight_graphs(FxRobot robot) {
-        for (GraphType g : GraphType.values()) {
+        for (GraphType g : GraphMasterList.getInstance().getGraphs()) {
 
             String btnId = "#btn" + g.getLabel().replace(" ", "");
             String graphId = "#" + g.getGraphID();

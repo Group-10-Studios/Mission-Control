@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import nz.ac.vuw.engr300.gui.components.NavigationButton;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import java.util.ArrayList;
@@ -29,7 +30,8 @@ public class ButtonController {
      * Updates the buttons and sets them to the appropriate graph.
      */
     public void updateButtons() {
-        List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+        List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
+                .map(GraphType::getLabel).collect(Collectors.toList());
         //ButtonSelected buttonSelected = new ButtonSelected();
         int y = 5;
         for (String label : labels) {

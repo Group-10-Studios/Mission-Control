@@ -6,6 +6,8 @@ import java.util.List;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
+import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -13,6 +15,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -93,40 +96,37 @@ public class GraphView implements View {
      */
     private void createGraphs() {
         this.graphs = new ArrayList<>();
-        
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.TOTAL_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.X_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.Y_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.Z_VELOCITY));
-
-        this.graphs.add(new RocketDataLineChart("Time (s)",
-                        "Acceleration ( m/s² )", GraphType.TOTAL_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.X_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.Y_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.Z_ACCELERATION));
-
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Altitude (m)",
-                        GraphType.ALTITUDE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Yaw Rate (°/s)",
-                false, GraphType.YAW_RATE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Pitch Rate (°/s)",
-                false, GraphType.PITCH_RATE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Roll Rate (°/s)",
-                false, GraphType.ROLL_RATE));
-
-        this.graphs.add(new RocketDataAngle(true, GraphType.WINDDIRECTION));
-        
-        RocketDataLocation rdl = new RocketDataLocation(-41.227938, 174.798772, 400, 400,
-                        GraphType.ROCKET_LOCATION);
-        rdl.updateAngleDistanceInfo(-41.227776, 174.799334);
-        this.graphs.add(rdl);
+        CsvTableDefinition tableDefinition = CsvConfiguration.getInstance().getTable("incoming-avionics");
+        GraphMasterList masterList = GraphMasterList.getInstance();
+        for (String headerName : tableDefinition.getTitles()) {
+            CsvTableDefinition.Column column = tableDefinition.getColumn(headerName);
+            if (column.getGraphType() == null) {
+                continue;
+            }
+            switch (column.getGraphType()) {
+                case "angle": {
+                    GraphType gt = new GraphType(column.getName());
+                    masterList.registerGraph(gt);
+                    this.graphs.add(new RocketDataAngleLineChart(
+                            "Time (s)",
+                            column.getName() + " (" + column.getDataUnit() + ")",
+                            false,
+                            gt
+                    ));
+                    break;
+                }
+                case "line": {
+                    GraphType gt = new GraphType(column.getName());
+                    masterList.registerGraph(gt);
+                    this.graphs.add(new RocketDataLineChart(
+                            "Time (s)",
+                            column.getName() + " (" + column.getDataUnit() + ")",
+                            gt
+                    ));
+                    break;
+                }
+            }
+        }
     }
     
     /**

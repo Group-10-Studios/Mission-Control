@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.HomeView;
@@ -182,7 +183,7 @@ class DynamicGuiTests {
      */
     private String[] getAllGraphIds() {
         // Make sure # appended before ID.
-        return Stream.of(GraphType.values()).map(g -> "#" + g.getGraphID()).toArray(String[]::new);
+        return GraphMasterList.getInstance().getGraphs().stream().map(g -> "#" + g.getGraphID()).toArray(String[]::new);
     }
 
     /**

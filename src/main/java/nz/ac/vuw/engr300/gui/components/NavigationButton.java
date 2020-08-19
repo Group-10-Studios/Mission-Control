@@ -42,8 +42,7 @@ public class NavigationButton extends GridPane {
         // Configure graphButton to match spec
         graphButton.setId("btn" + label.replace(" ", ""));
         graphButton.setOnAction(e -> {
-            GraphType thisGraph = GraphType.fromLabel(label);
-            this.graphController.highlight(thisGraph);
+            this.graphController.highlight(label);
         });
         // Set max width to ensure sizes are all equal.
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);
@@ -51,7 +50,7 @@ public class NavigationButton extends GridPane {
         // Configure hide button information.
         this.hideButton.setOnAction(e -> {
             graphController.hideGraph(label);
-            if (graphController.getGraph(label).isGraphVisible()) {
+            if (graphController.getGraphByGraphType(label).isGraphVisible()) {
                 hideButton.setText(VISIBLE_STATE);
             } else {
                 hideButton.setText(HIDDEN_STATE);
