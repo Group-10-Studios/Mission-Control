@@ -42,16 +42,16 @@ Headers defines all of the data headers/columns expected to be coming in with ea
 Each column allows you to set the primitive data type which can be accessed within the program (if it is supported) otherwise a custom
 type must be used to allow the values to be drawn to the graphs.
 
-Each key represents the name/label of the graph while the dataType matches and determines what the data will be used for within the application.
+Each key represents the name/label of the graph while the value matches the data type and determines what the data will be used for within the application.
 
 The order of the headers is determined by the order of the incoming data within the CSV payload.
 
 #### Supported Custom Data Types
-- **time**: This reprsents a timestamp object which is accessed when mapping the graphed values against time.
+- **time**: This represents a timestamp object which is accessed when mapping the graphed values against time.
 - **angle**: This represents a value to be graphed as an angle. This defaults that the value is of type double, and is measured in degrees.
 - **line-accel**: This represents a value to be graphed on a line chart. This is set for acceleration values which are of type double, and measured in m/s^2.
 - **line-vel**: This represents a value to be graphed on a line chart. This is set for velocity values which are of type double, and measured in m/s.
-- **height**: This reprsents an altitude reading which will be graphed on a line chart. This is of type double and measured in m.
+- **height**: This represents an altitude reading which will be graphed on a line chart. This is of type double and measured in m.
 
 #### Supported Primitive Data Types
 - **string**
@@ -64,7 +64,7 @@ Primitive types are only supported when using default keywords for specific func
 
 This includes:
 - "lat"/"long" (Rocket positions)
-- "battey_status"
+- "battery_status"
 - "rocket_status"
 - "internal_temp"
 
