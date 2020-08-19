@@ -52,8 +52,8 @@ public class SerialCommunications {
                         table.addRow(stringBuilder.toString());
                         // Send information to observers
                         List<Object> data = table.latestData();
-                        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("time_stamp")),
-                                "time_stamp", Long.class);
+                        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
+                                "timestamp", Long.class);
                         // Check if previous time stamp exists otherwise start from 0
                         long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
                         previousTimeStamp = timestamp;
