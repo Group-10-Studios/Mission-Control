@@ -301,7 +301,12 @@ public class GraphController {
 
         // Reconstruct graphs if they are not already in simulation mode
         if (!this.simulationMode) {
-            this.subscribeGraphs(((GraphView) view).getTableName(), true);
+            // This line will get the updated table name from the GraphView
+            // Currently we want to override this to previousSimulation until the set name is present
+            // this.subscribeGraphs(((GraphView) view).getTableName(), true);
+
+            String tableName = "previousSimulation";
+            ((GraphView) view).updateGraphStructureDefinition(tableName, true);
         }
 
         FileChooser fileChooser = new FileChooser();

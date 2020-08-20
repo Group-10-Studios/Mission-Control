@@ -38,9 +38,12 @@ public class NavigationView implements View {
      */
     public NavigationView(GridPane root) {
         this.root = root;
+        // Attach the view to the controller.
+        ButtonController.getInstance().attachView(this);
         setupRoot();
         setupWeather();
-        setupButtons();
+        // Equivalent to set up the buttons - requires the view to be attached first to the controller.
+        ButtonController.getInstance().updateButtons();
         setupSimulationButtons();
     }
 
@@ -66,12 +69,10 @@ public class NavigationView implements View {
     }
 
     /**
-     * Display the navigation buttons on the left panel.
+     * Draw the navigation buttons on the left panel.
      */
-    public void setupButtons() {
-        ButtonController buttonC = ButtonController.getInstance();
-        buttonC.updateButtons();
-        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
+    public void drawButtons() {
+        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(ButtonController.getInstance().getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
     }
 
