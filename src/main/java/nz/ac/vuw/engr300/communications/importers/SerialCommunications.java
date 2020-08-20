@@ -2,8 +2,7 @@ package nz.ac.vuw.engr300.communications.importers;
 
 import com.fazecast.jSerialComm.SerialPort;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
-import nz.ac.vuw.engr300.communications.model.RocketData;
-import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,10 +16,12 @@ import java.util.function.Consumer;
  * @author Nathan Duckett
  */
 public class SerialCommunications implements RocketDataImporter<List<Object>> {
+    private final static Logger LOGGER = Logger.getLogger(SerialCommunications.class);
     private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private boolean systemRunning = true;
     private Thread listenThread;
     private long previousTimeStamp = -1;
+    private boolean lastFailed = false;
 
     /**
      * Contents for the serialApplicationThread which handles the incoming data and sending
@@ -32,42 +33,52 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(incomingTableName);
 
         // Assuming port three for now will allow user choice later.
-        SerialPort comPort = SerialPort.getCommPorts()[2];
+        SerialPort[] comPorts = SerialPort.getCommPorts();
+        if (comPorts.length < 3) {
+            // Break early and don't register as no serial ports available.
+            return;
+        }
+        SerialPort comPort = comPorts[2];
         comPort.openPort();
 
         // Required to set timeout to blocking temporarily while receiving data.
         comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
-        try {
-            while (systemRunning) {
-                InputStream in = comPort.getInputStream();
-                try {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    char nextValue;
-                    while ((nextValue = (char) in.read()) != '\n') {
-                        stringBuilder.append(nextValue);
-                    }
+        while (systemRunning) {
+            InputStream in = comPort.getInputStream();
 
-                    // Verify the table is not null in case of bad definition or communications.json
-                    if (table != null) {
-                        table.addRow(stringBuilder.toString());
-                        // Send information to observers
-                        List<Object> data = table.latestData();
-                        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
-                                "timestamp", Long.class);
-                        // Check if previous time stamp exists otherwise start from 0
-                        long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
-                        previousTimeStamp = timestamp;
-                        data.set(0, difference);
-                        observers.forEach(observer -> observer.accept(data));
-                    }
+            try {
+                StringBuilder stringBuilder = new StringBuilder();
+                char nextValue;
+                while ((nextValue = (char) in.read()) != '\n') {
+                    stringBuilder.append(nextValue);
+                }
 
-                    in.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // Verify the table is not null in case of bad definition or communications.json
+                if (table != null) {
+                    table.addRow(stringBuilder.toString());
+                    // Send information to observers
+                    List<Object> data = table.latestData();
+                    long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
+                            "timestamp", Long.class);
+                    // Check if previous time stamp exists otherwise start from 0
+                    long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
+                    previousTimeStamp = timestamp;
+                    data.set(0, difference);
+                    observers.forEach(observer -> observer.accept(data));
+                }
+
+                in.close();
+                lastFailed = false;
+            } catch (Exception e) {
+                LOGGER.error("Error reading data within serial communications", e);
+                // Try to recover on next rotation of usage.
+                if (lastFailed) {
+                    LOGGER.error("Could not recover on second rotation of incoming data, exiting application");
+                    throw new Error(e);
+                } else {
+                    lastFailed = true;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         comPort.closePort();
     }
