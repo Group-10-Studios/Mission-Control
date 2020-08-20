@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  *
  * @author Nathan Duckett
  */
-public class SerialCommunications {
+public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private boolean systemRunning = true;
     private Thread listenThread;
@@ -77,7 +77,11 @@ public class SerialCommunications {
      */
     public void stopListening() {
         systemRunning = false;
-        this.listenThread.interrupt();
+
+        // Ensure the thread exists.
+        if (this.listenThread != null) {
+            this.listenThread.interrupt();
+        }
     }
 
     /**
@@ -103,16 +107,17 @@ public class SerialCommunications {
         s.stopListening();
     }
 
+    @Override
     public void subscribeObserver(Consumer<List<Object>> observer) {
         this.observers.add(observer);
     }
 
-
+    @Override
     public void unsubscribeObserver(Consumer<List<Object>> observer) {
         this.observers.remove(observer);
     }
 
-
+    @Override
     public void unsubscribeAllObservers() {
         this.observers.clear();
     }

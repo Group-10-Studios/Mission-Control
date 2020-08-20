@@ -25,11 +25,24 @@ public class ButtonController {
 
     private List<NavigationButton> pnNavButtons = new ArrayList<>();
 
+    private static final ButtonController controllerInstance = new ButtonController();
+
+    /**
+     * Private constructor to prevent initialization outside singleton.
+     */
+    private ButtonController() {
+
+    }
+
+    public static ButtonController getInstance() {
+        return controllerInstance;
+    }
 
     /**
      * Updates the buttons and sets them to the appropriate graph.
      */
     public void updateButtons() {
+        pnNavButtons.clear();
         List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
                 .map(GraphType::getLabel).collect(Collectors.toList());
         //ButtonSelected buttonSelected = new ButtonSelected();

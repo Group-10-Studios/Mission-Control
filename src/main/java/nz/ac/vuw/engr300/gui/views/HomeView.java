@@ -164,4 +164,13 @@ public class HomeView implements View {
     public double getSceneWidth() {
         return this.applicationScene.getWidth();
     }
+
+    /**
+     * Get the graph view within this HomeView.
+     *
+     * @return GraphView used by the application.
+     */
+    public GraphView getGraphView() {
+        return this.graphView;
+    }
 }

@@ -30,7 +30,7 @@ public class CsvConfigurationTests {
      */
     @Test
     public void test_loadConfig() {
-        assertEquals(1, CsvConfiguration.getInstance().getNumberOfTables());
+        assertEquals(3, CsvConfiguration.getInstance().getNumberOfTables());
     }
 
     /**

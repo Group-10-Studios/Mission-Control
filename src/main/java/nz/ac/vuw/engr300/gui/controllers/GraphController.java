@@ -14,6 +14,9 @@ import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
+import nz.ac.vuw.engr300.communications.model.RocketData;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
+import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
@@ -24,6 +27,8 @@ import nz.ac.vuw.engr300.gui.views.View;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -42,6 +47,7 @@ public class GraphController {
     private List<RocketGraph> graphs;
     private View view;
     private String highlightedGraphLabel;
+    private boolean simulationMode = false;
 
     /**
      * Private constructor to prevent weather controller being created outside of in here.
@@ -98,35 +104,102 @@ public class GraphController {
 
     /**
      * Subscribe all of the graphs to their appropriate data sources from the Simulation Listener.
+     *
+     * @param tableName String definition name from the communications.json file to match against incoming data.
      */
-    public void subscribeGraphs() {
-        CsvTableDefinition table = CsvConfiguration.getInstance().getTable("incoming-avionics");
-        serialCommunications.subscribeObserver(data -> {
-            long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")), "timestamp", Long.class);
+    public void subscribeGraphs(String tableName, boolean isSimulation) {
+        this.simulationMode = isSimulation;
+        CsvTableDefinition table = CsvConfiguration.getInstance().getTable(tableName);
+        if (isSimulation) {
+            simulationImporter.subscribeObserver(this::graphSimulationSubscription);
+        } else {
+            serialCommunications.subscribeObserver(data -> graphSubscription(data, table));
+        }
+        LOGGER.debug("All graphs have been subscribed");
+    }
+
+    /**
+     * Handle translating the incoming {@code List<Object>} data which is coming in from the serial observer.
+     *
+     * @param data Incoming data from the serialCommunications observer to be drawn on the graphs.
+     * @param table The CSV table definition to match the data against.
+     */
+    private void graphSubscription(List<Object> data, CsvTableDefinition table) {
+        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
+                "timestamp", Long.class);
+        for (RocketGraph rg: this.graphs) {
+            if (rg instanceof RocketDataAngleLineChart) {
+                RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
+                String dataType = rgC.getGraphType().getLabel();
+                int index = table.getCsvIndexOf(dataType);
+                if (index < 0) {
+                    continue;
+                }
+                double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                rgC.addValue(timestamp, value);
+            } else if (rg instanceof RocketDataLineChart) {
+                RocketDataLineChart rgC = (RocketDataLineChart) rg;
+                String dataType = rgC.getGraphType().getLabel();
+                int index = table.getCsvIndexOf(dataType);
+                if (index < 0) {
+                    continue;
+                }
+                double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                rgC.addValue(timestamp, value);
+            }
+        }
+    }
+
+    /**
+     * Handle translating the incoming RocketData from the simulation listener and drawing it on the graphs.
+     *
+     * @param data Incoming data from the simulationListener observer to be drawn on the graphs.
+     */
+    private void graphSimulationSubscription(RocketData data) {
+        if (data instanceof RocketStatus) {
+            double timestamp = data.getTime();
             for (RocketGraph rg: this.graphs) {
                 if (rg instanceof RocketDataAngleLineChart) {
                     RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
                     String dataType = rgC.getGraphType().getLabel();
-                    int index = table.getCsvIndexOf(dataType);
-                    if (index < 0) {
-                        continue;
-                    }
-                    double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                    double value = getDataFromRocketData((RocketStatus) data, dataType);
                     rgC.addValue(timestamp, value);
                 } else if (rg instanceof RocketDataLineChart) {
                     RocketDataLineChart rgC = (RocketDataLineChart) rg;
                     String dataType = rgC.getGraphType().getLabel();
-                    int index = table.getCsvIndexOf(dataType);
-                    if (index < 0) {
-                        continue;
-                    }
-                    double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                    double value = getDataFromRocketData((RocketStatus) data, dataType);
                     rgC.addValue(timestamp, value);
                 }
             }
-        });
+        }
+    }
+
+    /**
+     * Helper function to retrieve the values from the RocketStatus based on the name of the graph.
+     * This is performed through reflection to ensure that each graph can access its' data correctly
+     * while being dynamically loaded into the application.
+     *
+     * @param data Incoming RocketStatus data object which contains the values we want to retrieve from.
+     * @param dataType The String name of the graph we need the data type from which will be converted.
+     * @return Double value stored within the RocketStatus for the dataType.
+     */
+    private double getDataFromRocketData(RocketStatus data, String dataType) {
+        try {
+            String fLabel = "get" + dataType.replace(" ", "");
+            Method getMethod = RocketStatus.class.getDeclaredMethod(fLabel);
+            return (double) getMethod.invoke(data);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Start listening to the serial device.
+     */
+    public void startListeningOnSerial() {
         serialCommunications.startListening();
-        LOGGER.debug("All graphs have been subscribed");
     }
 
     /**
@@ -135,7 +208,7 @@ public class GraphController {
      * @param currentWindAngle Double value of the Wind Angle to be set on the RocketGraph.
      */
     public void setWindAngle(double currentWindAngle) {
-//        getAngleByGraphType(GraphType.WINDDIRECTION).setAngle(currentWindAngle);
+        // getAngleByGraphType(GraphType.WINDDIRECTION).setAngle(currentWindAngle);
         LOGGER.debug("The wind angle has been updated to: " + currentWindAngle);
     }
 
@@ -226,6 +299,11 @@ public class GraphController {
     public void runSim() {
         simulationImporter.stop();
 
+        // Reconstruct graphs if they are not already in simulation mode
+        if (!this.simulationMode) {
+            this.subscribeGraphs(((GraphView) view).getTableName(), true);
+        }
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a simulation to run.");
         fileChooser.setInitialDirectory(new File("src/main/resources/"));
@@ -260,7 +338,7 @@ public class GraphController {
         simulationImporter.unsubscribeAllObservers();
         serialCommunications.stopListening();
         serialCommunications.unsubscribeAllObservers();
-        GraphMasterList.getInstance().clearRegisteredGraphs();
+//        GraphMasterList.getInstance().clearRegisteredGraphs();
     }
 
     /**
@@ -270,5 +348,14 @@ public class GraphController {
      */
     public OpenRocketImporter getSimulationImporter() {
         return this.simulationImporter;
+    }
+
+    /**
+     * Reset the observers on the incoming data streams to be reset/loaded on new definition.
+     */
+    public void resetObservers() {
+        this.serialCommunications.unsubscribeAllObservers();
+
+        //TODO: Check if we need to unsubscribe simulation listeners here.
     }
 }

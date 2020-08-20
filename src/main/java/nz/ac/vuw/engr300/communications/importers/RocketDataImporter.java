@@ -8,7 +8,7 @@ import nz.ac.vuw.engr300.communications.model.RocketData;
  * interface could transform into the standard we use for defining communication
  * modules with the Rocket.
  */
-public interface RocketDataImporter {
+public interface RocketDataImporter<T> {
 
     /**
      * Subscribes a client to the data importer, the consumer is called everytime
@@ -16,14 +16,14 @@ public interface RocketDataImporter {
      *
      * @param observer The callback for the client
      */
-    void subscribeObserver(Consumer<RocketData> observer);
+    void subscribeObserver(Consumer<T> observer);
 
     /**
      * Unsubscribes a client from the data importer.
      *
      * @param observer The client callback to unsubscribe
      */
-    void unsubscribeObserver(Consumer<RocketData> observer);
+    void unsubscribeObserver(Consumer<T> observer);
 
     /**
      * Unsubscribe all observers from the data importer.

@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import javafx.application.Platform;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
@@ -49,6 +50,10 @@ class DynamicGuiTests {
         // Make sure scene always matches stage
         assertEquals(homeView.getSceneHeight(), height);
         assertEquals(homeView.getSceneWidth(), width);
+
+        // Set the graph definition to graphSim testing mode specific for test cases.
+        CsvConfiguration.getInstance().loadNewConfig("src/test/resources/TestCommunications.json");
+        this.homeView.getGraphView().updateGraphStructureDefinition("graphSim", true);
 
         this.dynamicGridPane = getCurrentDynamicGridPane();
     }

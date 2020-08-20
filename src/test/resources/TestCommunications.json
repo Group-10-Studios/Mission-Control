@@ -5,5 +5,17 @@
       "time": "string",
       "angle": "double"
     }
+  },
+  "graphSim": {
+    "headers": {
+      "Total Velocity": "line-vel",
+      "Altitude": "height",
+      "Total Acceleration": "line-accel"
+    }
+  },
+  "incoming-avionics": {
+    "headers": {
+      "required_value_to_prevent_test_null_pointers": "string"
+    }
   }
 }

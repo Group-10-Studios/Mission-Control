@@ -13,12 +13,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
-import nz.ac.vuw.engr300.gui.controllers.NavigationController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
-
-import java.io.FileNotFoundException;
 
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
@@ -30,7 +27,6 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 public class NavigationView implements View {
 
     private final GridPane root;
-    public NavigationController navigationC;
 
     public Button pastFlightsButton = new Button("Past Flights");
     public Button runSimButton = new Button("Run Simulation");
@@ -42,7 +38,6 @@ public class NavigationView implements View {
      */
     public NavigationView(GridPane root) {
         this.root = root;
-        navigationC = new NavigationController();
         setupRoot();
         setupWeather();
         setupButtons();
@@ -53,7 +48,7 @@ public class NavigationView implements View {
      * Display the weather at the top of the left panel.
      */
     private void setupWeather() {
-        WeatherController weatherC = navigationC.getWeatherController();
+        WeatherController weatherC = WeatherController.getInstance();
 
         Label l1 = new Label();
         Label l2 = new Label();
@@ -74,7 +69,7 @@ public class NavigationView implements View {
      * Display the navigation buttons on the left panel.
      */
     public void setupButtons() {
-        ButtonController buttonC = navigationC.getButtonController();
+        ButtonController buttonC = ButtonController.getInstance();
         buttonC.updateButtons();
         VBox buttons = UiUtil.createMinimumVerticalSizeVBox(buttonC.getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
