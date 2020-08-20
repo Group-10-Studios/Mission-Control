@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @author Nathan Duckett
  */
 public class SerialCommunications implements RocketDataImporter<List<Object>> {
-    private final static Logger LOGGER = Logger.getLogger(SerialCommunications.class);
+    private static final Logger LOGGER = Logger.getLogger(SerialCommunications.class);
     private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private boolean systemRunning = true;
     private Thread listenThread;
