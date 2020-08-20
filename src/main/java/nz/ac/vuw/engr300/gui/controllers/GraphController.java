@@ -185,8 +185,8 @@ public class GraphController {
      */
     private double getDataFromRocketData(RocketStatus data, String dataType) {
         try {
-            String fLabel = "get" + dataType.replace(" ", "");
-            Method getMethod = RocketStatus.class.getDeclaredMethod(fLabel);
+            String functionLabel = "get" + dataType.replace(" ", "");
+            Method getMethod = RocketStatus.class.getDeclaredMethod(functionLabel);
             return (double) getMethod.invoke(data);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -338,7 +338,6 @@ public class GraphController {
         simulationImporter.unsubscribeAllObservers();
         serialCommunications.stopListening();
         serialCommunications.unsubscribeAllObservers();
-//        GraphMasterList.getInstance().clearRegisteredGraphs();
     }
 
     /**
