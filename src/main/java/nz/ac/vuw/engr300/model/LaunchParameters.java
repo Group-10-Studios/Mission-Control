@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
  * @author Ahad Rahman, Tim Salisbury
  */
 public class LaunchParameters {
-    public double maximumLaunchAngle;
-    public double maximumWindSpeed;
-    public double latitude;
-    public double longitude;
+    public LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d);
+    public LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d);
+    public LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d);
+    public LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d);
 
     private static LaunchParameters instance;
 
@@ -40,9 +40,19 @@ public class LaunchParameters {
      * Default values are set when the LaunchParameters object is created.
      */
     private LaunchParameters() {
-        this.maximumLaunchAngle = -1;
-        this.maximumWindSpeed = -1;
-        this.latitude = -41.300442;
-        this.longitude = 174.780319;
+    }
+
+    public static class LaunchParameter<T> {
+        public boolean enabled = true;
+        public T value;
+
+        public LaunchParameter(T value) {
+            this.value = value;
+        }
+
+        public LaunchParameter(boolean enabled, T value) {
+            this.enabled = enabled;
+            this.value = value;
+        }
     }
 }
