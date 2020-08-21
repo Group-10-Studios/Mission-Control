@@ -44,6 +44,9 @@ public class LaunchParameterInputField extends GridPane {
         setInputFieldValue();
     }
 
+    /**
+     * Sets the input field to its respective value from the parameters object.
+     */
     private void setInputFieldValue() {
         try {
             if (field.getType().equals(boolean.class)) {
@@ -56,6 +59,11 @@ public class LaunchParameterInputField extends GridPane {
         }
     }
 
+    /**
+     * Gets the value from parameters object that this input field represents.
+     *
+     * @return The value from the parameters object.
+     */
     private String getValueFromField() {
         try {
             return String.valueOf(field.get(parameters));
@@ -64,6 +72,12 @@ public class LaunchParameterInputField extends GridPane {
         }
     }
 
+    /**
+     * Creates an input field (generic as control) tailored to the type of field this input field
+     * is representing.
+     *
+     * @return The tailored input field.
+     */
     private Control createInputField() {
         switch (field.getType().getName()) {
             case "double":
@@ -75,6 +89,7 @@ public class LaunchParameterInputField extends GridPane {
             default:
                 return new TextField();
         }
+
     }
 
     /**
@@ -99,6 +114,11 @@ public class LaunchParameterInputField extends GridPane {
         return numberField;
     }
 
+    /**
+     * Creates an input field for the integer type, so only numbers can be typed.
+     *
+     * @return A textfield object tailored for integers.
+     */
     private TextField createIntegerInputField() {
         TextField numberField = new TextField();
         numberField.textProperty().addListener((observableValue, s, t1) -> {
