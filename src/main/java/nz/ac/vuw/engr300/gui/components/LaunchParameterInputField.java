@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.model.LaunchParameters;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Text;
 import java.lang.reflect.Field;
 
@@ -111,14 +112,11 @@ public class LaunchParameterInputField extends GridPane {
         numberField.textProperty().addListener((observableValue, s, t1) -> {
             if (!t1.matches("^-?\\d*\\.?\\d*?$")) {
                 numberField.setText(t1.replaceAll("[^-?\\d*\\.?]", ""));
-
-                int first = t1.indexOf(".") + 1;
-
-                String afterReplace = t1.substring(0, first)
-                        + t1.substring(first).replaceAll("\\.", "");
-                numberField.setText(afterReplace);
-
             }
+
+            removeExtraMinusSymbols(numberField.getText(), numberField);
+            removeExtraDecimalPoints(numberField.getText(), numberField);
+
         });
         return numberField;
     }
@@ -134,8 +132,36 @@ public class LaunchParameterInputField extends GridPane {
             if (!t1.matches("^-?\\d*")) {
                 numberField.setText(t1.replaceAll("[^-?\\d*]", ""));
             }
+
+            removeExtraMinusSymbols(numberField.getText(), numberField);
+
         });
         return numberField;
+    }
+
+    private void removeExtraDecimalPoints(String string, TextField inputField) {
+        if (StringUtils.countMatches(string, ".") > 1) {
+            int first = string.indexOf(".") + 1;
+
+            String afterReplacement = string.substring(0, first)
+                    + string.substring(first).replaceAll("\\.", "");
+
+            inputField.setText(afterReplacement);
+        }
+    }
+
+    private void removeExtraMinusSymbols(String string, TextField inputField) {
+        if (StringUtils.countMatches(string, "-") > 1) {
+            int first = string.indexOf("-") + 1;
+
+            String afterReplacement = string.substring(0, first)
+                    + string.substring(first).replaceAll("-", "");
+            inputField.setText(afterReplacement);
+        }
+        string = inputField.getText();
+        if (string.contains("-") && !string.startsWith("-")) {
+            inputField.setText(string.replaceAll("-", ""));
+        }
     }
 
     /**
