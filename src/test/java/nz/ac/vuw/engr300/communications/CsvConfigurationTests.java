@@ -160,7 +160,7 @@ public class CsvConfigurationTests {
      * Test that when adding an invalid CSV string it will return false on addition.
      */
     @Test
-    public void test_AddInvalidCSV() {
+    public void test_AddInvalidCsv() {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable("simulation-outgoing");
         // Invalid CSV for this table
         boolean addResponse = table.addRow("1\t\t1");
@@ -203,7 +203,7 @@ public class CsvConfigurationTests {
         assertEquals(floatValue, getValue(table, "floatValue", Float.class));
         assertEquals(intValue, getValue(table, "intValue", Integer.class));
         assertEquals(stringValue, getValue(table, "stringValue", String.class));
-        assertEquals(angleValue, getValue(table,"angleValue", Double.class));
+        assertEquals(angleValue, getValue(table, "angleValue", Double.class));
         assertEquals(velValue, getValue(table, "velValue", Double.class));
         assertEquals(accValue, getValue(table, "accValue", Double.class));
         assertEquals(altitudeValue, getValue(table, "altitudeValue", Double.class));
