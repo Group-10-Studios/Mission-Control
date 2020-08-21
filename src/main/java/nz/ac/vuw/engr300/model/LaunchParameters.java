@@ -10,12 +10,12 @@ import java.io.FileNotFoundException;
  * @author Ahad Rahman, Tim Salisbury
  */
 public class LaunchParameters {
-    public LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d);
-    public LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d);
-    public LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d);
-    public LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d);
+    private LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, Double.class);
+    private LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, Double.class);
+    private LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, Double.class);
+    private LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, Double.class);
 
-    private static LaunchParameters instance;
+    private static transient LaunchParameters instance;
 
     /**
      * Get the LaunchParameters object.
@@ -42,17 +42,74 @@ public class LaunchParameters {
     private LaunchParameters() {
     }
 
-    public static class LaunchParameter<T> {
-        public boolean enabled = true;
-        public T value;
+    public LaunchParameter<Double> getMaximumLaunchAngle() {
+        return maximumLaunchAngle;
+    }
 
-        public LaunchParameter(T value) {
-            this.value = value;
+    public void setMaximumLaunchAngle(LaunchParameter<Double> maximumLaunchAngle) {
+        this.maximumLaunchAngle = maximumLaunchAngle;
+    }
+
+    public LaunchParameter<Double> getMaximumWindSpeed() {
+        return maximumWindSpeed;
+    }
+
+    public void setMaximumWindSpeed(LaunchParameter<Double> maximumWindSpeed) {
+        this.maximumWindSpeed = maximumWindSpeed;
+    }
+
+    public LaunchParameter<Double> getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(LaunchParameter<Double> latitude) {
+        this.latitude = latitude;
+    }
+
+    public LaunchParameter<Double> getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(LaunchParameter<Double> longitude) {
+        this.longitude = longitude;
+    }
+
+    public static void setInstance(LaunchParameters instance) {
+        LaunchParameters.instance = instance;
+    }
+
+    public static class LaunchParameter<T> {
+        private final boolean enabled;
+        private final T value;
+        private final transient Class<T> type;
+
+        public LaunchParameter(T value, Class<T> type) {
+            this(true, value, type);
         }
 
-        public LaunchParameter(boolean enabled, T value) {
+        public LaunchParameter(boolean enabled, T value, Class<T> type) {
             this.enabled = enabled;
             this.value = value;
+            this.type = type;
+
+            if (!(type.getSimpleName().equals("Double")
+                    || type.getName().equals("Integer")
+                    || type.getName().equals("Boolean")
+                    || type.getName().equals("String"))) {
+                throw new RuntimeException("Invalid datatype!");
+            }
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public T getValue() {
+            return value;
+        }
+
+        public Class<T> getType() {
+            return type;
         }
     }
 }

@@ -19,8 +19,10 @@ import java.lang.reflect.Field;
 public class LaunchParameterInputField extends GridPane {
 
     private final Control inputField;
-    private final LaunchParameters parameters;
+    private final LaunchParameters.LaunchParameter<?> parameter;
     private final Field field;
+    private final Field valueField;
+    private final Class<?> fieldType;
 
     /**
      * Creates a LaunchParameterInputField.
@@ -28,9 +30,17 @@ public class LaunchParameterInputField extends GridPane {
      * @param field      The field object from the LaunchParameters object that needs to be updated.
      * @param parameters LaunchParameters object to modify.
      */
-    public LaunchParameterInputField(Field field, LaunchParameters parameters) {
+    public LaunchParameterInputField(Field field, LaunchParameters.LaunchParameter<?> parameter) {
         this.field = field;
-        this.parameters = parameters;
+        this.parameter = parameter;
+        try {
+            this.valueField = parameter.getClass().getDeclaredField("value");
+            this.fieldType = parameter.getType();
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException("Invalid field passed to InputField!", e);
+        }
+
+        this.valueField.setAccessible(true);
 
         UiUtil.addPercentColumns(this, 50, 50);
 
@@ -49,8 +59,8 @@ public class LaunchParameterInputField extends GridPane {
      */
     private void setInputFieldValue() {
         try {
-            if (field.getType().equals(boolean.class)) {
-                ((CheckBox) inputField).setSelected(field.getBoolean(parameters));
+            if (fieldType.equals(boolean.class)) {
+                ((CheckBox) inputField).setSelected(valueField.getBoolean(parameter));
             } else {
                 ((TextField) inputField).setText(getValueFromField());
             }
@@ -66,7 +76,7 @@ public class LaunchParameterInputField extends GridPane {
      */
     private String getValueFromField() {
         try {
-            return String.valueOf(field.get(parameters));
+            return String.valueOf(valueField.get(parameter));
         } catch (Exception e) {
             throw new RuntimeException("Failed to get value from field.", e);
         }
@@ -79,17 +89,16 @@ public class LaunchParameterInputField extends GridPane {
      * @return The tailored input field.
      */
     private Control createInputField() {
-        switch (field.getType().getName()) {
-            case "double":
+        switch (fieldType.getSimpleName()) {
+            case "Double":
                 return createDoubleInputField();
-            case "int":
+            case "Integer":
                 return createIntegerInputField();
-            case "boolean":
+            case "Boolean":
                 return new CheckBox();
             default:
                 return new TextField();
         }
-
     }
 
     /**
@@ -145,18 +154,18 @@ public class LaunchParameterInputField extends GridPane {
      */
     public void saveField() {
         try {
-            switch (field.getType().getName()) {
-                case "double":
-                    field.setDouble(parameters, Double.parseDouble(((TextField) inputField).getText()));
+            switch (fieldType.getSimpleName()) {
+                case "Double":
+                    valueField.set(parameter, ((TextField) inputField).getText());
                     break;
-                case "int":
-                    field.setInt(parameters, Integer.parseInt(((TextField) inputField).getText()));
+                case "Integer":
+                    valueField.setInt(parameter, Integer.parseInt(((TextField) inputField).getText()));
                     break;
-                case "boolean":
-                    field.setBoolean(parameters, ((CheckBox) inputField).isSelected());
+                case "Boolean":
+                    valueField.setBoolean(parameter, ((CheckBox) inputField).isSelected());
                     break;
                 default:
-                    field.set(parameters, ((TextField) inputField).getText());
+                    valueField.set(parameter, ((TextField) inputField).getText());
                     break;
             }
         } catch (Exception e) {
