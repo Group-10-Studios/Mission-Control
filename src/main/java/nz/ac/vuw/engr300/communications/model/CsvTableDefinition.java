@@ -119,6 +119,7 @@ public class CsvTableDefinition {
 
         if (contents.length != headerMapping.size()) {
             LOGGER.error("CSV content length doesn't match header mappings");
+            LOGGER.error("Received: " + rawRowCsv);
             return false;
         }
 
