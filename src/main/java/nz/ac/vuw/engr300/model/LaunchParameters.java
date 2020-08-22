@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
  * @author Ahad Rahman, Tim Salisbury
  */
 public class LaunchParameters {
-    private LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, Double.class);
-    private LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, Double.class);
-    private LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, Double.class);
-    private LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, Double.class);
+    private final LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, "double");
+    private final LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, "double");
+    private final LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, "double");
+    private final LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, "double");
 
     private static transient LaunchParameters instance;
 
@@ -46,56 +46,49 @@ public class LaunchParameters {
         return maximumLaunchAngle;
     }
 
-    public void setMaximumLaunchAngle(LaunchParameter<Double> maximumLaunchAngle) {
-        this.maximumLaunchAngle = maximumLaunchAngle;
-    }
-
     public LaunchParameter<Double> getMaximumWindSpeed() {
         return maximumWindSpeed;
-    }
-
-    public void setMaximumWindSpeed(LaunchParameter<Double> maximumWindSpeed) {
-        this.maximumWindSpeed = maximumWindSpeed;
     }
 
     public LaunchParameter<Double> getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(LaunchParameter<Double> latitude) {
-        this.latitude = latitude;
-    }
-
     public LaunchParameter<Double> getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(LaunchParameter<Double> longitude) {
-        this.longitude = longitude;
-    }
-
-    public static void setInstance(LaunchParameters instance) {
-        LaunchParameters.instance = instance;
-    }
-
+    /**
+     * The class that represents an actual launch parameter.
+     *
+     * @param <T>   The type of launch parameter. Note, only double, integer, boolean and string is currently
+     *           supported.
+     */
     public static class LaunchParameter<T> {
-        private final boolean enabled;
-        private final T value;
-        private final transient Class<T> type;
+        private boolean enabled;
+        private T value;
+        private final String type;
 
-        public LaunchParameter(T value, Class<T> type) {
+        public LaunchParameter(T value, String type) {
             this(true, value, type);
         }
 
-        public LaunchParameter(boolean enabled, T value, Class<T> type) {
+        /**
+         * Constructs a LaunchParameter object.
+         *
+         * @param enabled   Whether or not this parameter is enabled.
+         * @param value     The value of the launch parameter.
+         * @param type      The datatype of the launch parameter.
+         */
+        public LaunchParameter(boolean enabled, T value, String type) {
             this.enabled = enabled;
             this.value = value;
-            this.type = type;
+            this.type = type.toLowerCase();
 
-            if (!(type.getSimpleName().equals("Double")
-                    || type.getName().equals("Integer")
-                    || type.getName().equals("Boolean")
-                    || type.getName().equals("String"))) {
+            if (!(type.equals("double")
+                    || type.equals("integer")
+                    || type.equals("boolean")
+                    || type.equals("string"))) {
                 throw new RuntimeException("Invalid datatype!");
             }
         }
@@ -108,8 +101,16 @@ public class LaunchParameters {
             return value;
         }
 
-        public Class<T> getType() {
+        public String getType() {
             return type;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public void setValue(T value) {
+            this.value = value;
         }
     }
 }

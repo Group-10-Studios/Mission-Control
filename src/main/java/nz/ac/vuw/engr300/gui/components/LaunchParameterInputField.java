@@ -1,15 +1,15 @@
 package nz.ac.vuw.engr300.gui.components;
 
-import com.sun.javafx.scene.control.InputField;
+import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.apache.commons.lang3.StringUtils;
-import org.w3c.dom.Text;
 import java.lang.reflect.Field;
 
 /**
@@ -20,19 +20,18 @@ import java.lang.reflect.Field;
 public class LaunchParameterInputField extends GridPane {
 
     private final Control inputField;
+    private final CheckBox enabledCheckbox;
     private final LaunchParameters.LaunchParameter<?> parameter;
-    private final Field field;
     private final Field valueField;
-    private final Class<?> fieldType;
+    private final String fieldType;
 
     /**
      * Creates a LaunchParameterInputField.
      *
      * @param field      The field object from the LaunchParameters object that needs to be updated.
-     * @param parameters LaunchParameters object to modify.
+     * @param parameter LaunchParameter object to modify.
      */
     public LaunchParameterInputField(Field field, LaunchParameters.LaunchParameter<?> parameter) {
-        this.field = field;
         this.parameter = parameter;
         try {
             this.valueField = parameter.getClass().getDeclaredField("value");
@@ -43,16 +42,20 @@ public class LaunchParameterInputField extends GridPane {
 
         this.valueField.setAccessible(true);
 
-        UiUtil.addPercentColumns(this, 50, 50);
+        UiUtil.addPercentColumns(this, 45, 45, 10);
 
         Label fieldLabel = new Label(formatString(field.getName()));
         this.inputField = createInputField();
+        this.enabledCheckbox = new CheckBox();
+
+        HBox checkBoxWrapper = new HBox(enabledCheckbox);
+        checkBoxWrapper.setAlignment(Pos.CENTER);
 
         this.add(fieldLabel, 0, 0);
         this.add(inputField, 1, 0);
+        this.add(checkBoxWrapper, 2, 0);
 
-
-        setInputFieldValue();
+        this.setInputFieldValue();
     }
 
     /**
@@ -60,8 +63,8 @@ public class LaunchParameterInputField extends GridPane {
      */
     private void setInputFieldValue() {
         try {
-            if (fieldType.equals(boolean.class)) {
-                ((CheckBox) inputField).setSelected(valueField.getBoolean(parameter));
+            if (fieldType.toLowerCase().equals("boolean")) {
+                ((CheckBox) inputField).setSelected((Boolean) valueField.get(parameter));
             } else {
                 ((TextField) inputField).setText(getValueFromField());
             }
@@ -90,12 +93,12 @@ public class LaunchParameterInputField extends GridPane {
      * @return The tailored input field.
      */
     private Control createInputField() {
-        switch (fieldType.getSimpleName()) {
-            case "Double":
+        switch (fieldType.toLowerCase()) {
+            case "double":
                 return createDoubleInputField();
-            case "Integer":
+            case "integer":
                 return createIntegerInputField();
-            case "Boolean":
+            case "boolean":
                 return new CheckBox();
             default:
                 return new TextField();
@@ -139,6 +142,13 @@ public class LaunchParameterInputField extends GridPane {
         return numberField;
     }
 
+    /**
+     * Removes any extra decimal points that may exist in a string used to representing a floating point number.
+     * The resulting string is then set to the passed on TextField.
+     *
+     * @param string        The string to check.
+     * @param inputField    The textfield to set the string to.
+     */
     private void removeExtraDecimalPoints(String string, TextField inputField) {
         if (StringUtils.countMatches(string, ".") > 1) {
             int first = string.indexOf(".") + 1;
@@ -150,6 +160,13 @@ public class LaunchParameterInputField extends GridPane {
         }
     }
 
+    /**
+     * Removes any extra minus symbols that may exist in a string used to representing a number.
+     * The resulting string is then set to the passed on TextField.
+     *
+     * @param string        The string to check.
+     * @param inputField    The textfield to set the string to.
+     */
     private void removeExtraMinusSymbols(String string, TextField inputField) {
         if (StringUtils.countMatches(string, "-") > 1) {
             int first = string.indexOf("-") + 1;
@@ -180,16 +197,12 @@ public class LaunchParameterInputField extends GridPane {
      */
     public void saveField() {
         try {
-            switch (fieldType.getSimpleName()) {
-                case "Double":
-                    valueField.set(parameter, ((TextField) inputField).getText());
+            switch (fieldType.toLowerCase()) {
+                case "boolean":
+                    valueField.set(parameter, ((CheckBox) inputField).isSelected());
                     break;
-                case "Integer":
-                    valueField.setInt(parameter, Integer.parseInt(((TextField) inputField).getText()));
-                    break;
-                case "Boolean":
-                    valueField.setBoolean(parameter, ((CheckBox) inputField).isSelected());
-                    break;
+                case "double":
+                case "integer":
                 default:
                     valueField.set(parameter, ((TextField) inputField).getText());
                     break;
