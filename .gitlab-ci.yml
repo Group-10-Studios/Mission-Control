@@ -40,6 +40,7 @@ build:
   script:
     - mvn compile
   allow_failure: false
+  needs: []
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
 verify_javadoc:
@@ -49,6 +50,7 @@ verify_javadoc:
   script:
     - mvn javadoc:javadoc
   allow_failure: false
+  needs: []
 
 spell_check:
   stage: DocsCheck
@@ -58,6 +60,7 @@ spell_check:
     - npm install markdown-spellcheck
     - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a '**/*.md' '!**/node_modules/**/*.md'
   allow_failure: false
+  needs: []
 
 find_bugs:
   stage: StaticAnalysis
@@ -65,6 +68,7 @@ find_bugs:
     - shell
   script:
     - mvn clean compile spotbugs:check
+  needs: ["build"]
 
 checkstyle:
   stage: StaticAnalysis
@@ -89,6 +93,7 @@ checkstyle:
         $(exit 1)
       fi
   allow_failure: false
+  needs: ["build"]
         
 unittest:
   stage: UnitTests
@@ -100,6 +105,7 @@ unittest:
   script:
     - mvn clean test $NO_GUI_TEST
   allow_failure: false
+  needs: ["build"]
 
 unittest_windows:
   stage: UnitTests
@@ -110,6 +116,7 @@ unittest_windows:
     - *build_windows_keys
   script:
     - mvn $NO_GUI_TEST clean test
+  needs: ["build"]
 
 # Runs both unit and integration tests for coverage.
 full_tests:
@@ -128,6 +135,7 @@ full_tests:
   artifacts:
     paths:
       - target/site/jacoco/
+  needs: ["build", "unittest"]
 
 pages:
   stage: DeployPages
@@ -148,6 +156,7 @@ pages:
   artifacts:
     paths:
       - public
+  needs: ["full_tests", "verify_javadoc"]
 
 ##
 ## NOTE: ALL packaging skips GUI tests as they rely on tests passing first
@@ -169,6 +178,7 @@ package:
     paths:
       # Only add the full mission-control jar wildcard the version
       - target/mission-control-*.jar
+  needs: ["unittest"]
 
 package_windows:
   stage: BuildPackage
@@ -185,3 +195,4 @@ package_windows:
     paths:
       # Only add the full mission-control jar wildcard the version
       - ./target/mission-control-*.jar
+  needs: ["unittest_windows"]
