@@ -27,10 +27,15 @@ stages:
     }
   - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
-.define_code_changes: &define_code_changes
-  - src/**/*
-  - pom.xml
-  - .gitlab-ci.yml
+# Define only includes for code changes reference.
+.define_only_includes: &define_only_includes
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - src/**/*
+      - pom.xml
+      - .gitlab-ci.yml
 
 # Storage of common variables between stages
 variables:
@@ -45,11 +50,7 @@ build:
   script:
     - mvn compile
   allow_failure: false
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: []
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
@@ -60,11 +61,7 @@ verify_javadoc:
   script:
     - mvn javadoc:javadoc
   allow_failure: false
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: []
 
 spell_check:
@@ -75,6 +72,7 @@ spell_check:
     - npm install markdown-spellcheck
     - ./node_modules/markdown-spellcheck/bin/mdspell -r -n -a '**/*.md' '!**/node_modules/**/*.md'
   allow_failure: false
+  # Must manually write only-changes to change on documents only.
   only:
     refs:
       - merge_requests
@@ -90,11 +88,7 @@ find_bugs:
     - shell
   script:
     - mvn clean compile spotbugs:check
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["build"]
 
 checkstyle:
@@ -120,11 +114,12 @@ checkstyle:
         $(exit 1)
       fi
   allow_failure: false
+  # Must manually write only-changes to allow checkystyle.xml updates.
   only:
-    refs:
-      - merge_requests
     changes:
-      - *define_code_changes
+      - src/**/*
+      - pom.xml
+      - .gitlab-ci.yml
       - checkstyle.xml
   needs: ["build"]
         
@@ -138,11 +133,7 @@ unittest:
   script:
     - mvn clean test $NO_GUI_TEST
   allow_failure: false
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["build"]
 
 unittest_windows:
@@ -154,11 +145,7 @@ unittest_windows:
     - *build_windows_keys
   script:
     - mvn $NO_GUI_TEST clean test
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["build"]
 
 # Runs both unit and integration tests for coverage.
@@ -178,11 +165,7 @@ full_tests:
   artifacts:
     paths:
       - target/site/jacoco/
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["build", "unittest"]
 
 pages:
@@ -204,11 +187,7 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["full_tests", "verify_javadoc"]
 
 ##
@@ -231,11 +210,7 @@ package:
     paths:
       # Only add the full mission-control jar wildcard the version
       - target/mission-control-*.jar
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["unittest"]
 
 package_windows:
@@ -253,9 +228,5 @@ package_windows:
     paths:
       # Only add the full mission-control jar wildcard the version
       - ./target/mission-control-*.jar
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - *define_code_changes
+  <<: *define_only_includes
   needs: ["unittest_windows"]
