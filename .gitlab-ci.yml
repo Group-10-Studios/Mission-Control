@@ -121,7 +121,7 @@ checkstyle:
       - pom.xml
       - .gitlab-ci.yml
       - checkstyle.xml
-  needs: ["build"]
+  needs: []
         
 unittest:
   stage: UnitTests
