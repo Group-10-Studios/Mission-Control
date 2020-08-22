@@ -32,6 +32,8 @@ stages:
   only:
     refs:
       - merge_requests
+      - branches
+      - tags
     changes:
       - src/**/*
       - pom.xml
@@ -76,6 +78,8 @@ spell_check:
   only:
     refs:
       - merge_requests
+      - branches
+      - tags
     changes:
       - "**/*.md"
       - .spelling
@@ -116,6 +120,10 @@ checkstyle:
   allow_failure: false
   # Must manually write only-changes to allow checkystyle.xml updates.
   only:
+    refs:
+    - branches
+    - merge_requests
+    - tags
     changes:
       - src/**/*
       - pom.xml
