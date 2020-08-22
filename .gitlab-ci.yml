@@ -27,6 +27,11 @@ stages:
     }
   - $KeysContent | ConvertTo-Json | Set-Content ./src/main/resources/keys.json
 
+.define_code_changes: &define_code_changes
+  - src/**/*
+  - pom.xml
+  - .gitlab-ci.yml
+
 # Storage of common variables between stages
 variables:
   GUI_HEADLESS_TESTS: "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw"
@@ -44,7 +49,7 @@ build:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: []
 
 # Must verify javadoc in test phase incase it fails during deploy pages.
@@ -59,7 +64,7 @@ verify_javadoc:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: []
 
 spell_check:
@@ -75,6 +80,8 @@ spell_check:
       - merge_requests
     changes:
       - "**/*.md"
+      - .spelling
+      - .gitlab-ci.yml
   needs: []
 
 find_bugs:
@@ -87,7 +94,7 @@ find_bugs:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["build"]
 
 checkstyle:
@@ -117,7 +124,8 @@ checkstyle:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
+      - checkstyle.xml
   needs: ["build"]
         
 unittest:
@@ -134,7 +142,7 @@ unittest:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["build"]
 
 unittest_windows:
@@ -150,7 +158,7 @@ unittest_windows:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["build"]
 
 # Runs both unit and integration tests for coverage.
@@ -174,7 +182,7 @@ full_tests:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["build", "unittest"]
 
 pages:
@@ -200,7 +208,7 @@ pages:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["full_tests", "verify_javadoc"]
 
 ##
@@ -227,7 +235,7 @@ package:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["unittest"]
 
 package_windows:
@@ -249,5 +257,5 @@ package_windows:
     refs:
       - merge_requests
     changes:
-      - src/**/*
+      - *define_code_changes
   needs: ["unittest_windows"]
