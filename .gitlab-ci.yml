@@ -195,7 +195,6 @@ pages:
   artifacts:
     paths:
       - public
-  <<: *define_only_includes
   needs: ["full_tests", "verify_javadoc"]
 
 ##
