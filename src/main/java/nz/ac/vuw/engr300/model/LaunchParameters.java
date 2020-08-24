@@ -56,7 +56,7 @@ public class LaunchParameters {
 
 
     public void saveToJSONFile() {
-        saveToJSONFile("src/main/resources/config/launch-parameters.json");
+        saveToJSONFile("src/test/resources/test-launch-parameters.json");
     }
 
     public void saveToJSONFile(String filename) {

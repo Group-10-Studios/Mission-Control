@@ -20,7 +20,7 @@ public class LaunchParametersTest {
     @Test
     public void test_CorrectJSONFileWithDefaultValues() {
         LaunchParameters actual = getLaunchParametersWithDefaultValues();
-        LaunchParameters.getInstance().saveToJSONFile("src/test/resources/test-launch-parameters.json");
+        actual.saveToJSONFile();
         Gson gson = new Gson();
         try {
             LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
@@ -44,7 +44,7 @@ public class LaunchParametersTest {
         actual.getMaximumWindSpeed().setValue(12.0);
         actual.getMaximumParachuteDeploySpeed().setValue(3.0);
 
-        actual.saveToJSONFile("src/test/resources/test-launch-parameters.json");
+        actual.saveToJSONFile();
         Gson gson = new Gson();
         try {
             LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
