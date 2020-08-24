@@ -130,7 +130,9 @@ public class ButtonController {
         } else {
             Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved + 1);
         }
+        updateButtons();
         reorderGraphs(labels);
+
     }
 
     /**

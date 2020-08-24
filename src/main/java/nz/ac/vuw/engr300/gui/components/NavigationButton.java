@@ -11,7 +11,7 @@ import nz.ac.vuw.engr300.gui.model.GraphType;
  * NavigationButton is a wrapper class to allow for drawing multiple buttons within our Navigation sidebar.
  * This allows us to create our highlight graph buttons, and hide/show buttons for the graphs.
  *
- * @author Nathan Duckett
+ * @author Nathan Duckett, Ahad Rahman
  */
 public class NavigationButton extends GridPane {
     /**
@@ -75,9 +75,9 @@ public class NavigationButton extends GridPane {
 
         configureConstraints();
         this.add(graphButton, 0, 0);
-        this.add(hideButton, 1, 0);
-        this.add(moveUpButton, 2, 0);
-        this.add(moveDownButton, 3, 0);
+        this.add(moveUpButton, 1, 0);
+        this.add(moveDownButton, 2, 0);
+        this.add(hideButton, 3, 0);
     }
     
     public String getLabel() {
@@ -91,7 +91,7 @@ public class NavigationButton extends GridPane {
         ColumnConstraints left = new ColumnConstraints();
         left.setPercentWidth(100);
         ColumnConstraints right = new ColumnConstraints();
-        right.setPercentWidth(40);
+        right.setPercentWidth(50);
         this.getColumnConstraints().add(left);
         this.getColumnConstraints().add(right);
     }

@@ -63,6 +63,10 @@ public class GraphController {
      */
     public void setGraphs(List<RocketGraph> graphs) {
         this.graphs = graphs;
+        // Makes assumption that view is type GraphView. This can be fixed later but for now keeping generic
+        // for expandability if required later.
+        GraphView gv = (GraphView) view;
+        gv.updateGraphs(graphs);
     }
 
     /**
