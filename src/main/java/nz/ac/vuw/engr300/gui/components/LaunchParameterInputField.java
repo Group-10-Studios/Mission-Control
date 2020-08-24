@@ -23,6 +23,7 @@ public class LaunchParameterInputField extends GridPane {
     private final CheckBox enabledCheckbox;
     private final LaunchParameters.LaunchParameter<?> parameter;
     private final Field valueField;
+    private final Field enabledField;
     private final String fieldType;
 
     /**
@@ -35,23 +36,25 @@ public class LaunchParameterInputField extends GridPane {
         this.parameter = parameter;
         try {
             this.valueField = parameter.getClass().getDeclaredField("value");
+            this.enabledField = parameter.getClass().getDeclaredField("enabled");
             this.fieldType = parameter.getType();
         } catch (NoSuchFieldException e) {
             throw new RuntimeException("Invalid field passed to InputField!", e);
         }
 
         this.valueField.setAccessible(true);
+        this.enabledField.setAccessible(true);
 
         UiUtil.addPercentColumns(this, 45, 45, 10);
 
-        Label fieldLabel = new Label(formatString(field.getName()));
+
         this.inputField = createInputField();
         this.enabledCheckbox = new CheckBox();
 
         HBox checkBoxWrapper = new HBox(enabledCheckbox);
         checkBoxWrapper.setAlignment(Pos.CENTER);
 
-        this.add(fieldLabel, 0, 0);
+        this.add(new Label(formatString(field.getName())), 0, 0);
         this.add(inputField, 1, 0);
         this.add(checkBoxWrapper, 2, 0);
 
@@ -68,6 +71,7 @@ public class LaunchParameterInputField extends GridPane {
             } else {
                 ((TextField) inputField).setText(getValueFromField());
             }
+            this.enabledCheckbox.setSelected(enabledField.getBoolean(parameter));
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Failed to set input field to value.", e);
         }
@@ -197,7 +201,7 @@ public class LaunchParameterInputField extends GridPane {
      */
     public void saveField() {
         try {
-            switch (fieldType.toLowerCase()) {
+            switch (this.fieldType.toLowerCase()) {
                 case "boolean":
                     valueField.set(parameter, ((CheckBox) inputField).isSelected());
                     break;
@@ -207,6 +211,8 @@ public class LaunchParameterInputField extends GridPane {
                     valueField.set(parameter, ((TextField) inputField).getText());
                     break;
             }
+
+            this.enabledField.setBoolean(parameter, enabledCheckbox.isSelected());
         } catch (Exception e) {
             throw new RuntimeException("Unable to save field.", e);
         }

@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
  * @author Ahad Rahman, Tim Salisbury
  */
 public class LaunchParameters {
-    private final LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, "double");
-    private final LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, "double");
-    private final LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, "double");
-    private final LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, "double");
+    private final LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, Double.class);
+    private final LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, Double.class);
+    private final LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, Double.class);
+    private final LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, Double.class);
 
     private static transient LaunchParameters instance;
 
@@ -69,7 +69,7 @@ public class LaunchParameters {
         private T value;
         private final String type;
 
-        public LaunchParameter(T value, String type) {
+        public LaunchParameter(T value, Class<T> type) {
             this(true, value, type);
         }
 
@@ -80,15 +80,15 @@ public class LaunchParameters {
          * @param value     The value of the launch parameter.
          * @param type      The datatype of the launch parameter.
          */
-        public LaunchParameter(boolean enabled, T value, String type) {
+        public LaunchParameter(boolean enabled, T value, Class<T> type) {
             this.enabled = enabled;
             this.value = value;
-            this.type = type.toLowerCase();
+            this.type = type.getSimpleName().toLowerCase();
 
-            if (!(type.equals("double")
-                    || type.equals("integer")
-                    || type.equals("boolean")
-                    || type.equals("string"))) {
+            if (!(this.type.equals("double")
+                    || this.type.equals("integer")
+                    || this.type.equals("boolean")
+                    || this.type.equals("string"))) {
                 throw new RuntimeException("Invalid datatype!");
             }
         }
