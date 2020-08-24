@@ -66,18 +66,6 @@ public class ButtonController {
         view.drawButtons();
     }
 
-
-
-
-    /**
-     * Get all the Navigation buttons within this controller to be displayed.
-     *
-     * @return Array of Navigation Buttons to be displayed.
-     */
-    public NavigationButton[] getPnNavButtons() {
-        return pnNavButtons.toArray(new NavigationButton[pnNavButtons.size()]);
-    }
-
     public void reorderButtons(String buttonToMove, boolean moveUp) {
         List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
                 .map(GraphType::getLabel).collect(Collectors.toList());
@@ -89,8 +77,16 @@ public class ButtonController {
             Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved + 1);
         }
         updateButtons();
-        reorderGraphs(labels);
+    }
 
+
+    /**
+     * Get all the Navigation buttons within this controller to be displayed.
+     *
+     * @return Array of Navigation Buttons to be displayed.
+     */
+    public NavigationButton[] getPnNavButtons() {
+        return pnNavButtons.toArray(new NavigationButton[pnNavButtons.size()]);
     }
 
     /**
@@ -102,26 +98,26 @@ public class ButtonController {
         this.view = view;
     }
 
-    /**
-     * Reorders the graphs on the center panel.
-     * @param labels The labels we are comparing the graphs to.
-     */
-    private void reorderGraphs(List<String> labels) {
-        GraphController gc = GraphController.getInstance();
-        // List<RocketGraph> originalGraphs = graphView.getGraphs();
-        List<RocketGraph> updatedGraphs = new ArrayList<>(gc.getAllGraphs());
-        for (int i = 0; i < labels.size(); i++) {
-            for (int j = 0; j < updatedGraphs.size(); j++) {
-                if (updatedGraphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
-                    RocketGraph temp = updatedGraphs.get(j);
-                    updatedGraphs.remove(j);
-                    updatedGraphs.add(i, temp);
-                }
-            }
-        }
-
-        gc.setGraphs(updatedGraphs);
-    }
+//    /**
+//     * Reorders the graphs on the center panel.
+//     * @param labels The labels we are comparing the graphs to.
+//     */
+//    private void reorderGraphs(List<String> labels) {
+//        GraphController gc = GraphController.getInstance();
+//        // List<RocketGraph> originalGraphs = graphView.getGraphs();
+//        List<RocketGraph> updatedGraphs = new ArrayList<R>(gc.getAllGraphs());
+//        for (int i = 0; i < labels.size(); i++) {
+//            for (int j = 0; j < updatedGraphs.size(); j++) {
+//                if (updatedGraphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
+//                    RocketGraph temp = updatedGraphs.get(j);
+//                    updatedGraphs.remove(j);
+//                    updatedGraphs.add(i, temp);
+//                }
+//            }
+//        }
+//
+//        gc.setGraphs(updatedGraphs);
+//    }
 
     /**
      * Records relative y coordinates.
