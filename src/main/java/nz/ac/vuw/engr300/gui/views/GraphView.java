@@ -6,13 +6,17 @@ import java.util.List;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
+import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -27,6 +31,10 @@ public class GraphView implements View {
     private final DynamicGridPane contentPane;
     private List<RocketGraph> graphs;
     private final GraphController controller;
+    /**
+     * Define the table name to match graphs to within config. This defaults to the value below.
+     */
+    private String tableName = "incoming-avionics";
 
     /**
      * Create new GraphView.
@@ -44,7 +52,7 @@ public class GraphView implements View {
         attachContentToScrollPane();
         this.controller.attachView(this);
         this.controller.setGraphs(graphs);
-        this.controller.subscribeGraphs();
+        this.controller.subscribeGraphs(tableName, false);
     }
     
     /**
@@ -88,45 +96,68 @@ public class GraphView implements View {
     }
 
     /**
+     * Update the graph definition to match the provided tableName from within the configuration file.
+     *
+     * @param newTableName Table name to refer against for the graph structure.
+     * @param isSimulation Boolean flag to indicate whether this table is built for simulation mode or serial mode.
+     */
+    public void updateGraphStructureDefinition(String newTableName, boolean isSimulation) {
+        this.tableName = newTableName;
+        // Clear all registered graphs
+        GraphMasterList.getInstance().clearRegisteredGraphs();
+        this.controller.resetObservers();
+        // Create graphs from description
+        createGraphs();
+        // Reload dynamic Grid pane contents
+        this.contentPane.clearGridContents();
+        this.contentPane.addGridContents(allGraphs());
+        // Update controller with new graphs and subscribe to data
+        this.controller.setGraphs(graphs);
+        this.controller.subscribeGraphs(tableName, isSimulation);
+        ButtonController.getInstance().updateButtons();
+    }
+
+    /**
      * Manually binds the graph type to the graphs. This could maybe be automated
      * later but for now can set the values.
      */
     private void createGraphs() {
         this.graphs = new ArrayList<>();
-        
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.TOTAL_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.X_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.Y_VELOCITY));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Velocity (m/s)",
-                        GraphType.Z_VELOCITY));
-
-        this.graphs.add(new RocketDataLineChart("Time (s)",
-                        "Acceleration ( m/s² )", GraphType.TOTAL_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.X_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.Y_ACCELERATION));
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Acceleration (m/s²)",
-                        GraphType.Z_ACCELERATION));
-
-        this.graphs.add(new RocketDataLineChart("Time (s)", "Altitude (m)",
-                        GraphType.ALTITUDE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Yaw Rate (°/s)",
-                false, GraphType.YAW_RATE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Pitch Rate (°/s)",
-                false, GraphType.PITCH_RATE));
-        this.graphs.add(new RocketDataAngleLineChart("Time (s)", "Roll Rate (°/s)",
-                false, GraphType.ROLL_RATE));
-
-        this.graphs.add(new RocketDataAngle(true, GraphType.WINDDIRECTION));
-        
-        RocketDataLocation rdl = new RocketDataLocation(-41.227938, 174.798772, 400, 400,
-                        GraphType.ROCKET_LOCATION);
-        rdl.updateAngleDistanceInfo(-41.227776, 174.799334);
-        this.graphs.add(rdl);
+        CsvTableDefinition tableDefinition = CsvConfiguration.getInstance().getTable(tableName);
+        GraphMasterList masterList = GraphMasterList.getInstance();
+        for (String headerName : tableDefinition.getTitles()) {
+            CsvTableDefinition.Column column = tableDefinition.getColumn(headerName);
+            if (column.getGraphType() == null) {
+                continue;
+            }
+            switch (column.getGraphType()) {
+                case "angle": {
+                    GraphType gt = new GraphType(column.getName());
+                    masterList.registerGraph(gt);
+                    this.graphs.add(new RocketDataAngleLineChart(
+                            "Time (s)",
+                            column.getName() + " (" + column.getDataUnit() + ")",
+                            false,
+                            gt
+                    ));
+                    break;
+                }
+                case "line": {
+                    GraphType gt = new GraphType(column.getName());
+                    masterList.registerGraph(gt);
+                    this.graphs.add(new RocketDataLineChart(
+                            "Time (s)",
+                            column.getName() + " (" + column.getDataUnit() + ")",
+                            gt
+                    ));
+                    break;
+                }
+                default: {
+                    // Do nothing as no valid graph was specified.
+                    break;
+                }
+            }
+        }
     }
     
     /**
@@ -136,5 +167,14 @@ public class GraphView implements View {
      */
     private Region[] allGraphs() {
         return this.graphs.stream().filter(RocketGraph::isGraphVisible).map(g -> (Region) g).toArray(Region[]::new);
+    }
+
+    /**
+     * Get the currently equipped table name for incoming data.
+     *
+     * @return String table name this data is mapped against.
+     */
+    public String getTableName() {
+        return this.tableName;
     }
 }

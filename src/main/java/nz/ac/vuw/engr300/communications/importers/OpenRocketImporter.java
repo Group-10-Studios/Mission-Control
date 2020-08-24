@@ -22,7 +22,7 @@ import nz.ac.vuw.engr300.communications.model.RocketStatus;
  *
  * @author Tim Salisbury
  */
-public class OpenRocketImporter implements RocketDataImporter {
+public class OpenRocketImporter implements RocketDataImporter<RocketData> {
 
     private static final Pattern EVENT_REGEX = Pattern
                     .compile("^# Event (\\w+) occurred at t=(\\d*\\.?\\d*?) seconds$");

@@ -5,5 +5,31 @@
       "time": "string",
       "angle": "double"
     }
+  },
+  "graphSim": {
+    "headers": {
+      "Total Velocity": "line-vel",
+      "Altitude": "height",
+      "Total Acceleration": "line-accel"
+    }
+  },
+  "incoming-avionics": {
+    "headers": {
+      "required_value_to_prevent_test_null_pointers": "string"
+    }
+  },
+  "csv-tests": {
+    "headers": {
+      "time": "time",
+      "longValue": "long",
+      "doubleValue": "double",
+      "floatValue": "float",
+      "intValue": "int",
+      "stringValue": "string",
+      "angleValue": "angle",
+      "velValue": "line-vel",
+      "accValue": "line-accel",
+      "altitudeValue": "height"
+    }
   }
 }

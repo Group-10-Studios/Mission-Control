@@ -47,9 +47,40 @@ public class CsvTableDefinition {
 
         for (String headerKey : headerObject.keySet()) {
             // Map each key/value into a column object
-            headerMapping.add(new Column(headerKey, headerObject.get(headerKey).getAsString()));
+            headerMapping.add(parseColumn(headerKey, headerObject.get(headerKey).getAsString()));
         }
 
+    }
+
+    /**
+     * Define defaults for incoming data shortcuts within the CSV definition.
+     *
+     * @param headerKey The name of the data column.
+     * @param headerType The string representation of the column type. It either matches a pre-determined set
+     *                   or it is custom set to the data type the value is.
+     * @return Column instance containing the set data types for the header.
+     */
+    private Column parseColumn(String headerKey, String headerType) {
+        switch (headerType) {
+            case "angle": {
+                return new Column(headerKey, "double", "°", "angle");
+            }
+            case "line-accel": {
+                return new Column(headerKey, "double", "m/s²", "line");
+            }
+            case "line-vel": {
+                return new Column(headerKey, "double", "m/s", "line");
+            }
+            case "height": {
+                return new Column(headerKey, "double", "m", "line");
+            }
+            case "time": {
+                return new Column(headerKey, "long", "s", null);
+            }
+            default: {
+                return new Column(headerKey, headerType, null, null);
+            }
+        }
     }
 
     /**
@@ -88,6 +119,7 @@ public class CsvTableDefinition {
 
         if (contents.length != headerMapping.size()) {
             LOGGER.error("CSV content length doesn't match header mappings");
+            LOGGER.error("Received: " + rawRowCsv);
             return false;
         }
 
@@ -120,6 +152,9 @@ public class CsvTableDefinition {
             case "int": {
                 return Integer.parseInt(content);
             }
+            case "long": {
+                return Long.parseLong(content);
+            }
             default:
                 return content;
         }
@@ -148,6 +183,43 @@ public class CsvTableDefinition {
             }
         }
         return null;
+    }
+
+    /**
+     * Get the number of rows within this table.
+     *
+     * @return Integer representing the number of rows within this CSV table.
+     */
+    public int size() {
+        return this.contentRows.size();
+    }
+
+    /**
+     * Get the latest data from the table contents if it exists, otherwise returns null.
+     *
+     * @return List of object representing the row data for the last added row.
+     */
+    public List<Object> latestData() {
+        if (size() > 0) {
+            return this.contentRows.get(size() - 1);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the latest data from the table for the specified column if it exists otherwise returns null.
+     *
+     * @param columnName Name of the column to retrieve the value of.
+     * @return Object stored within the specified column for the latest data.
+     */
+    public Object latestData(String columnName) {
+        List<Object> latestData = latestData();
+        if (latestData == null) {
+            return null;
+        }
+
+        return latestData.get(getCsvIndexOf(columnName));
     }
 
     /**
@@ -194,16 +266,22 @@ public class CsvTableDefinition {
     public static class Column {
         private final String name;
         private final String type;
+        private final String dataUnit;
+        private final String graphType;
 
         /**
          * Create a new column.
          *
          * @param name String friendly name of the column
          * @param type String data type stored within this column
+         * @param dataUnit String dataUnit to display within the graph axis'.
+         * @param graphType String type of graph this column should create if one (e.g. lineChart/angle)
          */
-        public Column(String name, String type) {
+        public Column(String name, String type, String dataUnit, String graphType) {
             this.name = name;
             this.type = type;
+            this.dataUnit = dataUnit;
+            this.graphType = graphType;
         }
 
         /**
@@ -232,9 +310,31 @@ public class CsvTableDefinition {
                 case "int": {
                     return Integer.class;
                 }
+                case "long": {
+                    return Long.class;
+                }
                 default:
                     return Object.class;
             }
+        }
+
+        /**
+         * Get the unit symbol of the data in this column.
+         *
+         * @return String containing the symbol for the data units.
+         */
+        public String getDataUnit() {
+            return this.dataUnit;
+        }
+
+        /**
+         * Get the type of graph which this data should be displayed on versus time.
+         *
+         * @return String containing the type of graph this data should be displayed on versus time,
+         *         this will return null if this data shouldn't be on a graph.
+         */
+        public String getGraphType() {
+            return this.graphType;
         }
     }
 }

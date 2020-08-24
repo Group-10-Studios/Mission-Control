@@ -10,18 +10,25 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
+import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
+import nz.ac.vuw.engr300.communications.model.RocketData;
+import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
-import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.View;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -34,11 +41,13 @@ public class GraphController {
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    private final SerialCommunications serialCommunications = new SerialCommunications();
     private static final GraphController instance = new GraphController();
 
     private List<RocketGraph> graphs;
     private View view;
-    private GraphType highlightedGraph;
+    private String highlightedGraphLabel;
+    private boolean simulationMode = false;
 
     /**
      * Private constructor to prevent weather controller being created outside of in here.
@@ -80,7 +89,7 @@ public class GraphController {
      * @param label The label of the graph to be updated to be either visible or hidden.
      */
     public void hideGraph(String label) {
-        RocketGraph graph = getGraphByGraphType(GraphType.fromLabel(label));
+        RocketGraph graph = getGraphByGraphType(label);
         if (graph == null) {
             throw new RuntimeException("An invalid graph was selected with the label <"
                     + label + "> which doesn't exist.");
@@ -95,36 +104,102 @@ public class GraphController {
 
     /**
      * Subscribe all of the graphs to their appropriate data sources from the Simulation Listener.
+     *
+     * @param tableName String definition name from the communications.json file to match against incoming data.
      */
-    public void subscribeGraphs() {
-        simulationImporter.subscribeObserver((data) -> {
-            if (data instanceof RocketStatus) {
-                getLineChartByGraphType(GraphType.ALTITUDE)
-                        .addValue(data.getTime(), ((RocketStatus) data).getAltitude());
-                getLineChartByGraphType(GraphType.TOTAL_ACCELERATION)
-                        .addValue(data.getTime(), ((RocketStatus) data).getTotalAcceleration());
-                getLineChartByGraphType(GraphType.TOTAL_VELOCITY)
-                        .addValue(data.getTime(), ((RocketStatus) data).getTotalVelocity());
-
-                getLineChartByGraphType(GraphType.Y_ACCELERATION)
-                        .addValue(data.getTime(), ((RocketStatus) data).getAccelerationY());
-                getLineChartByGraphType(GraphType.Y_VELOCITY)
-                        .addValue(data.getTime(), ((RocketStatus) data).getVelocityY());
-
-                getLineChartByGraphType(GraphType.Z_ACCELERATION)
-                        .addValue(data.getTime(), ((RocketStatus) data).getAccelerationZ());
-                getLineChartByGraphType(GraphType.Z_VELOCITY)
-                        .addValue(data.getTime(), ((RocketStatus) data).getVelocityZ());
-
-                getAngleLineChartByGraphType(GraphType.YAW_RATE)
-                        .addValue(data.getTime(), ((RocketStatus) data).getYawRate());
-                getAngleLineChartByGraphType(GraphType.PITCH_RATE)
-                        .addValue(data.getTime(), ((RocketStatus) data).getPitchRate());
-                getAngleLineChartByGraphType(GraphType.ROLL_RATE)
-                        .addValue(data.getTime(), ((RocketStatus) data).getRollRate());
-            }
-        });
+    public void subscribeGraphs(String tableName, boolean isSimulation) {
+        this.simulationMode = isSimulation;
+        CsvTableDefinition table = CsvConfiguration.getInstance().getTable(tableName);
+        if (isSimulation) {
+            simulationImporter.subscribeObserver(this::graphSimulationSubscription);
+        } else {
+            serialCommunications.subscribeObserver(data -> graphSubscription(data, table));
+        }
         LOGGER.debug("All graphs have been subscribed");
+    }
+
+    /**
+     * Handle translating the incoming {@code List<Object>} data which is coming in from the serial observer.
+     *
+     * @param data Incoming data from the serialCommunications observer to be drawn on the graphs.
+     * @param table The CSV table definition to match the data against.
+     */
+    private void graphSubscription(List<Object> data, CsvTableDefinition table) {
+        long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
+                "timestamp", Long.class);
+        for (RocketGraph rg: this.graphs) {
+            if (rg instanceof RocketDataAngleLineChart) {
+                RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
+                String dataType = rgC.getGraphType().getLabel();
+                int index = table.getCsvIndexOf(dataType);
+                if (index < 0) {
+                    continue;
+                }
+                double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                rgC.addValue(timestamp, value);
+            } else if (rg instanceof RocketDataLineChart) {
+                RocketDataLineChart rgC = (RocketDataLineChart) rg;
+                String dataType = rgC.getGraphType().getLabel();
+                int index = table.getCsvIndexOf(dataType);
+                if (index < 0) {
+                    continue;
+                }
+                double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
+                rgC.addValue(timestamp, value);
+            }
+        }
+    }
+
+    /**
+     * Handle translating the incoming RocketData from the simulation listener and drawing it on the graphs.
+     *
+     * @param data Incoming data from the simulationListener observer to be drawn on the graphs.
+     */
+    private void graphSimulationSubscription(RocketData data) {
+        if (data instanceof RocketStatus) {
+            double timestamp = data.getTime();
+            for (RocketGraph rg: this.graphs) {
+                if (rg instanceof RocketDataAngleLineChart) {
+                    RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
+                    String dataType = rgC.getGraphType().getLabel();
+                    double value = getDataFromRocketData((RocketStatus) data, dataType);
+                    rgC.addValue(timestamp, value);
+                } else if (rg instanceof RocketDataLineChart) {
+                    RocketDataLineChart rgC = (RocketDataLineChart) rg;
+                    String dataType = rgC.getGraphType().getLabel();
+                    double value = getDataFromRocketData((RocketStatus) data, dataType);
+                    rgC.addValue(timestamp, value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper function to retrieve the values from the RocketStatus based on the name of the graph.
+     * This is performed through reflection to ensure that each graph can access its' data correctly
+     * while being dynamically loaded into the application.
+     *
+     * @param data Incoming RocketStatus data object which contains the values we want to retrieve from.
+     * @param dataType The String name of the graph we need the data type from which will be converted.
+     * @return Double value stored within the RocketStatus for the dataType.
+     */
+    private double getDataFromRocketData(RocketStatus data, String dataType) {
+        try {
+            String functionLabel = "get" + dataType.replace(" ", "");
+            Method getMethod = RocketStatus.class.getDeclaredMethod(functionLabel);
+            return (double) getMethod.invoke(data);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Start listening to the serial device.
+     */
+    public void startListeningOnSerial() {
+        serialCommunications.startListening();
     }
 
     /**
@@ -133,38 +208,28 @@ public class GraphController {
      * @param currentWindAngle Double value of the Wind Angle to be set on the RocketGraph.
      */
     public void setWindAngle(double currentWindAngle) {
-        getAngleByGraphType(GraphType.WINDDIRECTION).setAngle(currentWindAngle);
+        // getAngleByGraphType(GraphType.WINDDIRECTION).setAngle(currentWindAngle);
         LOGGER.debug("The wind angle has been updated to: " + currentWindAngle);
-    }
-
-    /**
-     * Get a specific graph by its' label.
-     *
-     * @param label String label of the graph we want to retrieve.
-     * @return The RocketGraph instance of the graph if it exists inside graphs otherwise it will return null.
-     */
-    public RocketGraph getGraph(String label) {
-        return getGraphByGraphType(GraphType.fromLabel(label));
     }
 
     /**
      * Highlight the specified graphType provided. If this graph type is already highlighted it will unhighlight it.
      * This also assumes only one graph can be highlighted at a time.
      *
-     * @param graphType The specific GraphType which we want highlighted.
+     * @param graphTypeLabel The specific label for the GraphType which we want highlighted.
      */
-    public void highlight(GraphType graphType) {
+    public void highlight(String graphTypeLabel) {
         for (RocketGraph graph : this.graphs) {
             Region chart = (Region) graph;
-            if (graph.getGraphType() == graphType) {
-                if (graphType == this.highlightedGraph) {
+            if (graph.getGraphType().getLabel().equals(graphTypeLabel)) {
+                if (graphTypeLabel.equals(this.highlightedGraphLabel)) {
                     chart.setBorder(null);
-                    this.highlightedGraph = null;
+                    this.highlightedGraphLabel = null;
 
                 } else {
                     chart.setBorder(new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID,
                             new CornerRadii(5.0), new BorderWidths(2.0))));
-                    this.highlightedGraph = graphType;
+                    this.highlightedGraphLabel = graphTypeLabel;
                 }
 
             } else {
@@ -177,12 +242,12 @@ public class GraphController {
      * Find a graph by its' graph type. This will O(n) search through the graphs list to find a graph which matches
      * the type provided. If this is not found it will return null.
      *
-     * @param type GraphType to match against inside RocketGraphs.
+     * @param label GraphType to match against inside RocketGraphs.
      * @return A RocketGraph which matches the expected type.
      */
-    private RocketGraph getGraphByGraphType(GraphType type) {
+    public RocketGraph getGraphByGraphType(String label) {
         for (RocketGraph g : graphs) {
-            if (g.getGraphType() == type) {
+            if (g.getGraphType().getLabel().equals(label)) {
                 return g;
             }
         }
@@ -195,11 +260,11 @@ public class GraphController {
      * This is not checked and therefore could result in exceptions if used on a RocketGraph which doesn't match
      * the expected type.
      *
-     * @param type GraphType to match against inside RocketGraphs.
+     * @param label GraphType to match against inside RocketGraphs.
      * @return A RocketDataLineChart which matches the expected type.
      */
-    private RocketDataLineChart getLineChartByGraphType(GraphType type) {
-        return (RocketDataLineChart) getGraphByGraphType(type);
+    private RocketDataLineChart getLineChartByGraphType(String label) {
+        return (RocketDataLineChart) getGraphByGraphType(label);
     }
 
     /**
@@ -207,11 +272,11 @@ public class GraphController {
      * This is not checked and therefore could result in exceptions if used on a RocketGraph which doesn't match
      * the expected type.
      *
-     * @param type GraphType to match against inside RocketGraphs.
+     * @param label GraphType to match against inside RocketGraphs.
      * @return A RocketDataAngle which matches the expected type.
      */
-    private RocketDataAngle getAngleByGraphType(GraphType type) {
-        return (RocketDataAngle) getGraphByGraphType(type);
+    private RocketDataAngle getAngleByGraphType(String label) {
+        return (RocketDataAngle) getGraphByGraphType(label);
     }
 
     /**
@@ -219,11 +284,11 @@ public class GraphController {
      * This is not checked and therefore could result in exceptions if used on a RocketGraph which doesn't match
      * the expected type.
      *
-     * @param type GraphType to match against inside RocketGraphs.
+     * @param label GraphType to match against inside RocketGraphs.
      * @return A RocketDataAngleLineChart which matches the expected type.
      */
-    private RocketDataAngleLineChart getAngleLineChartByGraphType(GraphType type) {
-        return (RocketDataAngleLineChart) getGraphByGraphType(type);
+    private RocketDataAngleLineChart getAngleLineChartByGraphType(String label) {
+        return (RocketDataAngleLineChart) getGraphByGraphType(label);
     }
 
     /**
@@ -233,6 +298,16 @@ public class GraphController {
      */
     public void runSim() {
         simulationImporter.stop();
+
+        // Reconstruct graphs if they are not already in simulation mode
+        if (!this.simulationMode) {
+            // This line will get the updated table name from the GraphView
+            // Currently we want to override this to previousSimulation until the set name is present
+            // this.subscribeGraphs(((GraphView) view).getTableName(), true);
+
+            String tableName = "previousSimulation";
+            ((GraphView) view).updateGraphStructureDefinition(tableName, true);
+        }
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a simulation to run.");
@@ -266,6 +341,8 @@ public class GraphController {
         simulationImporter.stop();
         LOGGER.debug("GraphController shutdown called");
         simulationImporter.unsubscribeAllObservers();
+        serialCommunications.stopListening();
+        serialCommunications.unsubscribeAllObservers();
     }
 
     /**
@@ -275,5 +352,14 @@ public class GraphController {
      */
     public OpenRocketImporter getSimulationImporter() {
         return this.simulationImporter;
+    }
+
+    /**
+     * Reset the observers on the incoming data streams to be reset/loaded on new definition.
+     */
+    public void resetObservers() {
+        this.serialCommunications.unsubscribeAllObservers();
+
+        //TODO: Check if we need to unsubscribe simulation listeners here.
     }
 }

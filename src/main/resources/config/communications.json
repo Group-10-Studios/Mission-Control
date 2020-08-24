@@ -1,0 +1,35 @@
+{
+  "incoming-avionics": {
+    "headers": {
+      "timestamp": "time",
+      "lat": "double", 
+      "long": "double", 
+      "gimbal_x": "angle",
+      "gimbal_y": "angle",
+      "IMU_accel_x": "line-accel",
+      "IMU_accel_y": "line-accel",
+      "IMU_accel_z": "line-accel",
+      "IMU_rot_x": "angle",
+      "IMU_rot_y": "angle",
+      "IMU_rot_z": "angle",
+      "internal_temp": "double",
+      "height": "height",
+      "battery_status": "double",
+      "rocket_status": "string"
+    }
+  },
+  "previousSimulation": {
+    "headers": {
+      "Total Velocity": "line-vel",
+      "Velocity Y": "line-vel",
+      "Velocity Z": "line-vel",
+      "Total Acceleration": "line-accel",
+      "Acceleration Y": "line-accel",
+      "Acceleration Z": "line-accel",
+      "Altitude": "height",
+      "Yaw Rate": "angle",
+      "Pitch Rate": "angle",
+      "Roll Rate": "angle"
+    }
+  }
+}

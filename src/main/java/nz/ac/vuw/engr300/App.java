@@ -1,8 +1,12 @@
 package nz.ac.vuw.engr300;
 
 import javax.swing.JOptionPane;
+
+import com.fazecast.jSerialComm.SerialPort;
 import nz.ac.vuw.engr300.gui.Gui;
 import org.apache.log4j.Logger;
+
+import java.util.Arrays;
 
 /**
  * Basic App wrapper to launch the GUI application. Required for the fat JAR.
@@ -18,6 +22,7 @@ public class App {
      * @param args The command line arguments that this was launched with.
      */
     public static void main(String[] args) {
+        System.out.println(Arrays.toString(SerialPort.getCommPorts()));
         try {
             Gui.main(args);
         } catch (Error e) {

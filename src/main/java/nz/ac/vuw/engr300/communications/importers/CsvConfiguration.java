@@ -36,15 +36,20 @@ public class CsvConfiguration {
 
     private CsvConfiguration() {
         csvMappings = new HashMap<>();
-        loadNewConfig("src/main/resources/config/communications.json");
+        try {
+            loadNewConfig("src/main/resources/config/communications.json");
+        } catch (FileNotFoundException e) {
+            System.err.println("CsvConfiguration not found, launching with no communication support");
+        }
     }
 
     /**
      * Load a new configuration file to define the available tables.
      *
      * @param configFileName String filepath to the configuration file to load into the application.
+     * @throws FileNotFoundException If the provided configuration file does not exist.
      */
-    public void loadNewConfig(String configFileName) {
+    public void loadNewConfig(String configFileName) throws FileNotFoundException {
         clearAllTables();
         try {
             JsonElement contents = JsonImporter.load(configFileName);
@@ -63,6 +68,7 @@ public class CsvConfiguration {
             }
         } catch (FileNotFoundException e) {
             LOGGER.warn("CsvConfiguration not found, launching with no communication support", e);
+            throw e;
         }
     }
 

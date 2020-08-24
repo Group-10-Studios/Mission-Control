@@ -116,7 +116,6 @@ public class HomeView implements View {
         addNodeToGrid(centerPanel, contentGrid, 0, 1, Insets.EMPTY);
         UiUtil.addPercentRows(centerPanel, 100);
         UiUtil.addPercentColumns(centerPanel, 100);
-
         this.graphView = new GraphView(centerPanel);
     }
 
@@ -164,5 +163,14 @@ public class HomeView implements View {
      */
     public double getSceneWidth() {
         return this.applicationScene.getWidth();
+    }
+
+    /**
+     * Get the graph view within this HomeView.
+     *
+     * @return GraphView used by the application.
+     */
+    public GraphView getGraphView() {
+        return this.graphView;
     }
 }

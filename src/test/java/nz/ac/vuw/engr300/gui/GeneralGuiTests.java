@@ -20,10 +20,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
+import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import org.junit.jupiter.api.MethodOrderer;
@@ -43,6 +46,7 @@ import org.testfx.util.WaitForAsyncUtils;
  * General tests for the UI.
  *
  * @author Tim Salisbury
+ * @author Nathan Duckett
  */
 @ExtendWith(ApplicationExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -129,27 +133,37 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param expected The expected data that the graphs should be populated with.
      */
     private static void checkGraphValues(FxRobot robot, List<RocketStatus> expected) {
-        List<XYChart.Data<Number, Number>> velocityChartData = robot.lookup("#graphTotalVelocity")
-                .queryAs(RocketDataLineChart.class).getData().get(0).getData();
-        List<XYChart.Data<Number, Number>> altitudeChartData = robot.lookup("#graphAltitude")
-                .queryAs(RocketDataLineChart.class).getData().get(0).getData();
-        List<XYChart.Data<Number, Number>> accelerationChartData = robot.lookup("#graphTotalAcceleration")
-                .queryAs(RocketDataLineChart.class).getData().get(0).getData();
-
         int expectedDataSize = expected.size();
-        assertEquals(expectedDataSize, velocityChartData.size());
-        assertEquals(expectedDataSize, altitudeChartData.size());
-        assertEquals(expectedDataSize, accelerationChartData.size());
+        for (GraphType graphType: GraphMasterList.getInstance().getGraphs()) {
+            List<XYChart.Data<Number, Number>> chartData =
+                    robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataLineChart.class)
+                            .getData().get(0).getData();
 
-        //Now check all the values displayed by the graph are those in the simulation!
-        for (int i = 0; i < expectedDataSize; i++) {
-            assertEquals(expected.get(i).getTime(), velocityChartData.get(i).getXValue());
-            assertEquals(expected.get(i).getTime(), altitudeChartData.get(i).getXValue());
-            assertEquals(expected.get(i).getTime(), accelerationChartData.get(i).getXValue());
+            assertEquals(expectedDataSize, chartData.size());
+            for (int i = 0; i < expectedDataSize; i++) {
+                assertEquals(expected.get(i).getTime(), chartData.get(i).getXValue());
+                double value = getValueForGraph(expected, i, graphType);
+                assertEquals(value, chartData.get(i).getYValue());
+            }
+        }
+    }
 
-            assertEquals(expected.get(i).getTotalVelocity(), velocityChartData.get(i).getYValue());
-            assertEquals(expected.get(i).getAltitude(), altitudeChartData.get(i).getYValue());
-            assertEquals(expected.get(i).getTotalAcceleration(), accelerationChartData.get(i).getYValue());
+    /**
+     * Get an expected value for the provided graph type at the provided position. This lets us compare the actual
+     * values to what we expected.
+     *
+     * @param expected List of expected rocket values we want to get the value from.
+     * @param position The position of the data within the expected dataset.
+     * @param graphType The type of graph this data is from, corresponding to the value to retrieve from the dataset.
+     * @return A double retrieved from the expected dataset for the graph type.
+     */
+    private static double getValueForGraph(List<RocketStatus> expected, int position, GraphType graphType) {
+        if (graphType.getLabel().equals("Total Velocity")) {
+            return expected.get(position).getTotalVelocity();
+        } else if (graphType.getLabel().equals("Total Acceleration")) {
+            return expected.get(position).getTotalAcceleration();
+        } else {
+            return expected.get(position).getAltitude();
         }
     }
 
@@ -238,6 +252,8 @@ public class GeneralGuiTests extends ApplicationTest {
     @Override
     public void init() throws Exception {
         FxToolkit.registerStage(Stage::new);
+        // Define graph structure from Test file.
+        CsvConfiguration.getInstance().loadNewConfig("src/test/resources/TestCommunications.json");
     }
 
     @Override
@@ -246,9 +262,11 @@ public class GeneralGuiTests extends ApplicationTest {
 
         stage = primaryStage;
         stage.setMaximized(true);
-        new HomeView(primaryStage);
+        HomeView v = new HomeView(primaryStage);
         stage.show();
 
+        // Overriding graph configuration to support Serial communications with Simulation
+        v.getGraphView().updateGraphStructureDefinition("graphSim", true);
     }
 
     @Override
@@ -269,19 +287,11 @@ public class GeneralGuiTests extends ApplicationTest {
     @Test
     @Order(1)
     public void check_visibility_of_graphs(FxRobot robot) {
-        RocketDataLineChart velocityChart =
-                robot.lookup("#graphTotalVelocity").queryAs(RocketDataLineChart.class);
-        RocketDataLineChart altitudeChart =
-                robot.lookup("#graphAltitude").queryAs(RocketDataLineChart.class);
-        RocketDataLineChart accelerationChart =
-                robot.lookup("#graphTotalAcceleration").queryAs(RocketDataLineChart.class);
-        Assertions.assertThat(velocityChart.isVisible());
-        Assertions.assertThat(altitudeChart.isVisible());
-        Assertions.assertThat(accelerationChart.isVisible());
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        // Loop through all graphs to make sure they're visible.
+        for (GraphType graphType: GraphMasterList.getInstance().getGraphs()) {
+            RocketDataLineChart chart =
+                    robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataLineChart.class);
+            Assertions.assertThat(chart.isVisible());
         }
     }
 
@@ -343,7 +353,7 @@ public class GeneralGuiTests extends ApplicationTest {
      */
     @Test
     public void test_highlight_graphs(FxRobot robot) {
-        for (GraphType g : GraphType.values()) {
+        for (GraphType g : GraphMasterList.getInstance().getGraphs()) {
 
             String btnId = "#btn" + g.getLabel().replace(" ", "");
             String graphId = "#" + g.getGraphID();

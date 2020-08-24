@@ -2,6 +2,7 @@ package nz.ac.vuw.engr300.gui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 
 /**
@@ -16,6 +17,10 @@ public class Gui extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("ENGR301-Group10-Mission Control Software System");
         new HomeView(stage);
+
+        // Only start listening when loading the GUI.
+        // TODO: Change this later to be bound to drop down serial device selector
+        GraphController.getInstance().startListeningOnSerial();
     }
 
     /**
