@@ -78,7 +78,8 @@ public class ButtonController {
     }
 
     public void reorderButtons(String buttonToMove, boolean moveUp) {
-        List<String> labels = Stream.of(GraphType.values()).map(g -> g.getLabel()).collect(Collectors.toList());
+        List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
+                .map(GraphType::getLabel).collect(Collectors.toList());
         int indexOfButtonBeingMoved = labels.indexOf(buttonToMove);
         System.out.println(indexOfButtonBeingMoved);
         if (moveUp) {
