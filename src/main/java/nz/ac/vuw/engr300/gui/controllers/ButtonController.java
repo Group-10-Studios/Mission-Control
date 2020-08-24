@@ -1,6 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
-import nz.ac.vuw.engr300.gui.components.NavigationButton;
 
+import nz.ac.vuw.engr300.gui.components.NavigationButton;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.NavigationView;
