@@ -1,10 +1,14 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import com.sun.javafx.scene.control.InputField;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.model.LaunchParameters;
+import org.w3c.dom.Text;
 import java.lang.reflect.Field;
 
 /**
@@ -14,34 +18,83 @@ import java.lang.reflect.Field;
  */
 public class LaunchParameterInputField extends GridPane {
 
-    private TextField inputField;
+    private final Control inputField;
     private final LaunchParameters parameters;
     private final Field field;
 
     /**
      * Creates a LaunchParameterInputField.
-     * @param field The field object from the LaunchParameters object that needs to be updated.
+     *
+     * @param field      The field object from the LaunchParameters object that needs to be updated.
      * @param parameters LaunchParameters object to modify.
      */
     public LaunchParameterInputField(Field field, LaunchParameters parameters) {
         this.field = field;
         this.parameters = parameters;
+
+        UiUtil.addPercentColumns(this, 50, 50);
+
         Label fieldLabel = new Label(formatString(field.getName()));
-        if (field.getType().equals(double.class)) {
-            UiUtil.addPercentColumns(this, 50, 50);
-            this.add(fieldLabel, 0, 0);
-            inputField = createDoubleInputField();
-            this.add(inputField, 1, 0);
-            try {
-                inputField.setText(String.valueOf(field.getDouble(parameters)));
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Unable to access field in LaunchParameters", e);
+        this.inputField = createInputField();
+
+        this.add(fieldLabel, 0, 0);
+        this.add(inputField, 1, 0);
+
+
+        setInputFieldValue();
+    }
+
+    /**
+     * Sets the input field to its respective value from the parameters object.
+     */
+    private void setInputFieldValue() {
+        try {
+            if (field.getType().equals(boolean.class)) {
+                ((CheckBox) inputField).setSelected(field.getBoolean(parameters));
+            } else {
+                ((TextField) inputField).setText(getValueFromField());
             }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to set input field to value.", e);
         }
     }
 
     /**
+     * Gets the value from parameters object that this input field represents.
+     *
+     * @return The value from the parameters object.
+     */
+    private String getValueFromField() {
+        try {
+            return String.valueOf(field.get(parameters));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get value from field.", e);
+        }
+    }
+
+    /**
+     * Creates an input field (generic as control) tailored to the type of field this input field
+     * is representing.
+     *
+     * @return The tailored input field.
+     */
+    private Control createInputField() {
+        switch (field.getType().getName()) {
+            case "double":
+                return createDoubleInputField();
+            case "int":
+                return createIntegerInputField();
+            case "boolean":
+                return new CheckBox();
+            default:
+                return new TextField();
+        }
+
+    }
+
+    /**
      * Creates an input field for the double type, so only numbers and decimal points can be typed.
+     *
      * @return TextField object with the appropriate numbers.
      */
     private TextField createDoubleInputField() {
@@ -49,6 +102,28 @@ public class LaunchParameterInputField extends GridPane {
         numberField.textProperty().addListener((observableValue, s, t1) -> {
             if (!t1.matches("^-?\\d*\\.?\\d*?$")) {
                 numberField.setText(t1.replaceAll("[^-?\\d*\\.?]", ""));
+
+                int first = t1.indexOf(".") + 1;
+
+                String afterReplace = t1.substring(0, first)
+                        + t1.substring(first).replaceAll("\\.", "");
+                numberField.setText(afterReplace);
+
+            }
+        });
+        return numberField;
+    }
+
+    /**
+     * Creates an input field for the integer type, so only numbers can be typed.
+     *
+     * @return A textfield object tailored for integers.
+     */
+    private TextField createIntegerInputField() {
+        TextField numberField = new TextField();
+        numberField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("^-?\\d*")) {
+                numberField.setText(t1.replaceAll("[^-?\\d*]", ""));
             }
         });
         return numberField;
@@ -56,6 +131,7 @@ public class LaunchParameterInputField extends GridPane {
 
     /**
      * Formats a string to be appropriately titled, from camel case to title case.
+     *
      * @param str The String to format.
      * @return The newly formatted string.
      */
@@ -69,8 +145,21 @@ public class LaunchParameterInputField extends GridPane {
      */
     public void saveField() {
         try {
-            field.setDouble(parameters, Double.parseDouble(inputField.getText()));
-        } catch (IllegalAccessException e) {
+            switch (field.getType().getName()) {
+                case "double":
+                    field.setDouble(parameters, Double.parseDouble(((TextField) inputField).getText()));
+                    break;
+                case "int":
+                    field.setInt(parameters, Integer.parseInt(((TextField) inputField).getText()));
+                    break;
+                case "boolean":
+                    field.setBoolean(parameters, ((CheckBox) inputField).isSelected());
+                    break;
+                default:
+                    field.set(parameters, ((TextField) inputField).getText());
+                    break;
+            }
+        } catch (Exception e) {
             throw new RuntimeException("Unable to save field.", e);
         }
     }

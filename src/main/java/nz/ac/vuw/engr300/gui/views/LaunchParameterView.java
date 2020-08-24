@@ -63,7 +63,6 @@ public class LaunchParameterView implements View {
         Scene scene = new Scene(root, 350, 550);
 
         popupwindow.setResizable(false);
-        // TODO: Load in previous launch parameters here
         LaunchParameterView l = new LaunchParameterView(root, callBack);
         popupwindow.setScene(scene);
         l.initialize();
