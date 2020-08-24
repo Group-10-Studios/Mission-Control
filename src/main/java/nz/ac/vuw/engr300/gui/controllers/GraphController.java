@@ -22,6 +22,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
+import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.View;
 import org.apache.log4j.Logger;
@@ -29,6 +30,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,6 +78,18 @@ public class GraphController {
         // for expandability if required later.
         GraphView gv = (GraphView) view;
         gv.updateGraphs(graphs);
+    }
+
+    /**
+     * Makes sure the graphs in GraphMasterList syncs its changes with graph list in the view.
+     */
+    public void syncGraphOrder() {
+        List<GraphType> graphTypes = GraphMasterList.getInstance().getGraphs();
+        List<RocketGraph> updatedList = new ArrayList<>();
+        for (GraphType g : graphTypes) {
+            updatedList.add(getGraphByGraphType(g.getLabel()));
+        }
+        setGraphs(updatedList);
     }
 
     /**

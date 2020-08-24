@@ -1,21 +1,13 @@
 package nz.ac.vuw.engr300.gui.controllers;
-
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 import nz.ac.vuw.engr300.gui.components.NavigationButton;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
-import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.NavigationView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Controller to handle the buttons that are linked to the graph on the left side panel.
@@ -24,8 +16,6 @@ import java.util.stream.Stream;
  * @author Ahad Rahman
  */
 public class ButtonController {
-
-    private static final double BUTTON_HEIGHT = 30;
 
     private List<NavigationButton> pnNavButtons = new ArrayList<>();
 
@@ -55,28 +45,32 @@ public class ButtonController {
         pnNavButtons.clear();
         List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
                 .map(GraphType::getLabel).collect(Collectors.toList());
-        //ButtonSelected buttonSelected = new ButtonSelected();
-        int y = 5;
         for (String label : labels) {
             NavigationButton nb = new NavigationButton(label);
             pnNavButtons.add(nb);
         }
-
         // Draw the buttons on the view.
         view.drawButtons();
     }
 
+    /**
+     * Reorder the buttons based on the up and down arrow configuration buttons.
+     * @param buttonToMove The name of the button to be moved.
+     * @param moveUp True indicates the buttonToMove is moving upwards.
+     */
     public void reorderButtons(String buttonToMove, boolean moveUp) {
         List<String> labels = GraphMasterList.getInstance().getGraphs().stream()
                 .map(GraphType::getLabel).collect(Collectors.toList());
-        int indexOfButtonBeingMoved = labels.indexOf(buttonToMove);
-        System.out.println(indexOfButtonBeingMoved);
-        if (moveUp) {
-            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved - 1);
-        } else {
-            Collections.swap(labels, indexOfButtonBeingMoved, indexOfButtonBeingMoved + 1);
+        int indexOfGraphBeingMoved = labels.indexOf(buttonToMove);
+        int indexToSwap = moveUp ? indexOfGraphBeingMoved - 1 : indexOfGraphBeingMoved + 1;
+        if (indexToSwap == -1) {
+            indexToSwap = labels.size() - 1;
+        } else if (indexToSwap == labels.size()) {
+            indexToSwap = 0;
         }
+        GraphMasterList.getInstance().swapGraphs(indexOfGraphBeingMoved, indexToSwap);
         updateButtons();
+        GraphController.getInstance().syncGraphOrder();
     }
 
 
@@ -98,34 +92,4 @@ public class ButtonController {
         this.view = view;
     }
 
-//    /**
-//     * Reorders the graphs on the center panel.
-//     * @param labels The labels we are comparing the graphs to.
-//     */
-//    private void reorderGraphs(List<String> labels) {
-//        GraphController gc = GraphController.getInstance();
-//        // List<RocketGraph> originalGraphs = graphView.getGraphs();
-//        List<RocketGraph> updatedGraphs = new ArrayList<R>(gc.getAllGraphs());
-//        for (int i = 0; i < labels.size(); i++) {
-//            for (int j = 0; j < updatedGraphs.size(); j++) {
-//                if (updatedGraphs.get(j).getGraphType().getLabel().equals(labels.get(i))) {
-//                    RocketGraph temp = updatedGraphs.get(j);
-//                    updatedGraphs.remove(j);
-//                    updatedGraphs.add(i, temp);
-//                }
-//            }
-//        }
-//
-//        gc.setGraphs(updatedGraphs);
-//    }
-
-    /**
-     * Records relative y coordinates.
-     *
-     * @author Ahad Rahman
-     */
-    static class ButtonSelected {
-        double originalY;
-        double nextY;
-    }
 }

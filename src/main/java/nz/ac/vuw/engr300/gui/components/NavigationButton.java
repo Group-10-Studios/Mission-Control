@@ -41,8 +41,8 @@ public class NavigationButton extends GridPane {
         // Create and initialize fields
         this.graphButton = new Button(label);
         this.hideButton = new Button(VISIBLE_STATE);
-        this.moveUpButton = new Button("Up");
-        this.moveDownButton = new Button("Down");
+        this.moveUpButton = new Button("↑");
+        this.moveDownButton = new Button("↓");
         this.graphController = GraphController.getInstance();
         this.buttonController = ButtonController.getInstance();
 
@@ -87,9 +87,11 @@ public class NavigationButton extends GridPane {
     private void configureConstraints() {
         ColumnConstraints left = new ColumnConstraints();
         left.setPercentWidth(100);
-        ColumnConstraints right = new ColumnConstraints();
-        right.setPercentWidth(40);
+        ColumnConstraints extraButtonConstraints = new ColumnConstraints();
+        extraButtonConstraints.setPercentWidth(30);
         this.getColumnConstraints().add(left);
-        this.getColumnConstraints().add(right);
+        this.getColumnConstraints().add(extraButtonConstraints);
+        this.getColumnConstraints().add(extraButtonConstraints);
+        this.getColumnConstraints().add(extraButtonConstraints);
     }
 }
