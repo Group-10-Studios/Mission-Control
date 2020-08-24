@@ -180,7 +180,12 @@ pages:
   stage: DeployPages
   # Run this stage only on the master branch.
   only:
-    - master
+    refs:
+      - master
+    changes:
+      - src/**/*
+      - pom.xml
+      - .gitlab-ci.yml
   tags:
     - shell
   dependencies:
@@ -195,6 +200,7 @@ pages:
   artifacts:
     paths:
       - public
+  # Can only work if full_tests is run (access artifacts) and if javadocs are valid.
   needs: ["full_tests", "verify_javadoc"]
 
 ##
