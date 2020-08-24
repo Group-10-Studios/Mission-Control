@@ -63,7 +63,7 @@ public class LaunchParameterView implements View {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Launch Parameters");
         GridPane root = new GridPane();
-        Scene scene = new Scene(root, 350, 550);
+        Scene scene = new Scene(root, 500, 550);
 
         popupwindow.setResizable(false);
         LaunchParameterView l = new LaunchParameterView(root, callBack);
