@@ -35,7 +35,15 @@ public class LaunchParametersTest {
     @Test
     public void test_CorrectJSONFileWithNewValues() {
         LaunchParameters actual = getLaunchParametersWithDefaultValues();
-        //Change values here
+        //Modified values
+        actual.getMaximumAngleOfAttack().setValue(10.0);
+        actual.getMaximumGroundHitSpeed().setValue(69.0);
+        actual.getMaximumLaunchAngle().setValue(96.0);
+        actual.getLatitude().setValue(13.0);
+        actual.getLongitude().setValue(16.0);
+        actual.getMaximumWindSpeed().setValue(12.0);
+        actual.getMaximumParachuteDeploySpeed().setValue(3.0);
+
         actual.saveToJSONFile("src/test/resources/test-launch-parameters.json");
         Gson gson = new Gson();
         try {
@@ -47,9 +55,7 @@ public class LaunchParametersTest {
             fail("Launch Parameters Test File not found.");
         }
     }
-
     public LaunchParameters getLaunchParametersWithDefaultValues() {
         return LaunchParameters.getInstance("some/invalid/filepath"); //Used to generate LaunchParameters object with default values
     }
-
 }
