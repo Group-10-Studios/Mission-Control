@@ -1,6 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 import nz.ac.vuw.engr300.gui.components.NavigationButton;
-import nz.ac.vuw.engr300.gui.components.RocketGraph;
+
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.NavigationView;
@@ -38,7 +38,7 @@ public class ButtonController {
         return controllerInstance;
     }
 
-        /**
+    /**
      * Updates the buttons and sets them to the appropriate graph.
      */
     public void updateButtons() {
