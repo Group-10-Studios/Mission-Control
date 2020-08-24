@@ -48,7 +48,7 @@ public class ButtonController {
         return controllerInstance;
     }
 
-    /**
+        /**
      * Updates the buttons and sets them to the appropriate graph.
      */
     public void updateButtons() {
@@ -65,6 +65,7 @@ public class ButtonController {
         // Draw the buttons on the view.
         view.drawButtons();
     }
+
 
 
 
