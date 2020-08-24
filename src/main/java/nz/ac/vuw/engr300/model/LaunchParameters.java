@@ -37,23 +37,43 @@ public class LaunchParameters {
     }
 
     /**
-     * Default values are set when the LaunchParameters object is created.
+     * Default constructor for LaunchParameters.
      */
     private LaunchParameters() {
     }
 
+    /**
+     * Gets the maximum launch angle launch parameter object.
+     *
+     * @return  The maximum launch angle launch parameter object.
+     */
     public LaunchParameter<Double> getMaximumLaunchAngle() {
         return maximumLaunchAngle;
     }
 
+    /**
+     * Gets the maximum wind speed launch parameter object.
+     *
+     * @return  The maximum wind speed launch parameter object.
+     */
     public LaunchParameter<Double> getMaximumWindSpeed() {
         return maximumWindSpeed;
     }
 
+    /**
+     * Gets the latitude of the launch site launch parameter object.
+     *
+     * @return  The latitude of the launch site launch parameter object.
+     */
     public LaunchParameter<Double> getLatitude() {
         return latitude;
     }
 
+    /**
+     * Gets the longitude of the launch site launch parameter object.
+     *
+     * @return The longitude of the launch site parameter object.
+     */
     public LaunchParameter<Double> getLongitude() {
         return longitude;
     }
@@ -93,22 +113,47 @@ public class LaunchParameters {
             }
         }
 
+        /**
+         * Gets whether or not this launch parameter is enabled.
+         *
+         * @return  Whether or not this launch parameter is enabled.
+         */
         public boolean isEnabled() {
             return enabled;
         }
 
+        /**
+         * Gets the value of this launch parameter.
+         *
+         * @return  The value of this launch parameter.
+         */
         public T getValue() {
             return value;
         }
 
+        /**
+         * Gets the type, represented by a string, of this launch parameter.
+         *
+         * @return The type, represented by a string, of this launch parameter.
+         */
         public String getType() {
             return type;
         }
 
+        /**
+         * Sets whether or not this launch parameter is enabled or not.
+         *
+         * @param enabled  The value to set the enabled field to.
+         */
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
         }
 
+        /**
+         * Sets the value of this launch parameter.
+         *
+         * @param value The value to set the launch parameter.
+         */
         public void setValue(T value) {
             this.value = value;
         }
