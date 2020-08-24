@@ -1,13 +1,16 @@
 package nz.ac.vuw.engr300.gui.views;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -40,14 +43,14 @@ public class LaunchParameterView implements View {
     /**
      * Creates a LaunchParameterView Object.
      *
-     * @param root       The root GridPane where we will be adding nodes to.
-     * @param callBack   Callback function to accept LaunchParameters.
+     * @param root     The root GridPane where we will be adding nodes to.
+     * @param callBack Callback function to accept LaunchParameters.
      */
     public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
         this.root = root;
         this.parameters = LaunchParameters.getInstance();
         this.callBack = callBack;
-        UiUtil.addPercentRows(root, 70, 30);
+        UiUtil.addPercentRows(root, 4, 66, 30);
     }
 
     /**
@@ -73,8 +76,30 @@ public class LaunchParameterView implements View {
      * Initialize buttons and fields for popup window.
      */
     private void initialize() {
-        initializeButtons();
-        initializeFields();
+        this.initializeButtons();
+        this.initializeFields();
+        this.initializeHeader();
+    }
+
+    private void initializeHeader() {
+        GridPane header = new GridPane();
+        UiUtil.addPercentColumns(header, 45, 45, 10);
+
+        HBox nameWrapper = new HBox(new Label("Name"));
+        nameWrapper.setAlignment(Pos.CENTER);
+
+        HBox valueWrapper = new HBox(new Label("Value"));
+        valueWrapper.setAlignment(Pos.CENTER);
+
+        HBox enabledWrapper = new HBox(new Label("Use"));
+        enabledWrapper.setAlignment(Pos.CENTER);
+
+        header.add(nameWrapper, 0, 0);
+        header.add(valueWrapper, 1, 0);
+        header.add(enabledWrapper, 2, 0);
+
+        GridPane.setMargin(header, new Insets(0, 2.5, 0, 2.5));
+        root.add(header, 0, 0);
     }
 
     /**
@@ -94,9 +119,10 @@ public class LaunchParameterView implements View {
             saveLaunchParameters();
             try {
                 MapImageImporter.importImage(KeyImporter.getKey("maps"),
-                        parameters.latitude, parameters.longitude);
+                        parameters.getLatitude().getValue(), parameters.getLongitude().getValue());
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
-                        parameters.latitude, parameters.longitude, "src/main/resources/weather-data");
+                        parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
+                        "src/main/resources/weather-data");
             } catch (Exception | Error exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
@@ -105,8 +131,8 @@ public class LaunchParameterView implements View {
                 alert.showAndWait();
             }
         });
-        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY,  pullDataDescription,
-                pullData, save, exportWeather), 0, 1);
+        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY, pullDataDescription,
+                pullData, save, exportWeather), 0, 2);
     }
 
     /**
@@ -122,17 +148,28 @@ public class LaunchParameterView implements View {
      */
     private void initializeFields() {
         Class<LaunchParameters> clazz = LaunchParameters.class;
-        Field[] fields = clazz.getFields();
-        VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10));
+        Field[] fields = clazz.getDeclaredFields();
+        VBox vbox = UiUtil.createMinimumVerticalSizeVBox(0, new Insets(0, 2.5, 0, 2.5));
         for (Field f : fields) {
-            LaunchParameterInputField lpif = new LaunchParameterInputField(f, parameters);
-            vbox.getChildren().add(lpif);
-            inputFields.add(lpif);
+            if (f.getType().getSimpleName().equals("LaunchParameter")) {
+                try {
+                    f.setAccessible(true);
+                    LaunchParameters.LaunchParameter<?> lp = (LaunchParameters.LaunchParameter<?>) f.get(parameters);
+
+                    LaunchParameterInputField lpif = new LaunchParameterInputField(f, lp);
+                    vbox.getChildren().add(lpif);
+                    inputFields.add(lpif);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to create inputfield!", e);
+                }
+
+            }
+
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(vbox);
-        root.add(scrollPane, 0, 0);
+        root.add(scrollPane, 0, 1);
     }
 }
