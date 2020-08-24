@@ -77,6 +77,17 @@ SimulationListener.jar
 OpenRocket.jar
 Checkstyle
 
+# communications.json definitions
+col_split
+timestamp
+line-accel
+line-vel
+battery_status
+rocket_status
+internal_temp
+lat
+int
+
 # Package references
 communications.importers
 gui.controllers
