@@ -84,7 +84,9 @@ public class LaunchParameters {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMaximumLaunchAngle(), getMaximumWindSpeed(), getLatitude(), getLongitude(), getMaximumGroundHitSpeed(), getMaximumAngleOfAttack(), getMaximumParachuteDeploySpeed());
+        return Objects.hash(getMaximumLaunchAngle(), getMaximumWindSpeed(),
+                getLatitude(), getLongitude(), getMaximumGroundHitSpeed(),
+                getMaximumAngleOfAttack(), getMaximumParachuteDeploySpeed());
     }
 
     /**
