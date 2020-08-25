@@ -1,25 +1,22 @@
 package nz.ac.vuw.engr300.model;
 
 import com.google.gson.Gson;
-import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
-import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
-import nz.ac.vuw.engr300.importers.JsonExporter;
 import nz.ac.vuw.engr300.importers.JsonImporter;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class LaunchParametersTest {
 
+    /**
+     * Creates a LaunchParameters object and writes to a file.
+     * Loads that file and checks if the values are as expected.
+     */
     @Test
     public void test_CorrectJSONFileWithDefaultValues() {
-        LaunchParameters actual = getLaunchParametersWithDefaultValues();
+        LaunchParameters actual = LaunchParameters.getNewInstanceDefaultValues();
         actual.saveToJSONFile();
         Gson gson = new Gson();
         try {
@@ -32,9 +29,13 @@ public class LaunchParametersTest {
         }
     }
 
+    /**
+     * Creates a LaunchParameters object and edit the values and writes to a file.
+     * Loads that file and checks if the values are as expected.
+     */
     @Test
     public void test_CorrectJSONFileWithNewValues() {
-        LaunchParameters actual = getLaunchParametersWithDefaultValues();
+        LaunchParameters actual = LaunchParameters.getNewInstanceDefaultValues();
         //Modified values
         actual.getMaximumAngleOfAttack().setValue(10.0);
         actual.getMaximumGroundHitSpeed().setValue(69.0);
@@ -55,7 +56,5 @@ public class LaunchParametersTest {
             fail("Launch Parameters Test File not found.");
         }
     }
-    public LaunchParameters getLaunchParametersWithDefaultValues() {
-        return LaunchParameters.getInstance("some/invalid/filepath"); //Used to generate LaunchParameters object with default values
-    }
+
 }

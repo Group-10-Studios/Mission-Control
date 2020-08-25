@@ -41,24 +41,25 @@ public class LaunchParameters {
         return instance;
     }
 
-    public static LaunchParameters getInstance(String filepath) {
-        if (instance == null) {
-            try {
-                Gson gson = new Gson();
-                instance = gson.fromJson(JsonImporter.load(filepath), LaunchParameters.class);
-            } catch (FileNotFoundException e) {
-                instance = new LaunchParameters();
-            }
-        }
-
-        return instance;
+    /**
+     * Get new LaunchParameters object with Default Values. Only used for test cases.
+     * @return New LaunchParameters object with default values.
+     */
+    public static LaunchParameters getNewInstanceDefaultValues() {
+        return new LaunchParameters();
     }
 
-
+    /**
+     * Save to json file, only used for test cases.
+     */
     public void saveToJSONFile() {
         saveToJSONFile("src/test/resources/test-launch-parameters.json");
     }
 
+    /**
+     * Save to the specified file path for json file, only used for test cases.
+     * @param filename Filename and path to save to.
+     */
     public void saveToJSONFile(String filename) {
         JsonExporter.save(filename, this);
     }
