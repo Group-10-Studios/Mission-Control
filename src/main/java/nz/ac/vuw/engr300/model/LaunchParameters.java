@@ -52,30 +52,30 @@ public class LaunchParameters {
     /**
      * Save to json file, only used for test cases.
      */
-    public void saveToJSONFile() {
-        saveToJSONFile("src/test/resources/test-launch-parameters.json");
+    public void saveToJsonFile() {
+        saveToJsonFile("src/test/resources/test-launch-parameters.json");
     }
 
     /**
      * Save to the specified file path for json file, only used for test cases.
      * @param filename Filename and path to save to.
      */
-    public void saveToJSONFile(String filename) {
+    public void saveToJsonFile(String filename) {
         JsonExporter.save(filename, this);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LaunchParameters)) return false;
+        if (this == o) { return true; }
+        if (!(o instanceof LaunchParameters)) { return false; }
         LaunchParameters that = (LaunchParameters) o;
-        return Objects.equals(getMaximumLaunchAngle(), that.getMaximumLaunchAngle()) &&
-                Objects.equals(getMaximumWindSpeed(), that.getMaximumWindSpeed()) &&
-                Objects.equals(getLatitude(), that.getLatitude()) &&
-                Objects.equals(getLongitude(), that.getLongitude()) &&
-                Objects.equals(getMaximumGroundHitSpeed(), that.getMaximumGroundHitSpeed()) &&
-                Objects.equals(getMaximumAngleOfAttack(), that.getMaximumAngleOfAttack()) &&
-                Objects.equals(getMaximumParachuteDeploySpeed(), that.getMaximumParachuteDeploySpeed());
+        return Objects.equals(getMaximumLaunchAngle(), that.getMaximumLaunchAngle())
+                && Objects.equals(getMaximumWindSpeed(), that.getMaximumWindSpeed())
+                && Objects.equals(getLatitude(), that.getLatitude())
+                && Objects.equals(getLongitude(), that.getLongitude())
+                && Objects.equals(getMaximumGroundHitSpeed(), that.getMaximumGroundHitSpeed())
+                && Objects.equals(getMaximumAngleOfAttack(), that.getMaximumAngleOfAttack())
+                && Objects.equals(getMaximumParachuteDeploySpeed(), that.getMaximumParachuteDeploySpeed());
     }
 
     /**
@@ -214,12 +214,12 @@ public class LaunchParameters {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof LaunchParameter)) return false;
+            if (this == o) { return true; }
+            if (!(o instanceof LaunchParameter)) { return false; }
             LaunchParameter<?> that = (LaunchParameter<?>) o;
-            return isEnabled() == that.isEnabled() &&
-                    Objects.equals(getValue(), that.getValue()) &&
-                    Objects.equals(getType(), that.getType());
+            return isEnabled() == that.isEnabled()
+                    && Objects.equals(getValue(), that.getValue())
+                    && Objects.equals(getType(), that.getType());
         }
     }
 }

@@ -15,12 +15,13 @@ public class LaunchParametersTest {
      * Loads that file and checks if the values are as expected.
      */
     @Test
-    public void test_CorrectJSONFileWithDefaultValues() {
+    public void test_CorrectJsonFileWithDefaultValues() {
         LaunchParameters actual = LaunchParameters.getNewInstanceDefaultValues();
-        actual.saveToJSONFile();
+        actual.saveToJsonFile();
         Gson gson = new Gson();
         try {
-            LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
+            LaunchParameters testInstance =
+                    gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
                     LaunchParameters.class);
             assertEquals(actual, testInstance);
         } catch (FileNotFoundException e) {
@@ -34,7 +35,7 @@ public class LaunchParametersTest {
      * Loads that file and checks if the values are as expected.
      */
     @Test
-    public void test_CorrectJSONFileWithNewValues() {
+    public void test_CorrectJsonFileWithNewValues() {
         LaunchParameters actual = LaunchParameters.getNewInstanceDefaultValues();
         //Modified values
         actual.getMaximumAngleOfAttack().setValue(10.0);
@@ -45,10 +46,11 @@ public class LaunchParametersTest {
         actual.getMaximumWindSpeed().setValue(12.0);
         actual.getMaximumParachuteDeploySpeed().setValue(3.0);
 
-        actual.saveToJSONFile();
+        actual.saveToJsonFile();
         Gson gson = new Gson();
         try {
-            LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
+            LaunchParameters testInstance =
+                    gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
                     LaunchParameters.class);
             assertEquals(actual, testInstance);
         } catch (FileNotFoundException e) {
@@ -56,5 +58,4 @@ public class LaunchParametersTest {
             fail("Launch Parameters Test File not found.");
         }
     }
-
 }
