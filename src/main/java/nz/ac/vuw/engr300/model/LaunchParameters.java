@@ -66,8 +66,12 @@ public class LaunchParameters {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (!(o instanceof LaunchParameters)) { return false; }
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LaunchParameters)) {
+            return false;
+        }
         LaunchParameters that = (LaunchParameters) o;
         return Objects.equals(getMaximumLaunchAngle(), that.getMaximumLaunchAngle())
                 && Objects.equals(getMaximumWindSpeed(), that.getMaximumWindSpeed())
@@ -214,8 +218,12 @@ public class LaunchParameters {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) { return true; }
-            if (!(o instanceof LaunchParameter)) { return false; }
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof LaunchParameter)) {
+                return false;
+            }
             LaunchParameter<?> that = (LaunchParameter<?>) o;
             return isEnabled() == that.isEnabled()
                     && Objects.equals(getValue(), that.getValue())
