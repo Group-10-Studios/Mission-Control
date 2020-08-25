@@ -41,11 +41,6 @@ public class LaunchParameters {
         return instance;
     }
 
-    /**
-     * Need to call the first getInstance first
-     * @param filepath
-     * @return
-     */
     public static LaunchParameters getInstance(String filepath) {
         if (instance == null) {
             try {

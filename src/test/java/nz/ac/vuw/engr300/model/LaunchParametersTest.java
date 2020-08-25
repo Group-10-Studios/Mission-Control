@@ -19,17 +19,37 @@ public class LaunchParametersTest {
 
     @Test
     public void test_CorrectJSONFileWithDefaultValues() {
-        LaunchParameters.getInstance("src/test/resources/test-launch-parameters.json");
+        LaunchParameters actual = getLaunchParametersWithDefaultValues();
         LaunchParameters.getInstance().saveToJSONFile("src/test/resources/test-launch-parameters.json");
         Gson gson = new Gson();
         try {
             LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
                     LaunchParameters.class);
-            assertEquals(LaunchParameters.getInstance(), testInstance);
+            assertEquals(actual, testInstance);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail("Launch Parameters Test File not found.");
         }
+    }
+
+    @Test
+    public void test_CorrectJSONFileWithNewValues() {
+        LaunchParameters actual = getLaunchParametersWithDefaultValues();
+        //Change values here
+        actual.saveToJSONFile("src/test/resources/test-launch-parameters.json");
+        Gson gson = new Gson();
+        try {
+            LaunchParameters testInstance = gson.fromJson(JsonImporter.load("src/test/resources/test-launch-parameters.json"),
+                    LaunchParameters.class);
+            assertEquals(actual, testInstance);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail("Launch Parameters Test File not found.");
+        }
+    }
+
+    public LaunchParameters getLaunchParametersWithDefaultValues() {
+        return LaunchParameters.getInstance("some/invalid/filepath"); //Used to generate LaunchParameters object with default values
     }
 
 }
