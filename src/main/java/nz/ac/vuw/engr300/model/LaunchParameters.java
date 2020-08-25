@@ -82,6 +82,11 @@ public class LaunchParameters {
                 && Objects.equals(getMaximumParachuteDeploySpeed(), that.getMaximumParachuteDeploySpeed());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMaximumLaunchAngle(), getMaximumWindSpeed(), getLatitude(), getLongitude(), getMaximumGroundHitSpeed(), getMaximumAngleOfAttack(), getMaximumParachuteDeploySpeed());
+    }
+
     /**
      * Default constructor for LaunchParameters.
      */
@@ -228,6 +233,11 @@ public class LaunchParameters {
             return isEnabled() == that.isEnabled()
                     && Objects.equals(getValue(), that.getValue())
                     && Objects.equals(getType(), that.getType());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(isEnabled(), getValue(), getType());
         }
     }
 }
