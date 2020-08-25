@@ -79,6 +79,7 @@ src/main/resources/keys.json
 src/main/resources/output.json
 src/main/resources/weather-data/*.json
 src/test/resources/test-weather-data/*.json
+src/test/resources/test-launch-parameters.json
 src/main/resources/config/*.json
 
 **/*keys.json
