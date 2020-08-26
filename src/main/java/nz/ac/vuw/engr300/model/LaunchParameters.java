@@ -1,8 +1,10 @@
 package nz.ac.vuw.engr300.model;
 
 import com.google.gson.Gson;
+import nz.ac.vuw.engr300.importers.JsonExporter;
 import nz.ac.vuw.engr300.importers.JsonImporter;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 /**
  * This class represents the different Launch Parameters, this is a global state.
@@ -37,6 +39,54 @@ public class LaunchParameters {
         }
 
         return instance;
+    }
+
+    /**
+     * Get new LaunchParameters object with Default Values. Only used for test cases.
+     * @return New LaunchParameters object with default values.
+     */
+    public static LaunchParameters getNewInstanceDefaultValues() {
+        return new LaunchParameters();
+    }
+
+    /**
+     * Save to json file, only used for test cases.
+     */
+    public void saveToJsonFile() {
+        saveToJsonFile("src/test/resources/test-launch-parameters.json");
+    }
+
+    /**
+     * Save to the specified file path for json file, only used for test cases.
+     * @param filename Filename and path to save to.
+     */
+    public void saveToJsonFile(String filename) {
+        JsonExporter.save(filename, this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LaunchParameters)) {
+            return false;
+        }
+        LaunchParameters that = (LaunchParameters) o;
+        return Objects.equals(getMaximumLaunchAngle(), that.getMaximumLaunchAngle())
+                && Objects.equals(getMaximumWindSpeed(), that.getMaximumWindSpeed())
+                && Objects.equals(getLatitude(), that.getLatitude())
+                && Objects.equals(getLongitude(), that.getLongitude())
+                && Objects.equals(getMaximumGroundHitSpeed(), that.getMaximumGroundHitSpeed())
+                && Objects.equals(getMaximumAngleOfAttack(), that.getMaximumAngleOfAttack())
+                && Objects.equals(getMaximumParachuteDeploySpeed(), that.getMaximumParachuteDeploySpeed());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMaximumLaunchAngle(), getMaximumWindSpeed(),
+                getLatitude(), getLongitude(), getMaximumGroundHitSpeed(),
+                getMaximumAngleOfAttack(), getMaximumParachuteDeploySpeed());
     }
 
     /**
@@ -79,6 +129,18 @@ public class LaunchParameters {
      */
     public LaunchParameter<Double> getLongitude() {
         return longitude;
+    }
+
+    public LaunchParameter<Double> getMaximumGroundHitSpeed() {
+        return maximumGroundHitSpeed;
+    }
+
+    public LaunchParameter<Double> getMaximumAngleOfAttack() {
+        return maximumAngleOfAttack;
+    }
+
+    public LaunchParameter<Double> getMaximumParachuteDeploySpeed() {
+        return maximumParachuteDeploySpeed;
     }
 
     /**
@@ -159,6 +221,25 @@ public class LaunchParameters {
          */
         public void setValue(T value) {
             this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof LaunchParameter)) {
+                return false;
+            }
+            LaunchParameter<?> that = (LaunchParameter<?>) o;
+            return isEnabled() == that.isEnabled()
+                    && Objects.equals(getValue(), that.getValue())
+                    && Objects.equals(getType(), that.getType());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(isEnabled(), getValue(), getType());
         }
     }
 }
