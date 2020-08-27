@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(ApplicationExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,8 +47,14 @@ public class LaunchParametersViewTests extends ApplicationTest {
     public void testDoubleInputField_int(FxRobot robot) {
         clickLaunchConfig(robot);
         String input = "123";
+        assertEquals(input, processTextTest(robot, "#testDouble-inputField", input));
+    }
 
-        assertEquals( input, processTextTest(robot, "#testDouble-inputField", input));
+    @Test
+    public void testDoubleInputField_string(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "drake";
+        assertEquals("", processTextTest(robot, "#testDouble-inputField", input));
     }
 
     private static void clickLaunchConfig(FxRobot robot) {
@@ -56,9 +63,13 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     public static String processTextTest(FxRobot robot, String id, String input) {
-        robot.clickOn(id).type(clear(10)).type(getKeyCodes(input));
-
-        return robot.lookup(id).queryAs(TextField.class).getText();
+        if (GeneralGuiTests.checkAndClickOnNode(robot, id)) {
+            robot.clickOn(id).type(clear(10)).type(getKeyCodes(input));
+            return robot.lookup(id).queryAs(TextField.class).getText();
+        } else {
+            fail("Failed to look up the node id.");
+            return "";
+        }
     }
 
     private static KeyCode[] clear(int x){
