@@ -72,6 +72,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
      */
     @Test
     public void testDoubleInputField(FxRobot robot) {
+        clickLaunchConfig(robot);
         assertEquals("123", processTextTest(robot, "#testDouble-inputField", "123"));
         assertEquals("", processTextTest(robot, "#testDouble-inputField", "drake"));
         assertEquals("1345", processTextTest(robot, "#testDouble-inputField", "drake 1345"));
@@ -89,6 +90,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
      */
     @Test
     public void testIntegerInputField(FxRobot robot) {
+        clickLaunchConfig(robot);
         assertEquals("1337", processTextTest(robot, "#testInteger-inputField", "abde 1337"));
         assertEquals("", processTextTest(robot, "#testInteger-inputField", "abcdefghi"));
         assertEquals("-7562", processTextTest(robot, "#testInteger-inputField", "--7562"));
@@ -106,6 +108,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
      */
     @Test
     public void testStringInputFieldIsValid(FxRobot robot) {
+        clickLaunchConfig(robot);
         assertEquals("124jh$%^##$*)(jgjr", processTextTest(robot, "#testInteger-inputField", "124jh$%^##$*)(jgjr"));
     }
 
@@ -136,7 +139,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
             return "";
         }
     }
-    
+
     /**
      * Generates an array of backspace keycodes to apply to input fields to clear their contents.
      *
