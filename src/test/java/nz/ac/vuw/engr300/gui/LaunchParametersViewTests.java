@@ -38,7 +38,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
         primaryStage.requestFocus();
 
         stage = primaryStage;
-        stage.setMaximized(true);
+        primaryStage.setFullScreen(true);
         HomeView v = new HomeView(primaryStage);
         stage.show();
     }
@@ -92,6 +92,47 @@ public class LaunchParametersViewTests extends ApplicationTest {
         assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", input));
     }
 
+    @Test
+    public void testIntegerInputFieldInteger(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("123", processTextTest(robot, "#testInteger-inputField", "123"));
+    }
+
+    @Test
+    public void testIntegerInputFieldFloatPointValid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("1250", processTextTest(robot, "#testInteger-inputField", "12.50"));
+    }
+
+    @Test
+    public void testIntegerInputFieldFloatPointInvalid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("42069420", processTextTest(robot, "#testInteger-inputField", "420.69.420"));
+    }
+
+    @Test
+    public void testIntegerInputFieldNegativeNumberValid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("-1337", processTextTest(robot, "#testInteger-inputField", "-1337"));
+    }
+
+    @Test
+    public void testIntegerInputFieldNegativeNumberInvalid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("-7562", processTextTest(robot, "#testInteger-inputField", "--7562"));
+    }
+
+    @Test
+    public void testIntegerInputFieldString(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("", processTextTest(robot, "#testInteger-inputField", "abcdefghi"));
+    }
+
+    @Test
+    public void testIntegerInputFieldStringAndNumber(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("1337", processTextTest(robot, "#testInteger-inputField", "abde 1337"));
+    }
 
     private static void clickLaunchConfig(FxRobot robot) {
         Button launchConfigBtn = robot.lookup("#launchConfig").queryAs(Button.class);
@@ -138,7 +179,9 @@ public class LaunchParametersViewTests extends ApplicationTest {
                 keyCodes.add(KeyCode.SUBTRACT);
             } else if (s.equals("_")) {
                 keyCodes.add(KeyCode.UNDERSCORE);
-            } else {
+            } else if(s.equals(" ")) {
+                keyCodes.add(KeyCode.SPACE);
+            }else {
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
             }
         }
