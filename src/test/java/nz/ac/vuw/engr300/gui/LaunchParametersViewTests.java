@@ -1,6 +1,8 @@
 package nz.ac.vuw.engr300.gui;
 
+import com.sun.javafx.scene.control.InputField;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
@@ -16,6 +18,8 @@ import org.testfx.framework.junit5.ApplicationTest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(ApplicationExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -39,8 +43,11 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     @Test
-    public void test(FxRobot robot) {
+    public void testDoubleInputField_int(FxRobot robot) {
         clickLaunchConfig(robot);
+        String input = "123";
+
+        assertEquals( input, processTextTest(robot, "#testDouble-inputField", input));
     }
 
     private static void clickLaunchConfig(FxRobot robot) {
@@ -48,6 +55,19 @@ public class LaunchParametersViewTests extends ApplicationTest {
         robot.clickOn(launchConfigBtn);
     }
 
+    public static String processTextTest(FxRobot robot, String id, String input) {
+        robot.clickOn(id).type(clear(10)).type(getKeyCodes(input));
+
+        return robot.lookup(id).queryAs(TextField.class).getText();
+    }
+
+    private static KeyCode[] clear(int x){
+        List<KeyCode> keyCodes = new ArrayList<>();
+        for(int i = 0; i < x; i++){
+            keyCodes.add(KeyCode.BACK_SPACE);
+        }
+        return keyCodes.toArray(KeyCode[]::new);
+    }
     /**
      * Converts a string into JavaFX KeyCode objects, used to make the robot type.
      *
