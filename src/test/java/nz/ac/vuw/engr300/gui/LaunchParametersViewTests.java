@@ -80,7 +80,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
 
     public static String processTextTest(FxRobot robot, String id, String input) {
         if (GeneralGuiTests.checkAndClickOnNode(robot, id)) {
-            robot.clickOn(id).type(clear(10)).type(getKeyCodes(input));
+            robot.clickOn(id).type(clear()).type(getKeyCodes(input));
             return robot.lookup(id).queryAs(TextField.class).getText();
         } else {
             fail("Failed to look up the node id.");
@@ -88,9 +88,9 @@ public class LaunchParametersViewTests extends ApplicationTest {
         }
     }
 
-    private static KeyCode[] clear(int x){
+    private static KeyCode[] clear(){
         List<KeyCode> keyCodes = new ArrayList<>();
-        for(int i = 0; i < x; i++){
+        for(int i = 0; i < 10; i++){
             keyCodes.add(KeyCode.BACK_SPACE);
         }
         return keyCodes.toArray(KeyCode[]::new);
