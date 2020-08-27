@@ -44,18 +44,54 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     @Test
-    public void testDoubleInputField_int(FxRobot robot) {
+    public void testDoubleInputFieldInt(FxRobot robot) {
         clickLaunchConfig(robot);
         String input = "123";
         assertEquals(input, processTextTest(robot, "#testDouble-inputField", input));
     }
 
     @Test
-    public void testDoubleInputField_string(FxRobot robot) {
+    public void testDoubleInputFieldString(FxRobot robot) {
         clickLaunchConfig(robot);
         String input = "drake";
         assertEquals("", processTextTest(robot, "#testDouble-inputField", input));
     }
+
+    @Test
+    public void testDoubleInputFieldStringAndNumber(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "drake 1345";
+        assertEquals("1345", processTextTest(robot, "#testDouble-inputField", input));
+    }
+
+    @Test
+    public void testDoubleInputFieldFloatingPointInvalid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "12.45.78";
+        assertEquals("12.4578", processTextTest(robot, "#testDouble-inputField", input));
+    }
+
+    @Test
+    public void testDoubleInputFieldFloatingPointValid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "69.69";
+        assertEquals("69.69", processTextTest(robot, "#testDouble-inputField", input));
+    }
+
+    @Test
+    public void testDoubleInputFieldNegativeFloatingPointValid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "-4.6";
+        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", input));
+    }
+
+    @Test
+    public void testDoubleInputFieldNegativeFloatingPointInvalid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        String input = "--4.6";
+        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", input));
+    }
+
 
     private static void clickLaunchConfig(FxRobot robot) {
         Button launchConfigBtn = robot.lookup("#launchConfig").queryAs(Button.class);
