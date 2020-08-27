@@ -1,6 +1,7 @@
 package nz.ac.vuw.engr300.gui;
 
 import com.sun.javafx.scene.control.InputField;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -9,6 +10,7 @@ import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(ApplicationExtension.class)
@@ -43,9 +46,32 @@ public class LaunchParametersViewTests extends ApplicationTest {
         stage.show();
     }
 
+    /**
+     * Tests that LaunchParametersView is populated correctly with all fields from the test LaunchParameters object.
+     *
+     * @param robot The injected robot.
+     */
+    @Order(1)
+    @Test
+    public void testPopulationOfLaunchConfigurationsView(FxRobot robot) {
+        clickLaunchConfig(robot);
+        Class<TestLaunchParameters> clazz = TestLaunchParameters.class;
+
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field f : fields) {
+            String label = formatString(f.getName());
+            assertTrue(robot.lookup(label).queryAs(Node.class).isVisible());
+        }
+    }
+
+    /**
+     * Tests LaunchParametersInputField with a double type does not accept strange inputs
+     * and only accepts double values.
+     *
+     * @param robot The injected robot.
+     */
     @Test
     public void testDoubleInputField(FxRobot robot) {
-        clickLaunchConfig(robot);
         assertEquals("123", processTextTest(robot, "#testDouble-inputField", "123"));
         assertEquals("", processTextTest(robot, "#testDouble-inputField", "drake"));
         assertEquals("1345", processTextTest(robot, "#testDouble-inputField", "drake 1345"));
@@ -55,9 +81,14 @@ public class LaunchParametersViewTests extends ApplicationTest {
         assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", "--4.6"));
     }
 
+    /**
+     * Tests LaunchParametersInputField with a integer type does not accept strange inputs
+     * and only accepts integer values.
+     *
+     * @param robot The injected robot.
+     */
     @Test
     public void testIntegerInputField(FxRobot robot) {
-        clickLaunchConfig(robot);
         assertEquals("1337", processTextTest(robot, "#testInteger-inputField", "abde 1337"));
         assertEquals("", processTextTest(robot, "#testInteger-inputField", "abcdefghi"));
         assertEquals("-7562", processTextTest(robot, "#testInteger-inputField", "--7562"));
@@ -67,18 +98,36 @@ public class LaunchParametersViewTests extends ApplicationTest {
         assertEquals("123", processTextTest(robot, "#testInteger-inputField", "123"));
     }
 
+    /**
+     * Tests LaunchParametersInputField with a string type does not accept strange inputs
+     * and only accepts string values.
+     *
+     * @param robot The injected robot.
+     */
     @Test
     public void testStringInputFieldIsValid(FxRobot robot) {
-        clickLaunchConfig(robot);
         assertEquals("124jh$%^##$*)(jgjr", processTextTest(robot, "#testInteger-inputField", "124jh$%^##$*)(jgjr"));
     }
 
+    /**
+     * Clicks on the launch config button to bring up the LaunchParametersView screen.
+     *
+     * @param robot The injected robot.
+     */
     private static void clickLaunchConfig(FxRobot robot) {
         Button launchConfigBtn = robot.lookup("#launchConfig").queryAs(Button.class);
         robot.clickOn(launchConfigBtn);
     }
 
-    public static String processTextTest(FxRobot robot, String id, String input) {
+    /**
+     * Processes a text test for a LaunchParameterInputField.
+     *
+     * @param robot     The injected robot.
+     * @param id        The ID of the LaunchParameterInputField.
+     * @param input     The input to give it.
+     * @return          The output of the LaunchParameterInputField.
+     */
+    private static String processTextTest(FxRobot robot, String id, String input) {
         if (GeneralGuiTests.checkAndClickOnNode(robot, id)) {
             robot.clickOn(id).type(clear(10)).type(getKeyCodes(input));
             return robot.lookup(id).queryAs(TextField.class).getText();
@@ -88,13 +137,19 @@ public class LaunchParametersViewTests extends ApplicationTest {
         }
     }
 
-    private static KeyCode[] clear(int x){
+    /**
+     * Generates an array of backspace keycodes to apply to input fields to clear their contents.
+     *
+     * @return  The array of backspaces.
+     */
+    private static KeyCode[] clear(int x) {
         List<KeyCode> keyCodes = new ArrayList<>();
-        for(int i = 0; i < x; i++){
+        for (int i = 0; i < x; i++) {
             keyCodes.add(KeyCode.BACK_SPACE);
         }
         return keyCodes.toArray(KeyCode[]::new);
     }
+
     /**
      * Converts a string into JavaFX KeyCode objects, used to make the robot type.
      *
@@ -118,13 +173,24 @@ public class LaunchParametersViewTests extends ApplicationTest {
                 keyCodes.add(KeyCode.SUBTRACT);
             } else if (s.equals("_")) {
                 keyCodes.add(KeyCode.UNDERSCORE);
-            } else if(s.equals(" ")) {
+            } else if (s.equals(" ")) {
                 keyCodes.add(KeyCode.SPACE);
-            }else {
+            } else {
                 keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
             }
         }
         keyCodes.add(KeyCode.ENTER);
         return keyCodes.toArray(KeyCode[]::new);
+    }
+
+    /**
+     * Formats a string to be appropriately titled, from camel case to title case.
+     *
+     * @param str The String to format.
+     * @return The newly formatted string.
+     */
+    private static String formatString(String str) {
+        str = str.replaceAll("([A-Z])", " $1");
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
