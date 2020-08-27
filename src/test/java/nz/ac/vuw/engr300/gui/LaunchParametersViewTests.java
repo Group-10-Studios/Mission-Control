@@ -134,6 +134,12 @@ public class LaunchParametersViewTests extends ApplicationTest {
         assertEquals("1337", processTextTest(robot, "#testInteger-inputField", "abde 1337"));
     }
 
+    @Test
+    public void testStringInputFieldIsValid(FxRobot robot) {
+        clickLaunchConfig(robot);
+        assertEquals("124jh$%^##$*)(jgjr", processTextTest(robot, "#testInteger-inputField", "124jh$%^##$*)(jgjr"));
+    }
+
     private static void clickLaunchConfig(FxRobot robot) {
         Button launchConfigBtn = robot.lookup("#launchConfig").queryAs(Button.class);
         robot.clickOn(launchConfigBtn);
