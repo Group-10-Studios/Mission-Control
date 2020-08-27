@@ -56,45 +56,15 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     @Test
-    public void testIntegerInputFieldInteger(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("123", processTextTest(robot, "#testInteger-inputField", "123"));
-    }
-
-    @Test
-    public void testIntegerInputFieldFloatPointValid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("1250", processTextTest(robot, "#testInteger-inputField", "12.50"));
-    }
-
-    @Test
-    public void testIntegerInputFieldFloatPointInvalid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("42069420", processTextTest(robot, "#testInteger-inputField", "420.69.420"));
-    }
-
-    @Test
-    public void testIntegerInputFieldNegativeNumberValid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("-1337", processTextTest(robot, "#testInteger-inputField", "-1337"));
-    }
-
-    @Test
-    public void testIntegerInputFieldNegativeNumberInvalid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("-7562", processTextTest(robot, "#testInteger-inputField", "--7562"));
-    }
-
-    @Test
-    public void testIntegerInputFieldString(FxRobot robot) {
-        clickLaunchConfig(robot);
-        assertEquals("", processTextTest(robot, "#testInteger-inputField", "abcdefghi"));
-    }
-
-    @Test
-    public void testIntegerInputFieldStringAndNumber(FxRobot robot) {
+    public void testIntegerInputField(FxRobot robot) {
         clickLaunchConfig(robot);
         assertEquals("1337", processTextTest(robot, "#testInteger-inputField", "abde 1337"));
+        assertEquals("", processTextTest(robot, "#testInteger-inputField", "abcdefghi"));
+        assertEquals("-7562", processTextTest(robot, "#testInteger-inputField", "--7562"));
+        assertEquals("42069420", processTextTest(robot, "#testInteger-inputField", "420.69.420"));
+        assertEquals("-1337", processTextTest(robot, "#testInteger-inputField", "-1337"));
+        assertEquals("1250", processTextTest(robot, "#testInteger-inputField", "12.50"));
+        assertEquals("123", processTextTest(robot, "#testInteger-inputField", "123"));
     }
 
     @Test
