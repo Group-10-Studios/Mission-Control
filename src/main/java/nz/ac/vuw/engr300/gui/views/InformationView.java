@@ -95,6 +95,8 @@ public class InformationView implements View {
             infController.saveLaunchParameters(parameters);
         })));
 
+        launchConfigButton.setId("launchConfig");
+
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 goButton, noGoButton, launchConfigButton);
