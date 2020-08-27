@@ -44,52 +44,15 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     @Test
-    public void testDoubleInputFieldInt(FxRobot robot) {
+    public void testDoubleInputField(FxRobot robot) {
         clickLaunchConfig(robot);
-        String input = "123";
-        assertEquals(input, processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldString(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "drake";
-        assertEquals("", processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldStringAndNumber(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "drake 1345";
-        assertEquals("1345", processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldFloatingPointInvalid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "12.45.78";
-        assertEquals("12.4578", processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldFloatingPointValid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "69.69";
-        assertEquals("69.69", processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldNegativeFloatingPointValid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "-4.6";
-        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", input));
-    }
-
-    @Test
-    public void testDoubleInputFieldNegativeFloatingPointInvalid(FxRobot robot) {
-        clickLaunchConfig(robot);
-        String input = "--4.6";
-        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", input));
+        assertEquals("123", processTextTest(robot, "#testDouble-inputField", "123"));
+        assertEquals("", processTextTest(robot, "#testDouble-inputField", "drake"));
+        assertEquals("1345", processTextTest(robot, "#testDouble-inputField", "drake 1345"));
+        assertEquals("12.4578", processTextTest(robot, "#testDouble-inputField", "12.45.78"));
+        assertEquals("69.69", processTextTest(robot, "#testDouble-inputField", "69.69"));
+        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", "-4.6"));
+        assertEquals("-4.6", processTextTest(robot, "#testDouble-inputField", "--4.6"));
     }
 
     @Test
