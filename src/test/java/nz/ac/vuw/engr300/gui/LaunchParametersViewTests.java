@@ -109,7 +109,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
     @Test
     public void testStringInputFieldIsValid(FxRobot robot) {
         clickLaunchConfig(robot);
-        assertEquals("124jh$%^##$*)(jgjr", processTextTest(robot, "#testInteger-inputField", "124jh$%^##$*)(jgjr"));
+        assertEquals("124jhjgjr //", processTextTest(robot, "#testString-inputField", "124jhjgjr //"));
     }
 
     /**
