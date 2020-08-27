@@ -147,7 +147,7 @@ public class LaunchParameterView implements View {
      * Initialize input fields for popup window.
      */
     private void initializeFields() {
-        Class<LaunchParameters> clazz = LaunchParameters.class;
+        Class<? extends LaunchParameters> clazz = parameters.getClass();
         Field[] fields = clazz.getDeclaredFields();
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(0, new Insets(0, 2.5, 0, 2.5));
         for (Field f : fields) {

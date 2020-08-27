@@ -49,6 +49,9 @@ public class LaunchParameterInputField extends GridPane {
 
 
         this.inputField = createInputField();
+
+        this.inputField.setId(field.getName() + "-inputField");
+
         this.enabledCheckbox = new CheckBox();
 
         HBox checkBoxWrapper = new HBox(enabledCheckbox);

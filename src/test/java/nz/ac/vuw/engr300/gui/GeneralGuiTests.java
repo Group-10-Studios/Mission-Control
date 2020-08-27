@@ -218,37 +218,6 @@ public class GeneralGuiTests extends ApplicationTest {
         robot.press(KeyCode.CONTROL, KeyCode.V).release(KeyCode.CONTROL, KeyCode.V).type(KeyCode.ENTER);
     }
 
-    /**
-     * Converts a string into JavaFX KeyCode objects, used to make the robot type.
-     *
-     * @param input The string to convert.
-     * @return The JavaFX KeyCodes representing the string.
-     */
-    private static KeyCode[] getKeyCodes(String input) {
-        List<KeyCode> keyCodes = new ArrayList<>();
-        // Because apparently providing a function that converts string to an array of
-        // KeyCode's is too hard.
-        for (String s : input.split("")) {
-            if (s.equals(".")) {
-                keyCodes.add(KeyCode.PERIOD);
-            } else if (s.equals("/")) {
-                keyCodes.add(KeyCode.SLASH);
-            } else if (Character.isUpperCase(s.charAt(0))) {
-                keyCodes.add(KeyCode.CAPS);
-                keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
-                keyCodes.add(KeyCode.CAPS);
-            } else if (s.equals("-")) {
-                keyCodes.add(KeyCode.SUBTRACT);
-            } else if (s.equals("_")) {
-                keyCodes.add(KeyCode.UNDERSCORE);
-            } else {
-                keyCodes.add(KeyCode.getKeyCode(s.toUpperCase()));
-            }
-        }
-        keyCodes.add(KeyCode.ENTER);
-        return keyCodes.toArray(KeyCode[]::new);
-    }
-
     @Override
     public void init() throws Exception {
         FxToolkit.registerStage(Stage::new);

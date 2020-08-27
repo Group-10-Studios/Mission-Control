@@ -12,13 +12,13 @@ import java.util.Objects;
  * @author Ahad Rahman, Tim Salisbury
  */
 public class LaunchParameters {
-    private final LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, Double.class);
-    private final LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, Double.class);
-    private final LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, Double.class);
-    private final LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, Double.class);
-    private final LaunchParameter<Double> maximumGroundHitSpeed = new LaunchParameter<>(-1d, Double.class);
-    private final LaunchParameter<Double> maximumAngleOfAttack = new LaunchParameter<>(-1d, Double.class);
-    private final LaunchParameter<Double> maximumParachuteDeploySpeed = new LaunchParameter<>(-1d, Double.class);
+    protected final LaunchParameter<Double> maximumLaunchAngle = new LaunchParameter<>(-1d, Double.class);
+    protected final LaunchParameter<Double> maximumWindSpeed = new LaunchParameter<>(-1d, Double.class);
+    protected final LaunchParameter<Double> latitude = new LaunchParameter<>(-41.300442d, Double.class);
+    protected final LaunchParameter<Double> longitude = new LaunchParameter<>(174.780319d, Double.class);
+    protected final LaunchParameter<Double> maximumGroundHitSpeed = new LaunchParameter<>(-1d, Double.class);
+    protected final LaunchParameter<Double> maximumAngleOfAttack = new LaunchParameter<>(-1d, Double.class);
+    protected final LaunchParameter<Double> maximumParachuteDeploySpeed = new LaunchParameter<>(-1d, Double.class);
 
     private static transient LaunchParameters instance;
 
@@ -37,7 +37,6 @@ public class LaunchParameters {
                 instance = new LaunchParameters();
             }
         }
-
         return instance;
     }
 
@@ -92,7 +91,7 @@ public class LaunchParameters {
     /**
      * Default constructor for LaunchParameters.
      */
-    private LaunchParameters() {
+    protected LaunchParameters() {
     }
 
     /**
