@@ -1,6 +1,7 @@
 package nz.ac.vuw.engr300.gui.components;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
@@ -41,8 +42,13 @@ public class NavigationButton extends GridPane {
         // Create and initialize fields
         this.graphButton = new Button(label);
         this.hideButton = new Button(VISIBLE_STATE);
-        this.moveUpButton = new Button("↑");
-        this.moveDownButton = new Button("↓");
+
+        this.moveUpButton = new Button();
+        this.moveUpButton.setGraphic(new ImageView("file:src/main/resources/icons/up_arrow.png"));
+
+        this.moveDownButton = new Button();
+        this.moveDownButton.setGraphic(new ImageView("file:src/main/resources/icons/down_arrow.png"));
+
         this.graphController = GraphController.getInstance();
         this.buttonController = ButtonController.getInstance();
 
@@ -86,7 +92,7 @@ public class NavigationButton extends GridPane {
      */
     private void configureConstraints() {
         ColumnConstraints left = new ColumnConstraints();
-        left.setPercentWidth(100);
+        left.setPercentWidth(80);
         ColumnConstraints extraButtonConstraints = new ColumnConstraints();
         extraButtonConstraints.setPercentWidth(30);
         this.getColumnConstraints().add(left);
