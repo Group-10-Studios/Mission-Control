@@ -48,6 +48,15 @@ public class GraphMasterList {
     }
 
     /**
+     * Swaps the two graphs based on their indexes.
+     * @param index1 The graph to swap.
+     * @param index2 The other graph to swap with.
+     */
+    public void swapGraphs(int index1, int index2) {
+        Collections.swap(graphs, index1, index2);
+    }
+
+    /**
      * Get a list of all the GraphType's registered to this master list.
      *
      * @return List of GraphType.
