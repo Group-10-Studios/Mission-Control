@@ -36,14 +36,6 @@ References to other documents or standards. Follow the IEEE Citation Reference s
 
 ## 3. Architecture
 
-Describe your system's architecture according to ISO/IEC/IEEE 42010:2011(E), ISO/IEC/IEEE 12207, ISO/IEC/IEEE 15289 and ISO/IEC/IEEE 15288.
-
-Note in particular the note to clause 5 of 42010:
-
-_"The verb include when used in Clause 5 indicates that either the information is present in the architecture description or reference to that information is provided therein."_
-
-This means that you should refer to information (e.g. risks, requirements, models) in this or other documents rather than repeat information.
-
 ### 3.1 Stakeholders
 
 Our project consists of three primary stakeholders, the client (Andre Geldenhuis), ECS (School of Engineering and Computer Science),
