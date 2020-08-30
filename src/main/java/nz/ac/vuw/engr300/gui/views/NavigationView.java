@@ -86,8 +86,6 @@ public class NavigationView implements View {
      * Displays the Run Flights and Simulation Buttons on the bottom of the left panel.
      */
     private void setupSimulationButtons() {
-        GraphController graphC = GraphController.getInstance();
-
         ComboBox<SerialPort> serialPortComboBox = new ComboBox<>();
         serialPortComboBox.getItems().addAll(SerialPort.getCommPorts());
         serialPortComboBox.valueProperty().addListener((options, oldValue, newValue) -> {
@@ -102,6 +100,7 @@ public class NavigationView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         //TODO: Find out how to get the graphs
+        GraphController graphC = GraphController.getInstance();
         runSimButton.setOnAction(e -> graphC.runSim());
         pastFlightsButton.setOnAction(e -> graphC.runSim());
 
