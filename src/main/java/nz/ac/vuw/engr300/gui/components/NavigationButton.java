@@ -55,7 +55,8 @@ public class NavigationButton extends GridPane {
         // Configure graphButton to match spec
         graphButton.setId("btn" + label.replace(" ", ""));
         graphButton.setOnAction(e -> {
-            this.graphController.highlight(label);
+//            this.graphController.highlight(label);
+            this.graphController.getGraphByGraphType(label).doubleClickCallback();
         });
         // Set max width to ensure sizes are all equal.
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);

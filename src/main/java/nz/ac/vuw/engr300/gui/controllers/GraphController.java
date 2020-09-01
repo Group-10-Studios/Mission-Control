@@ -21,6 +21,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
 import nz.ac.vuw.engr300.gui.views.View;
@@ -387,9 +388,13 @@ public class GraphController {
      */
     public void popOutGraph(RocketGraph graph) {
         Stage popupWindow = new Stage();
-        popupWindow.initModality(Modality.APPLICATION_MODAL);
+        popupWindow.initModality(Modality.NONE);
         popupWindow.setTitle(graph.getGraphType().getLabel());
-        Scene scene = new Scene((Region) graph, 500, 550);
+        Region newGraph = (Region) graph;
+        newGraph.setId("");
+
+        HBox box = UiUtil.createMinimumHorizontalSizeHBox(newGraph);
+        Scene scene = new Scene(box, 500, 550);
 
         popupWindow.setScene(scene);
         popupWindow.showAndWait();
