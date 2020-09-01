@@ -41,6 +41,15 @@ public class GraphMasterList {
     }
 
     /**
+     * Unregister a graph from the master list.
+     *
+     * @param graphType GraphType to be unregistered.
+     */
+    public void unRegisterGraph(GraphType graphType) {
+        this.graphs.remove(graphType);
+    }
+
+    /**
      * Unregister all graphs from the master list.
      */
     public void clearRegisteredGraphs() {
