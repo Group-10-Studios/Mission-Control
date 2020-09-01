@@ -395,10 +395,16 @@ public class GraphController {
         GraphMasterList.getInstance().unRegisterGraph(graph.getGraphType());
         syncGraphsPopUp();
 
-        VBox box = UiUtil.createStandardVBox(0, Insets.EMPTY, (Region) graph);
-        Scene scene = new Scene(box, 500, 550);
+        // Ensure the graph position is reset to zero for the pop up window to prevent down shifting
+        // If this is not done it will match the y position from the dynamic grid pane when clicked.
+        Region graphRegion = (Region) graph;
+        graphRegion.setLayoutX(0);
+        graphRegion.setLayoutY(0);
+        Scene scene = new Scene(graphRegion, 300, 300);
 
         popupWindow.setScene(scene);
+
+        // Ensure on pop up close that the graph is added back into the main application.
         popupWindow.setOnCloseRequest((event) -> {
             GraphMasterList.getInstance().registerGraph(graph.getGraphType());
             this.graphs.add(graph);
