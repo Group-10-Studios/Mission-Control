@@ -113,6 +113,7 @@ public class GraphController {
         for (GraphType g : masterListCopy) {
             listOfGraphs.add(getGraphByGraphType(g.getLabel()));
         }
+
         return listOfGraphs;
     }
 
