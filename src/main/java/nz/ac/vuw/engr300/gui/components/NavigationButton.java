@@ -2,6 +2,7 @@ package nz.ac.vuw.engr300.gui.components;
 
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
@@ -57,13 +58,11 @@ public class NavigationButton extends GridPane {
         // Configure graphButton to match spec
         graphButton.setId(buttonLabel(label, ""));
         graphButton.setOnMouseClicked(e -> {
-            // Check if the user has clicked once to highlight.
-            if (e.getClickCount() < 2) {
+            // Check if the user has left clicked to highlight
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
                 this.graphController.highlight(label);
-            } else {
-                // Any other number of clicks should open the graph panel.
-                // Call this first to ensure the graph is un-highlighted
-                this.graphController.highlight(label);
+            } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+                // Any right click should open the graph in another pane.
                 this.graphController.getGraphByGraphType(label).doubleClickCallback();
             }
         });

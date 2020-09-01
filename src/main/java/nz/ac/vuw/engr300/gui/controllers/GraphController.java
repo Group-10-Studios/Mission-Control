@@ -49,6 +49,7 @@ public class GraphController {
     private static final GraphController instance = new GraphController();
 
     private List<RocketGraph> graphs;
+    private List<RocketGraph> allGraphs;
     private View view;
     private String highlightedGraphLabel;
     private boolean simulationMode = false;
@@ -57,7 +58,7 @@ public class GraphController {
      * Private constructor to prevent Graph controller being created outside of in here.
      */
     private GraphController() {
-
+        this.allGraphs = new ArrayList<>();
     }
 
     /**
@@ -91,7 +92,17 @@ public class GraphController {
         for (GraphType g : graphTypes) {
             updatedList.add(getGraphByGraphType(g.getLabel()));
         }
+
+        List<GraphType> unregisteredTypes = GraphMasterList.getInstance().getUnregisteredGraphs();
+        List<RocketGraph> unregisteredList = new ArrayList<>();
+        for (GraphType g : unregisteredTypes) {
+            unregisteredList.add(getGraphByGraphType(g.getLabel()));
+        }
+
         setGraphs(updatedList);
+        allGraphs.clear();
+        allGraphs.addAll(updatedList);
+        allGraphs.addAll(unregisteredList);
     }
 
     /**
@@ -147,7 +158,7 @@ public class GraphController {
     private void graphSubscription(List<Object> data, CsvTableDefinition table) {
         long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
                 "timestamp", Long.class);
-        for (RocketGraph rg: this.graphs) {
+        for (RocketGraph rg: this.allGraphs) {
             if (rg instanceof RocketDataAngleLineChart) {
                 RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
                 String dataType = rgC.getGraphType().getLabel();
@@ -178,7 +189,7 @@ public class GraphController {
     private void graphSimulationSubscription(RocketData data) {
         if (data instanceof RocketStatus) {
             double timestamp = data.getTime();
-            for (RocketGraph rg: this.graphs) {
+            for (RocketGraph rg: this.allGraphs) {
                 if (rg instanceof RocketDataAngleLineChart) {
                     RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
                     String dataType = rgC.getGraphType().getLabel();
