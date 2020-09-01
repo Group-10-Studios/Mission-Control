@@ -8,6 +8,8 @@ import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
+import java.awt.event.MouseEvent;
+
 /**
  * NavigationButton is a wrapper class to allow for drawing multiple buttons within our Navigation sidebar.
  * This allows us to create our highlight graph buttons, and hide/show buttons for the graphs.
@@ -54,9 +56,16 @@ public class NavigationButton extends GridPane {
 
         // Configure graphButton to match spec
         graphButton.setId("btn" + label.replace(" ", ""));
-        graphButton.setOnAction(e -> {
-//            this.graphController.highlight(label);
-            this.graphController.getGraphByGraphType(label).doubleClickCallback();
+        graphButton.setOnMouseClicked(e -> {
+            // Check if the user has clicked once to highlight.
+            if (e.getClickCount() < 2) {
+                this.graphController.highlight(label);
+            } else {
+                // Any other number of clicks should open the graph panel.
+                // Call this first to ensure the graph is un-highlighted
+                this.graphController.highlight(label);
+                this.graphController.getGraphByGraphType(label).doubleClickCallback();
+            }
         });
         // Set max width to ensure sizes are all equal.
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);
