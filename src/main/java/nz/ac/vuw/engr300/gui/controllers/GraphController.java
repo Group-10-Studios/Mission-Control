@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
@@ -19,6 +20,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
@@ -399,13 +401,28 @@ public class GraphController {
         Stage popupWindow = new Stage();
         popupWindow.initModality(Modality.NONE);
         popupWindow.setTitle(graph.getGraphType().getLabel());
-        Region newGraph = (Region) graph;
-        newGraph.setId("");
+        GraphMasterList.getInstance().unRegisterGraph(graph.getGraphType());
+        syncGraphsPopUp();
 
-        HBox box = UiUtil.createMinimumHorizontalSizeHBox(newGraph);
+        VBox box = UiUtil.createStandardVBox(0, Insets.EMPTY, (Region) graph);
         Scene scene = new Scene(box, 500, 550);
 
         popupWindow.setScene(scene);
+        popupWindow.setOnCloseRequest((event) -> {
+            GraphMasterList.getInstance().registerGraph(graph.getGraphType());
+            this.graphs.add(graph);
+            syncGraphsPopUp();
+        });
         popupWindow.showAndWait();
+    }
+
+    /**
+     * Sync the graphs for a pop up. Based on the function popOutGraph with specification to sync the master list
+     * with a new value within the graphs.
+     */
+    private void syncGraphsPopUp() {
+        this.syncGraphOrder();
+        this.setGraphs(graphs);
+        ButtonController.getInstance().updateButtons();
     }
 }
