@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.components;
 
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 
 /**
@@ -40,4 +41,11 @@ public interface RocketGraph {
      * Switch the visibility status from visible-hidden and vice versa.
      */
     public void toggleVisibility();
+
+    /**
+     * Default double click callback which will open a pop out graph for this graph.
+     */
+    default void doubleClickCallback() {
+        GraphController.getInstance().popOutGraph(this);
+    }
 }
