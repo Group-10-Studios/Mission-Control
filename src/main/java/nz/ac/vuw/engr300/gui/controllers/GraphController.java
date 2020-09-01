@@ -2,12 +2,7 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -26,6 +21,7 @@ import nz.ac.vuw.engr300.gui.components.RocketGraph;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
+import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
 import nz.ac.vuw.engr300.gui.views.View;
 import org.apache.log4j.Logger;
 
@@ -425,6 +421,7 @@ public class GraphController {
      */
     public void popOutGraph(RocketGraph graph) {
         Stage popupWindow = new Stage();
+        
         popupWindow.initModality(Modality.NONE);
         popupWindow.setTitle(graph.getGraphType().getLabel());
         GraphMasterList.getInstance().unRegisterGraph(graph.getGraphType());
