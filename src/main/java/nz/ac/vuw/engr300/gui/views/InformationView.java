@@ -6,6 +6,7 @@ import javafx.geometry.VPos;
 
 import javafx.scene.control.Button;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.BackgroundFill;
@@ -34,7 +35,7 @@ public class InformationView implements View {
     public RocketBattery primaryBattery = new RocketBattery();
     public RocketBattery secondaryBattery = new RocketBattery();
 
-    public RocketBattery thirdBattery = new RocketBattery();
+    public Label goIndicator = new Label("No go");
 
     public WarningsController warnC;
     public InformationController infController;
@@ -57,6 +58,13 @@ public class InformationView implements View {
         setupBatteries();
         setupWarnings();
         setupBottomButtons();
+        setupIndicator();
+    }
+
+    private void setupIndicator() {
+        if(infController.updateGoIndicatorStatus()){
+            goIndicator.setText("Go");
+        }
     }
 
     /**
@@ -76,7 +84,7 @@ public class InformationView implements View {
      */
     private void setupBatteries() {
         // Create and populate batteries in a HBox
-        HBox batteryHBox2 = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), thirdBattery);
+        HBox batteryHBox2 = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), goIndicator);
         addNodeToGrid(batteryHBox2, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
         addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
