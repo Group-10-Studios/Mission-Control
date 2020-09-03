@@ -93,7 +93,7 @@ public class InformationView implements View {
         launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        goButton.setOnAction(e -> infController.onGo(e));
+        goButton.setOnAction(e -> infController.onArm(e));
         noGoButton.setOnAction(e -> infController.onNoGo(e));
         launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);

@@ -80,15 +80,16 @@ public class InformationController {
     }
 
     /**
-     * Basic callback for when clicking on the Go button.
+     * Basic callback for when clicking on the Arm button.
      *
      * @param actionEvent   The action event representing the event.
      */
-    public void onGo(ActionEvent actionEvent) {
-        if (warnC.hasErrors()) { // If errors, do not go
-            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
-            return;
-        } else if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
+    public void onArm(ActionEvent actionEvent) {
+//        if (warnC.hasErrors()) { // If errors, do not go
+//            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
+//            return;
+//        } else
+        if (warnC.hasWarnings()) { // If warnings, give a prompt, ask them to click go again.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Warnings exist");
@@ -101,6 +102,14 @@ public class InformationController {
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Waiting for rocket to be armed", "(Pretending its armed)");
+    }
+
+    /**
+     * Updates the indicator in the top right of the UI.
+     * If weather is bad, then there should be a No Go indicated.
+     */
+    public void updateGoIndicatorStatus() {
+
     }
 
     /**
