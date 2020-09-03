@@ -92,7 +92,11 @@ public class InformationController {
         if (warnC.hasWarnings() || warnC.hasErrors()) { // If warnings, give a prompt, ask them to click go again.
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Warnings exist");
+            if (warnC.hasWarnings()){ // If warnings exist
+                alert.setHeaderText("Warnings exist");
+            } else { // If errors exist
+                alert.setHeaderText("Errors exist");
+            }
             alert.setContentText("Are you ok with running a simulation?");
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -108,11 +112,11 @@ public class InformationController {
      * Updates the indicator in the top right of the UI.
      * If weather is bad, then there should be a No Go indicated.
      */
-    public boolean updateGoIndicatorStatus() {
-        if (warnC.hasWarnings()) { // If warnings, then we should be at a no go.
-            return false;
+    public boolean hasWarningsOrErrors() {
+        if (warnC.hasWarnings() || warnC.hasErrors()) { // If warnings, then we should be at a no go.
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

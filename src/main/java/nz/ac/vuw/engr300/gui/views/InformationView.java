@@ -62,7 +62,7 @@ public class InformationView implements View {
     }
 
     private void setupIndicator() {
-        if(infController.updateGoIndicatorStatus()){
+        if(infController.hasWarningsOrErrors() == false){
             goIndicator.setText("Go");
         }
     }

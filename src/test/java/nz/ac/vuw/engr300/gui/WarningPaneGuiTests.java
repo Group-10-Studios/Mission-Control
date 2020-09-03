@@ -47,7 +47,6 @@ public class WarningPaneGuiTests {
         if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnArm")) {
             fail("Go button not found!");
         }
-
         //        WaitForAsyncUtils.waitForFxEvents(5);
 
         //        GeneralGuiTests.copyPasteString(robot, simulationFile);
