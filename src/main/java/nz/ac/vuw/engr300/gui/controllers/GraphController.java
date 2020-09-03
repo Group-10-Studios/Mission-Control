@@ -373,6 +373,15 @@ public class GraphController {
     }
 
     /**
+     * Get the serial communications listener for this application.
+     *
+     * @return SerialCommunications instance which is listening for this application.
+     */
+    public SerialCommunications getSerialCommunications() {
+        return this.serialCommunications;
+    }
+
+    /**
      * Reset the observers on the incoming data streams to be reset/loaded on new definition.
      */
     public void resetObservers() {

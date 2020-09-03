@@ -22,6 +22,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private Thread listenThread;
     private long previousTimeStamp = -1;
     private boolean lastFailed = false;
+    private SerialPort comPort;
 
     /**
      * Contents for the serialApplicationThread which handles the incoming data and sending
@@ -32,13 +33,10 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private void serialApplicationThread(String incomingTableName) {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(incomingTableName);
 
-        // Assuming port three for now will allow user choice later.
-        SerialPort[] comPorts = SerialPort.getCommPorts();
-        if (comPorts.length < 3) {
-            // Break early and don't register as no serial ports available.
+        // Break if no serial device is selected.
+        if (comPort == null) {
             return;
         }
-        SerialPort comPort = comPorts[2];
         comPort.openPort();
 
         // Required to set timeout to blocking temporarily while receiving data.
@@ -106,16 +104,14 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     }
 
     /**
-     * Temporary testing method before implementing actual tests.
-     * @param args Application args
+     * Method to update which serial device the application is listening to.
+     *
+     * @param serialPort The new serial device for the application to listen to.
      */
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("Starting application");
-        SerialCommunications s = new SerialCommunications();
-        s.startListening();
-        // Run for 50 seconds
-        Thread.sleep(5000);
-        s.stopListening();
+    public void updateSerialPort(SerialPort serialPort) {
+        stopListening();
+        this.comPort = serialPort;
+        startListening();
     }
 
     @Override

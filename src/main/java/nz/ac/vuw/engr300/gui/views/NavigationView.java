@@ -1,9 +1,11 @@
 package nz.ac.vuw.engr300.gui.views;
 
+import com.fazecast.jSerialComm.SerialPort;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -13,6 +15,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
@@ -83,7 +86,13 @@ public class NavigationView implements View {
      * Displays the Run Flights and Simulation Buttons on the bottom of the left panel.
      */
     private void setupSimulationButtons() {
-        GraphController graphC = GraphController.getInstance();
+        ComboBox<SerialPort> serialPortComboBox = new ComboBox<>();
+        serialPortComboBox.getItems().addAll(SerialPort.getCommPorts());
+        serialPortComboBox.valueProperty().addListener((options, oldValue, newValue) -> {
+            GraphController.getInstance().getSerialCommunications().updateSerialPort(newValue);
+        });
+        serialPortComboBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,
+                CornerRadii.EMPTY, Insets.EMPTY)));
 
         pastFlightsButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -91,13 +100,14 @@ public class NavigationView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         //TODO: Find out how to get the graphs
+        GraphController graphC = GraphController.getInstance();
         runSimButton.setOnAction(e -> graphC.runSim());
         pastFlightsButton.setOnAction(e -> graphC.runSim());
 
         runSimButton.setId("btnRunSim");
 
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-                pastFlightsButton, runSimButton);
+                serialPortComboBox, pastFlightsButton, runSimButton);
         // Literally just for setting background colour
         vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
