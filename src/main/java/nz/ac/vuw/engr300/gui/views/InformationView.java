@@ -34,6 +34,8 @@ public class InformationView implements View {
     public RocketBattery primaryBattery = new RocketBattery();
     public RocketBattery secondaryBattery = new RocketBattery();
 
+    public RocketBattery thirdBattery = new RocketBattery();
+
     public WarningsController warnC;
     public InformationController infController;
 
@@ -63,7 +65,7 @@ public class InformationView implements View {
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
         pnWarnings.setId("pnWarnings");
-        addNodeToGrid(pnWarnings, root, 1, 0);
+        addNodeToGrid(pnWarnings, root, 2, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);
         infController.subscribeToSimulation();
@@ -74,8 +76,10 @@ public class InformationView implements View {
      */
     private void setupBatteries() {
         // Create and populate batteries in a HBox
+        HBox batteryHBox2 = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), thirdBattery);
+        addNodeToGrid(batteryHBox2, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
-        addNodeToGrid(batteryHBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
 
     /**
@@ -106,7 +110,7 @@ public class InformationView implements View {
 
         // Set it to hug the warnings above it
         GridPane.setValignment(goNoGoVBox, VPos.TOP);
-        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
+        addNodeToGrid(goNoGoVBox, root, 3, 0, Insets.EMPTY);
     }
 
     /**
@@ -121,7 +125,7 @@ public class InformationView implements View {
         // One column, 100 percent of width
         UiUtil.addPercentColumns(this.root, 100);
         // 20 for batteries, 60 for warnings, 20 for go/no go
-        UiUtil.addPercentRows(this.root, 20, 60, 20);
+        UiUtil.addPercentRows(this.root, 10, 20, 50, 20);
     }
 
 }
