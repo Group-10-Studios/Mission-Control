@@ -89,14 +89,10 @@ public class InformationController {
      * @param armIndicator  The label we want to change.
      */
     public void onArm(ActionEvent actionEvent, Label armIndicator) {
-//        if (warnC.hasErrors()) { // If errors, do not go
-//            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
-//            return;
-//        } else
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         if (warnC.hasWarnings() || warnC.hasErrors()) { // If warnings, give a prompt, ask them to click go again.
             alert.setTitle("Confirmation Dialog");
-            if (warnC.hasWarnings()){ // If warnings exist
+            if (warnC.hasWarnings()) { // If warnings exist
                 alert.setHeaderText("Warnings exist (No Go recommended)");
             } else { // If errors exist
                 alert.setHeaderText("Errors exist (No Go recommended)");

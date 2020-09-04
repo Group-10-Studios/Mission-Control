@@ -65,7 +65,7 @@ public class InformationView implements View {
     private void setupIndicator() {
         VBox indicatorBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), goIndicator, armIndicator);
         addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
-        if(infController.hasWarningsOrErrors() == false){
+        if (infController.hasWarningsOrErrors() == false) {
             goIndicator.setText("Go");
         }
     }
