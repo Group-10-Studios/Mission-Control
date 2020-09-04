@@ -63,7 +63,7 @@ public class WarningPaneGuiTests {
      * @param simulationFile The simulation we wish to run.
      */
     private static boolean pressNoGo(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnNoGo")) {
+        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnDisarm")) {
             fail("No Go button not found!");
         }
 

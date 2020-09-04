@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
@@ -73,9 +74,11 @@ public class InformationController {
      * Basic callback function for when clicking the No Go button.
      *
      * @param actionEvent   The action event representing the event.
+     * @param armIndicator  The label we want to change.
      */
-    public void onNoGo(ActionEvent actionEvent) {
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "No Go Button Pressed");
+    public void onDisarm(ActionEvent actionEvent, Label armIndicator) {
+        armIndicator.setText("Disarmed");
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Disarm Button Pressed", "We are safe");
         // lbState.setText("No Go State");simula
     }
 
@@ -83,29 +86,35 @@ public class InformationController {
      * Basic callback for when clicking on the Arm button.
      *
      * @param actionEvent   The action event representing the event.
+     * @param armIndicator  The label we want to change.
      */
-    public void onArm(ActionEvent actionEvent) {
+    public void onArm(ActionEvent actionEvent, Label armIndicator) {
 //        if (warnC.hasErrors()) { // If errors, do not go
 //            warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Can't go, errors exist!");
 //            return;
 //        } else
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         if (warnC.hasWarnings() || warnC.hasErrors()) { // If warnings, give a prompt, ask them to click go again.
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             if (warnC.hasWarnings()){ // If warnings exist
-                alert.setHeaderText("Warnings exist");
+                alert.setHeaderText("Warnings exist (No Go recommended)");
             } else { // If errors exist
-                alert.setHeaderText("Errors exist");
+                alert.setHeaderText("Errors exist (No Go recommended)");
             }
-            alert.setContentText("Are you ok with running a simulation?");
+            alert.setContentText("Are you ok with arming the rocket?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() != ButtonType.OK) {
                 return;
             }
+            armIndicator.setText("Armed");
+            //run simulation here
+        } else {
+            alert.setHeaderText("Ready to arm (Go recommended)");
+            alert.setContentText("Are you ok with arming the rocket?");
         }
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
-                "Waiting for rocket to be armed", "(Pretending its armed)");
+                "Arming the rocket now!");
     }
 
     /**

@@ -36,13 +36,14 @@ public class InformationView implements View {
     public RocketBattery secondaryBattery = new RocketBattery();
 
     public Label goIndicator = new Label("No go");
+    public Label armIndicator = new Label("Disarmed");
 
     public WarningsController warnC;
     public InformationController infController;
 
     public Button armButton = new Button("  Arm   ");
 
-    public Button noGoButton = new Button("No Go");
+    public Button disarmButton = new Button("Disarm");
 
     public Button launchConfigButton = new Button("Launch Config");
 
@@ -52,7 +53,7 @@ public class InformationView implements View {
      */
     public InformationView(GridPane root) {
         this.armButton.setId("btnArm");
-        this.noGoButton.setId("btnNoGo");
+        this.disarmButton.setId("btnDisarm");
         this.root = root;
         setupRoot();
         setupBatteries();
@@ -62,6 +63,8 @@ public class InformationView implements View {
     }
 
     private void setupIndicator() {
+        VBox indicatorBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), goIndicator, armIndicator);
+        addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         if(infController.hasWarningsOrErrors() == false){
             goIndicator.setText("Go");
         }
@@ -84,8 +87,6 @@ public class InformationView implements View {
      */
     private void setupBatteries() {
         // Create and populate batteries in a HBox
-        HBox batteryHBox2 = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), goIndicator);
-        addNodeToGrid(batteryHBox2, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
         addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
@@ -96,13 +97,13 @@ public class InformationView implements View {
     private void setupBottomButtons() {
         armButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+        disarmButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        armButton.setOnAction(e -> infController.onArm(e));
-        noGoButton.setOnAction(e -> infController.onNoGo(e));
+        armButton.setOnAction(e -> infController.onArm(e, armIndicator));
+        disarmButton.setOnAction(e -> infController.onDisarm(e, armIndicator));
         launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));
@@ -111,7 +112,7 @@ public class InformationView implements View {
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-                armButton, noGoButton, launchConfigButton);
+                armButton, disarmButton, launchConfigButton);
         // Literally just for setting background colour
         goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
