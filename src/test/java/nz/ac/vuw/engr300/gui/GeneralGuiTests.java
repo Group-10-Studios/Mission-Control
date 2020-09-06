@@ -140,7 +140,7 @@ public class GeneralGuiTests extends ApplicationTest {
                     Node node = robot.lookup(nodeId).queryAs(Node.class);
                     if (node.isVisible()) {
                         robot.clickOn(node);
-                        if (checkForAlertPopup(robot)){
+                        if (checkForAlertPopup(robot)) {
                             return true;
                         }
                     }
