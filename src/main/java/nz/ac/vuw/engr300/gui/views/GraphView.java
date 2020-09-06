@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
+import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
@@ -19,6 +20,8 @@ import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
+import nz.ac.vuw.engr300.importers.MapImageImporter;
+import org.apache.log4j.Logger;
 
 /**
  * Represents the center panel, which displays graphs.
@@ -27,6 +30,9 @@ import nz.ac.vuw.engr300.gui.util.UiUtil;
  * @author Nathan Duckett
  */
 public class GraphView implements View {
+
+    private static final Logger LOGGER = Logger.getLogger(MapImageImporter.class);
+
     private final GridPane root;
     private final DynamicGridPane contentPane;
     private List<RocketGraph> graphs;

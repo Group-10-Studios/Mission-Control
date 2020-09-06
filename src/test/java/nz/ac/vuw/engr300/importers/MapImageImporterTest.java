@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
+import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,10 +46,14 @@ public class MapImageImporterTest {
         int zoomLevel = 17; // Number between 0-22
         int imageWidth = 512; // Width of the output file
         int imageHeight = 512; // Height of the output file
-        MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-        String filename = latitude + "-" + longitude + "-map_image.png";
-        BufferedImage img = ImageIO.read(new File("src/main/resources/map-data/" + filename));
-        assertEquals(img.getWidth() == imageWidth, img.getHeight() == imageHeight);
+        try {
+            MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            String filename = latitude + "-" + longitude + "-map_image.png";
+            BufferedImage img = ImageIO.read(new File("src/main/resources/map-data/" + filename));
+            assertEquals(img.getWidth() == imageWidth, img.getHeight() == imageHeight);
+        } catch (TomTomRequestFailedException e) {
+            fail("API request to TomTom failed");
+        }
     }
 
     /**
@@ -61,10 +66,14 @@ public class MapImageImporterTest {
         int zoomLevel = 16; // Number between 0-22
         int imageWidth = 300; // Width of the output file
         int imageHeight = 300; // Height of the output file
-        MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-        String expectedFilepath = "src/main/resources/map-data/" + latitude + "-" + longitude + "-map_image.png";
-        File f = new File(expectedFilepath);
-        assertEquals(true, f.exists());
+        try {
+            MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            String expectedFilepath = "src/main/resources/map-data/" + latitude + "-" + longitude + "-map_image.png";
+            File f = new File(expectedFilepath);
+            assertEquals(true, f.exists());
+        } catch (TomTomRequestFailedException e) {
+            fail("API request to TomTom failed");
+        }
     }
 
     /**
@@ -79,9 +88,11 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-            fail();
+            fail("Invalid latitude");
         } catch (IllegalArgumentException e) {
             assert (true);
+        } catch (TomTomRequestFailedException e) {
+            fail("API request to TomTom failed");
         }
     }
 
@@ -97,9 +108,11 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-            fail();
+            fail("Invalid longitude");
         } catch (IllegalArgumentException e) {
             assert (true);
+        } catch (TomTomRequestFailedException e) {
+            fail("API request to TomTom failed");
         }
     }
 
@@ -115,8 +128,11 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+            fail("Invalid zoom level");
         } catch (IllegalArgumentException e) {
             assert (true);
+        } catch (TomTomRequestFailedException e) {
+            fail("API request to TomTom failed");
         }
     }
 
@@ -132,8 +148,8 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage("你好", latitude, longitude, zoomLevel, imageWidth, imageHeight);
-            fail("Expected Error to be thrown on importImage");
-        } catch (Error e) {
+            fail("Expected Error to be thrown on importImage due to invalid characters");
+        } catch (TomTomRequestFailedException e) {
             assert (true);
         }
     }

@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
+import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.importers.KeyImporter;
@@ -45,7 +46,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param graphType       The graph type for this graph.
      */
     public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight,
-                              GraphType graphType) {
+                              GraphType graphType) throws TomTomRequestFailedException {
         try {
             this.apiKey = KeyImporter.getKey("maps");
             MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
