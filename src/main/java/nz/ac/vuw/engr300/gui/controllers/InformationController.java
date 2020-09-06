@@ -77,8 +77,16 @@ public class InformationController {
      * @param armIndicator  The label we want to change.
      */
     public void onDisarm(ActionEvent actionEvent, Label armIndicator) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Disarm button pressed");
+        alert.setContentText("Are you sure you want to disarm the rocket?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() != ButtonType.OK) {
+            return;
+        }
         armIndicator.setText("Disarmed");
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Disarm Button Pressed", "We are safe");
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Disarm Button Pressed",
+                "The rocket should be disarmed");
         // lbState.setText("No Go State");simula
     }
 
