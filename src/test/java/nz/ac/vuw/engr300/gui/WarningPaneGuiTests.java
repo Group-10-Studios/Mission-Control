@@ -42,7 +42,7 @@ public class WarningPaneGuiTests {
      * @param simulationFile The simulation we wish to run.
      */
     private static boolean pressArm(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnArm")) {
+        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnArm")) {
             fail("Arm button not found!");
         }
         //        WaitForAsyncUtils.waitForFxEvents(5);
@@ -61,7 +61,7 @@ public class WarningPaneGuiTests {
      * @param simulationFile The simulation we wish to run.
      */
     private static boolean pressDisarm(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnDisarm")) {
+        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnDisarm")) {
             fail("Disarm button not found!");
         }
 
