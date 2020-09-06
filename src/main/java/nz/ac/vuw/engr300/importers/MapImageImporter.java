@@ -49,7 +49,8 @@ public class MapImageImporter {
      * @param latitude Latitude for center of image.
      * @param longitude Longitude for center of image.
      */
-    public static void importImage(String apiKey, double latitude, double longitude) throws TomTomRequestFailedException {
+    public static void importImage(String apiKey, double latitude, double longitude)
+            throws TomTomRequestFailedException {
         importImage(apiKey, latitude, longitude, 17, 400, 400);
     }
 
