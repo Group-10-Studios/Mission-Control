@@ -116,7 +116,7 @@ public class InformationController {
             return;
         }
         armIndicator.setText("Armed");
-        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
+        warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Arm Button Pressed",
                 "Arming the rocket now!");
     }
 
