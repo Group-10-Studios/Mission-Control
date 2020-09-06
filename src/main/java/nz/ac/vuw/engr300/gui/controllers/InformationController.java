@@ -105,18 +105,17 @@ public class InformationController {
             } else { // If errors exist
                 alert.setHeaderText("Errors exist (No Go recommended)");
             }
-            alert.setContentText("Are you ok with arming the rocket?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() != ButtonType.OK) {
-                return;
-            }
-            armIndicator.setText("Armed");
             //run simulation here
         } else {
             alert.setHeaderText("Ready to arm (Go recommended)");
-            alert.setContentText("Are you ok with arming the rocket?");
         }
+        alert.setContentText("Are you ok with arming the rocket?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() != ButtonType.OK) {
+            return;
+        }
+        armIndicator.setText("Armed");
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Go Button Pressed",
                 "Arming the rocket now!");
     }
