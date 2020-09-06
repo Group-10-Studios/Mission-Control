@@ -35,7 +35,7 @@ public class InformationView implements View {
     public RocketBattery primaryBattery = new RocketBattery();
     public RocketBattery secondaryBattery = new RocketBattery();
 
-    public Label goIndicator = new Label("No go");
+    public Label goIndicator = new Label("Not safe to launch"); // (warnings/errors exist)
     public Label armIndicator = new Label("Disarmed");
 
     public WarningsController warnC;
@@ -62,11 +62,15 @@ public class InformationView implements View {
         setupIndicator();
     }
 
+    /**
+     * Sets up the indicators in the top right of the screen.
+     * Shows if we are in Go or No go state (safe or unsafe to launch).
+     */
     private void setupIndicator() {
         VBox indicatorBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), goIndicator, armIndicator);
         addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
         if (infController.hasWarningsOrErrors() == false) {
-            goIndicator.setText("Go");
+            goIndicator.setText("No errors exist! (Safe to launch)");
         }
     }
 
