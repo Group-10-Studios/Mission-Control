@@ -1,22 +1,35 @@
 package nz.ac.vuw.engr300.gui.views;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
+import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
@@ -28,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
 /**
  * Represents the popup window that appears when Launch Configurations button is pressed.
@@ -36,6 +50,7 @@ import java.util.function.Consumer;
  */
 public class LaunchParameterView implements View {
     private final GridPane root;
+    private final GridPane contentPane;
     private final LaunchParameters parameters;
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
@@ -50,7 +65,13 @@ public class LaunchParameterView implements View {
         this.root = root;
         this.parameters = LaunchParameters.getInstance();
         this.callBack = callBack;
-        UiUtil.addPercentRows(root, 4, 66, 30);
+
+        UiUtil.addPercentRows(root, 5, 95);
+        this.contentPane = UiUtil.createGridPane(10, 10, new Insets(10));
+        this.contentPane.setBackground(new Background(new BackgroundFill(Colours.CONTENT_BACKGROUND_COLOUR,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        UiUtil.addPercentRows(this.contentPane, 70, 30);
+        UiUtil.addNodeToGrid(this.contentPane, this.root, 1, 0);
     }
 
     /**
@@ -62,7 +83,7 @@ public class LaunchParameterView implements View {
         Stage popupwindow = new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Launch Parameters");
-        GridPane root = new GridPane();
+        GridPane root = UiUtil.createGridPane(0, 0, Insets.EMPTY);
         Scene scene = new Scene(root, 500, 550);
 
         popupwindow.setResizable(false);
@@ -81,24 +102,21 @@ public class LaunchParameterView implements View {
         this.initializeHeader();
     }
 
+    /**
+     * Initializes the header of the LaunchParameterView.
+     */
     private void initializeHeader() {
         GridPane header = new GridPane();
-        UiUtil.addPercentColumns(header, 45, 45, 10);
 
-        HBox nameWrapper = new HBox(new Label("Name"));
-        nameWrapper.setAlignment(Pos.CENTER);
+        header.setBackground(new Background(new BackgroundFill(Colours.PRIMARY_COLOUR,
+                CornerRadii.EMPTY, Insets.EMPTY)));
 
-        HBox valueWrapper = new HBox(new Label("Value"));
-        valueWrapper.setAlignment(Pos.CENTER);
+        UiUtil.addPercentColumns(header, 45, 40, 15);
 
-        HBox enabledWrapper = new HBox(new Label("Use"));
-        enabledWrapper.setAlignment(Pos.CENTER);
+        header.add(setupHeaderLabel("Name"), 0, 0);
+        header.add(setupHeaderLabel("Value"), 1, 0);
+        header.add(setupHeaderLabel("Use"), 2, 0);
 
-        header.add(nameWrapper, 0, 0);
-        header.add(valueWrapper, 1, 0);
-        header.add(enabledWrapper, 2, 0);
-
-        GridPane.setMargin(header, new Insets(0, 2.5, 0, 2.5));
         root.add(header, 0, 0);
     }
 
@@ -108,10 +126,19 @@ public class LaunchParameterView implements View {
     private void initializeButtons() {
         Label pullDataDescription = new Label("Save and then pull weather and map information based on "
                 + "the current latitude and longitude.");
+        pullDataDescription.setTextAlignment(TextAlignment.CENTER);
         pullDataDescription.setWrapText(true);
+
         Button pullData = new Button("Save and Pull data");
         Button exportWeather = new Button("Export Weather Data");
         Button save = new Button("Save");
+
+        pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        save.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        exportWeather.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+                CornerRadii.EMPTY, Insets.EMPTY)));
 
         save.setOnAction(e -> saveLaunchParameters());
 
@@ -131,8 +158,17 @@ public class LaunchParameterView implements View {
                 alert.showAndWait();
             }
         });
-        root.add(UiUtil.createMinimumVerticalSizeVBox(5, Insets.EMPTY, pullDataDescription,
-                pullData, save, exportWeather), 0, 2);
+
+        VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
+                pullData, save, exportWeather);
+        // Literally just for setting background colour
+        vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // Set it to hug the warnings above it
+        GridPane.setValignment(vbox, VPos.TOP);
+
+        contentPane.add(vbox, 0, 1);
     }
 
     /**
@@ -144,12 +180,27 @@ public class LaunchParameterView implements View {
     }
 
     /**
+     * Creates a label with the given text and sets it's properties for use as a header label.
+     *
+     * @param labelText The label text to use.
+     * @return          The label after creation and configuration.
+     */
+    private Label setupHeaderLabel(String labelText) {
+        Label label = new Label(labelText);
+        label.setFont(new Font("Arial", 18));
+        label.setTextFill(Color.WHITE);
+        GridPane.setValignment(label, VPos.CENTER);
+        GridPane.setHalignment(label, HPos.CENTER);
+        return label;
+    }
+
+    /**
      * Initialize input fields for popup window.
      */
     private void initializeFields() {
         Class<? extends LaunchParameters> clazz = parameters.getClass();
         Field[] fields = clazz.getDeclaredFields();
-        VBox vbox = UiUtil.createMinimumVerticalSizeVBox(0, new Insets(0, 2.5, 0, 2.5));
+        ListView<LaunchParameterInputField> listView = new ListView<>();
         for (Field f : fields) {
             if (f.getType().getSimpleName().equals("LaunchParameter")) {
                 try {
@@ -157,7 +208,7 @@ public class LaunchParameterView implements View {
                     LaunchParameters.LaunchParameter<?> lp = (LaunchParameters.LaunchParameter<?>) f.get(parameters);
 
                     LaunchParameterInputField lpif = new LaunchParameterInputField(f, lp);
-                    vbox.getChildren().add(lpif);
+
                     inputFields.add(lpif);
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to create inputfield!", e);
@@ -166,10 +217,8 @@ public class LaunchParameterView implements View {
             }
 
         }
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(vbox);
-        root.add(scrollPane, 0, 1);
+
+        listView.setItems(FXCollections.observableList(inputFields));
+        contentPane.add(listView, 0, 0);
     }
 }
