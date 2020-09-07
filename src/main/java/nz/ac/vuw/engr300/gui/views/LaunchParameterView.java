@@ -35,6 +35,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -228,6 +229,11 @@ public class LaunchParameterView implements View {
      * WindSpeed, windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma, lat, long.
      */
     private void exportSimulationParameters() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
         WeatherData weatherData = WeatherController.getInstance().getWeatherData();
 
         if (weatherData == null) {
@@ -238,13 +244,8 @@ public class LaunchParameterView implements View {
             return;
         }
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a place to save the file.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
-        File selectedFile = fileChooser.showSaveDialog(null);
-
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter(selectedFile));
+            PrintWriter writer = new PrintWriter(new FileWriter(selectedFile, StandardCharsets.UTF_8));
             writer.println("windSpeed,windSpeedSigma,rodAngle,rodAngleSigma,rodDirection,rodDirectionSigma,lat,long");
 
             // Note: windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma are currently hardcoded.
