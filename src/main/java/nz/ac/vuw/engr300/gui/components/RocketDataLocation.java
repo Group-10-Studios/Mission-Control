@@ -13,6 +13,8 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+
 /**
  * A component for the main ui that shows the current location of the rocket.
  *
@@ -34,6 +36,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
     private String apiKey;
     private boolean apiKeyFound = true;
     private boolean isVisible = true;
+    private boolean fileExists = true;
 
     /**
      * Create a new RocketDataLocation panel which shows the rocket position on a
@@ -46,16 +49,21 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param graphType       The graph type for this graph.
      */
     public RocketDataLocation(double centerLatitude, double centerLongitude, int imageWidth, int imageHeight,
-                              GraphType graphType) throws TomTomRequestFailedException {
-        try {
-            this.apiKey = KeyImporter.getKey("maps");
-            MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
-            filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
-            this.centerLatitude = centerLatitude;
-            this.centerLongitude = centerLongitude;
-        } catch (KeyNotFoundException e) {
-            apiKeyFound = false;
-            LOGGER.error("Maps key missing", e);
+                              GraphType graphType) {
+        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
+        File mapFile = new File(filename);
+        if (!mapFile.exists() && !mapFile.isDirectory()) {
+            try {
+                this.apiKey = KeyImporter.getKey("maps");
+                MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
+                this.centerLatitude = centerLatitude;
+                this.centerLongitude = centerLongitude;
+            } catch (TomTomRequestFailedException ex) {
+                fileExists = false;
+            } catch (KeyNotFoundException e) {
+                apiKeyFound = false;
+                LOGGER.error("Maps key missing", e);
+            }
         }
         canvas = new Canvas(getWidth(), getHeight());
         this.getChildren().add(canvas);
@@ -64,6 +72,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
 
         this.setGraphType(graphType);
         this.setId(graphType.getGraphID());
+
     }
 
     /**
@@ -73,7 +82,7 @@ public class RocketDataLocation extends Pane implements RocketGraph {
      * @param newLongitude - Rocket's new longitude
      */
     public void updateAngleDistanceInfo(double newLatitude, double newLongitude) {
-        if (apiKeyFound) {
+        if (apiKeyFound || fileExists) {
             angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
             hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
         }
@@ -158,26 +167,30 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         this.graphicsWidth = canvas.getWidth() * 0.98;
         this.graphicsHeight = canvas.getHeight() * 0.98;
-        if (apiKeyFound) {
-            Image img = new Image("file:" + filename);
-            g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
-                    this.graphicsHeight);
-            g.setFill(Color.GREEN);
-            g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
-                    MARKER_SIZE); // Center
-            double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
-            double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-            g.setFill(Colours.PRIMARY_COLOUR);
-            double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
-            double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
-            double markerOffset = 40;
-
-            g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
-            g.setStroke(Colours.PRIMARY_COLOUR);
-            g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
-                    MARKER_SIZE + markerOffset); // Center
-        } else {
+        if (!apiKeyFound) {
             g.strokeText("Map Image API key not found", graphicsWidth / 4, graphicsHeight / 2);
+            return;
+        }
+        if (fileExists) {
+                Image img = new Image("file:" + filename);
+                g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
+                        this.graphicsHeight);
+                g.setFill(Color.GREEN);
+                g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
+                        MARKER_SIZE); // Center
+                double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
+                double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
+                g.setFill(Colours.PRIMARY_COLOUR);
+                double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
+                double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
+                double markerOffset = 40;
+
+                g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
+                g.setStroke(Colours.PRIMARY_COLOUR);
+                g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
+                        MARKER_SIZE + markerOffset); // Center
+        } else {
+            g.strokeText("Map Image Not Found. Pull Map Data.", graphicsWidth / 8, graphicsHeight / 2);
         }
 
     }
