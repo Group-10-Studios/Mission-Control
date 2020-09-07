@@ -1,45 +1,42 @@
 package nz.ac.vuw.engr300.gui.views;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
+import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
-import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
+import nz.ac.vuw.engr300.weather.model.WeatherData;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
@@ -130,17 +127,19 @@ public class LaunchParameterView implements View {
         pullDataDescription.setWrapText(true);
 
         Button pullData = new Button("Save and Pull data");
-        Button exportWeather = new Button("Export Weather Data");
+        Button exportSimulationParameters = new Button("Export Simulation Parameters");
         Button save = new Button("Save");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         save.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        exportWeather.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+        exportSimulationParameters.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         save.setOnAction(e -> saveLaunchParameters());
+
+        exportSimulationParameters.setOnAction(e -> exportSimulationParameters());
 
         pullData.setOnAction(e -> {
             saveLaunchParameters();
@@ -160,7 +159,7 @@ public class LaunchParameterView implements View {
         });
 
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
-                pullData, save, exportWeather);
+                pullData, save, exportSimulationParameters);
         // Literally just for setting background colour
         vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -220,5 +219,39 @@ public class LaunchParameterView implements View {
 
         listView.setItems(FXCollections.observableList(inputFields));
         contentPane.add(listView, 0, 0);
+    }
+
+    private void exportSimulationParameters() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        WeatherData weatherData = WeatherController.getInstance().getWeatherData();
+
+        if (weatherData == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Weather Data not Found.");
+            alert.setHeaderText("Please pull weather Data.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter(selectedFile));
+            writer.println("windSpeed,windSpeedSigma,rodAngle,rodAngleSigma,rodDirection,rodDirectionSigma,lat,long");
+
+            // Note: windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma are currently hardcoded.
+            writer.printf("%f,%f,%f,%f,%f,%f,%f,%f", weatherData.getWindSpeed(), 5d, 45d, 5d, 0d, 5d,
+                    parameters.getLatitude().getValue(), parameters.getLongitude().getValue());
+
+            writer.close();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Exporting Simulation Parameters");
+            alert.setHeaderText("Failed to export simulation parameters.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 }
