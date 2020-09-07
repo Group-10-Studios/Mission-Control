@@ -226,14 +226,14 @@ public class DynamicGridPane extends GridPane {
      */
     private void updateVisibleRows() {
         // Loop up until the default visible target
-        for (int i = 1; i <= this.defaultVisibleRowsTarget; i++) {
+        for (int i = 1; i <= defaultVisibleRowsTarget; i++) {
             // Set visible rows to the number of rows required to make columns visible
             if (this.internalGridContents.size() <= this.columns * i) {
                 this.visibleRows = i;
                 // Break early to prevent overwriting row counts.
                 break;
             } else {
-                this.visibleRows = this.defaultVisibleRowsTarget;
+                this.visibleRows = defaultVisibleRowsTarget;
             }
         }
     }

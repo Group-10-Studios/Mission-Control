@@ -61,6 +61,7 @@ public class NavigationButton extends GridPane {
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);
 
         // Configure hide button information.
+        hideButton.setId("btnVis" + label.replace(" ", ""));
         this.hideButton.setOnAction(e -> {
             graphController.hideGraph(label);
             if (graphController.getGraphByGraphType(label).isGraphVisible()) {
