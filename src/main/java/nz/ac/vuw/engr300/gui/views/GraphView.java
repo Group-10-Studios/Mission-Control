@@ -164,10 +164,6 @@ public class GraphView implements View {
                 }
             }
         }
-        RocketDataLocation rl = new RocketDataLocation(-41.229428, 174.800303, 400, 400, new GraphType("Rocket Location"));
-        rl.updateAngleDistanceInfo(-41.229402, 174.800724);
-        this.graphs.add(rl);
-
     }
     
     /**
