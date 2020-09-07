@@ -53,7 +53,7 @@ public class NavigationButton extends GridPane {
         this.buttonController = ButtonController.getInstance();
 
         // Configure graphButton to match spec
-        graphButton.setId("btn" + label.replace(" ", ""));
+        graphButton.setId(buttonLabel(label, ""));
         graphButton.setOnAction(e -> {
             this.graphController.highlight(label);
         });
@@ -61,7 +61,7 @@ public class NavigationButton extends GridPane {
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);
 
         // Configure hide button information.
-        hideButton.setId("btnVis" + label.replace(" ", ""));
+        hideButton.setId(buttonLabel(label, "Vis"));
         this.hideButton.setOnAction(e -> {
             graphController.hideGraph(label);
             if (graphController.getGraphByGraphType(label).isGraphVisible()) {
@@ -71,10 +71,12 @@ public class NavigationButton extends GridPane {
             }
         });
 
+        this.moveUpButton.setId(buttonLabel(label, "Up"));
         this.moveUpButton.setOnAction(e -> {
             buttonController.reorderButtons(this.graphButton.getText(), true);
         });
 
+        this.moveDownButton.setId(buttonLabel(label, "Down"));
         this.moveDownButton.setOnAction(e -> {
             buttonController.reorderButtons(this.graphButton.getText(), false);
         });
@@ -86,6 +88,17 @@ public class NavigationButton extends GridPane {
         this.add(moveUpButton, 2, 0);
         this.add(moveDownButton, 3, 0);
 
+    }
+
+    /**
+     * Build a button label with the label and a prefix for a specific type of button.
+     *
+     * @param label Label to put in the button, this should be based on the GraphType label value.
+     * @param prefix Prefix to append to the button ID to represent its' type e.g. Up, Down or Vis.
+     * @return String containing a constructed Button ID.
+     */
+    private String buttonLabel(String label, String prefix) {
+        return "btn" + prefix + label.replace(" ", "");
     }
 
     /**
