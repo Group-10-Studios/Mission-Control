@@ -172,23 +172,23 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             return;
         }
         if (fileExists) {
-                Image img = new Image("file:" + filename);
-                g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
-                        this.graphicsHeight);
-                g.setFill(Color.GREEN);
-                g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
-                        MARKER_SIZE); // Center
-                double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
-                double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
-                g.setFill(Colours.PRIMARY_COLOUR);
-                double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
-                double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
-                double markerOffset = 40;
+            Image img = new Image("file:" + filename);
+            g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
+                    this.graphicsHeight);
+            g.setFill(Color.GREEN);
+            g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
+                    MARKER_SIZE); // Center
+            double toMoveVertical = hypotenuse * Math.cos(Math.toRadians(angle));
+            double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
+            g.setFill(Colours.PRIMARY_COLOUR);
+            double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) pixelsToMove(toMoveHorizontal);
+            double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) pixelsToMove(toMoveVertical);
+            double markerOffset = 40;
 
-                g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
-                g.setStroke(Colours.PRIMARY_COLOUR);
-                g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
-                        MARKER_SIZE + markerOffset); // Center
+            g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
+            g.setStroke(Colours.PRIMARY_COLOUR);
+            g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
+                    MARKER_SIZE + markerOffset); // Center
         } else {
             g.strokeText("Map Image Not Found. Pull Map Data.", graphicsWidth / 8, graphicsHeight / 2);
         }
