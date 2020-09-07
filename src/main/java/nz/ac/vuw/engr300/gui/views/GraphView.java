@@ -132,7 +132,7 @@ public class GraphView implements View {
             }
             switch (column.getGraphType()) {
                 case "angle": {
-                    GraphType gt = new GraphType(column.getName());
+                    GraphType gt = new GraphType(column.getName(), column.getGraphType());
                     masterList.registerGraph(gt);
                     this.graphs.add(new RocketDataAngleLineChart(
                             "Time (s)",
@@ -143,7 +143,7 @@ public class GraphView implements View {
                     break;
                 }
                 case "line": {
-                    GraphType gt = new GraphType(column.getName());
+                    GraphType gt = new GraphType(column.getName(), column.getGraphType());
                     masterList.registerGraph(gt);
                     this.graphs.add(new RocketDataLineChart(
                             "Time (s)",

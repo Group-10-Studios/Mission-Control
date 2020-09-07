@@ -10,7 +10,8 @@
     "headers": {
       "Total Velocity": "line-vel",
       "Altitude": "height",
-      "Total Acceleration": "line-accel"
+      "Total Acceleration": "line-accel",
+      "Pitch Rate": "angle"
     }
   },
   "incoming-avionics": {
