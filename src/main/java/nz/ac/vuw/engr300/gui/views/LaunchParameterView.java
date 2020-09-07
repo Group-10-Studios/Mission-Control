@@ -221,6 +221,12 @@ public class LaunchParameterView implements View {
         contentPane.add(listView, 0, 0);
     }
 
+    /**
+     * Saves the simulation parameters and weather data into a csv file that the user chooses.
+     * If there is no weather data found a alert is thrown.
+     * Saves the following parameters:
+     * WindSpeed, windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma, lat, long.
+     */
     private void exportSimulationParameters() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a place to save the file.");
