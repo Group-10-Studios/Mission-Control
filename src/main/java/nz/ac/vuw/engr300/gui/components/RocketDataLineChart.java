@@ -2,13 +2,20 @@ package nz.ac.vuw.engr300.gui.components;
 
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
@@ -60,6 +67,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         this.setGraphType(graphType);
 
         this.setId(graphType.getGraphID());
+        this.setCursor(Cursor.CROSSHAIR);
     }
 
     @Override
@@ -68,6 +76,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         ((NumberAxis) this.getXAxis()).setUpperBound(upperXBound);
         this.getXAxis().setAutoRanging(false);
     }
+
+
 
     /**
      * This function will add a value to the line graph.
@@ -79,7 +89,9 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         if (!this.getXAxis().isAutoRanging() && x > upperXBound) {
             this.getXAxis().setAutoRanging(true);
         }
-        Platform.runLater(() -> series.getData().add(new Data<>(x, y)));
+        final XYChart.Data<Number, Number> data = new XYChart.Data<>(x, y);
+        data.setNode(new HoveredThresholdNode(x, y));
+        Platform.runLater(() -> series.getData().add(data));
     }
 
     @Override
@@ -101,5 +113,45 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     @Override
     public boolean isGraphVisible() {
         return this.isVisible;
+    }
+
+    /** a node which displays a value on hover, but is otherwise empty */
+    class HoveredThresholdNode extends StackPane {
+        HoveredThresholdNode(double priorValue, double value) {
+//            setPrefSize(15, 15);
+
+            final Label label = createDataThresholdLabel(priorValue, value);
+
+            setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    getChildren().setAll(label);
+                    setCursor(Cursor.NONE);
+                    toFront();
+                }
+            });
+            setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent mouseEvent) {
+                    getChildren().clear();
+                    setCursor(Cursor.CROSSHAIR);
+                }
+            });
+        }
+
+        private Label createDataThresholdLabel(double priorValue, double value) {
+            final Label label = new Label(priorValue + ", " + value);
+            label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
+            label.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+
+            if (priorValue == 0) {
+                label.setTextFill(Color.DARKGRAY);
+            } else if (value > priorValue) {
+                label.setTextFill(Color.FORESTGREEN);
+            } else {
+                label.setTextFill(Color.FIREBRICK);
+            }
+
+            label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
+            return label;
+        }
     }
 }
