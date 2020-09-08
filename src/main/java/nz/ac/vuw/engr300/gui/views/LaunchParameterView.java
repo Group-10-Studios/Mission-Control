@@ -31,6 +31,7 @@ import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
