@@ -28,8 +28,10 @@ import nz.ac.vuw.engr300.importers.KeyImporter;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
+import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -235,9 +237,13 @@ public class LaunchParameterView implements View {
      * WindSpeed, windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma, lat, long.
      */
     private void exportSimulationParameters() {
+        WeatherData weatherData;
 
-        WeatherData weatherData = WeatherController.getInstance().getWeatherData();
-        if (weatherData == null) {
+        try {
+            WeatherImporter weatherImporter = new WeatherImporter(
+                    "src/main/resources/weather-data/weather-output.json");
+            weatherData = weatherImporter.getWeather(0);
+        } catch (FileNotFoundException e) {
             displayPopup(Alert.AlertType.WARNING, "Weather Data not found",
                     "Please pull weather data.",
                     "");
@@ -279,7 +285,7 @@ public class LaunchParameterView implements View {
 
         if (selectedFile == null) {
             displayPopup(Alert.AlertType.WARNING,
-                    "File was not selected.", "", "");
+                    "File was not selected.", "Please select a valid file", "");
             return null;
         }
 
