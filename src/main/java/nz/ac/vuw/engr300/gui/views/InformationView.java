@@ -6,6 +6,7 @@ import javafx.geometry.VPos;
 
 import javafx.scene.control.Button;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.BackgroundFill;
@@ -34,12 +35,15 @@ public class InformationView implements View {
     public RocketBattery primaryBattery = new RocketBattery();
     public RocketBattery secondaryBattery = new RocketBattery();
 
+    public Label goIndicator = new Label("Not safe to launch"); // (warnings/errors exist)
+    public Label armIndicator = new Label("Disarmed");
+
     public WarningsController warnC;
     public InformationController infController;
 
-    public Button goButton = new Button("  Go   ");
+    public Button armButton = new Button("  Arm   ");
 
-    public Button noGoButton = new Button("No Go");
+    public Button disarmButton = new Button("Disarm");
 
     public Button launchConfigButton = new Button("Launch Config");
 
@@ -48,13 +52,26 @@ public class InformationView implements View {
      * @param root The root Gridpane where we will be adding nodes to.
      */
     public InformationView(GridPane root) {
-        this.goButton.setId("btnGo");
-        this.noGoButton.setId("btnNoGo");
+        this.armButton.setId("btnArm");
+        this.disarmButton.setId("btnDisarm");
         this.root = root;
         setupRoot();
         setupBatteries();
         setupWarnings();
         setupBottomButtons();
+        setupIndicator();
+    }
+
+    /**
+     * Sets up the indicators in the top right of the screen.
+     * Shows if we are in Go or No go state (safe or unsafe to launch).
+     */
+    private void setupIndicator() {
+        VBox indicatorBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), goIndicator, armIndicator);
+        addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        if (infController.hasWarningsOrErrors() == false) {
+            goIndicator.setText("No errors exist! (Safe to launch)");
+        }
     }
 
     /**
@@ -63,7 +80,7 @@ public class InformationView implements View {
     private void setupWarnings() {
         Pane pnWarnings = new Pane();
         pnWarnings.setId("pnWarnings");
-        addNodeToGrid(pnWarnings, root, 1, 0);
+        addNodeToGrid(pnWarnings, root, 2, 0);
         // For the warnings controller
         infController = new InformationController(pnWarnings);
         infController.subscribeToSimulation();
@@ -75,22 +92,22 @@ public class InformationView implements View {
     private void setupBatteries() {
         // Create and populate batteries in a HBox
         HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
-        addNodeToGrid(batteryHBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
 
     /**
      * Create Go/NoGo button at the bottom of the right hand side root panel using VBox.
      */
     private void setupBottomButtons() {
-        goButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+        armButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        noGoButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+        disarmButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        goButton.setOnAction(e -> infController.onGo(e));
-        noGoButton.setOnAction(e -> infController.onNoGo(e));
+        armButton.setOnAction(e -> infController.onArm(e, armIndicator));
+        disarmButton.setOnAction(e -> infController.onDisarm(e, armIndicator));
         launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));
@@ -99,14 +116,14 @@ public class InformationView implements View {
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-                goButton, noGoButton, launchConfigButton);
+                armButton, disarmButton, launchConfigButton);
         // Literally just for setting background colour
         goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         // Set it to hug the warnings above it
         GridPane.setValignment(goNoGoVBox, VPos.TOP);
-        addNodeToGrid(goNoGoVBox, root, 2, 0, Insets.EMPTY);
+        addNodeToGrid(goNoGoVBox, root, 3, 0, Insets.EMPTY);
     }
 
     /**
@@ -121,7 +138,7 @@ public class InformationView implements View {
         // One column, 100 percent of width
         UiUtil.addPercentColumns(this.root, 100);
         // 20 for batteries, 60 for warnings, 20 for go/no go
-        UiUtil.addPercentRows(this.root, 20, 60, 20);
+        UiUtil.addPercentRows(this.root, 10, 20, 50, 20);
     }
 
 }

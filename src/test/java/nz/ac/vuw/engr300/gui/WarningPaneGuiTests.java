@@ -1,6 +1,5 @@
 package nz.ac.vuw.engr300.gui;
 
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.views.HomeView;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
-import org.testfx.util.WaitForAsyncUtils;
 
 import java.io.File;
 
@@ -43,11 +41,10 @@ public class WarningPaneGuiTests {
      * @param robot          The robot injected to run tests.
      * @param simulationFile The simulation we wish to run.
      */
-    private static boolean pressGo(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnGo")) {
-            fail("Go button not found!");
+    private static boolean pressArm(FxRobot robot, String simulationFile) {
+        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnArm")) {
+            fail("Arm button not found!");
         }
-
         //        WaitForAsyncUtils.waitForFxEvents(5);
 
         //        GeneralGuiTests.copyPasteString(robot, simulationFile);
@@ -63,9 +60,9 @@ public class WarningPaneGuiTests {
      * @param robot          The robot injected to run tests.
      * @param simulationFile The simulation we wish to run.
      */
-    private static boolean pressNoGo(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNode(robot, "#btnNoGo")) {
-            fail("No Go button not found!");
+    private static boolean pressDisarm(FxRobot robot, String simulationFile) {
+        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnDisarm")) {
+            fail("Disarm button not found!");
         }
 
         //        WaitForAsyncUtils.waitForFxEvents(5);
@@ -86,7 +83,7 @@ public class WarningPaneGuiTests {
     public void test_press_go(FxRobot robot) {
         ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
         int initialSize = rocketList.getItems().size();
-        if (!pressGo(robot, fullyCorrectTestData)) {
+        if (!pressArm(robot, fullyCorrectTestData)) {
             fail("Failed to press go");
         }
         assertTrue(rocketList.getItems().size() > initialSize);
@@ -101,7 +98,7 @@ public class WarningPaneGuiTests {
     public void test_press_no_go(FxRobot robot) {
         ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
         int initialSize = rocketList.getItems().size();
-        if (!pressNoGo(robot, fullyCorrectTestData)) {
+        if (!pressDisarm(robot, fullyCorrectTestData)) {
             fail("Failed to press no go");
         }
         assertTrue(rocketList.getItems().size() > initialSize);

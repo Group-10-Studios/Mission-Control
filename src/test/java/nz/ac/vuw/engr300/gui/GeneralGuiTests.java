@@ -81,9 +81,9 @@ public class GeneralGuiTests extends ApplicationTest {
         try {
             WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS, () -> {
                 try {
-                    Node title = robot.lookup("Failed to import simulation data!").queryAs(Node.class);
+                    // Node title = robot.lookup(titleName).queryAs(Node.class);
                     Node ok = robot.lookup("OK").queryAs(Node.class);
-                    if (title.isVisible() && ok.isVisible()) {
+                    if (ok.isVisible()) { // Can do title.isVisible() && for further verification
                         robot.clickOn(ok);
                         return true;
                     }
@@ -113,6 +113,36 @@ public class GeneralGuiTests extends ApplicationTest {
                     if (node.isVisible()) {
                         robot.clickOn(node);
                         return true;
+                    }
+                    return false;
+                } catch (RuntimeException ignored) {
+                    return false;
+                }
+            });
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks that a node is visible on screen, and when it is, this function will click on it. After 8 seconds,
+     * if the node is not visible then the function will return false.
+     * Will also immediately try to press the OK button if a popup appears and makes sure this happens.
+     *
+     * @param nodeId The ID of the node to check for on the UI.
+     * @param robot  The robot injected to run tests.
+     */
+    public static boolean checkAndClickOnNodeWithPopup(FxRobot robot, String nodeId) {
+        try {
+            WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, () -> {
+                try {
+                    Node node = robot.lookup(nodeId).queryAs(Node.class);
+                    if (node.isVisible()) {
+                        robot.clickOn(node);
+                        if (checkForAlertPopup(robot)) {
+                            return true;
+                        }
                     }
                     return false;
                 } catch (RuntimeException ignored) {
@@ -183,7 +213,7 @@ public class GeneralGuiTests extends ApplicationTest {
         copyPasteString(robot, simulationFile);
         WaitForAsyncUtils.waitForFxEvents();
 
-        return !checkForAlertPopup(robot);
+        return !checkForAlertPopup(robot); // "Failed to import simulation data!" is the title
     }
 
     /**

@@ -209,7 +209,11 @@ public class LaunchParameterInputField extends GridPane {
                     valueField.set(parameter, ((CheckBox) inputField).isSelected());
                     break;
                 case "double":
+                    valueField.set(parameter, Double.parseDouble(((TextField) inputField).getText()));
+                    break;
                 case "integer":
+                    valueField.set(parameter, Integer.parseInt(((TextField) inputField).getText()));
+                    break;
                 default:
                     valueField.set(parameter, ((TextField) inputField).getText());
                     break;
