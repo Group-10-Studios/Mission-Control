@@ -1,34 +1,27 @@
 package nz.ac.vuw.engr300.gui.views;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
+import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.KeyImporter;
@@ -36,12 +29,17 @@ import nz.ac.vuw.engr300.importers.MapImageImporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
+import nz.ac.vuw.engr300.weather.model.WeatherData;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
-import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
 /**
  * Represents the popup window that appears when Launch Configurations button is pressed.
@@ -93,6 +91,14 @@ public class LaunchParameterView implements View {
         popupwindow.showAndWait();
     }
 
+    private static void displayPopup(Alert.AlertType alertType, String title, String subtitle, String body) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(subtitle);
+        alert.setContentText(body);
+        alert.showAndWait();
+    }
+
     /**
      * Initialize buttons and fields for popup window.
      */
@@ -130,17 +136,19 @@ public class LaunchParameterView implements View {
         pullDataDescription.setWrapText(true);
 
         Button pullData = new Button("Save and Pull data");
-        Button exportWeather = new Button("Export Weather Data");
+        Button exportSimulationParameters = new Button("Export Simulation Parameters");
         Button save = new Button("Save");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         save.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        exportWeather.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+        exportSimulationParameters.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         save.setOnAction(e -> saveLaunchParameters());
+
+        exportSimulationParameters.setOnAction(e -> exportSimulationParameters());
 
         pullData.setOnAction(e -> {
             saveLaunchParameters();
@@ -160,7 +168,7 @@ public class LaunchParameterView implements View {
         });
 
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
-                pullData, save, exportWeather);
+                pullData, save, exportSimulationParameters);
         // Literally just for setting background colour
         vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -183,7 +191,7 @@ public class LaunchParameterView implements View {
      * Creates a label with the given text and sets it's properties for use as a header label.
      *
      * @param labelText The label text to use.
-     * @return          The label after creation and configuration.
+     * @return The label after creation and configuration.
      */
     private Label setupHeaderLabel(String labelText) {
         Label label = new Label(labelText);
@@ -220,5 +228,72 @@ public class LaunchParameterView implements View {
 
         listView.setItems(FXCollections.observableList(inputFields));
         contentPane.add(listView, 0, 0);
+    }
+
+    /**
+     * Saves the simulation parameters and weather data into a csv file that the user chooses.
+     * If there is no weather data found a alert is thrown.
+     * Saves the following parameters:
+     * WindSpeed, windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma, lat, long.
+     */
+    private void exportSimulationParameters() {
+        WeatherData weatherData;
+
+        try {
+            WeatherImporter weatherImporter = new WeatherImporter(
+                    "src/main/resources/weather-data/weather-output.json");
+            weatherData = weatherImporter.getWeather(0);
+        } catch (FileNotFoundException e) {
+            displayPopup(Alert.AlertType.WARNING, "Weather Data not found",
+                    "Please pull weather data.",
+                    "");
+            return;
+        }
+
+        File selectedFile = getCsvFile();
+        if (selectedFile == null) {
+            return;
+        }
+
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter(selectedFile, StandardCharsets.UTF_8));
+            writer.println("windSpeed,windSpeedSigma,rodAngle,rodAngleSigma,rodDirection,rodDirectionSigma,lat,long");
+
+            // Note: windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma are currently hardcoded.
+            writer.printf("%f,%f,%f,%f,%f,%f,%f,%f", weatherData.getWindSpeed(), 5d, 45d, 5d, 0d, 5d,
+                    parameters.getLatitude().getValue(), parameters.getLongitude().getValue());
+
+            writer.close();
+        } catch (IOException e) {
+            displayPopup(Alert.AlertType.ERROR,
+                    "Error Exporting Simulation Parameters",
+                    "Failed to export simulation parameters", e.getMessage());
+        }
+    }
+
+    /**
+     * Displays a FileChooser dialog to the user for selecting a file to save a CSV into. This function
+     * will also ensure the selected file is valid (not null), and has the correct extension.
+     *
+     * @return  The csv file (if successful - null otherwise)
+     */
+    private File getCsvFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile == null) {
+            displayPopup(Alert.AlertType.WARNING,
+                    "File was not selected.", "Please select a valid file", "");
+            return null;
+        }
+
+        if (!selectedFile.getName().toLowerCase().endsWith(".csv")) {
+            return new File(selectedFile.getAbsolutePath() + ".csv");
+        }
+
+        return selectedFile;
     }
 }
