@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import nz.ac.vuw.engr300.exceptions.KeyNotFoundException;
+import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
 import org.apache.log4j.Logger;
 
 /**
@@ -25,7 +26,7 @@ public class MapImageImporter {
      * 
      * @param args ARguments for Application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TomTomRequestFailedException {
         String apiKey = null;
         try {
             apiKey = KeyImporter.getKey("maps");
@@ -48,7 +49,8 @@ public class MapImageImporter {
      * @param latitude Latitude for center of image.
      * @param longitude Longitude for center of image.
      */
-    public static void importImage(String apiKey, double latitude, double longitude) {
+    public static void importImage(String apiKey, double latitude, double longitude)
+            throws TomTomRequestFailedException {
         importImage(apiKey, latitude, longitude, 17, 400, 400);
     }
 
@@ -62,7 +64,7 @@ public class MapImageImporter {
      * @param imageHeight Image height required.
      */
     public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth,
-            int imageHeight) {
+            int imageHeight) throws TomTomRequestFailedException {
         if (latitude < -85.0 || latitude > 85.0) {
             throw new IllegalArgumentException("Invalid latitude");
         }
@@ -92,7 +94,7 @@ public class MapImageImporter {
             fos.write(response);
             fos.close();
         } catch (IOException e) {
-            throw new Error("API request to TomTom failed");
+            throw new TomTomRequestFailedException("API request to TomTom failed");
         }
     }
 }

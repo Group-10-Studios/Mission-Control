@@ -21,7 +21,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
-import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.KeyImporter;
@@ -31,10 +30,10 @@ import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -158,7 +157,7 @@ public class LaunchParameterView implements View {
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
                         parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
                         "src/main/resources/weather-data");
-            } catch (Exception | Error exception) {
+            } catch (Exception exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
                 alert.setHeaderText("Failed to fetch Map or Weather data");
