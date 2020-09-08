@@ -29,7 +29,6 @@ import nz.ac.vuw.engr300.importers.MapImageImporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import nz.ac.vuw.engr300.weather.importers.PullWeatherApi;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,7 +38,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
 
 /**
  * Represents the popup window that appears when Launch Configurations button is pressed.
@@ -89,6 +87,14 @@ public class LaunchParameterView implements View {
         popupwindow.setScene(scene);
         l.initialize();
         popupwindow.showAndWait();
+    }
+
+    private static void displayPopup(Alert.AlertType alertType, String title, String subtitle, String body) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(subtitle);
+        alert.setContentText(body);
+        alert.showAndWait();
     }
 
     /**
@@ -183,7 +189,7 @@ public class LaunchParameterView implements View {
      * Creates a label with the given text and sets it's properties for use as a header label.
      *
      * @param labelText The label text to use.
-     * @return          The label after creation and configuration.
+     * @return The label after creation and configuration.
      */
     private Label setupHeaderLabel(String labelText) {
         Label label = new Label(labelText);
@@ -229,18 +235,17 @@ public class LaunchParameterView implements View {
      * WindSpeed, windSpeedSigma, rodAngle, rodAngleSigma, rodDirection, rodDirectionSigma, lat, long.
      */
     private void exportSimulationParameters() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select a place to save the file.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
-        File selectedFile = fileChooser.showSaveDialog(null);
 
         WeatherData weatherData = WeatherController.getInstance().getWeatherData();
-
         if (weatherData == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Weather Data not Found.");
-            alert.setHeaderText("Please pull weather Data.");
-            alert.showAndWait();
+            displayPopup(Alert.AlertType.WARNING, "Weather Data not found",
+                    "Please pull weather data.",
+                    "");
+            return;
+        }
+
+        File selectedFile = getCsvFile();
+        if (selectedFile == null) {
             return;
         }
 
@@ -254,11 +259,34 @@ public class LaunchParameterView implements View {
 
             writer.close();
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Exporting Simulation Parameters");
-            alert.setHeaderText("Failed to export simulation parameters.");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            displayPopup(Alert.AlertType.ERROR,
+                    "Error Exporting Simulation Parameters",
+                    "Failed to export simulation parameters", e.getMessage());
         }
+    }
+
+    /**
+     * Displays a FileChooser dialog to the user for selecting a file to save a CSV into. This function
+     * will also ensure the selected file is valid (not null), and has the correct extension.
+     *
+     * @return  The csv file (if successful - null otherwise)
+     */
+    private File getCsvFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile == null) {
+            displayPopup(Alert.AlertType.WARNING,
+                    "File was not selected.", "", "");
+            return null;
+        }
+
+        if (!selectedFile.getName().toLowerCase().endsWith(".csv")) {
+            return new File(selectedFile.getAbsolutePath() + ".csv");
+        }
+
+        return selectedFile;
     }
 }
