@@ -52,12 +52,12 @@ public class RocketDataLocation extends Pane implements RocketGraph {
                               GraphType graphType) {
         filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-map_image.png";
         File mapFile = new File(filename);
+        this.centerLatitude = centerLatitude;
+        this.centerLongitude = centerLongitude;
         if (!mapFile.exists() && !mapFile.isDirectory()) {
             try {
                 this.apiKey = KeyImporter.getKey("maps");
                 MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight);
-                this.centerLatitude = centerLatitude;
-                this.centerLongitude = centerLongitude;
             } catch (TomTomRequestFailedException ex) {
                 fileExists = false;
             } catch (KeyNotFoundException e) {
