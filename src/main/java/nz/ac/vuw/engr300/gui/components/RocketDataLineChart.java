@@ -21,6 +21,10 @@ import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.Colours;
 
+import java.util.Formatter;
+
+import static nz.ac.vuw.engr300.gui.util.Colours.PRIMARY_COLOUR;
+
 
 /**
  * A component that displays rocket data (two double values) as a line graph.
@@ -63,7 +67,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         this.series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: "
-                + Colours.toHexString(Colours.PRIMARY_COLOUR) + ";");
+                + Colours.toHexString(PRIMARY_COLOUR) + ";");
         this.setGraphType(graphType);
 
         this.setId(graphType.getGraphID());
@@ -118,7 +122,8 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     /** a node which displays a value on hover, but is otherwise empty */
     class HoveredThresholdNode extends StackPane {
         HoveredThresholdNode(double priorValue, double value) {
-//            setPrefSize(15, 15);
+            setStyle("-fx-background-color: #4267B2;");
+            setPrefSize(1, 1);
 
             final Label label = createDataThresholdLabel(priorValue, value);
 
@@ -140,7 +145,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         private Label createDataThresholdLabel(double priorValue, double value) {
             final Label label = new Label(priorValue + ", " + value);
             label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
-            label.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
+            label.setStyle("-fx-font-size: 15; -fx-font-weight: bold;");
 
             if (priorValue == 0) {
                 label.setTextFill(Color.DARKGRAY);
@@ -150,7 +155,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
                 label.setTextFill(Color.FIREBRICK);
             }
 
-            label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
+            label.setMinSize(150, Label.USE_PREF_SIZE);
             return label;
         }
     }
