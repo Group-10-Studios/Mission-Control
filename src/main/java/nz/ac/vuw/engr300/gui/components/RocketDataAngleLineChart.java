@@ -87,6 +87,23 @@ public class RocketDataAngleLineChart extends StackPane implements RocketGraph {
         this.angleComponent.setAngle(y);
     }
 
+    /**
+     * Get the graph component of this RocketDataAngleLineChart.
+     *
+     * @return RocketDataLineChart graph component within this chart.
+     */
+    public RocketDataLineChart getGraphComponent() {
+        return this.graphComponent;
+    }
+
+    /**
+     * Get the angle component of this RocketDataAngleLineChart.
+     *
+     * @return RocketDataAngle angle component within this chart.
+     */
+    public RocketDataAngle getAngleComponent() {
+        return this.angleComponent;
+    }
 
     @Override
     public void setGraphType(GraphType g) {

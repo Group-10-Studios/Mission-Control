@@ -9,10 +9,19 @@ package nz.ac.vuw.engr300.gui.model;
  */
 public class GraphType {
 
-    private String label;
+    private final String label;
+    private final String chartType;
 
-    public GraphType(String label) {
+    /**
+     * Create a new GraphType for a respective graph. This contains the label provided for the graph and the expected
+     * type of chart this graph will contain.
+     *
+     * @param label Label of the graph.
+     * @param chartType Chart type of the graph.
+     */
+    public GraphType(String label, String chartType) {
         this.label = label;
+        this.chartType = chartType;
     }
 
     /**
@@ -31,5 +40,14 @@ public class GraphType {
      */
     public String getGraphID() {
         return "graph" + this.getLabel().replace(" ", "");
+    }
+
+    /**
+     * Get the chart type of this graphtype. This can be used for type-checking for casting to various graphs.
+     *
+     * @return String containing the type of graph this matches from the list {@code line, angle}.
+     */
+    public String getChart() {
+        return this.chartType;
     }
 }

@@ -24,6 +24,7 @@ import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
+import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
@@ -163,20 +164,48 @@ public class GeneralGuiTests extends ApplicationTest {
      * @param expected The expected data that the graphs should be populated with.
      */
     private static void checkGraphValues(FxRobot robot, List<RocketStatus> expected) {
-        int expectedDataSize = expected.size();
         for (GraphType graphType: GraphMasterList.getInstance().getGraphs()) {
-            List<XYChart.Data<Number, Number>> chartData =
-                    robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataLineChart.class)
-                            .getData().get(0).getData();
+            // Handle cases based on if its' type is either line or an angle graph.
+            if (graphType.getChart().equals("line")) {
+                // Get the data from the line chart and check it.
+                List<XYChart.Data<Number, Number>> chartData =
+                        robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataLineChart.class)
+                                .getData().get(0).getData();
+                checkRocketDataLineChartValues(chartData, graphType, expected);
+            } else if (graphType.getChart().equals("angle")) {
+                // Retrieve the data for the line chart component and check values.
+                List<XYChart.Data<Number, Number>> chartData =
+                        robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataAngleLineChart.class)
+                                .getGraphComponent().getData().get(0).getData();
+                checkRocketDataLineChartValues(chartData, graphType, expected);
 
-            assertEquals(expectedDataSize, chartData.size());
-            for (int i = 0; i < expectedDataSize; i++) {
-                assertEquals(expected.get(i).getTime(), chartData.get(i).getXValue());
-                double value = getValueForGraph(expected, i, graphType);
-                assertEquals(value, chartData.get(i).getYValue());
+                // Check that the current value of the angle component matches what is expected.
+                double currentAngleValue = robot.lookup("#" + graphType.getGraphID())
+                        .queryAs(RocketDataAngleLineChart.class).getAngleComponent().getValue();
+                assertEquals(getValueForGraph(expected, expected.size() - 1, graphType), currentAngleValue);
             }
         }
     }
+
+    /**
+     * Check the RocketDataLineChart values are correct compared to the expected data.
+     *
+     * @param chartData List of chart data to check against the expected values.
+     * @param graphType The graph type of the chart we are comparing its' data against the expected values.
+     * @param expected List of expected RocketStatus data with values of what is expected at each position in the data.
+     */
+    private static void checkRocketDataLineChartValues(List<XYChart.Data<Number, Number>> chartData,
+                                                       GraphType graphType, List<RocketStatus> expected) {
+        int expectedDataSize = expected.size();
+
+        assertEquals(expectedDataSize, chartData.size());
+        for (int i = 0; i < expectedDataSize; i++) {
+            assertEquals(expected.get(i).getTime(), chartData.get(i).getXValue());
+            double value = getValueForGraph(expected, i, graphType);
+            assertEquals(value, chartData.get(i).getYValue());
+        }
+    }
+
 
     /**
      * Get an expected value for the provided graph type at the provided position. This lets us compare the actual
@@ -188,12 +217,15 @@ public class GeneralGuiTests extends ApplicationTest {
      * @return A double retrieved from the expected dataset for the graph type.
      */
     private static double getValueForGraph(List<RocketStatus> expected, int position, GraphType graphType) {
-        if (graphType.getLabel().equals("Total Velocity")) {
-            return expected.get(position).getTotalVelocity();
-        } else if (graphType.getLabel().equals("Total Acceleration")) {
-            return expected.get(position).getTotalAcceleration();
-        } else {
-            return expected.get(position).getAltitude();
+        switch (graphType.getLabel()) {
+            case "Total Velocity":
+                return expected.get(position).getTotalVelocity();
+            case "Total Acceleration":
+                return expected.get(position).getTotalAcceleration();
+            case "Pitch Rate":
+                return expected.get(position).getPitchRate();
+            default:
+                return expected.get(position).getAltitude();
         }
     }
 
@@ -288,8 +320,9 @@ public class GeneralGuiTests extends ApplicationTest {
     public void check_visibility_of_graphs(FxRobot robot) {
         // Loop through all graphs to make sure they're visible.
         for (GraphType graphType: GraphMasterList.getInstance().getGraphs()) {
-            RocketDataLineChart chart =
-                    robot.lookup("#" + graphType.getGraphID()).queryAs(RocketDataLineChart.class);
+            // Check against region as all graphs should extend class
+            Region chart =
+                    robot.lookup("#" + graphType.getGraphID()).queryAs(Region.class);
             Assertions.assertThat(chart.isVisible());
         }
     }
