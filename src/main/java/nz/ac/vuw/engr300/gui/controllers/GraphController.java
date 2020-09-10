@@ -47,6 +47,7 @@ public class GraphController {
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     private final SerialCommunications serialCommunications = new SerialCommunications();
     private static final GraphController instance = new GraphController();
+    private final List<Stage> extractedGraphs = new ArrayList<>();
 
     private List<RocketGraph> graphs;
     private List<RocketGraph> allGraphs;
@@ -81,28 +82,37 @@ public class GraphController {
         // for expandability if required later.
         GraphView gv = (GraphView) view;
         gv.updateGraphs(graphs);
+        // Must first alias the unregisteredGraphs before clearing all graphs.
+        List<RocketGraph> unregisteredGraphs = getGraphsBasedOnMasterList(GraphMasterList.getInstance().getUnregisteredGraphs());
+
+        // Clear the current all graphs and add the graphs back in their correct order.
+        allGraphs.clear();
+        allGraphs.addAll(graphs);
+        allGraphs.addAll(unregisteredGraphs);
     }
 
     /**
      * Makes sure the graphs in GraphMasterList syncs its changes with graph list in the view.
      */
     public void syncGraphOrder() {
-        List<GraphType> graphTypes = GraphMasterList.getInstance().getGraphs();
-        List<RocketGraph> updatedList = new ArrayList<>();
-        for (GraphType g : graphTypes) {
-            updatedList.add(getGraphByGraphType(g.getLabel()));
-        }
+        setGraphs(getGraphsBasedOnMasterList(GraphMasterList.getInstance().getGraphs()));
+    }
 
-        List<GraphType> unregisteredTypes = GraphMasterList.getInstance().getUnregisteredGraphs();
-        List<RocketGraph> unregisteredList = new ArrayList<>();
-        for (GraphType g : unregisteredTypes) {
-            unregisteredList.add(getGraphByGraphType(g.getLabel()));
+    /**
+     * Get the graphs from the instance (RocketGraph contents) based on a list of GraphTypes from the master list.
+     * This will create a list of references to these graphs, in the order matching the GraphType retrieved from
+     * the masterListCopy. This can be used to reorder the graphs, or alias their copies to keep within allGraphs.
+     *
+     * @param masterListCopy An extracted list of GraphTypes from the Master list. This contains an ordered list to
+     *                      retrieve the specific GraphType's corresponding graph.
+     * @return List of RocketGraph objects in the order of the provided GraphType's.
+     */
+    private List<RocketGraph> getGraphsBasedOnMasterList(List<GraphType> masterListCopy) {
+        List<RocketGraph> listOfGraphs = new ArrayList<>();
+        for (GraphType g : masterListCopy) {
+            listOfGraphs.add(getGraphByGraphType(g.getLabel()));
         }
-
-        setGraphs(updatedList);
-        allGraphs.clear();
-        allGraphs.addAll(updatedList);
-        allGraphs.addAll(unregisteredList);
+        return listOfGraphs;
     }
 
     /**
@@ -140,6 +150,8 @@ public class GraphController {
      */
     public void subscribeGraphs(String tableName, boolean isSimulation) {
         this.simulationMode = isSimulation;
+        // Must reset extracted graphs before subscribing new graphs.
+        resetExtractedGraphs();
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(tableName);
         if (isSimulation) {
             simulationImporter.subscribeObserver(this::graphSimulationSubscription);
@@ -277,7 +289,7 @@ public class GraphController {
      * @return A RocketGraph which matches the expected type.
      */
     public RocketGraph getGraphByGraphType(String label) {
-        for (RocketGraph g : graphs) {
+        for (RocketGraph g : allGraphs) {
             if (g.getGraphType().getLabel().equals(label)) {
                 return g;
             }
@@ -357,7 +369,7 @@ public class GraphController {
                 alert.showAndWait();
                 return;
             }
-            graphs.forEach(RocketGraph::clear);
+            allGraphs.forEach(RocketGraph::clear);
             simulationImporter.start();
         }
 
@@ -374,6 +386,8 @@ public class GraphController {
         simulationImporter.unsubscribeAllObservers();
         serialCommunications.stopListening();
         serialCommunications.unsubscribeAllObservers();
+        // Close all extra windows to finish the application.
+        resetExtractedGraphs();
     }
 
     /**
@@ -415,13 +429,19 @@ public class GraphController {
 
         popupWindow.setScene(scene);
 
+        extractedGraphs.add(popupWindow);
+        LOGGER.info("Extracting pop out window for <" + graph.getGraphType().getLabel() + ">");
+        LOGGER.info("Total pop out windows is now <" + extractedGraphs.size() + ">");
+
         // Ensure on pop up close that the graph is added back into the main application.
         popupWindow.setOnCloseRequest((event) -> {
             GraphMasterList.getInstance().registerGraph(graph.getGraphType());
             this.graphs.add(graph);
             syncGraphsPopUp();
         });
-        popupWindow.showAndWait();
+
+        // Must be show not showAndWait to keep the application running
+        popupWindow.show();
     }
 
     /**
@@ -432,5 +452,14 @@ public class GraphController {
         this.syncGraphOrder();
         this.setGraphs(graphs);
         ButtonController.getInstance().updateButtons();
+    }
+
+    /**
+     * Reset the extracted graphs, clearing the list and closing all opened windows.
+     */
+    private void resetExtractedGraphs() {
+        LOGGER.info("Closing extracted graphs - Unregistering external graphs");
+        this.extractedGraphs.forEach(Stage::close);
+        this.extractedGraphs.clear();
     }
 }

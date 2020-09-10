@@ -61,6 +61,13 @@ public class GraphMasterList {
     }
 
     /**
+     * Unregister all of the Unregistered graphs (external components) from the master list.
+     */
+    public void clearUnregisteredGraphs() {
+        this.unregisteredGraphs.clear();
+    }
+
+    /**
      * Swaps the two graphs based on their indexes.
      * @param index1 The graph to swap.
      * @param index2 The other graph to swap with.
