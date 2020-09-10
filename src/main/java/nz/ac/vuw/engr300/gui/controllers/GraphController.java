@@ -83,7 +83,8 @@ public class GraphController {
         GraphView gv = (GraphView) view;
         gv.updateGraphs(graphs);
         // Must first alias the unregisteredGraphs before clearing all graphs.
-        List<RocketGraph> unregisteredGraphs = getGraphsBasedOnMasterList(GraphMasterList.getInstance().getUnregisteredGraphs());
+        List<RocketGraph> unregisteredGraphs = getGraphsBasedOnMasterList(GraphMasterList.getInstance()
+                .getUnregisteredGraphs());
 
         // Clear the current all graphs and add the graphs back in their correct order.
         allGraphs.clear();
