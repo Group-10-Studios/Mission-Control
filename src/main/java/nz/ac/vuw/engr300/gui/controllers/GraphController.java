@@ -426,7 +426,7 @@ public class GraphController {
      */
     public void popOutGraph(RocketGraph graph) {
         Stage popupWindow = new Stage();
-        
+
         popupWindow.initModality(Modality.NONE);
         popupWindow.setTitle(graph.getGraphType().getLabel());
         GraphMasterList.getInstance().unRegisterGraph(graph.getGraphType());
