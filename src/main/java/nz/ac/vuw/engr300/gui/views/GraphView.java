@@ -105,6 +105,8 @@ public class GraphView implements View {
         this.tableName = newTableName;
         // Clear all registered graphs
         GraphMasterList.getInstance().clearRegisteredGraphs();
+        // Clear any external graphs (NOTE: Must be done here to prevent errors of non-existent graphs)
+        GraphMasterList.getInstance().clearUnregisteredGraphs();
         this.controller.resetObservers();
         // Create graphs from description
         createGraphs();
