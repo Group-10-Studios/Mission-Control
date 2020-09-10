@@ -13,7 +13,10 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
@@ -120,7 +123,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
     /**
      * An inner class that represents each node that can be hovered on.
      */
-    class HoveredThresholdNode extends StackPane {
+    static class HoveredThresholdNode extends StackPane {
 
         /**
          * Constructs a HoveredNode at a given x, y with mouse listeners.
