@@ -6,16 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.model.GraphType;
@@ -119,43 +117,43 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
         return this.isVisible;
     }
 
-    /** a node which displays a value on hover, but is otherwise empty */
+    /**
+     * An inner class that represents each node that can be hovered on.
+     */
     class HoveredThresholdNode extends StackPane {
-        HoveredThresholdNode(double priorValue, double value) {
+
+        /**
+         * Constructs a HoveredNode at a given x, y with mouse listeners.
+         * @param x X position of node.
+         * @param y Y position of node.
+         */
+        HoveredThresholdNode(double x, double y) {
             setStyle("-fx-background-color: #4267B2;");
-            setPrefSize(1, 1);
-
-            final Label label = createDataThresholdLabel(priorValue, value);
-
-            setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
-                    getChildren().setAll(label);
-                    setCursor(Cursor.NONE);
-                    toFront();
-                }
+            setPrefSize(15, 15);
+            setOpacity(0.0);
+            final Label label = createDataThresholdLabel(x, y);
+            setOnMouseEntered(e -> {
+                setOpacity(1.0);
+                getChildren().setAll(label);
             });
-            setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
-                    getChildren().clear();
-                    setCursor(Cursor.CROSSHAIR);
-                }
+            setOnMouseExited(e -> {
+                setOpacity(0.0);
+                getChildren().clear();
             });
         }
 
-        private Label createDataThresholdLabel(double priorValue, double value) {
-            final Label label = new Label(priorValue + ", " + value);
+        /**
+         * Create the label to display info about the node.
+         * @param x X value of graph to display on the label.
+         * @param y Y value of graph to display on the label.
+         * @return
+         */
+        private Label createDataThresholdLabel(double x, double y) {
+            final Label label = new Label(x + ", " + y);
             label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
             label.setStyle("-fx-font-size: 15; -fx-font-weight: bold;");
-
-            if (priorValue == 0) {
-                label.setTextFill(Color.DARKGRAY);
-            } else if (value > priorValue) {
-                label.setTextFill(Color.FORESTGREEN);
-            } else {
-                label.setTextFill(Color.FIREBRICK);
-            }
-
-            label.setMinSize(150, Label.USE_PREF_SIZE);
+            label.setTextFill(Color.BLACK);
+            label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
             return label;
         }
     }
