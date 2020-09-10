@@ -2,11 +2,14 @@ package nz.ac.vuw.engr300.gui.components;
 
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.model.GraphType;
+
+import java.awt.event.MouseEvent;
 
 /**
  * NavigationButton is a wrapper class to allow for drawing multiple buttons within our Navigation sidebar.
@@ -54,8 +57,14 @@ public class NavigationButton extends GridPane {
 
         // Configure graphButton to match spec
         graphButton.setId(buttonLabel(label, ""));
-        graphButton.setOnAction(e -> {
-            this.graphController.highlight(label);
+        graphButton.setOnMouseClicked(e -> {
+            // Check if the user has left clicked to highlight
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                this.graphController.highlight(label);
+            } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+                // Any right click should open the graph in another pane.
+                this.graphController.getGraphByGraphType(label).doubleClickCallback();
+            }
         });
         // Set max width to ensure sizes are all equal.
         graphButton.setMaxWidth(Double.POSITIVE_INFINITY);

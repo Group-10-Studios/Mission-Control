@@ -35,6 +35,7 @@ public class NavigationView implements View {
 
     public Button pastFlightsButton = new Button("Past Flights");
     public Button runSimButton = new Button("Run Simulation");
+    private VBox buttons;
 
 
     /**
@@ -77,7 +78,8 @@ public class NavigationView implements View {
      * Draw the navigation buttons on the left panel.
      */
     public void drawButtons() {
-        VBox buttons = UiUtil.createMinimumVerticalSizeVBox(ButtonController.getInstance().getPnNavButtons());
+        root.getChildren().remove(this.buttons);
+        this.buttons = UiUtil.createMinimumVerticalSizeVBox(ButtonController.getInstance().getPnNavButtons());
         addNodeToGrid(buttons, root, 1, 0);
     }
 

@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -9,13 +10,14 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
 import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.communications.model.RocketData;
-import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
@@ -45,8 +47,10 @@ public class GraphController {
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
     private final SerialCommunications serialCommunications = new SerialCommunications();
     private static final GraphController instance = new GraphController();
+    private final List<Stage> extractedGraphs = new ArrayList<>();
 
     private List<RocketGraph> graphs;
+    private List<RocketGraph> allGraphs;
     private View view;
     private String highlightedGraphLabel;
     private boolean simulationMode = false;
@@ -55,7 +59,7 @@ public class GraphController {
      * Private constructor to prevent Graph controller being created outside of in here.
      */
     private GraphController() {
-
+        this.allGraphs = new ArrayList<>();
     }
 
     /**
@@ -78,18 +82,39 @@ public class GraphController {
         // for expandability if required later.
         GraphView gv = (GraphView) view;
         gv.updateGraphs(graphs);
+        // Must first alias the unregisteredGraphs before clearing all graphs.
+        List<RocketGraph> unregisteredGraphs = getGraphsBasedOnMasterList(GraphMasterList.getInstance()
+                .getUnregisteredGraphs());
+
+        // Clear the current all graphs and add the graphs back in their correct order.
+        allGraphs.clear();
+        allGraphs.addAll(graphs);
+        allGraphs.addAll(unregisteredGraphs);
     }
 
     /**
      * Makes sure the graphs in GraphMasterList syncs its changes with graph list in the view.
      */
     public void syncGraphOrder() {
-        List<GraphType> graphTypes = GraphMasterList.getInstance().getGraphs();
-        List<RocketGraph> updatedList = new ArrayList<>();
-        for (GraphType g : graphTypes) {
-            updatedList.add(getGraphByGraphType(g.getLabel()));
+        setGraphs(getGraphsBasedOnMasterList(GraphMasterList.getInstance().getGraphs()));
+    }
+
+    /**
+     * Get the graphs from the instance (RocketGraph contents) based on a list of GraphTypes from the master list.
+     * This will create a list of references to these graphs, in the order matching the GraphType retrieved from
+     * the masterListCopy. This can be used to reorder the graphs, or alias their copies to keep within allGraphs.
+     *
+     * @param masterListCopy An extracted list of GraphTypes from the Master list. This contains an ordered list to
+     *                      retrieve the specific GraphType's corresponding graph.
+     * @return List of RocketGraph objects in the order of the provided GraphType's.
+     */
+    private List<RocketGraph> getGraphsBasedOnMasterList(List<GraphType> masterListCopy) {
+        List<RocketGraph> listOfGraphs = new ArrayList<>();
+        for (GraphType g : masterListCopy) {
+            listOfGraphs.add(getGraphByGraphType(g.getLabel()));
         }
-        setGraphs(updatedList);
+
+        return listOfGraphs;
     }
 
     /**
@@ -127,6 +152,8 @@ public class GraphController {
      */
     public void subscribeGraphs(String tableName, boolean isSimulation) {
         this.simulationMode = isSimulation;
+        // Must reset extracted graphs before subscribing new graphs.
+        resetExtractedGraphs();
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(tableName);
         if (isSimulation) {
             simulationImporter.subscribeObserver(this::graphSimulationSubscription);
@@ -145,7 +172,7 @@ public class GraphController {
     private void graphSubscription(List<Object> data, CsvTableDefinition table) {
         long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
                 "timestamp", Long.class);
-        for (RocketGraph rg: this.graphs) {
+        for (RocketGraph rg: this.allGraphs) {
             if (rg instanceof RocketDataAngleLineChart) {
                 RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
                 String dataType = rgC.getGraphType().getLabel();
@@ -176,7 +203,7 @@ public class GraphController {
     private void graphSimulationSubscription(RocketData data) {
         if (data instanceof RocketStatus) {
             double timestamp = data.getTime();
-            for (RocketGraph rg: this.graphs) {
+            for (RocketGraph rg: this.allGraphs) {
                 if (rg instanceof RocketDataAngleLineChart) {
                     RocketDataAngleLineChart rgC = (RocketDataAngleLineChart) rg;
                     String dataType = rgC.getGraphType().getLabel();
@@ -264,7 +291,7 @@ public class GraphController {
      * @return A RocketGraph which matches the expected type.
      */
     public RocketGraph getGraphByGraphType(String label) {
-        for (RocketGraph g : graphs) {
+        for (RocketGraph g : allGraphs) {
             if (g.getGraphType().getLabel().equals(label)) {
                 return g;
             }
@@ -344,7 +371,7 @@ public class GraphController {
                 alert.showAndWait();
                 return;
             }
-            graphs.forEach(RocketGraph::clear);
+            allGraphs.forEach(RocketGraph::clear);
             simulationImporter.start();
         }
 
@@ -361,6 +388,8 @@ public class GraphController {
         simulationImporter.unsubscribeAllObservers();
         serialCommunications.stopListening();
         serialCommunications.unsubscribeAllObservers();
+        // Close all extra windows to finish the application.
+        resetExtractedGraphs();
     }
 
     /**
@@ -388,5 +417,61 @@ public class GraphController {
         this.serialCommunications.unsubscribeAllObservers();
 
         //TODO: Check if we need to unsubscribe simulation listeners here.
+    }
+
+    /**
+     * Create a pop out graph view with the provided graph.
+     *
+     * @param graph Graph to display in a pop out view.
+     */
+    public void popOutGraph(RocketGraph graph) {
+        Stage popupWindow = new Stage();
+
+        popupWindow.initModality(Modality.NONE);
+        popupWindow.setTitle(graph.getGraphType().getLabel());
+        GraphMasterList.getInstance().unRegisterGraph(graph.getGraphType());
+        syncGraphsPopUp();
+
+        // Ensure the graph position is reset to zero for the pop up window to prevent down shifting
+        // If this is not done it will match the y position from the dynamic grid pane when clicked.
+        Region graphRegion = (Region) graph;
+        graphRegion.setLayoutX(0);
+        graphRegion.setLayoutY(0);
+        Scene scene = new Scene(graphRegion, 300, 300);
+
+        popupWindow.setScene(scene);
+
+        extractedGraphs.add(popupWindow);
+        LOGGER.info("Extracting pop out window for <" + graph.getGraphType().getLabel() + ">");
+        LOGGER.info("Total pop out windows is now <" + extractedGraphs.size() + ">");
+
+        // Ensure on pop up close that the graph is added back into the main application.
+        popupWindow.setOnCloseRequest((event) -> {
+            GraphMasterList.getInstance().registerGraph(graph.getGraphType());
+            this.graphs.add(graph);
+            syncGraphsPopUp();
+        });
+
+        // Must be show not showAndWait to keep the application running
+        popupWindow.show();
+    }
+
+    /**
+     * Sync the graphs for a pop up. Based on the function popOutGraph with specification to sync the master list
+     * with a new value within the graphs.
+     */
+    private void syncGraphsPopUp() {
+        this.syncGraphOrder();
+        this.setGraphs(graphs);
+        ButtonController.getInstance().updateButtons();
+    }
+
+    /**
+     * Reset the extracted graphs, clearing the list and closing all opened windows.
+     */
+    private void resetExtractedGraphs() {
+        LOGGER.info("Closing extracted graphs - Unregistering external graphs");
+        this.extractedGraphs.forEach(Stage::close);
+        this.extractedGraphs.clear();
     }
 }

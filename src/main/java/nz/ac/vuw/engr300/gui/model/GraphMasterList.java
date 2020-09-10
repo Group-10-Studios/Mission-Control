@@ -14,12 +14,14 @@ public class GraphMasterList {
 
     private static final GraphMasterList graphMasterList = new GraphMasterList();
     private final List<GraphType> graphs;
+    private final List<GraphType> unregisteredGraphs;
 
     /**
      * Create a new GraphMasterList instance for the beginning of the application.
      */
     private GraphMasterList() {
         graphs = new ArrayList<>();
+        unregisteredGraphs = new ArrayList<>();
     }
 
     /**
@@ -37,7 +39,18 @@ public class GraphMasterList {
      * @param graphType GraphType to be registered name of the graph.
      */
     public void registerGraph(GraphType graphType) {
+        this.unregisteredGraphs.remove(graphType);
         this.graphs.add(graphType);
+    }
+
+    /**
+     * Unregister a graph from the master list.
+     *
+     * @param graphType GraphType to be unregistered.
+     */
+    public void unRegisterGraph(GraphType graphType) {
+        this.unregisteredGraphs.add(graphType);
+        this.graphs.remove(graphType);
     }
 
     /**
@@ -45,6 +58,13 @@ public class GraphMasterList {
      */
     public void clearRegisteredGraphs() {
         this.graphs.clear();
+    }
+
+    /**
+     * Unregister all of the Unregistered graphs (external components) from the master list.
+     */
+    public void clearUnregisteredGraphs() {
+        this.unregisteredGraphs.clear();
     }
 
     /**
@@ -63,5 +83,14 @@ public class GraphMasterList {
      */
     public List<GraphType> getGraphs() {
         return Collections.unmodifiableList(graphs);
+    }
+
+    /**
+     * Get a list of unregistered graphs which have detached windows for updating.
+     *
+     * @return List of GraphType for unregistered graphs.
+     */
+    public List<GraphType> getUnregisteredGraphs() {
+        return Collections.unmodifiableList(unregisteredGraphs);
     }
 }
