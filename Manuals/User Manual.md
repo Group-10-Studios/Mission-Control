@@ -38,7 +38,7 @@ The maximum angle of attack of the rocket. The program will display a warning if
 The maximum speed of the rocket that triggers the rocket’s parachute. The program will display a warning if this speed is exceeded.
 
 #### Launching the Rocket
-To arm the rocket to prepare for launch, click the Arm button. The rocket will move into a state that’s ready for launch. Warnings may appear in the warnings pane depending on the conditions. The Launch button will be activated and pressing so will initiate a countdown. If there are warnings, a dialog box will appear asking for confirmation. The rocket will launch automatically after the countdown.
+To arm the rocket to prepare for launch, click the Arm button. The rocket will move into a state that’s ready for launch. Warnings may appear in the warnings pane depending on the conditions. The Launch button will be activated and pressing so will initiate a countdown. If there are warnings, a dialogue box will appear asking for confirmation. The rocket will launch automatically after the countdown.
 
 ### During Launch
 #### Interacting with real-time data
