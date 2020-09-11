@@ -4,7 +4,7 @@
 ### Setup
 #### Getting familiar with mission control
 Getting familiar with the following diagram will aid your use of the manual, as the terms there will be the same as the terms referencing the user interface shown below. 
-![Mission Control Software](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/raw/5779eb602f296895f4209bad4dba441e7599cd24/Manuals/assets/launch_config.png)
+![Mission Control Software](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/raw/5779eb602f296895f4209bad4dba441e7599cd24/Manuals/assets/user_interface_overview.png)
 
 #### Getting started
 To get started with Mission Control, select a serial device to connect to. The program will analyse the conditions and display warnings on the warnings pane should there be any.
