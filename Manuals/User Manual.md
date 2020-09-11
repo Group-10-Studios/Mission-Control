@@ -4,6 +4,7 @@
 ### Setup
 #### Getting familiar with mission control
 Getting familiar with the following diagram will aid your use of the manual, as the terms there will be the same as the terms referencing the user interface shown below. 
+![Mission Control Software](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/raw/5779eb602f296895f4209bad4dba441e7599cd24/Manuals/assets/launch_config.png)
 
 #### Getting started
 To get started with Mission Control, select a serial device to connect to. The program will analyse the conditions and display warnings on the warnings pane should there be any.
@@ -12,7 +13,8 @@ To get started with Mission Control, select a serial device to connect to. The p
 Before running the actual rocket, it may be a good idea to running a simulation to ensure safe launch. To run a simulation, click the ‘Run Simulation’ button in the bottom left of the window. Select an appropriate CSV file.
 
 #### Launch configurations
-Before launching the rocket, you can edit the Launch Configurations. The parameters will be used by various parts of the program or by the rocket itself. 
+Before launching the rocket, you can edit the Launch Configurations. The parameters will be used by various parts of the program or by the rocket itself.
+![Launch Configurations](https://gitlab.ecs.vuw.ac.nz/course-work/engr300/2020/group10/group-10/-/raw/5779eb602f296895f4209bad4dba441e7599cd24/Manuals/assets/launch_config.png)
 
 ##### Maximum launch angle
 The maximum angle the rocket will launch from. The program will display a warning if this angle is exceeded.
