@@ -19,10 +19,7 @@ import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.communications.model.RocketData;
 import nz.ac.vuw.engr300.communications.model.RocketStatus;
-import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
-import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
-import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
-import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.components.*;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
@@ -191,6 +188,20 @@ public class GraphController {
                 }
                 double value = table.matchValueToColumn(data.get(index), dataType, Double.class);
                 rgC.addValue(timestamp, value);
+            } else if (rg instanceof RocketDataLocation) {
+                RocketDataLocation rgL = (RocketDataLocation) rg;
+                // Runs under the assumption that columns are specifically named this.
+                int indexLat = table.getCsvIndexOf("lat");
+                int indexLong = table.getCsvIndexOf("long");
+
+                // Skip if values don't exist on the table.
+                if (indexLat < 0 || indexLong < 0) {
+                    continue;
+                }
+                double latitude = table.matchValueToColumn(data.get(indexLat), "lat", Double.class);
+                double longitude = table.matchValueToColumn(data.get(indexLong), "long", Double.class);
+
+                rgL.updateAngleDistanceInfo(latitude, longitude);
             }
         }
     }

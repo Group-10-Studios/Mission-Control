@@ -21,6 +21,7 @@ import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.MapImageImporter;
+import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.apache.log4j.Logger;
 
 /**
@@ -133,9 +134,29 @@ public class GraphView implements View {
         this.graphs = new ArrayList<>();
         CsvTableDefinition tableDefinition = CsvConfiguration.getInstance().getTable(tableName);
         GraphMasterList masterList = GraphMasterList.getInstance();
+
+        boolean seenOtherMapDefinition = false;
+
         for (String headerName : tableDefinition.getTitles()) {
             CsvTableDefinition.Column column = tableDefinition.getColumn(headerName);
             if (column.getGraphType() == null) {
+                // Check if we have the other corresponding data field then add a map
+                if (seenOtherMapDefinition && (column.getName().equals("lat") || column.getName().equals("long"))) {
+                    GraphType gt = new GraphType("Location", "map");
+                    masterList.registerGraph(gt);
+                    // Create a new RocketDataLocation graph - Uses the current lat/long from LaunchParameters
+                    // Defaulting to image width/height of 400 as we don't specify this elsewhere and is default.
+                    this.graphs.add(new RocketDataLocation(
+                            LaunchParameters.getInstance().getLatitude().getValue(),
+                            LaunchParameters.getInstance().getLongitude().getValue(),
+                            400, 400,
+                            gt
+                    ));
+                } else if (column.getName().equals("lat") || column.getName().equals("long")) {
+                    // Mark true that we have seen the other field
+                    seenOtherMapDefinition = true;
+                }
+
                 continue;
             }
             switch (column.getGraphType()) {

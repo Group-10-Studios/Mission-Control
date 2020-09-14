@@ -85,6 +85,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         if (apiKeyFound || fileExists) {
             angle = angleBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
             hypotenuse = distanceBetweenTwoLocations(centerLatitude, centerLongitude, newLatitude, newLongitude);
+            // Must manually run layoutChildren to update the map with data.
+            layoutChildren();
         }
     }
 
