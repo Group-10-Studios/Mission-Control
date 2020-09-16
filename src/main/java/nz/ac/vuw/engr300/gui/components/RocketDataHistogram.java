@@ -4,11 +4,13 @@ import javafx.beans.NamedArg;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RocketDataHistogram extends BarChart<String, Number> {
 
@@ -22,18 +24,19 @@ public class RocketDataHistogram extends BarChart<String, Number> {
         this.getYAxis().setLabel(ylabel);
         this.setCategoryGap(0);
         this.setBarGap(0);
-//        data.stream().map(value -> value.doubleValue())
-//        2, 2, 3, 10, 200
-//        ((MAX + 1)) =
-//        199 / 10 = 19.9 => RANGE, with 10 bins in total
-//        1) [0-20) = {1, 2, 3, 10}
-//        2) [10-20) = {}
-//        3) [20-30) = {}
-//        4)
-//        ...
-//        10) [190-200) = {200}
+        List <Double> dataVal = data.stream().map(Number::doubleValue).collect(Collectors.toList());
+        double max = Math.ceil((Collections.max(dataVal) + 1) / 10d) * 10d;
+        double min = Math.floor(Collections.min(dataVal) / 10d) * 10d;
+        double range = (max - min) / NUM_BINS;
+        Double[][] bins = generateGroupings(dataVal, range);
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("Histogram");
 
-
+        for (int i = 0; i < bins.length; i++) {
+           series1.getData().add( new XYChart.Data<>( String.format("[%f - %f): ", (i * range), ((i + 1) * range)),
+                   bins[i].length));
+        }
+        this.getData().addAll(series1);
     }
 
     private static Double[][] generateGroupings(List<Double> data, double range) {
@@ -46,7 +49,6 @@ public class RocketDataHistogram extends BarChart<String, Number> {
                             && value < (finalI + 1) * range)
                     .toArray(Double[]::new);
         }
-
         return bins;
     }
 
@@ -55,7 +57,6 @@ public class RocketDataHistogram extends BarChart<String, Number> {
         List<Double> values = new ArrayList<>(Arrays.asList(0.425d, 13.55462d, 14.1235d, 20.12357d, 39.2357));
         double max = Math.ceil((Collections.max(values) + 1) / 10d) * 10d;
         double min = Math.floor(Collections.min(values) / 10d) * 10d;
-
         double range = (max - min) / NUM_BINS;
         Double[][] bins = generateGroupings(values, range);
 
