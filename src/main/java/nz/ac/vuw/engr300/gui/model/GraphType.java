@@ -45,7 +45,7 @@ public class GraphType {
     /**
      * Get the chart type of this graphtype. This can be used for type-checking for casting to various graphs.
      *
-     * @return String containing the type of graph this matches from the list {@code line, angle}.
+     * @return String containing the type of graph this matches from the list {@code line, angle, map}.
      */
     public String getChart() {
         return this.chartType;
