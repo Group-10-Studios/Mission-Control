@@ -1,44 +1,67 @@
 package nz.ac.vuw.engr300.gui.components;
 
-import javafx.beans.NamedArg;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import nz.ac.vuw.engr300.gui.model.GraphType;
-import java.util.ArrayList;
-import java.util.Arrays;
+import nz.ac.vuw.engr300.gui.util.Colours;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RocketDataHistogram extends BarChart<String, Number> {
+import static nz.ac.vuw.engr300.gui.util.Colours.PRIMARY_COLOUR;
+
+/**
+ * A component that displays rocket data (two double values) as a histogram.
+ *
+ * @author Tim Salisbury, Ahad Rahman, Jake Mai
+ */
+public class RocketDataHistogram extends BarChart<String, Number> implements RocketGraph {
 
     private static final int NUM_BINS = 10;
+    private GraphType type;
+    private boolean isVisible = true;
+    private XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-    public RocketDataHistogram(@NamedArg("xLabel") String xlabel,
-                               @NamedArg("yLabel") String ylabel, GraphType graphType,
-                               List<Number> data) {
+    /**
+     * Constructs a new RocketDataHistogram.
+     * @param graphType The graphType.
+     * @param data The data being displayed.
+     */
+    public RocketDataHistogram(GraphType graphType, List<Number> data) {
         super(new CategoryAxis(), new NumberAxis());
-        this.getXAxis().setLabel(xlabel);
-        this.getYAxis().setLabel(ylabel);
+        this.getXAxis().setLabel("Range");
+        this.getYAxis().setLabel("Frequency");
         this.setCategoryGap(0);
         this.setBarGap(0);
-        List <Double> dataVal = data.stream().map(Number::doubleValue).collect(Collectors.toList());
+        this.setLegendVisible(false);
+        this.setGraphType(graphType);
+
+        List<Double> dataVal = data.stream().map(Number::doubleValue).collect(Collectors.toList());
         double max = Math.ceil((Collections.max(dataVal) + 1) / 10d) * 10d;
         double min = Math.floor(Collections.min(dataVal) / 10d) * 10d;
         double range = (max - min) / NUM_BINS;
         Double[][] bins = generateGroupings(dataVal, range);
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Histogram");
 
         for (int i = 0; i < bins.length; i++) {
-           series1.getData().add( new XYChart.Data<>( String.format("[%f - %f): ", (i * range), ((i + 1) * range)),
+            series.getData().add(new XYChart.Data<>(String.format("[%.1f - %.1f) ", (i * range), ((i + 1) * range)),
                    bins[i].length));
         }
-        this.getData().addAll(series1);
+        this.getData().addAll(series);
+
+        for (Node n : this.lookupAll(".default-color0.chart-bar")) {
+            n.setStyle("-fx-bar-fill: " + Colours.toHexString(PRIMARY_COLOUR) + ";");
+        }
     }
 
+    /**
+     * Generates the bins for the histogram.
+     * @param data The incoming data to be displayed.
+     * @param range The range from the min and max of the data.
+     * @return 2D double array of the bins.
+     */
     private static Double[][] generateGroupings(List<Double> data, double range) {
         Double[][] bins = new Double[NUM_BINS][];
 
@@ -52,20 +75,30 @@ public class RocketDataHistogram extends BarChart<String, Number> {
         return bins;
     }
 
-    public static void main(String[] args) {
-
-        List<Double> values = new ArrayList<>(Arrays.asList(0.425d, 13.55462d, 14.1235d, 20.12357d, 39.2357));
-        double max = Math.ceil((Collections.max(values) + 1) / 10d) * 10d;
-        double min = Math.floor(Collections.min(values) / 10d) * 10d;
-        double range = (max - min) / NUM_BINS;
-        Double[][] bins = generateGroupings(values, range);
-
-        for (int y = 0; y < bins.length; y++) {
-            System.out.printf("[%f - %f): ", (y * range), ((y + 1) * range));
-            for (int x = 0; x < bins[y].length; x++) {
-                System.out.printf("%f ", bins[y][x]);
-            }
-            System.out.println();
-        }
+    @Override
+    public void setGraphType(GraphType g) {
+        this.type = g;
+        this.setTitle(g.getLabel());
     }
+
+    @Override
+    public void clear() {
+        this.series.getData().clear();
+    }
+
+    @Override
+    public GraphType getGraphType() {
+        return this.type;
+    }
+
+    @Override
+    public void toggleVisibility() {
+        this.isVisible = !this.isVisible;
+    }
+
+    @Override
+    public boolean isGraphVisible() {
+        return this.isVisible;
+    }
+
 }
