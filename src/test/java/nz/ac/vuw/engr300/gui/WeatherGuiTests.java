@@ -13,7 +13,8 @@ import org.testfx.framework.junit5.Start;
 
 import java.io.FileNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(ApplicationExtension.class)
 public class WeatherGuiTests {
@@ -55,11 +56,11 @@ public class WeatherGuiTests {
      */
     private void updateWeatherData(String testWeatherFileName) {
         try {
-            WeatherController.getInstance().setWeatherData("src/test/resources/test-weather-data/" +
-                    testWeatherFileName);
+            WeatherController.getInstance().setWeatherData("src/test/resources/test-weather-data/"
+                    + testWeatherFileName);
         } catch (FileNotFoundException e) {
-            fail("Test data file <" + testWeatherFileName +
-                    "> was not found within src/test/resources/test-weather-data");
+            fail("Test data file <" + testWeatherFileName
+                    + "> was not found within src/test/resources/test-weather-data");
         }
 
         // Force a sleep for a period to wait for the GUI thread to update.
@@ -98,6 +99,9 @@ public class WeatherGuiTests {
                 double windSpeed = roundDp((expectedValue * 3.6), 2);
                 expectedString = "Windspeed: " + windSpeed + " km/h";
                 break;
+            }
+            default: {
+                fail("Invalid typeOfWeather provided <" + typeOfWeather + "> with no support to handle");
             }
         }
 
