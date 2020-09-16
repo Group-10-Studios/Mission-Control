@@ -1,5 +1,6 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -87,7 +88,8 @@ public class WeatherController {
     public void setWeatherData(String fileName) throws FileNotFoundException {
         WeatherImporter wi = new WeatherImporter(fileName);
         weather = wi.getWeather(0);
-        this.navigationView.setupWeather();
+        // Must be run on JavaFX thread.
+        Platform.runLater(() -> this.navigationView.setupWeather());
     }
 
     /**
@@ -102,6 +104,7 @@ public class WeatherController {
         if (currentData == null) {
             return;
         }
+        label.setId("WeatherInfo-" + metric);
         switch (metric) {
             case "windspeed":
                 Double winSpeedMetric = Math.round((currentData.getWindSpeed() * 3.6) * 100.0) / 100.0;
