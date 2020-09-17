@@ -131,7 +131,7 @@ public class RocketDataLineChart extends LineChart<Number, Number> implements Ro
          * @param y Y position of node.
          */
         HoveredThresholdNode(double x, double y) {
-            setStyle("-fx-background-color: #4267B2;");
+            setStyle("-fx-background-color: " + Colours.toHexString(PRIMARY_COLOUR) + ";");
             setPrefSize(15, 15);
             setOpacity(0.0);
             final Label label = createDataThresholdLabel(x, y);
