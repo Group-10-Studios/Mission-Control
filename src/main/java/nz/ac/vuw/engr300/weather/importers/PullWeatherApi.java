@@ -73,7 +73,7 @@ public class PullWeatherApi {
             returnedData += bufferedReader.readLine();
 
             // Write data to json
-            String filename = "weather-output.json";
+            String filename = latitude + "-" + longitude +  ".json";
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath + "/" + filename,
                     StandardCharsets.UTF_8));
             writer.write(returnedData);
