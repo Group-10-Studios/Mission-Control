@@ -2,10 +2,16 @@ package nz.ac.vuw.engr300.gui.controllers;
 
 import com.google.gson.Gson;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
@@ -76,11 +82,11 @@ public class InformationController {
      * @param actionEvent
      * @param armIndicator
      */
-    public void onArmDisarm(ActionEvent actionEvent, Label armIndicator) {
+    public void onArmDisarm(ActionEvent actionEvent, Label armIndicator, Button armDisarm) {
         if (armIndicator.getText().equals("Disarmed")) {
-            onArm(actionEvent, armIndicator);
+            onArm(actionEvent, armIndicator, armDisarm);
         } else if (armIndicator.getText().equals("Armed")) {
-            onDisarm(actionEvent, armIndicator);
+            onDisarm(actionEvent, armIndicator, armDisarm);
         } else {
 //            LOGGER.error("Arm/Disarm indicator not found");
             throw new Error("Arm/Disarm indicator not found - was " + armIndicator.getText());
@@ -93,7 +99,7 @@ public class InformationController {
      * @param actionEvent   The action event representing the event.
      * @param armIndicator  The label we want to change.
      */
-    public void onDisarm(ActionEvent actionEvent, Label armIndicator) {
+    public void onDisarm(ActionEvent actionEvent, Label armIndicator, Button armDisarm) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Disarm button pressed");
         alert.setContentText("Are you sure you want to disarm the rocket?");
@@ -101,6 +107,10 @@ public class InformationController {
         if (result.get() != ButtonType.OK) {
             return;
         }
+        armDisarm.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        armDisarm.setText("Arm");
+
         armIndicator.setText("Disarmed");
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Disarm Button Pressed",
                 "The rocket should be disarmed");
@@ -113,7 +123,7 @@ public class InformationController {
      * @param actionEvent   The action event representing the event.
      * @param armIndicator  The label we want to change.
      */
-    public void onArm(ActionEvent actionEvent, Label armIndicator) {
+    public void onArm(ActionEvent actionEvent, Label armIndicator, Button armDisarm) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         if (warnC.hasWarnings() || warnC.hasErrors()) { // If warnings, give a prompt, ask them to click go again.
             alert.setTitle("Confirmation Dialog");
@@ -132,6 +142,9 @@ public class InformationController {
         if (result.get() != ButtonType.OK) {
             return;
         }
+        armDisarm.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        armDisarm.setText("Disarm");
         armIndicator.setText("Armed");
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Arm Button Pressed",
                 "Arming the rocket now!");
