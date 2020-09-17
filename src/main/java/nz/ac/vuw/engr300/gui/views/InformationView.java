@@ -43,8 +43,6 @@ public class InformationView implements View {
 
     public Button armButton = new Button("  Arm   ");
 
-//    public Button disarmButton = new Button("Disarm");
-
     public Button launchConfigButton = new Button("Launch Config");
 
     /**
@@ -53,7 +51,6 @@ public class InformationView implements View {
      */
     public InformationView(GridPane root) {
         this.armButton.setId("btnArm");
-//        this.disarmButton.setId("btnDisarm");
         this.root = root;
         setupRoot();
         setupBatteries();
@@ -101,13 +98,12 @@ public class InformationView implements View {
     private void setupBottomButtons() {
         armButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-//        disarmButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
-//                CornerRadii.EMPTY, Insets.EMPTY)));
+
         launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         armButton.setOnAction(e -> infController.onArmDisarm(e, armIndicator, armButton));
-//        disarmButton.setOnAction(e -> infController.onDisarm(e, armIndicator));
+
         launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));

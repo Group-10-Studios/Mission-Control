@@ -79,8 +79,8 @@ public class InformationController {
     /**
      * Checks which button callback to use, arm or disarm.
      *
-     * @param actionEvent
-     * @param armIndicator
+     * @param actionEvent   The action event representing the event.
+     * @param armIndicator  The label we want to change.
      */
     public void onArmDisarm(ActionEvent actionEvent, Label armIndicator, Button armDisarm) {
         if (armIndicator.getText().equals("Disarmed")) {
@@ -88,7 +88,7 @@ public class InformationController {
         } else if (armIndicator.getText().equals("Armed")) {
             onDisarm(actionEvent, armIndicator, armDisarm);
         } else {
-//            LOGGER.error("Arm/Disarm indicator not found");
+            // LOGGER.error("Arm/Disarm indicator not found");
             throw new Error("Arm/Disarm indicator not found - was " + armIndicator.getText());
         }
     }
