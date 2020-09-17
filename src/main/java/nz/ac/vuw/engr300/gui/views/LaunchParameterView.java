@@ -52,7 +52,8 @@ public class LaunchParameterView implements View {
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
 
-    private static String SAVE_FILE_PATH = "src/main/resources/";
+    private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
+    private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
 
     /**
      * Creates a LaunchParameterView Object.
@@ -159,10 +160,10 @@ public class LaunchParameterView implements View {
             try {
                 MapImageImporter.importImage(KeyImporter.getKey("maps"),
                         parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
-                        SAVE_FILE_PATH + "/map-data/");
+                        MAP_SAVE_FILE_DIR);
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
                         parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
-                        SAVE_FILE_PATH + "/weather-data/");
+                        WEATHER_SAVE_FILE_DIR);
             } catch (Exception exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
