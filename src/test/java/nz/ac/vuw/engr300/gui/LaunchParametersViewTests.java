@@ -152,9 +152,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
     @Test
     public void testExportSimulationDataButton(FxRobot robot) {
         File file = new File("src/test/resources/TestExportedSimulationData.csv");
-        if (file.exists()) {
-            file.delete();
-        }
+        deleteFile(file);
 
         clickLaunchConfig(robot);
 
@@ -170,13 +168,8 @@ public class LaunchParametersViewTests extends ApplicationTest {
         }
 
         assertTrue(file.exists());
-
-        if (file.exists()) {
-            file.delete();
-        }
+        deleteFile(file);
     }
-
-
 
     /**
      * Clicks on the launch config button to bring up the LaunchParametersView screen.
@@ -261,5 +254,15 @@ public class LaunchParametersViewTests extends ApplicationTest {
     private static String formatString(String str) {
         str = str.replaceAll("([A-Z])", " $1");
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    /**
+     * Deletes the file if it exists in the path specified.
+     * @param file The file to be Deleted.
+     */
+    private static void deleteFile(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }
