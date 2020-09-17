@@ -121,6 +121,28 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     /**
+     * Tests LaunchParametersInputField with a string type does not accept strange inputs
+     * and only accepts string values.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testSaveButton(FxRobot robot) {
+        clickLaunchConfig(robot);
+        processTextTest(robot, "#testString-inputField", "asdf");
+        processTextTest(robot, "#testDouble-inputField", "124.0");
+        processTextTest(robot, "#testInteger-inputField", "124");
+//        processTextTest(robot, "#testBoolean-inputField", "124");
+
+        Button saveBtn = robot.lookup("#saveBtn").queryAs(Button.class);
+        robot.clickOn(saveBtn);
+
+        assertEquals("asdf", ((TestLaunchParameters) LaunchParameters.getInstance()).testString.getValue());
+        assertEquals(124.0, ((TestLaunchParameters) LaunchParameters.getInstance()).testDouble.getValue());
+        assertEquals(124, ((TestLaunchParameters) LaunchParameters.getInstance()).testInteger.getValue());
+    }
+
+    /**
      * Clicks on the launch config button to bring up the LaunchParametersView screen.
      *
      * @param robot The injected robot.

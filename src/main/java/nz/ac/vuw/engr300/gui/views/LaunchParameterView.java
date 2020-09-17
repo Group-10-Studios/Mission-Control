@@ -139,6 +139,9 @@ public class LaunchParameterView implements View {
         Button pullData = new Button("Save and Pull data");
         Button exportSimulationParameters = new Button("Export Simulation Parameters");
         Button save = new Button("Save");
+        pullData.setId("pullDataBtn");
+        exportSimulationParameters.setId("exportSimulationParametersBtn");
+        save.setId("saveBtn");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
