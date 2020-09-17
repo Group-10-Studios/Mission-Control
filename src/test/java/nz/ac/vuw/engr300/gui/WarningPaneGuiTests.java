@@ -36,7 +36,7 @@ public class WarningPaneGuiTests {
 
 
     /**
-     * Presses the go button.
+     * Presses the arm/disarm button.
      *
      * @param robot          The robot injected to run tests.
      * @param simulationFile The simulation we wish to run.
@@ -45,26 +45,6 @@ public class WarningPaneGuiTests {
         if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnArm")) {
             fail("Arm button not found!");
         }
-        //        WaitForAsyncUtils.waitForFxEvents(5);
-
-        //        GeneralGuiTests.copyPasteString(robot, simulationFile);
-        //        WaitForAsyncUtils.waitForFxEvents();
-
-        //        return !GeneralGuiTests.checkForAlertPopup(robot);
-        return true;
-    }
-
-    /**
-     * Presses the go button.
-     *
-     * @param robot          The robot injected to run tests.
-     * @param simulationFile The simulation we wish to run.
-     */
-    private static boolean pressDisarm(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnDisarm")) {
-            fail("Disarm button not found!");
-        }
-
         //        WaitForAsyncUtils.waitForFxEvents(5);
 
         //        GeneralGuiTests.copyPasteString(robot, simulationFile);
