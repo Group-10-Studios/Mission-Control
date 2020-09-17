@@ -172,7 +172,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
             fail("Failed to sleep waiting for file to save.");
         }
 
-        assertTrue(file.exists());
+        assertTrue(file.exists(), file.getAbsolutePath() + " file not found.");
         deleteFile(file);
     }
 
