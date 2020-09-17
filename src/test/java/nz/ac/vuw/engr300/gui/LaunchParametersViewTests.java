@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ExtendWith(ApplicationExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LaunchParametersViewTests extends ApplicationTest {
+
+    private static final String TEST_EXPORT_SIMULATION_DATA_FILE = "../../test/resources/TestExportedSimulationData.csv";
 
     private Stage stage;
 
@@ -121,8 +124,8 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     /**
-     * Tests LaunchParametersInputField with a string type does not accept strange inputs
-     * and only accepts string values.
+     * Tests the save button in LaunchParameterView to ensure the values of LaunchParameter is changed once modified
+     * in the configuration screen.
      *
      * @param robot The injected robot.
      */
@@ -132,7 +135,6 @@ public class LaunchParametersViewTests extends ApplicationTest {
         processTextTest(robot, "#testString-inputField", "asdf");
         processTextTest(robot, "#testDouble-inputField", "124.0");
         processTextTest(robot, "#testInteger-inputField", "124");
-//        processTextTest(robot, "#testBoolean-inputField", "124");
 
         Button saveBtn = robot.lookup("#saveBtn").queryAs(Button.class);
         robot.clickOn(saveBtn);
@@ -141,6 +143,40 @@ public class LaunchParametersViewTests extends ApplicationTest {
         assertEquals(124.0, ((TestLaunchParameters) LaunchParameters.getInstance()).testDouble.getValue());
         assertEquals(124, ((TestLaunchParameters) LaunchParameters.getInstance()).testInteger.getValue());
     }
+
+    /**
+     * Tests that the export simulation data button actually exports simulation data.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testExportSimulationDataButton(FxRobot robot) {
+        File file = new File("src/test/resources/TestExportedSimulationData.csv");
+        if (file.exists()) {
+            file.delete();
+        }
+
+        clickLaunchConfig(robot);
+
+        Button exportSimulationDataBtn = robot.lookup("#exportSimulationParametersBtn").queryAs(Button.class);
+        robot.clickOn(exportSimulationDataBtn);
+
+        GeneralGuiTests.copyPasteString(robot, TEST_EXPORT_SIMULATION_DATA_FILE);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            fail("Failed to sleep waiting for file to save.");
+        }
+
+        assertTrue(file.exists());
+
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+
 
     /**
      * Clicks on the launch config button to bring up the LaunchParametersView screen.

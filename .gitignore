@@ -379,3 +379,4 @@ package-lock.json
 package.json
 node_modules/
 checkstyle-8.3.2-all.jar
+/src/test/resources/TestExportedSimulationData.csv
