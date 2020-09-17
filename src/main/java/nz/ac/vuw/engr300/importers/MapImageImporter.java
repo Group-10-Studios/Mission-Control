@@ -123,7 +123,7 @@ public class MapImageImporter {
             fos.write(response);
             fos.close();
         } catch (IOException e) {
-            throw new TomTomRequestFailedException("API request to TomTom failed");
+            throw new TomTomRequestFailedException("API request to TomTom failed", e);
         }
     }
 }

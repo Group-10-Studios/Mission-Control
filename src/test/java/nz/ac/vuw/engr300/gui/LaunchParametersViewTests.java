@@ -171,6 +171,34 @@ public class LaunchParametersViewTests extends ApplicationTest {
         deleteFile(file);
     }
 
+
+//    /**
+//     * Tests that the pull data button actually pulls the data.
+//     *
+//     * @param robot The injected robot.
+//     */
+//    @Test
+//    public void testPullDataButton(FxRobot robot) {
+//        File file = new File("src/test/resources/TestExportedSimulationData.csv");
+//        // deleteFile(file);
+//
+//        clickLaunchConfig(robot);
+//
+//        Button pullDataBtn = robot.lookup("#pullDataBtn").queryAs(Button.class);
+//        robot.clickOn(pullDataBtn);
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            fail("Failed to sleep waiting for file to save.");
+//        }
+//
+//        assertTrue(file.exists());
+//        // deleteFile(file);
+//    }
+
+
+
     /**
      * Clicks on the launch config button to bring up the LaunchParametersView screen.
      *
