@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
 import nz.ac.vuw.engr300.gui.views.HomeView;
+import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -18,6 +19,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +35,16 @@ public class LaunchParametersViewTests extends ApplicationTest {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Class<LaunchParameters> clazz = LaunchParameters.class;
-        Field instanceField = clazz.getDeclaredField("instance");
+        Class<LaunchParameters> launchParametersClass = LaunchParameters.class;
+        Field instanceField = launchParametersClass.getDeclaredField("instance");
         instanceField.setAccessible(true);
         instanceField.set(null, new TestLaunchParameters());
+
+        Class<LaunchParameterView> launchParameterViewCLass = LaunchParameterView.class;
+        Field saveFileField = launchParameterViewCLass.getDeclaredField("SAVE_FILE_PATH");
+        saveFileField.setAccessible(true);
+
+        saveFileField.set(null, "src/test/resources");
 
         primaryStage.requestFocus();
 
