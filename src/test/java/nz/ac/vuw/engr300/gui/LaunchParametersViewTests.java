@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class LaunchParametersViewTests extends ApplicationTest {
 
     private static final String TEST_EXPORT_SIMULATION_DATA_FILE =
-            "../../test/resources/TestExportedSimulationData.csv";
+            "TestExportedSimulationData.csv";
 
     private Stage stage;
 
@@ -53,6 +53,10 @@ public class LaunchParametersViewTests extends ApplicationTest {
         Field saveMapField = launchParameterViewCLass.getDeclaredField("MAP_SAVE_FILE_DIR");
         saveMapField.setAccessible(true);
         saveMapField.set(null, "src/test/resources/test-map-data/");
+
+        Field baseDirectoryField = launchParameterViewCLass.getDeclaredField("BASE_FILE_DIRECTORY");
+        baseDirectoryField.setAccessible(true);
+        baseDirectoryField.set(null, "src/test/resources/");
 
         primaryStage.requestFocus();
 

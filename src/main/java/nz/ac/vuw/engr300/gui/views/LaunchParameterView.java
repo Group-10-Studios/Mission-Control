@@ -54,6 +54,7 @@ public class LaunchParameterView implements View {
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
+    private static String BASE_FILE_DIRECTORY = "src/main/resources";
 
     /**
      * Creates a LaunchParameterView Object.
@@ -286,7 +287,7 @@ public class LaunchParameterView implements View {
     private File getCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a place to save the file.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        fileChooser.setInitialDirectory(new File(BASE_FILE_DIRECTORY));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
         File selectedFile = fileChooser.showSaveDialog(null);
 
