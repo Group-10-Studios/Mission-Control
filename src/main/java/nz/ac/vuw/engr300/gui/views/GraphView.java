@@ -9,6 +9,7 @@ import javafx.scene.layout.Region;
 import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
+import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
