@@ -32,7 +32,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LaunchParametersViewTests extends ApplicationTest {
 
-    private static final String TEST_EXPORT_SIMULATION_DATA_FILE = "../../test/resources/TestExportedSimulationData.csv";
+    private static final String TEST_EXPORT_SIMULATION_DATA_FILE =
+            "../../test/resources/TestExportedSimulationData.csv";
 
     private Stage stage;
 

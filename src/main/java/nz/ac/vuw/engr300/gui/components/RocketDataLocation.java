@@ -57,7 +57,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
         if (!mapFile.exists() && !mapFile.isDirectory()) {
             try {
                 this.apiKey = KeyImporter.getKey("maps");
-                MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth, imageHeight, "src/main/resources/map-data/");
+                MapImageImporter.importImage(apiKey, centerLatitude, centerLongitude, 17, imageWidth,
+                        imageHeight, "src/main/resources/map-data/");
             } catch (TomTomRequestFailedException ex) {
                 fileExists = false;
             } catch (KeyNotFoundException e) {
