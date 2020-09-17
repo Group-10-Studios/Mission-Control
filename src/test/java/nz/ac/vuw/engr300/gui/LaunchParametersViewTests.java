@@ -165,9 +165,10 @@ public class LaunchParametersViewTests extends ApplicationTest {
         robot.clickOn(exportSimulationDataBtn);
 
         GeneralGuiTests.copyPasteString(robot, TEST_EXPORT_SIMULATION_DATA_FILE);
+        robot.type(KeyCode.ENTER);
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             fail("Failed to sleep waiting for file to save.");
         }
