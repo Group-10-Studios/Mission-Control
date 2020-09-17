@@ -71,7 +71,24 @@ public class InformationController {
     }
 
     /**
-     * Basic callback function for when clicking the No Go button.
+     * Checks which button callback to use, arm or disarm.
+     *
+     * @param actionEvent
+     * @param armIndicator
+     */
+    public void onArmDisarm(ActionEvent actionEvent, Label armIndicator) {
+        if (armIndicator.getText().equals("Disarmed")) {
+            onArm(actionEvent, armIndicator);
+        } else if (armIndicator.getText().equals("Armed")) {
+            onDisarm(actionEvent, armIndicator);
+        } else {
+//            LOGGER.error("Arm/Disarm indicator not found");
+            throw new Error("Arm/Disarm indicator not found - was " + armIndicator.getText());
+        }
+    }
+
+    /**
+     * Basic callback function for when clicking the disarm button.
      *
      * @param actionEvent   The action event representing the event.
      * @param armIndicator  The label we want to change.
