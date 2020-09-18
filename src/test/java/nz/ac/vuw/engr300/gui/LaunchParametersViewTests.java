@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
 import nz.ac.vuw.engr300.gui.views.HomeView;
 import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
@@ -38,7 +39,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
 
     private static final String TEST_EXPORT_SIMULATION_DATA_FILE =
             "TestExportedSimulationData.csv";
-    private static final String TEST_WEATHER_DATA = "src/test/resources/test-weather-data/weather-output.json";
+    private static final String TEST_WEATHER_DATA = "src/test/resources/test-weather-data/";
 
     private Stage stage;
 
@@ -62,6 +63,10 @@ public class LaunchParametersViewTests extends ApplicationTest {
         Field baseDirectoryField = launchParameterViewCLass.getDeclaredField("BASE_FILE_DIRECTORY");
         baseDirectoryField.setAccessible(true);
         baseDirectoryField.set(null, "src/test/resources/");
+
+        Field baseDirectoryWeatherField = WeatherController.class.getDeclaredField("BASE_WEATHER_DIR");
+        baseDirectoryWeatherField.setAccessible(true);
+        baseDirectoryWeatherField.set(null, "src/test/resources/test-weather-data/");
 
         primaryStage.requestFocus();
 
@@ -164,7 +169,8 @@ public class LaunchParametersViewTests extends ApplicationTest {
      */
     @Test
     public void testExportSimulationDataButtonWithoutWeatherData(FxRobot robot) {
-        deleteFile(new File(TEST_WEATHER_DATA));
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        deleteFile(new File(TEST_WEATHER_DATA + parameters.getLatitude() + "-" + parameters.getLongitude() + ".json"));
 
         clickLaunchConfig(robot);
 
@@ -185,14 +191,16 @@ public class LaunchParametersViewTests extends ApplicationTest {
         clickLaunchConfig(robot);
         clickOnButton(robot, "#pullDataBtn");
 
-        File testWeather = new File(TEST_WEATHER_DATA);
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        File testWeather = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() +
+                "-" + parameters.getLongitude().getValue() + ".json");
         assertTrue(waitAndCheckForFileToExist(testWeather), "Weather data failed to pull.");
 
         clickOnButton(robot, "#exportSimulationParametersBtn");
 
         GeneralGuiTests.copyPasteString(robot, TEST_EXPORT_SIMULATION_DATA_FILE);
 
-        assertTrue(waitAndCheckForFileToExist(simulationFile));
+        assertTrue(waitAndCheckForFileToExist(simulationFile), simulationFile.getAbsolutePath() + " did not eixst.");
 
         deleteFile(simulationFile);
     }
@@ -205,10 +213,11 @@ public class LaunchParametersViewTests extends ApplicationTest {
      */
     @Test
     public void testPullDataButton(FxRobot robot) {
-        LaunchParameters paramteres = LaunchParameters.getInstance();
-        File weatherData = new File("src/test/resources/test-weather-data/weather-output.json");
-        File mapData = new File("src/test/resources/test-map-data/" + paramteres.getLatitude().getValue()
-                + "-" + paramteres.getLongitude().getValue() + "-map_image.png");
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        File weatherData = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() + "-" +
+                parameters.getLongitude().getValue() + ".json");
+        File mapData = new File("src/test/resources/test-map-data/" + parameters.getLatitude().getValue()
+                + "-" + parameters.getLongitude().getValue() + "-map_image.png");
         deleteFile(weatherData);
         deleteFile(mapData);
 
@@ -216,7 +225,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
 
         clickOnButton(robot, "#pullDataBtn");
 
-        assertTrue(waitAndCheckForFileToExist(weatherData, mapData), "Files did not pull.");
+        waitAndCheckForFileToExist(weatherData, mapData);
 
         assertTrue(weatherData.exists(), weatherData.getAbsolutePath() + " file not found.");
         assertTrue(mapData.exists(), mapData.getAbsolutePath() + " file not found.");
