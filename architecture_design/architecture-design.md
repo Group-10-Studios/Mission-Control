@@ -22,7 +22,7 @@ The purpose of the system is to create a mission control software centre to coll
 
 The Mission Control software will:
 * Provide a GUI (Graphical User Interface) to display real-time data from the rocket pre-flight as well as during flight.
-* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to recommomend the flight to go or not (whether or not they should arm the rocket).
+* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to recommend the flight to go or not (whether or not they should arm the rocket).
 * If a Go is given, communication will be made with the Avionics to fire the thruster and charge the parachute.
 * Record and log all incoming data from the rocket.
 
