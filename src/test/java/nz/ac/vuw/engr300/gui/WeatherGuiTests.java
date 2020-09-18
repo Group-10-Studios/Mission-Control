@@ -54,7 +54,7 @@ public class WeatherGuiTests {
      *
      * @param testWeatherFileName JSON file name to be used within this test.
      */
-    private void updateWeatherData(String testWeatherFileName) {
+    public static void updateWeatherData(String testWeatherFileName) {
         try {
             WeatherController.getInstance().setWeatherData("src/test/resources/test-weather-data/"
                     + testWeatherFileName);

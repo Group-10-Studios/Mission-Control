@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
 import nz.ac.vuw.engr300.gui.views.HomeView;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -74,6 +76,17 @@ public class LaunchParametersViewTests extends ApplicationTest {
         primaryStage.setFullScreen(true);
         HomeView v = new HomeView(primaryStage);
         stage.show();
+        WeatherGuiTests.updateWeatherData("GoodWeather.json");
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxToolkit.cleanupStages();
+        stage.close();
+
+        // Do not remove this - we need to shutdown the controller first after each test
+        // This ensures no duplicate observers which can break graph values.
+        GraphController.getInstance().shutdown();
     }
 
     /**
