@@ -179,18 +179,18 @@ public class LaunchParametersViewTests extends ApplicationTest {
     @Test
     public void testExportSimulationDataButton(FxRobot robot) {
         File simulationFile = new File("src/test/resources/TestExportedSimulationData.csv");
-        File testWeather = new File(TEST_WEATHER_DATA);
+
         deleteFile(simulationFile);
 
         clickLaunchConfig(robot);
         clickOnButton(robot, "#pullDataBtn");
 
+        File testWeather = new File(TEST_WEATHER_DATA);
         assertTrue(waitAndCheckForFileToExist(testWeather), "Weather data failed to pull.");
 
         clickOnButton(robot, "#exportSimulationParametersBtn");
 
         GeneralGuiTests.copyPasteString(robot, TEST_EXPORT_SIMULATION_DATA_FILE);
-
 
         assertTrue(waitAndCheckForFileToExist(simulationFile));
 
