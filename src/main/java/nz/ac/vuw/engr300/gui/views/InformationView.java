@@ -43,8 +43,6 @@ public class InformationView implements View {
 
     public Button armButton = new Button("  Arm   ");
 
-    public Button disarmButton = new Button("Disarm");
-
     public Button launchConfigButton = new Button("Launch Config");
 
     /**
@@ -53,7 +51,6 @@ public class InformationView implements View {
      */
     public InformationView(GridPane root) {
         this.armButton.setId("btnArm");
-        this.disarmButton.setId("btnDisarm");
         this.root = root;
         setupRoot();
         setupBatteries();
@@ -101,13 +98,12 @@ public class InformationView implements View {
     private void setupBottomButtons() {
         armButton.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
-        disarmButton.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
-                CornerRadii.EMPTY, Insets.EMPTY)));
+
         launchConfigButton.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
-        armButton.setOnAction(e -> infController.onArm(e, armIndicator));
-        disarmButton.setOnAction(e -> infController.onDisarm(e, armIndicator));
+        armButton.setOnAction(e -> infController.onArmDisarm(e, armIndicator, armButton));
+
         launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));
@@ -116,7 +112,7 @@ public class InformationView implements View {
 
         // Create and populate go no go at bottom of right hand side
         VBox goNoGoVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
-                armButton, disarmButton, launchConfigButton);
+                armButton, launchConfigButton);
         // Literally just for setting background colour
         goNoGoVBox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
