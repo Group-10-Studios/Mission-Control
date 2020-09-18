@@ -1,10 +1,13 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import nz.ac.vuw.engr300.App;
 import nz.ac.vuw.engr300.gui.components.RocketDataAngle;
+import nz.ac.vuw.engr300.gui.views.NavigationView;
+import nz.ac.vuw.engr300.model.LaunchParameters;
 import nz.ac.vuw.engr300.weather.importers.WeatherImporter;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
 import org.apache.commons.text.WordUtils;
@@ -24,6 +27,10 @@ import java.io.FileNotFoundException;
 public class WeatherController {
     private static final Logger LOGGER = Logger.getLogger(App.class);
     private WeatherData weather; //this is all the weather data stored
+    /**
+     * Store the navigation view for updating directly on information panel content updates.
+     */
+    private NavigationView navigationView;
 
     private static final WeatherController instance = new WeatherController();
 
@@ -32,10 +39,25 @@ public class WeatherController {
      */
     private WeatherController() {
         try {
-            setWeatherData();
+            // Build default names from LaunchParameters.
+            double lat = LaunchParameters.getInstance().getLatitude().getValue();
+            double lon = LaunchParameters.getInstance().getLongitude().getValue();
+            String defaultFileName = buildWeatherFileFromLocation(lat, lon);
+            setWeatherData(defaultFileName);
         } catch (FileNotFoundException e) {
             LOGGER.error("Weather file not found", e);
         }
+    }
+
+    /**
+     * Build a file-name quickly from a lat/long position for place specific weather information.
+     *
+     * @param lat Latitude of this weather data.
+     * @param lon Longitude of this weather data.
+     * @return String containing a full path to the weather data file to be loaded.
+     */
+    public String buildWeatherFileFromLocation(double lat, double lon) {
+        return "src/main/resources/weather-data/" + lat + "-" + lon + ".json";
     }
 
     /**
@@ -47,9 +69,27 @@ public class WeatherController {
         return instance;
     }
 
-    public void setWeatherData() throws FileNotFoundException {
-        WeatherImporter wi = new WeatherImporter("src/main/resources/weather-data/weather-output.json");
+    /**
+     * Register the provided NavigationView to this weather controller to allow updating GUI when
+     * a change is detected within the weather information.
+     *
+     * @param view NavigationView to update on weather data change.
+     */
+    public void registerInformationView(NavigationView view) {
+        this.navigationView = view;
+    }
+
+    /**
+     * Set the weather data within this WeatherController to the latest data value from the provided file.
+     *
+     * @param fileName Full path to the weather data file to be loaded.
+     * @throws FileNotFoundException Thrown if the file specified does not exist.
+     */
+    public void setWeatherData(String fileName) throws FileNotFoundException {
+        WeatherImporter wi = new WeatherImporter(fileName);
         weather = wi.getWeather(0);
+        // Must be run on JavaFX thread.
+        Platform.runLater(() -> this.navigationView.setupWeather());
     }
 
     /**
@@ -64,6 +104,7 @@ public class WeatherController {
         if (currentData == null) {
             return;
         }
+        label.setId("WeatherInfo-" + metric);
         switch (metric) {
             case "windspeed":
                 Double winSpeedMetric = Math.round((currentData.getWindSpeed() * 3.6) * 100.0) / 100.0;

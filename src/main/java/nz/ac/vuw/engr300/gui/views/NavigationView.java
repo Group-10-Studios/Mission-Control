@@ -36,6 +36,7 @@ public class NavigationView implements View {
     public Button pastFlightsButton = new Button("Past Flights");
     public Button runSimButton = new Button("Run Simulation");
     private VBox buttons;
+    private VBox weatherInformation;
 
 
     /**
@@ -51,12 +52,17 @@ public class NavigationView implements View {
         // Equivalent to set up the buttons - requires the view to be attached first to the controller.
         ButtonController.getInstance().updateButtons();
         setupSimulationButtons();
+
+        WeatherController.getInstance().registerInformationView(this);
     }
 
     /**
      * Display the weather at the top of the left panel.
      */
-    private void setupWeather() {
+    public void setupWeather() {
+        // Ensure to remove old weather information if it exists.
+        root.getChildren().remove(this.weatherInformation);
+
         WeatherController weatherC = WeatherController.getInstance();
 
         Label l1 = new Label();
@@ -70,8 +76,9 @@ public class NavigationView implements View {
         weatherC.updateWeatherInfo(l4, "airpressure");
         weatherC.updateWeatherInfo(l5, "forecast");
 
-        VBox weatherVBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), l1, l2, l3, l4, l5);
-        addNodeToGrid(weatherVBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        weatherInformation = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), l1, l2, l3, l4, l5);
+        weatherInformation.setId("weatherInformation");
+        addNodeToGrid(weatherInformation, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
 
     /**

@@ -1,0 +1,42 @@
+{
+    "cod": "200",
+    "message": 0,
+    "cnt": 1,
+    "list": [
+        {
+            "dt": 1599739200,
+            "main": {
+                "temp": 253.26,
+                "feels_like": 245.12,
+                "temp_min": 253.26,
+                "temp_max": 255.21,
+                "pressure": 1000,
+                "sea_level": 1000,
+                "grnd_level": 999,
+                "humidity": 91,
+                "temp_kf": -1.95
+            },
+            "weather": [
+                {
+                    "id": 803,
+                    "main": "Clouds",
+                    "description": "broken clouds",
+                    "icon": "04n"
+                }
+            ],
+            "clouds": {
+                "all": 76
+            },
+            "wind": {
+                "speed": 0.8,
+                "deg": 339
+            },
+            "visibility": 10000,
+            "pop": 0,
+            "sys": {
+                "pod": "n"
+            },
+            "dt_txt": "2020-09-10 12:00:00"
+        }
+    ]
+}

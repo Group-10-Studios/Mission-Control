@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
+import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.importers.KeyImporter;
@@ -165,6 +166,10 @@ public class LaunchParameterView implements View {
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
                         parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
                         WEATHER_SAVE_FILE_DIR);
+                // Update weather data.
+                WeatherController.getInstance().setWeatherData(
+                        WeatherController.getInstance().buildWeatherFileFromLocation(
+                                parameters.getLatitude().getValue(), parameters.getLongitude().getValue()));
             } catch (Exception exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");
