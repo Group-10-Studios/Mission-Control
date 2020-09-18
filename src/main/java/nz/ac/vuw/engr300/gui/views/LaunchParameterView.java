@@ -253,8 +253,8 @@ public class LaunchParameterView implements View {
 
         try {
             WeatherImporter weatherImporter = new WeatherImporter(
-                    WEATHER_SAVE_FILE_DIR + parameters.getLatitude().getValue() +
-                            "-" + parameters.getLongitude().getValue() + ".json");
+                    WEATHER_SAVE_FILE_DIR + parameters.getLatitude().getValue()
+                            + "-" + parameters.getLongitude().getValue() + ".json");
             weatherData = weatherImporter.getWeather(0);
         } catch (FileNotFoundException e) {
             displayPopup(Alert.AlertType.WARNING, "Weather Data not found",

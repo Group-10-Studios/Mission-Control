@@ -192,8 +192,8 @@ public class LaunchParametersViewTests extends ApplicationTest {
         clickOnButton(robot, "#pullDataBtn");
 
         LaunchParameters parameters = LaunchParameters.getInstance();
-        File testWeather = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() +
-                "-" + parameters.getLongitude().getValue() + ".json");
+        File testWeather = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue()
+                + "-" + parameters.getLongitude().getValue() + ".json");
         assertTrue(waitAndCheckForFileToExist(testWeather), "Weather data failed to pull.");
 
         clickOnButton(robot, "#exportSimulationParametersBtn");
@@ -214,8 +214,8 @@ public class LaunchParametersViewTests extends ApplicationTest {
     @Test
     public void testPullDataButton(FxRobot robot) {
         LaunchParameters parameters = LaunchParameters.getInstance();
-        File weatherData = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() + "-" +
-                parameters.getLongitude().getValue() + ".json");
+        File weatherData = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() + "-"
+                + parameters.getLongitude().getValue() + ".json");
         File mapData = new File("src/test/resources/test-map-data/" + parameters.getLatitude().getValue()
                 + "-" + parameters.getLongitude().getValue() + "-map_image.png");
         deleteFile(weatherData);
