@@ -6,8 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.gui.controllers.GraphController;
+import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.model.TestLaunchParameters;
 import nz.ac.vuw.engr300.gui.views.HomeView;
+import nz.ac.vuw.engr300.gui.views.LaunchParameterView;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -15,11 +18,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
+import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,14 +39,36 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LaunchParametersViewTests extends ApplicationTest {
 
+    private static final String TEST_EXPORT_SIMULATION_DATA_FILE =
+            "TestExportedSimulationData.csv";
+    private static final String TEST_WEATHER_DATA = "src/test/resources/test-weather-data/";
+
     private Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Class<LaunchParameters> clazz = LaunchParameters.class;
-        Field instanceField = clazz.getDeclaredField("instance");
+        Class<LaunchParameters> launchParametersClass = LaunchParameters.class;
+        Field instanceField = launchParametersClass.getDeclaredField("instance");
         instanceField.setAccessible(true);
         instanceField.set(null, new TestLaunchParameters());
+
+        Class<LaunchParameterView> launchParameterViewCLass = LaunchParameterView.class;
+
+        Field saveWeatherField = launchParameterViewCLass.getDeclaredField("WEATHER_SAVE_FILE_DIR");
+        saveWeatherField.setAccessible(true);
+        saveWeatherField.set(null, "src/test/resources/test-weather-data/");
+
+        Field saveMapField = launchParameterViewCLass.getDeclaredField("MAP_SAVE_FILE_DIR");
+        saveMapField.setAccessible(true);
+        saveMapField.set(null, "src/test/resources/test-map-data/");
+
+        Field baseDirectoryField = launchParameterViewCLass.getDeclaredField("BASE_FILE_DIRECTORY");
+        baseDirectoryField.setAccessible(true);
+        baseDirectoryField.set(null, "src/test/resources/");
+
+        Field baseDirectoryWeatherField = WeatherController.class.getDeclaredField("BASE_WEATHER_DIR");
+        baseDirectoryWeatherField.setAccessible(true);
+        baseDirectoryWeatherField.set(null, "src/test/resources/test-weather-data/");
 
         primaryStage.requestFocus();
 
@@ -44,6 +76,17 @@ public class LaunchParametersViewTests extends ApplicationTest {
         primaryStage.setFullScreen(true);
         HomeView v = new HomeView(primaryStage);
         stage.show();
+        WeatherGuiTests.updateWeatherData("GoodWeather.json");
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxToolkit.cleanupStages();
+        stage.close();
+
+        // Do not remove this - we need to shutdown the controller first after each test
+        // This ensures no duplicate observers which can break graph values.
+        GraphController.getInstance().shutdown();
     }
 
     /**
@@ -113,13 +156,140 @@ public class LaunchParametersViewTests extends ApplicationTest {
     }
 
     /**
+     * Tests the save button in LaunchParameterView to ensure the values of LaunchParameter is changed once modified
+     * in the configuration screen.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testSaveButton(FxRobot robot) {
+        clickLaunchConfig(robot);
+        processTextTest(robot, "#testString-inputField", "asdf");
+        processTextTest(robot, "#testDouble-inputField", "124.0");
+        processTextTest(robot, "#testInteger-inputField", "124");
+
+        clickOnButton(robot, "#saveBtn");
+
+        assertEquals("asdf", ((TestLaunchParameters) LaunchParameters.getInstance()).testString.getValue());
+        assertEquals(124.0, ((TestLaunchParameters) LaunchParameters.getInstance()).testDouble.getValue());
+        assertEquals(124, ((TestLaunchParameters) LaunchParameters.getInstance()).testInteger.getValue());
+    }
+
+    /**
+     * Tests that the export simulation data button displays an error when there is no weather data.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testExportSimulationDataButtonWithoutWeatherData(FxRobot robot) {
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        deleteFile(new File(TEST_WEATHER_DATA + parameters.getLatitude() + "-" + parameters.getLongitude() + ".json"));
+
+        clickLaunchConfig(robot);
+
+        assertTrue(GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#exportSimulationParametersBtn"));
+    }
+
+    /**
+     * Tests that the export simulation data properly exports the simulation parameters if the weather data is present.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testExportSimulationDataButton(FxRobot robot) {
+        File simulationFile = new File("src/test/resources/TestExportedSimulationData.csv");
+
+        deleteFile(simulationFile);
+
+        clickLaunchConfig(robot);
+        clickOnButton(robot, "#pullDataBtn");
+
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        File testWeather = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue()
+                + "-" + parameters.getLongitude().getValue() + ".json");
+        assertTrue(waitAndCheckForFileToExist(testWeather), "Weather data failed to pull.");
+
+        clickOnButton(robot, "#exportSimulationParametersBtn");
+
+        GeneralGuiTests.copyPasteString(robot, TEST_EXPORT_SIMULATION_DATA_FILE);
+
+        assertTrue(waitAndCheckForFileToExist(simulationFile), simulationFile.getAbsolutePath() + " did not eixst.");
+
+        deleteFile(simulationFile);
+    }
+
+
+    /**
+     * Tests that the pull data button actually pulls the data.
+     *
+     * @param robot The injected robot.
+     */
+    @Test
+    public void testPullDataButton(FxRobot robot) {
+        LaunchParameters parameters = LaunchParameters.getInstance();
+        File weatherData = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() + "-"
+                + parameters.getLongitude().getValue() + ".json");
+        File mapData = new File("src/test/resources/test-map-data/" + parameters.getLatitude().getValue()
+                + "-" + parameters.getLongitude().getValue() + "-map_image.png");
+        deleteFile(weatherData);
+        deleteFile(mapData);
+
+        clickLaunchConfig(robot);
+
+        clickOnButton(robot, "#pullDataBtn");
+
+        waitAndCheckForFileToExist(weatherData, mapData);
+
+        assertTrue(weatherData.exists(), weatherData.getAbsolutePath() + " file not found.");
+        assertTrue(mapData.exists(), mapData.getAbsolutePath() + " file not found.");
+
+        deleteFile(weatherData);
+        deleteFile(mapData);
+    }
+
+    /**
+     * Clicks on a button on screen with the same ID as nodeId.
+     *
+     * @param robot     The robot to use for clicking.
+     * @param nodeId    The button ID.
+     */
+    private static void clickOnButton(FxRobot robot, String nodeId) {
+        Button pullDataBtn = robot.lookup(nodeId).queryAs(Button.class);
+        robot.clickOn(pullDataBtn);
+    }
+
+    /**
+     * Waits for up to 10 seconds for a list of files to exist in the file system. If they appear before
+     * the 10 seconds is up then this function will exit early with true. If the files never show up in
+     * the 10 seconds, then this function will return with false.
+     *
+     * @param files The files to check for existence.
+     * @return      Whether or not the files showed up in the 10 second wait time.
+     */
+    private static boolean waitAndCheckForFileToExist(File... files) {
+        try {
+            WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, () -> {
+                try {
+                    return Arrays.stream(files).allMatch(File::exists);
+                } catch (RuntimeException ignored) {
+                    return false;
+                }
+            });
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+
+
+    /**
      * Clicks on the launch config button to bring up the LaunchParametersView screen.
      *
      * @param robot The injected robot.
      */
     private static void clickLaunchConfig(FxRobot robot) {
-        Button launchConfigBtn = robot.lookup("#launchConfig").queryAs(Button.class);
-        robot.clickOn(launchConfigBtn);
+        clickOnButton(robot, "#launchConfig");
     }
 
     /**
@@ -195,5 +365,15 @@ public class LaunchParametersViewTests extends ApplicationTest {
     private static String formatString(String str) {
         str = str.replaceAll("([A-Z])", " $1");
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    /**
+     * Deletes the file if it exists in the path specified.
+     * @param file The file to be Deleted.
+     */
+    private static void deleteFile(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

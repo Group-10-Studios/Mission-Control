@@ -34,6 +34,8 @@ public class WeatherController {
 
     private static final WeatherController instance = new WeatherController();
 
+    private static String BASE_WEATHER_DIR = "src/main/resources/weather-data/";
+
     /**
      * Private constructor to prevent weather controller being created outside of in here.
      */
@@ -57,7 +59,7 @@ public class WeatherController {
      * @return String containing a full path to the weather data file to be loaded.
      */
     public String buildWeatherFileFromLocation(double lat, double lon) {
-        return "src/main/resources/weather-data/" + lat + "-" + lon + ".json";
+        return BASE_WEATHER_DIR + lat + "-" + lon + ".json";
     }
 
     /**
