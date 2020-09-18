@@ -54,7 +54,7 @@ public class LaunchParameterView implements View {
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
-    private static String BASE_FILE_DIRECTORY = "src/main/resources";
+    private static String BASE_FILE_DIRECTORY = "src/main/resources/";
 
     /**
      * Creates a LaunchParameterView Object.
@@ -248,12 +248,12 @@ public class LaunchParameterView implements View {
 
         try {
             WeatherImporter weatherImporter = new WeatherImporter(
-                    "src/main/resources/weather-data/weather-output.json");
+                    WEATHER_SAVE_FILE_DIR + "weather-output.json");
             weatherData = weatherImporter.getWeather(0);
         } catch (FileNotFoundException e) {
             displayPopup(Alert.AlertType.WARNING, "Weather Data not found",
                     "Please pull weather data.",
-                    "");
+                    e.getMessage());
             return;
         }
 
