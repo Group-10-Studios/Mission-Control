@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  *
  * @author Nathan Duckett
  */
-public class PastFlightImporter implements RocketDataImporter<List<Object>>{
+public class PastFlightImporter implements RocketDataImporter<List<Object>>  {
     private static final Logger LOGGER = Logger.getLogger(SerialCommunications.class);
     private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private final List<String> rawData = new ArrayList<>();
@@ -46,8 +46,10 @@ public class PastFlightImporter implements RocketDataImporter<List<Object>>{
         try {
             // Runs under the assumption the format is "# tableName" with single space splitting table name.
             String tableLine = reader.readLine();
+            checkValidHeader(tableLine);
             this.tableName = tableLine.split(" ")[1];
             String headerLine = reader.readLine();
+            checkValidHeader(headerLine);
             String[] splitHeader = headerLine.split(" ");
             List<String> expectedHeaders = CsvConfiguration.getInstance().getTable(tableName).getTitles();
             // Start from 1 to avoid "#"
@@ -55,8 +57,8 @@ public class PastFlightImporter implements RocketDataImporter<List<Object>>{
                 if (!expectedHeaders.get(i - 1).equals(splitHeader[i])) {
                     LOGGER.error("There was an issue with the past flight file not matching the configuration");
                     LOGGER.error("<" + expectedHeaders.get(i - 1) + "> does not match <" + splitHeader[i] + ">");
-                    throw new RuntimeException("The headers provided in the past flight log file does not" +
-                            " match your communications.json file");
+                    throw new RuntimeException("The headers provided in the past flight log file does not"
+                            + " match your communications.json file");
                 }
             }
 
@@ -124,6 +126,19 @@ public class PastFlightImporter implements RocketDataImporter<List<Object>>{
      */
     public String getTableName() {
         return this.tableName;
+    }
+
+    /**
+     * Check that the extractedLine matches a valid header for the past flights log file.
+     *
+     * @param extractedLine Extracted string from the log file to be checked.
+     */
+    private void checkValidHeader(String extractedLine) {
+        if (extractedLine == null) {
+            throw new RuntimeException("Incoming Past Flight file is not valid");
+        } else if (!extractedLine.startsWith("# ")) {
+            throw new RuntimeException("Past Flight log file does not match the expected comment header layout");
+        }
     }
 
     /**

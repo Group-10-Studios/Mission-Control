@@ -47,7 +47,9 @@ public class GraphController {
     /**
      * Define the SubscriptionType this GraphController will listen to.
      */
-    public enum SubscriptionType { SERIAL, SIMULATION, PAST_FLIGHT };
+    public enum SubscriptionType {
+        SERIAL, SIMULATION, PAST_FLIGHT
+    }
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
