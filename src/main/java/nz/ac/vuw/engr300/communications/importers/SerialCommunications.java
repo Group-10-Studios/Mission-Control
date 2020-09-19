@@ -4,10 +4,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -45,7 +42,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
         }
 
         // Only create this outputFile if the comPort is valid.
-        File outputFile = createOutputFile(incomingTableName,
+        String outputFileName = createOutputFile(incomingTableName,
                 table.getTitles().stream().reduce("", (a,b) -> a + " " + b));
 
         comPort.openPort();
@@ -78,7 +75,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
 
                 in.close();
                 lastFailed = false;
-                recordDataToOutputFile(outputFile, stringBuilder.toString());
+                recordDataToOutputFile(outputFileName, stringBuilder.toString());
             } catch (Exception e) {
                 LOGGER.error("Error reading data within serial communications", e);
                 // Try to recover on next rotation of usage.
@@ -147,11 +144,12 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
      *
      * @param tableName Name of the table this log file represents from the communications.json configuration.
      * @param tableStructure String built of space separated column headers from the table used.
-     * @return Java File opened with the corresponding file to write the content into.
+     * @return FileName of the corresponding log file to write the content into.
      */
-    private File createOutputFile(String tableName, String tableStructure) {
+    private String createOutputFile(String tableName, String tableStructure) {
         File outputFile = new File("incomingRocketData_" + LocalDateTime.now().format(dateFormatter) + ".csv");
         try {
+            // Use PrintStream to create the file using Java File creation above.
             PrintStream printStream = new PrintStream(outputFile);
             printStream.println("# " + tableName);
             // No space necessary as already indented.
@@ -163,24 +161,28 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
             throw new Error("Unable to record data to a log file, please check the logs for more information", e);
         }
 
-        return outputFile;
+        return outputFile.getAbsolutePath();
     }
 
     /**
      * Record data to the incomingRocketData log file with the data values in the form of the dataString.
      *
-     * @param outputFile Output file with the corresponding log file to write the content into.
+     * @param outputFileName Log file name for the corresponding file to write the content into.
      * @param dataString RAW CSV string extracted from the serial communications to write into the log file.
      */
-    private void recordDataToOutputFile(File outputFile, String dataString) {
+    private void recordDataToOutputFile(String outputFileName, String dataString) {
         try {
-            PrintStream printStream = new PrintStream(outputFile);
-            printStream.append(dataString);
-            printStream.close();
+            // Must be opened in append mode using a BufferedWriter for append mode and less IO operations.
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
+            writer.write(dataString);
+            writer.close();
         } catch (FileNotFoundException e) {
-            LOGGER.error("Could not find output file <" + outputFile.getAbsolutePath() + ">", e);
+            LOGGER.error("Could not find output file <" + outputFileName + ">", e);
             LOGGER.error("Please verify this was created previously as it should already exist");
             LOGGER.warn("This could be caused by file permission errors on your machine");
+            throw new RuntimeException("Recording of incoming serial data failed.", e);
+        } catch (IOException e) {
+            LOGGER.error("Error while writing incoming serial data to log file", e);
             throw new RuntimeException("Recording of incoming serial data failed.", e);
         }
     }
