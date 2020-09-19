@@ -177,7 +177,8 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
             // Must be wrapped in an OutputStreamWriter to allow for UTF-8 charset spec to match project restrictions.
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(outputFileName, true), StandardCharsets.UTF_8));
-            writer.write(dataString);
+            // Ensure line break at end
+            writer.write(dataString + "\n");
             writer.close();
         } catch (FileNotFoundException e) {
             LOGGER.error("Could not find output file <" + outputFileName + ">", e);
