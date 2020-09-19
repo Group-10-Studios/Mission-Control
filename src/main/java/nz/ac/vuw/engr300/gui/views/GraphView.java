@@ -205,4 +205,13 @@ public class GraphView implements View {
     public String getTableName() {
         return this.tableName;
     }
+
+    /**
+     * Update the currently equipped table name for incoming data.
+     *
+     * @param tableName String table name this data is mapped against.
+     */
+    public void updateTableName(String tableName) {
+        this.tableName = tableName;
+    }
 }

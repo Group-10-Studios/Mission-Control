@@ -4,7 +4,12 @@ import com.fazecast.jSerialComm.SerialPort;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,6 +21,7 @@ import java.util.function.Consumer;
  * @author Nathan Duckett
  */
 public class SerialCommunications implements RocketDataImporter<List<Object>> {
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss");
     private static final Logger LOGGER = Logger.getLogger(SerialCommunications.class);
     private final List<Consumer<List<Object>>> observers = new ArrayList<>();
     private boolean systemRunning = true;
@@ -32,6 +38,8 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
      */
     private void serialApplicationThread(String incomingTableName) {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(incomingTableName);
+        File outputFile = createOutputFile(incomingTableName,
+                table.getTitles().stream().reduce("", (a,b) -> a + " " + b));
 
         // Break if no serial device is selected.
         if (comPort == null) {
@@ -67,6 +75,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
 
                 in.close();
                 lastFailed = false;
+                recordDataToOutputFile(outputFile, stringBuilder.toString());
             } catch (Exception e) {
                 LOGGER.error("Error reading data within serial communications", e);
                 // Try to recover on next rotation of usage.
@@ -127,5 +136,49 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     @Override
     public void unsubscribeAllObservers() {
         this.observers.clear();
+    }
+
+    /**
+     * Create an incomingRocketData log file which all incoming serial communications will be written into for historical
+     * purposes. This creates a CSV file with a set header containing the tableName and space separated column headers.
+     *
+     * @param tableName Name of the table this log file represents from the communications.json configuration.
+     * @param tableStructure String built of space separated column headers from the table used.
+     * @return Java File opened with the corresponding file to write the content into.
+     */
+    private File createOutputFile(String tableName, String tableStructure) {
+        File outputFile = new File("incomingRocketData_" + LocalDateTime.now().format(dateFormatter) + ".csv");
+        try {
+            PrintStream printStream = new PrintStream(outputFile);
+            printStream.println("# " + tableName);
+            // No space necessary as already indented.
+            printStream.println("#" + tableStructure);
+            printStream.close();
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Could not create output file <" + outputFile.getAbsolutePath() + ">", e);
+            LOGGER.warn("This could be caused by file permission errors on your machine");
+            throw new Error("Unable to record data to a log file, please check the logs for more information", e);
+        }
+
+        return outputFile;
+    }
+
+    /**
+     * Record data to the incomingRocketData log file with the data values in the form of the dataString.
+     *
+     * @param outputFile Output file with the corresponding log file to write the content into.
+     * @param dataString RAW CSV string extracted from the serial communications to write into the log file.
+     */
+    private void recordDataToOutputFile(File outputFile, String dataString) {
+        try {
+            PrintStream printStream = new PrintStream(outputFile);
+            printStream.println(dataString);
+            printStream.close();
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Could not find output file <" + outputFile.getAbsolutePath() + ">", e);
+            LOGGER.error("Please verify this was created previously as it should already exist");
+            LOGGER.warn("This could be caused by file permission errors on your machine");
+            throw new RuntimeException("Recording of incoming serial data failed.", e);
+        }
     }
 }

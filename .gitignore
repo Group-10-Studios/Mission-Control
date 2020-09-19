@@ -379,3 +379,6 @@ package-lock.json
 package.json
 node_modules/
 checkstyle-8.3.2-all.jar
+
+## Log files from serial communications with rocket Flights.
+incomingRocketData_*.csv
