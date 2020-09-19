@@ -38,13 +38,16 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
      */
     private void serialApplicationThread(String incomingTableName) {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(incomingTableName);
-        File outputFile = createOutputFile(incomingTableName,
-                table.getTitles().stream().reduce("", (a,b) -> a + " " + b));
 
         // Break if no serial device is selected.
         if (comPort == null) {
             return;
         }
+
+        // Only create this outputFile if the comPort is valid.
+        File outputFile = createOutputFile(incomingTableName,
+                table.getTitles().stream().reduce("", (a,b) -> a + " " + b));
+
         comPort.openPort();
 
         // Required to set timeout to blocking temporarily while receiving data.
@@ -152,7 +155,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
             PrintStream printStream = new PrintStream(outputFile);
             printStream.println("# " + tableName);
             // No space necessary as already indented.
-            printStream.println("#" + tableStructure);
+            printStream.append("#").append(tableStructure);
             printStream.close();
         } catch (FileNotFoundException e) {
             LOGGER.error("Could not create output file <" + outputFile.getAbsolutePath() + ">", e);
@@ -172,7 +175,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private void recordDataToOutputFile(File outputFile, String dataString) {
         try {
             PrintStream printStream = new PrintStream(outputFile);
-            printStream.println(dataString);
+            printStream.append(dataString);
             printStream.close();
         } catch (FileNotFoundException e) {
             LOGGER.error("Could not find output file <" + outputFile.getAbsolutePath() + ">", e);
