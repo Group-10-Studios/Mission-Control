@@ -5,6 +5,7 @@ import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,14 +37,14 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private void serialApplicationThread(String incomingTableName) {
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(incomingTableName);
 
-        // Break if no serial device is selected.
-        if (comPort == null) {
+        // Break if no serial device is selected or if the table doesn't exist.
+        if (comPort == null || table == null) {
             return;
         }
 
         // Only create this outputFile if the comPort is valid.
         String outputFileName = createOutputFile(incomingTableName,
-                table.getTitles().stream().reduce("", (a,b) -> a + " " + b));
+                table.getTitles().stream().reduce("", (a, b) -> a + " " + b));
 
         comPort.openPort();
 
@@ -59,19 +60,16 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
                     stringBuilder.append(nextValue);
                 }
 
-                // Verify the table is not null in case of bad definition or communications.json
-                if (table != null) {
-                    table.addRow(stringBuilder.toString());
-                    // Send information to observers
-                    List<Object> data = table.latestData();
-                    long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
-                            "timestamp", Long.class);
-                    // Check if previous time stamp exists otherwise start from 0
-                    long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
-                    previousTimeStamp = timestamp;
-                    data.set(0, difference);
-                    observers.forEach(observer -> observer.accept(data));
-                }
+                table.addRow(stringBuilder.toString());
+                // Send information to observers
+                List<Object> data = table.latestData();
+                long timestamp = table.matchValueToColumn(data.get(table.getCsvIndexOf("timestamp")),
+                        "timestamp", Long.class);
+                // Check if previous time stamp exists otherwise start from 0
+                long difference = previousTimeStamp != -1 ? timestamp - previousTimeStamp : 0;
+                previousTimeStamp = timestamp;
+                data.set(0, difference);
+                observers.forEach(observer -> observer.accept(data));
 
                 in.close();
                 lastFailed = false;
@@ -139,7 +137,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     }
 
     /**
-     * Create an incomingRocketData log file which all incoming serial communications will be written into for historical
+     * Create an incomingRocketData log file which all incoming serial communications will be written for historical
      * purposes. This creates a CSV file with a set header containing the tableName and space separated column headers.
      *
      * @param tableName Name of the table this log file represents from the communications.json configuration.
@@ -150,7 +148,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
         File outputFile = new File("incomingRocketData_" + LocalDateTime.now().format(dateFormatter) + ".csv");
         try {
             // Use PrintStream to create the file using Java File creation above.
-            PrintStream printStream = new PrintStream(outputFile);
+            PrintStream printStream = new PrintStream(outputFile, StandardCharsets.UTF_8);
             printStream.println("# " + tableName);
             // No space necessary as already indented.
             printStream.append("#").append(tableStructure);
@@ -159,6 +157,9 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
             LOGGER.error("Could not create output file <" + outputFile.getAbsolutePath() + ">", e);
             LOGGER.warn("This could be caused by file permission errors on your machine");
             throw new Error("Unable to record data to a log file, please check the logs for more information", e);
+        } catch (IOException e) {
+            LOGGER.error("Error while creating log file due to charset violations", e);
+            throw new RuntimeException("Recording of incoming serial data failed.", e);
         }
 
         return outputFile.getAbsolutePath();
@@ -173,7 +174,9 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
     private void recordDataToOutputFile(String outputFileName, String dataString) {
         try {
             // Must be opened in append mode using a BufferedWriter for append mode and less IO operations.
-            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
+            // Must be wrapped in an OutputStreamWriter to allow for UTF-8 charset spec to match project restrictions.
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(outputFileName, true), StandardCharsets.UTF_8));
             writer.write(dataString);
             writer.close();
         } catch (FileNotFoundException e) {
