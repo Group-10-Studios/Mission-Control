@@ -36,7 +36,7 @@ public class WarningPaneGuiTests {
 
 
     /**
-     * Presses the go button.
+     * Presses the arm/disarm button.
      *
      * @param robot          The robot injected to run tests.
      * @param simulationFile The simulation we wish to run.
@@ -55,27 +55,8 @@ public class WarningPaneGuiTests {
     }
 
     /**
-     * Presses the go button.
-     *
-     * @param robot          The robot injected to run tests.
-     * @param simulationFile The simulation we wish to run.
-     */
-    private static boolean pressDisarm(FxRobot robot, String simulationFile) {
-        if (!GeneralGuiTests.checkAndClickOnNodeWithPopup(robot, "#btnDisarm")) {
-            fail("Disarm button not found!");
-        }
-
-        //        WaitForAsyncUtils.waitForFxEvents(5);
-
-        //        GeneralGuiTests.copyPasteString(robot, simulationFile);
-        //        WaitForAsyncUtils.waitForFxEvents();
-
-        //        return !GeneralGuiTests.checkForAlertPopup(robot);
-        return true;
-    }
-
-    /**
-     * Tests that we are able to run the Go button and then run a simulation, and a rocket alert comes up..
+     * Tests that we are able to run the arm button and then
+     * press the disarm button.
      *
      * @param robot The robot injected to run tests.
      */
@@ -84,22 +65,11 @@ public class WarningPaneGuiTests {
         ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
         int initialSize = rocketList.getItems().size();
         if (!pressArm(robot, fullyCorrectTestData)) {
-            fail("Failed to press go");
+            fail("Failed to press arm");
         }
         assertTrue(rocketList.getItems().size() > initialSize);
-    }
-
-    /**
-     * Tests that we are able to press the No Go button and then a rocket alert comes up.
-     *
-     * @param robot The robot injected to run tests.
-     */
-    @Test
-    public void test_press_no_go(FxRobot robot) {
-        ListView rocketList = robot.lookup("#rocketEventList").queryAs(ListView.class);
-        int initialSize = rocketList.getItems().size();
-        if (!pressDisarm(robot, fullyCorrectTestData)) {
-            fail("Failed to press no go");
+        if (!pressArm(robot, fullyCorrectTestData)) {
+            fail("Failed to press disarm");
         }
         assertTrue(rocketList.getItems().size() > initialSize);
     }

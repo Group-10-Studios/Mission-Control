@@ -40,7 +40,7 @@ public class MapImageImporter {
         int zoomLevel = 17; // Number between 0-22
         int imageWidth = 512; // Width of the output file
         int imageHeight = 512; // Height of the output file
-        importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight);
+        importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight, "src/main/resources/map-data/");
     }
 
     /**
@@ -51,8 +51,36 @@ public class MapImageImporter {
      */
     public static void importImage(String apiKey, double latitude, double longitude)
             throws TomTomRequestFailedException {
-        importImage(apiKey, latitude, longitude, 17, 400, 400);
+        importImage(apiKey, latitude, longitude, 17, 400, 400, "src/main/resources/map-data/");
     }
+
+    /**
+     * Download an image with the following information to the application.
+     * @param apiKey TomTom API key.
+     * @param latitude Latitude for center of image.
+     * @param longitude Longitude for center of image.
+     */
+    public static void importImage(String apiKey, double latitude, double longitude, String filepath)
+            throws TomTomRequestFailedException {
+        importImage(apiKey, latitude, longitude, 17, 400, 400, filepath);
+    }
+
+
+    /**
+     * Download an image with the following information to the application.
+     *
+     * @param apiKey TomTom API key.
+     * @param latitude Latitude for center of image.
+     * @param longitude Longitude for center of image.
+     * @param zoomLevel Zoom level of this image - default should be 17
+     * @param imageWidth Image width required
+     * @param imageHeight Image height required.
+     */
+    public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth,
+                                   int imageHeight) throws TomTomRequestFailedException {
+        importImage(apiKey, latitude, longitude, zoomLevel, imageWidth, imageHeight, "src/main/resources/map-data/");
+    }
+
 
     /**
      * Download an image with the following information to the application.
@@ -62,9 +90,10 @@ public class MapImageImporter {
      * @param zoomLevel Zoom level of this image - default should be 17
      * @param imageWidth Image width required
      * @param imageHeight Image height required.
+     * @param filepath The path to save the image.
      */
     public static void importImage(String apiKey, double latitude, double longitude, int zoomLevel, int imageWidth,
-            int imageHeight) throws TomTomRequestFailedException {
+            int imageHeight, String filepath) throws TomTomRequestFailedException {
         if (latitude < -85.0 || latitude > 85.0) {
             throw new IllegalArgumentException("Invalid latitude");
         }
@@ -90,11 +119,11 @@ public class MapImageImporter {
             in.close();
             byte[] response = out.toByteArray();
             String filename = latitude + "-" + longitude + "-map_image.png";
-            FileOutputStream fos = new FileOutputStream("src/main/resources/map-data/" + filename);
+            FileOutputStream fos = new FileOutputStream(filepath + filename);
             fos.write(response);
             fos.close();
         } catch (IOException e) {
-            throw new TomTomRequestFailedException("API request to TomTom failed");
+            throw new TomTomRequestFailedException("API request to TomTom failed", e);
         }
     }
 }

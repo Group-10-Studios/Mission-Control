@@ -53,6 +53,10 @@ public class LaunchParameterView implements View {
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
 
+    private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
+    private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
+    private static String BASE_FILE_DIRECTORY = "src/main/resources/";
+
     /**
      * Creates a LaunchParameterView Object.
      *
@@ -138,6 +142,9 @@ public class LaunchParameterView implements View {
         Button pullData = new Button("Save and Pull data");
         Button exportSimulationParameters = new Button("Export Simulation Parameters");
         Button save = new Button("Save");
+        pullData.setId("pullDataBtn");
+        exportSimulationParameters.setId("exportSimulationParametersBtn");
+        save.setId("saveBtn");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -154,10 +161,11 @@ public class LaunchParameterView implements View {
             saveLaunchParameters();
             try {
                 MapImageImporter.importImage(KeyImporter.getKey("maps"),
-                        parameters.getLatitude().getValue(), parameters.getLongitude().getValue());
+                        parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
+                        MAP_SAVE_FILE_DIR);
                 PullWeatherApi.importWeatherData(KeyImporter.getKey("weather"),
                         parameters.getLatitude().getValue(), parameters.getLongitude().getValue(),
-                        "src/main/resources/weather-data");
+                        WEATHER_SAVE_FILE_DIR);
                 // Update weather data.
                 WeatherController.getInstance().setWeatherData(
                         WeatherController.getInstance().buildWeatherFileFromLocation(
@@ -245,12 +253,13 @@ public class LaunchParameterView implements View {
 
         try {
             WeatherImporter weatherImporter = new WeatherImporter(
-                    "src/main/resources/weather-data/weather-output.json");
+                    WEATHER_SAVE_FILE_DIR + parameters.getLatitude().getValue()
+                            + "-" + parameters.getLongitude().getValue() + ".json");
             weatherData = weatherImporter.getWeather(0);
         } catch (FileNotFoundException e) {
             displayPopup(Alert.AlertType.WARNING, "Weather Data not found",
                     "Please pull weather data.",
-                    "");
+                    e.getMessage());
             return;
         }
 
@@ -284,7 +293,7 @@ public class LaunchParameterView implements View {
     private File getCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a place to save the file.");
-        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        fileChooser.setInitialDirectory(new File(BASE_FILE_DIRECTORY));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
         File selectedFile = fileChooser.showSaveDialog(null);
 
