@@ -46,9 +46,13 @@ public class PastFlightImporter implements RocketDataImporter<List<Object>>  {
         try {
             // Runs under the assumption the format is "# tableName" with single space splitting table name.
             String tableLine = reader.readLine();
+            // Have to assert even though checked in checkValidHeader due to spotbugs
+            assert tableLine != null;
             checkValidHeader(tableLine);
             this.tableName = tableLine.split(" ")[1];
             String headerLine = reader.readLine();
+            // Have to assert even though checked in checkValidHeader due to spotbugs
+            assert headerLine != null;
             checkValidHeader(headerLine);
             String[] splitHeader = headerLine.split(" ");
             List<String> expectedHeaders = CsvConfiguration.getInstance().getTable(tableName).getTitles();
