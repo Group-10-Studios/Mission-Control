@@ -151,7 +151,7 @@ public class SerialCommunications implements RocketDataImporter<List<Object>> {
             PrintStream printStream = new PrintStream(outputFile, StandardCharsets.UTF_8);
             printStream.println("# " + tableName);
             // No space necessary as already indented.
-            printStream.append("#").append(tableStructure);
+            printStream.append("#").append(tableStructure).append("\n");
             printStream.close();
         } catch (FileNotFoundException e) {
             LOGGER.error("Could not create output file <" + outputFile.getAbsolutePath() + ">", e);
