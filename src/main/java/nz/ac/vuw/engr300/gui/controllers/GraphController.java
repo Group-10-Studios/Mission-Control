@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.importers.OpenRocketImporter;
+import nz.ac.vuw.engr300.communications.importers.PastFlightImporter;
 import nz.ac.vuw.engr300.communications.importers.SerialCommunications;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.communications.model.RocketData;
@@ -43,9 +44,14 @@ import java.util.List;
  * @author Nathan Duckett
  */
 public class GraphController {
+    /**
+     * Define the SubscriptionType this GraphController will listen to.
+     */
+    public enum SubscriptionType { SERIAL, SIMULATION, PAST_FLIGHT };
 
     private static final Logger LOGGER = Logger.getLogger(GraphController.class);
     private final OpenRocketImporter simulationImporter = new OpenRocketImporter();
+    private final PastFlightImporter pastFlightImporter = new PastFlightImporter();
     private final SerialCommunications serialCommunications = new SerialCommunications();
     private static final GraphController instance = new GraphController();
     private final List<Stage> extractedGraphs = new ArrayList<>();
@@ -54,7 +60,7 @@ public class GraphController {
     private List<RocketGraph> allGraphs;
     private View view;
     private String highlightedGraphLabel;
-    private boolean simulationMode = false;
+    private SubscriptionType simulationMode = SubscriptionType.SERIAL;
 
     /**
      * Private constructor to prevent Graph controller being created outside of in here.
@@ -150,18 +156,21 @@ public class GraphController {
      * Subscribe all of the graphs to their appropriate data sources from the Simulation Listener.
      *
      * @param tableName String definition name from the communications.json file to match against incoming data.
+     * @param type The SubscriptionType to be used for this graph structure.
      */
-    public void subscribeGraphs(String tableName, boolean isSimulation) {
-        this.simulationMode = isSimulation;
+    public void subscribeGraphs(String tableName, SubscriptionType type) {
+        this.simulationMode = type;
         // Must reset extracted graphs before subscribing new graphs.
         resetExtractedGraphs();
         CsvTableDefinition table = CsvConfiguration.getInstance().getTable(tableName);
-        if (isSimulation) {
+        if (type == SubscriptionType.SIMULATION) {
             simulationImporter.subscribeObserver(this::graphSimulationSubscription);
-        } else {
+        } else if (type == SubscriptionType.SERIAL) {
             serialCommunications.subscribeObserver(data -> graphSubscription(data, table));
+        } else if (type == SubscriptionType.PAST_FLIGHT) {
+            pastFlightImporter.subscribeObserver(data -> graphSubscription(data, table));
         }
-        LOGGER.debug("All graphs have been subscribed");
+        LOGGER.debug("All graphs have been subscribed for " + type);
     }
 
     /**
@@ -358,16 +367,7 @@ public class GraphController {
      */
     public void runSim() {
         simulationImporter.stop();
-
-        // Reconstruct graphs if they are not already in simulation mode
-        if (!this.simulationMode) {
-            // This line will get the updated table name from the GraphView
-            // Currently we want to override this to previousSimulation until the set name is present
-            // this.subscribeGraphs(((GraphView) view).getTableName(), true);
-
-            String tableName = "previousSimulation";
-            ((GraphView) view).updateGraphStructureDefinition(tableName, true);
-        }
+        pastFlightImporter.stop();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a simulation to run.");
@@ -386,6 +386,12 @@ public class GraphController {
                 alert.showAndWait();
                 return;
             }
+            // Reconstruct graphs if they are not already in simulation mode
+            if (this.simulationMode != SubscriptionType.SIMULATION) {
+                String tableName = "previousSimulation";
+                ((GraphView) view).updateGraphStructureDefinition(tableName, SubscriptionType.SIMULATION);
+            }
+
             allGraphs.forEach(RocketGraph::clear);
             simulationImporter.start();
         }
@@ -394,11 +400,48 @@ public class GraphController {
     }
 
     /**
+     * Callback function for past flights in main view, this function will open a
+     * file dialog to select a past flight log file. It will then load it into the
+     * data importer and run the simulation as if it was live.
+     */
+    public void runPastFlights() {
+        simulationImporter.stop();
+        pastFlightImporter.stop();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a simulation to run.");
+        fileChooser.setInitialDirectory(new File("src/main/resources/"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                pastFlightImporter.importData(selectedFile.getAbsolutePath());
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initStyle(StageStyle.DECORATED);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Failed to import PastFlight log data!");
+                alert.setContentText(e.getMessage());
+
+                alert.showAndWait();
+                return;
+            }
+            allGraphs.forEach(RocketGraph::clear);
+
+            ((GraphView) view).updateGraphStructureDefinition(pastFlightImporter.getTableName(),
+                    SubscriptionType.PAST_FLIGHT);
+            pastFlightImporter.start();
+        }
+
+        LOGGER.debug("Past flight started");
+    }
+
+    /**
      * Callback for when the cross at top right gets pressed, this function should
      * be used to cleanup any resources and close any ongoing threads.
      */
     public void shutdown() {
         simulationImporter.stop();
+        pastFlightImporter.stop();
         LOGGER.debug("GraphController shutdown called");
         simulationImporter.unsubscribeAllObservers();
         serialCommunications.stopListening();

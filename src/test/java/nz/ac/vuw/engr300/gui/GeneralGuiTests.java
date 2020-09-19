@@ -297,7 +297,8 @@ public class GeneralGuiTests extends ApplicationTest {
         stage.show();
 
         // Overriding graph configuration to support Serial communications with Simulation
-        v.getGraphView().updateGraphStructureDefinition("graphSim", true);
+        v.getGraphView().updateGraphStructureDefinition("graphSim",
+                GraphController.SubscriptionType.SIMULATION);
     }
 
     @Override
