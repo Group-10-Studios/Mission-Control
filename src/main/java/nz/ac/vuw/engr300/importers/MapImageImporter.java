@@ -118,7 +118,7 @@ public class MapImageImporter {
             out.close();
             in.close();
             byte[] response = out.toByteArray();
-            String filename = latitude + "-" + longitude + "-map_image.png";
+            String filename = latitude + "-" + longitude + "-zoom_level" + zoomLevel + "-map_image.png";
             FileOutputStream fos = new FileOutputStream(filepath + filename);
             fos.write(response);
             fos.close();
