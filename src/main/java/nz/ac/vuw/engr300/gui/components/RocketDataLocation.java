@@ -55,8 +55,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
                               GraphType graphType) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" +
-                zoomLevel + "-map_image.png";
+        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level"
+                + zoomLevel + "-map_image.png";
         File mapFile = new File(filename);
         if (!mapFile.exists() && !mapFile.isDirectory()) {
             try {
@@ -191,8 +191,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             double horizontalPixelsToMove = pixelsToMove(toMoveHorizontal, zoomLevel);
             double verticalPixelsToMove = pixelsToMove(toMoveVertical, zoomLevel);
             Image img = new Image("file:" + filename);
-            if ((Math.abs(horizontalPixelsToMove) > (img.getWidth() / 2.0) - 20.0) ||
-                    (Math.abs(verticalPixelsToMove) > (img.getHeight() / 2.0) - 20.0)) {
+            if ((Math.abs(horizontalPixelsToMove) > (img.getWidth() / 2.0) - 20.0)
+                    || (Math.abs(verticalPixelsToMove) > (img.getHeight() / 2.0) - 20.0)) {
                 System.out.println("here");
                 filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" + 16
                         + "-map_image.png";
