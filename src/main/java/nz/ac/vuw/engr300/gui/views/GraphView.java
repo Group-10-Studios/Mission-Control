@@ -143,21 +143,12 @@ public class GraphView implements View {
                     masterList.registerGraph(gt);
                     // Create a new RocketDataLocation graph - Uses the current lat/long from LaunchParameters
                     // Defaulting to image width/height of 400 as we don't specify this elsewhere and is default.
-
-//                    this.graphs.add(new RocketDataLocation(
-//                            LaunchParameters.getInstance().getLatitude().getValue(),
-//                            LaunchParameters.getInstance().getLongitude().getValue(),
-//                            400, 400,
-//                            gt
-//                    ));
-
-                    RocketDataLocation rdl = new RocketDataLocation(
-                            -41.214844, 174.809040,
+                    this.graphs.add(new RocketDataLocation(
+                            LaunchParameters.getInstance().getLatitude().getValue(),
+                            LaunchParameters.getInstance().getLongitude().getValue(),
                             400, 400,
-                            gt);
-                    this.graphs.add(rdl);
-                    rdl.updateAngleDistanceInfo(-41.214743, 174.810420);
-
+                            gt
+                    ));
                 } else if (column.getName().equals("lat") || column.getName().equals("long")) {
                     // Mark true that we have seen the other field
                     seenOtherMapDefinition = true;

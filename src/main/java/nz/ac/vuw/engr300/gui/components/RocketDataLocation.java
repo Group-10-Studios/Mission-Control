@@ -195,7 +195,8 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             if ((Math.abs(horizontalPixelsToMove) > (img.getWidth() / 2.0) - 20.0) || (Math.abs(verticalPixelsToMove) > (img.getHeight() / 2.0) - 20.0)) {
                 System.out.println("here");
                 filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" + 16 + "-map_image.png";
-                img = new Image("file: " + filename);
+                horizontalPixelsToMove = pixelsToMove(toMoveHorizontal, zoomLevel - 1);
+                verticalPixelsToMove = pixelsToMove(toMoveVertical, zoomLevel - 1);
             }
 
             g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
