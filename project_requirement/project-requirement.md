@@ -151,16 +151,14 @@ rectangle mission-control {
 
 #### Arm/Disarm Functionality
 ```plantuml
-@startuml
 left to right direction
 skinparam packageStyle rectangle
 actor user
 actor rocket
 rectangle mission-control {
   user -- (Prepare Launch)
-  user -> (Arm Rocket) : Click Arm Button
+  user <-> (Arm Rocket) : Click Arm/Disarm Button
   (Prepare Launch) -> (Arm Rocket)    
-  (Arm Rocket) .> user : Click Disarm Button
   (Arm Rocket) .> (Countdown 10 seconds) : User Manually Launches Rocket  
   (Countdown 10 seconds) -> (Rocket in flight) : Rocket Launches
   (Countdown 10 seconds) .> user : Click Disarm Button
