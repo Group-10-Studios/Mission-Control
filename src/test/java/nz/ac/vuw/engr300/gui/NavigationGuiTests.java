@@ -107,7 +107,8 @@ public class NavigationGuiTests extends ApplicationTest {
         stage.show();
 
         // Overriding graph configuration to support Serial communications with Simulation
-        homeView.getGraphView().updateGraphStructureDefinition("graphSim", true);
+        homeView.getGraphView().updateGraphStructureDefinition("graphSim",
+                GraphController.SubscriptionType.SIMULATION);
     }
 
     @Override

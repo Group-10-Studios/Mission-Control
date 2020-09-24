@@ -58,7 +58,7 @@ public class GraphView implements View {
         attachContentToScrollPane();
         this.controller.attachView(this);
         this.controller.setGraphs(graphs);
-        this.controller.subscribeGraphs(tableName, false);
+        this.controller.subscribeGraphs(tableName, GraphController.SubscriptionType.SERIAL);
     }
     
     /**
@@ -105,9 +105,9 @@ public class GraphView implements View {
      * Update the graph definition to match the provided tableName from within the configuration file.
      *
      * @param newTableName Table name to refer against for the graph structure.
-     * @param isSimulation Boolean flag to indicate whether this table is built for simulation mode or serial mode.
+     * @param graphType SubscriptionType of the graphs to know what kind of data they subscribe to.
      */
-    public void updateGraphStructureDefinition(String newTableName, boolean isSimulation) {
+    public void updateGraphStructureDefinition(String newTableName, GraphController.SubscriptionType graphType) {
         this.tableName = newTableName;
         // Clear all registered graphs
         GraphMasterList.getInstance().clearRegisteredGraphs();
@@ -121,7 +121,7 @@ public class GraphView implements View {
         this.contentPane.addGridContents(allGraphs());
         // Update controller with new graphs and subscribe to data
         this.controller.setGraphs(graphs);
-        this.controller.subscribeGraphs(tableName, isSimulation);
+        this.controller.subscribeGraphs(tableName, graphType);
         ButtonController.getInstance().updateButtons();
     }
 
@@ -204,5 +204,14 @@ public class GraphView implements View {
      */
     public String getTableName() {
         return this.tableName;
+    }
+
+    /**
+     * Update the currently equipped table name for incoming data.
+     *
+     * @param tableName String table name this data is mapped against.
+     */
+    public void updateTableName(String tableName) {
+        this.tableName = tableName;
     }
 }

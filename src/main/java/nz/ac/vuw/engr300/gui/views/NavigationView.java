@@ -111,9 +111,10 @@ public class NavigationView implements View {
         //TODO: Find out how to get the graphs
         GraphController graphC = GraphController.getInstance();
         runSimButton.setOnAction(e -> graphC.runSim());
-        pastFlightsButton.setOnAction(e -> graphC.runSim());
+        pastFlightsButton.setOnAction(e -> graphC.runPastFlights());
 
         runSimButton.setId("btnRunSim");
+        pastFlightsButton.setId("btnPastFlights");
 
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10),
                 serialPortComboBox, pastFlightsButton, runSimButton);
