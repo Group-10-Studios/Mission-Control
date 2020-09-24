@@ -55,15 +55,16 @@ public class RocketDataLocation extends Pane implements RocketGraph {
                               GraphType graphType) {
         this.centerLatitude = centerLatitude;
         this.centerLongitude = centerLongitude;
-        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" + zoomLevel + "-map_image.png";
+        filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" +
+                zoomLevel + "-map_image.png";
         File mapFile = new File(filename);
         if (!mapFile.exists() && !mapFile.isDirectory()) {
             try {
                 this.apiKey = KeyImporter.getKey("maps");
-                MapImageImporter.importImage(apiKey, this.centerLatitude, this.centerLongitude, this.zoomLevel, imageWidth,
-                        imageHeight, "src/main/resources/map-data/");
-                MapImageImporter.importImage(apiKey, this.centerLatitude, this.centerLongitude, this.zoomLevel - 1, imageWidth,
-                        imageHeight, "src/main/resources/map-data/");
+                MapImageImporter.importImage(apiKey, this.centerLatitude, this.centerLongitude, this.zoomLevel,
+                        imageWidth, imageHeight, "src/main/resources/map-data/");
+                MapImageImporter.importImage(apiKey, this.centerLatitude, this.centerLongitude, this.zoomLevel - 1,
+                        imageWidth, imageHeight, "src/main/resources/map-data/");
             } catch (TomTomRequestFailedException ex) {
                 fileExists = false;
             } catch (KeyNotFoundException e) {
@@ -189,33 +190,25 @@ public class RocketDataLocation extends Pane implements RocketGraph {
             double toMoveHorizontal = hypotenuse * Math.sin(Math.toRadians(angle));
             double horizontalPixelsToMove = pixelsToMove(toMoveHorizontal, zoomLevel);
             double verticalPixelsToMove = pixelsToMove(toMoveVertical, zoomLevel);
-
             Image img = new Image("file:" + filename);
-
-            if ((Math.abs(horizontalPixelsToMove) > (img.getWidth() / 2.0) - 20.0) || (Math.abs(verticalPixelsToMove) > (img.getHeight() / 2.0) - 20.0)) {
+            if ((Math.abs(horizontalPixelsToMove) > (img.getWidth() / 2.0) - 20.0) ||
+                    (Math.abs(verticalPixelsToMove) > (img.getHeight() / 2.0) - 20.0)) {
                 System.out.println("here");
-                filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" + 16 + "-map_image.png";
+                filename = "src/main/resources/map-data/" + centerLatitude + "-" + centerLongitude + "-zoom_level" + 16
+                        + "-map_image.png";
                 horizontalPixelsToMove = pixelsToMove(toMoveHorizontal, zoomLevel - 1);
                 verticalPixelsToMove = pixelsToMove(toMoveVertical, zoomLevel - 1);
             }
-
             g.drawImage(img, canvas.getWidth() * 0.01, canvas.getHeight() * 0.01, this.graphicsWidth,
                     this.graphicsHeight);
             g.setFill(Color.GREEN);
             g.fillOval(graphicsWidth / 2 - (MARKER_SIZE / 2), graphicsHeight / 2 - (MARKER_SIZE / 2), MARKER_SIZE,
                     MARKER_SIZE); // Center
-
-
             g.setFill(Colours.PRIMARY_COLOUR);
-
-
 
             double x = graphicsWidth / 2 - (MARKER_SIZE / 2) + (int) horizontalPixelsToMove;
             double y = graphicsHeight / 2 - (MARKER_SIZE / 2) - (int) verticalPixelsToMove;
-            System.out.println(img.getWidth() + " " + img.getHeight());
-            System.out.println("Moving Horizontal: " + horizontalPixelsToMove + "     Moving Vertical: " + verticalPixelsToMove);
             double markerOffset = 40;
-
             g.fillOval(x, y, MARKER_SIZE, MARKER_SIZE); // Center
             g.setStroke(Colours.PRIMARY_COLOUR);
             g.strokeOval(x - markerOffset / 2, y - markerOffset / 2, MARKER_SIZE + markerOffset,
