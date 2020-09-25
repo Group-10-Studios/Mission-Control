@@ -9,13 +9,11 @@ import javafx.scene.layout.Region;
 import nz.ac.vuw.engr300.communications.importers.CsvConfiguration;
 import nz.ac.vuw.engr300.communications.model.CsvTableDefinition;
 import nz.ac.vuw.engr300.exceptions.TomTomRequestFailedException;
-import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
-import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
-import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
-import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.components.*;
 import nz.ac.vuw.engr300.gui.controllers.ButtonController;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
 import nz.ac.vuw.engr300.gui.layouts.DynamicGridPane;
+import nz.ac.vuw.engr300.gui.model.BatteryMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
@@ -179,6 +177,12 @@ public class GraphView implements View {
                             gt
                     ));
                     break;
+                }
+                case "battery": {
+                    // Similar to the previous graphs this will register itself to the battery master list.
+                    // This list stores the actual batteries not just references and handles data setting
+                    BatteryMasterList.getInstance().registerBattery(new RocketBattery(column.getName(),
+                            column.getDataUnit()));
                 }
                 default: {
                     // Do nothing as no valid graph was specified.

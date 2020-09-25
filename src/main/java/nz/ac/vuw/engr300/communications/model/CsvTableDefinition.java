@@ -77,6 +77,9 @@ public class CsvTableDefinition {
             case "time": {
                 return new Column(headerKey, "long", "s", null);
             }
+            case "battery": {
+                return new Column(headerKey, "double", "V", "battery");
+            }
             default: {
                 return new Column(headerKey, headerType, null, null);
             }

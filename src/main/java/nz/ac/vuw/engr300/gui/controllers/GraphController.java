@@ -25,6 +25,7 @@ import nz.ac.vuw.engr300.gui.components.RocketDataAngleLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLineChart;
 import nz.ac.vuw.engr300.gui.components.RocketDataLocation;
 import nz.ac.vuw.engr300.gui.components.RocketGraph;
+import nz.ac.vuw.engr300.gui.model.BatteryMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
@@ -168,9 +169,17 @@ public class GraphController {
         if (type == SubscriptionType.SIMULATION) {
             simulationImporter.subscribeObserver(this::graphSimulationSubscription);
         } else if (type == SubscriptionType.SERIAL) {
-            serialCommunications.subscribeObserver(data -> graphSubscription(data, table));
+            // Ensure both graphs are subscribed and battery listeners.
+            serialCommunications.subscribeObserver(data -> {
+                graphSubscription(data, table);
+                BatteryMasterList.getInstance().updateBatteryValue(data, table);
+            });
         } else if (type == SubscriptionType.PAST_FLIGHT) {
-            pastFlightImporter.subscribeObserver(data -> graphSubscription(data, table));
+            // Ensure both graphs are subscribed and battery listeners.
+            pastFlightImporter.subscribeObserver(data -> {
+                graphSubscription(data, table);
+                BatteryMasterList.getInstance().updateBatteryValue(data, table);
+            });
         }
         LOGGER.debug("All graphs have been subscribed for " + type);
     }
