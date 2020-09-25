@@ -183,6 +183,7 @@ public class GraphView implements View {
                     // This list stores the actual batteries not just references and handles data setting
                     BatteryMasterList.getInstance().registerBattery(new RocketBattery(column.getName(),
                             column.getDataUnit()));
+                    break;
                 }
                 default: {
                     // Do nothing as no valid graph was specified.

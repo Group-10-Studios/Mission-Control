@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * Stores all a list of all of the batteries within this application for tracking and updating with configuration.
- *
  * This is similar to the GraphMasterList but instead of storing references to the battery types it will store the
  * actual batteries which should be displayed on the GUI.
  *
