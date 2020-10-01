@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
+import nz.ac.vuw.engr300.gui.model.BatteryMasterList;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 
@@ -31,9 +32,7 @@ import static nz.ac.vuw.engr300.gui.util.UiUtil.addNodeToGrid;
  */
 public class InformationView implements View {
     private final GridPane root;
-
-    public RocketBattery primaryBattery = new RocketBattery();
-    public RocketBattery secondaryBattery = new RocketBattery();
+    private HBox batteryHBox;
 
     public Label goIndicator = new Label("Not safe to launch"); // (warnings/errors exist)
     public Label armIndicator = new Label("Disarmed");
@@ -86,9 +85,12 @@ public class InformationView implements View {
     /**
      * Create new Batteries Level pane on the top right hand side root panel.
      */
-    private void setupBatteries() {
+    public void setupBatteries() {
+        root.getChildren().remove(batteryHBox);
+
         // Create and populate batteries in a HBox
-        HBox batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10), primaryBattery, secondaryBattery);
+        batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10),
+                BatteryMasterList.getInstance().allBatteries());
         addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
     }
 

@@ -14,7 +14,7 @@
       "IMU_rot_z": "angle",
       "internal_temp": "double",
       "height": "height",
-      "battery_status": "double",
+      "battery_status": "battery",
       "rocket_status": "string"
     }
   },
