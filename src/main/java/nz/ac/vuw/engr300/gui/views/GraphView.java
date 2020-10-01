@@ -192,6 +192,7 @@ public class GraphView implements View {
                             gt,
                             new ArrayList<>()
                     ));
+                    break;
                 }
                 default: {
                     // Do nothing as no valid graph was specified.
