@@ -185,6 +185,14 @@ public class GraphView implements View {
                             column.getDataUnit()));
                     break;
                 }
+                case "histogram": {
+                    GraphType gt = new GraphType(column.getName(), column.getGraphType());
+                    masterList.registerGraph(gt);
+                    this.graphs.add(new RocketDataHistogram(
+                            gt,
+                            new ArrayList<>()
+                    ));
+                }
                 default: {
                     // Do nothing as no valid graph was specified.
                     break;

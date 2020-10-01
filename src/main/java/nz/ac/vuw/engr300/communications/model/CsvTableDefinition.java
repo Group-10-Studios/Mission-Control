@@ -80,6 +80,9 @@ public class CsvTableDefinition {
             case "battery": {
                 return new Column(headerKey, "double", "V", "battery");
             }
+            case "histogram": {
+                return new Column(headerKey, "double", null, "histogram");
+            }
             default: {
                 return new Column(headerKey, headerType, null, null);
             }
