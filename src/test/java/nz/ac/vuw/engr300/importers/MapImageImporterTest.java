@@ -68,7 +68,8 @@ public class MapImageImporterTest {
         int imageHeight = 300; // Height of the output file
         try {
             MapImageImporter.importImage(API_KEY, latitude, longitude, zoomLevel, imageWidth, imageHeight);
-            String expectedFilepath = "src/main/resources/map-data/" + latitude + "-" + longitude + "-zoom_level" + zoomLevel + "-map_image.png";
+            String expectedFilepath = "src/main/resources/map-data/" + latitude + "-" + longitude
+                    + "-zoom_level" + zoomLevel + "-map_image.png";
             File f = new File(expectedFilepath);
             assertEquals(true, f.exists());
         } catch (TomTomRequestFailedException e) {
