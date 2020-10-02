@@ -86,7 +86,7 @@ public class LaunchParameterView implements View {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Launch Parameters");
         GridPane root = UiUtil.createGridPane(0, 0, Insets.EMPTY);
-        Scene scene = new Scene(root, 500, 550);
+        Scene scene = new Scene(root, 500, 600);
 
         popupwindow.setResizable(false);
         LaunchParameterView l = new LaunchParameterView(root, callBack);
@@ -142,15 +142,19 @@ public class LaunchParameterView implements View {
         Button pullData = new Button("Save and Pull data");
         Button exportSimulationParameters = new Button("Export Simulation Parameters");
         Button save = new Button("Save");
+        Button importMonteCarlo = new Button("Import Monte Carlo");
         pullData.setId("pullDataBtn");
         exportSimulationParameters.setId("exportSimulationParametersBtn");
         save.setId("saveBtn");
+        importMonteCarlo.setId("importMonteCarloBtn");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         save.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         exportSimulationParameters.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        importMonteCarlo.setBackground(new Background(new BackgroundFill(Color.THISTLE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         save.setOnAction(e -> saveLaunchParameters());
@@ -180,7 +184,7 @@ public class LaunchParameterView implements View {
         });
 
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
-                pullData, save, exportSimulationParameters);
+                pullData, save, exportSimulationParameters, importMonteCarlo);
         // Literally just for setting background colour
         vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
