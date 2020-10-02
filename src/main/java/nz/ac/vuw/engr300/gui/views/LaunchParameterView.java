@@ -205,7 +205,7 @@ public class LaunchParameterView implements View {
         fileChooser.setTitle("Select a place to save the file.");
         fileChooser.setInitialDirectory(new File(BASE_FILE_DIRECTORY));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
-        File selectedFile = fileChooser.showSaveDialog(null);
+        File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile == null) {
             displayPopup(Alert.AlertType.WARNING,

@@ -33,7 +33,7 @@
     }
   },
   "monte-carlo": {
-    "header": {
+    "headers": {
       "Flight Time": "double",
       "Max Altitude": "double",
       "Ground Hit Velocity": "double",
