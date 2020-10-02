@@ -20,6 +20,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.communications.importers.MonteCarloImporter;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
@@ -52,6 +53,8 @@ public class LaunchParameterView implements View {
     private final LaunchParameters parameters;
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
+
+    private final MonteCarloImporter monteCarloImporter = new MonteCarloImporter();
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
@@ -183,6 +186,7 @@ public class LaunchParameterView implements View {
             }
         });
 
+        importMonteCarlo.setOnAction(e -> importMonteCarlo() );
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
                 pullData, save, exportSimulationParameters, importMonteCarlo);
         // Literally just for setting background colour
@@ -193,6 +197,23 @@ public class LaunchParameterView implements View {
         GridPane.setValignment(vbox, VPos.TOP);
 
         contentPane.add(vbox, 0, 1);
+    }
+
+    private void importMonteCarlo() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File(BASE_FILE_DIRECTORY));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile == null) {
+            displayPopup(Alert.AlertType.WARNING,
+                    "File was not selected.", "Please select a valid file", "");
+            return;
+        }
+
+        monteCarloImporter.importData(selectedFile.getAbsolutePath());
     }
 
     /**

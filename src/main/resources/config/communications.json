@@ -41,6 +41,6 @@
       "Landing Longitude": "double",
       "Optimise Launch Angle": "double"
     },
-    "col-split": ", "
+    "col_split": ", "
   }
 }
