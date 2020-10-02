@@ -199,6 +199,9 @@ public class LaunchParameterView implements View {
         contentPane.add(vbox, 0, 1);
     }
 
+    /**
+     * Imports Monte Carlo.
+     */
     private void importMonteCarlo() {
 
         FileChooser fileChooser = new FileChooser();
@@ -213,7 +216,11 @@ public class LaunchParameterView implements View {
             return;
         }
 
-        monteCarloImporter.importData(selectedFile.getAbsolutePath());
+        try {
+            monteCarloImporter.importData(selectedFile.getAbsolutePath());
+        } catch (Exception e) {
+            displayPopup(Alert.AlertType.ERROR, "Failed to load Monte Carlo", "", e.getMessage());
+        }
     }
 
     /**
