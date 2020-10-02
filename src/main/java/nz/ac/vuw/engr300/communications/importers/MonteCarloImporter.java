@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -34,7 +36,7 @@ public class MonteCarloImporter implements RocketDataImporter<List<Object>> {
      */
     public void importData(String filepath) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filepath));
+            BufferedReader reader = new BufferedReader(new FileReader(filepath, StandardCharsets.UTF_8));
             reader.readLine();
 
             String r = "";
@@ -43,12 +45,13 @@ public class MonteCarloImporter implements RocketDataImporter<List<Object>> {
                     throw new RuntimeException("Failed to add row from Monte Carlo");
                 }
             }
-
+            reader.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Monte Carlo simulation not found!", e);
         } catch (IOException e) {
             throw new RuntimeException("IOException", e);
         }
+
     }
 
     @Override

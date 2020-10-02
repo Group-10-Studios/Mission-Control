@@ -144,12 +144,12 @@ public class LaunchParameterView implements View {
 
         Button pullData = new Button("Save and Pull data");
         Button exportSimulationParameters = new Button("Export Simulation Parameters");
-        Button save = new Button("Save");
         Button importMonteCarlo = new Button("Import Monte Carlo");
+        importMonteCarlo.setId("importMonteCarloBtn");
         pullData.setId("pullDataBtn");
         exportSimulationParameters.setId("exportSimulationParametersBtn");
+        Button save = new Button("Save");
         save.setId("saveBtn");
-        importMonteCarlo.setId("importMonteCarloBtn");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -186,7 +186,7 @@ public class LaunchParameterView implements View {
             }
         });
 
-        importMonteCarlo.setOnAction(e -> importMonteCarlo() );
+        importMonteCarlo.setOnAction(e -> importMonteCarlo());
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
                 pullData, save, exportSimulationParameters, importMonteCarlo);
         // Literally just for setting background colour
