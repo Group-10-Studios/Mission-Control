@@ -211,8 +211,7 @@ pages:
 package:
   stage: BuildPackage
   tags:
-    - nathan
-    - linux
+    - shell
   before_script:
     - *build_keys
   dependencies:
