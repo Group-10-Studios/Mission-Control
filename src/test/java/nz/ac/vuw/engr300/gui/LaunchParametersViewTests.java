@@ -230,7 +230,7 @@ public class LaunchParametersViewTests extends ApplicationTest {
         File weatherData = new File(TEST_WEATHER_DATA + parameters.getLatitude().getValue() + "-"
                 + parameters.getLongitude().getValue() + ".json");
         File mapData = new File("src/test/resources/test-map-data/" + parameters.getLatitude().getValue()
-                + "-" + parameters.getLongitude().getValue() + "-map_image.png");
+                + "-" + parameters.getLongitude().getValue() + "-zoom_level17" + "-map_image.png");
         deleteFile(weatherData);
         deleteFile(mapData);
 
