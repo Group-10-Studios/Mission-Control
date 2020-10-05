@@ -41,7 +41,6 @@ public class InformationController {
         } else if (armIndicator.getText().equals("Armed")) {
             onDisarm(actionEvent, armIndicator, armDisarm);
         } else {
-            // LOGGER.error("Arm/Disarm indicator not found");
             throw new Error("Arm/Disarm indicator not found - was " + armIndicator.getText());
         }
     }
@@ -67,7 +66,6 @@ public class InformationController {
         armIndicator.setText("Disarmed");
         warnC.addRocketAlert(RocketAlert.AlertLevel.ALERT, "Disarm Button Pressed",
                 "The rocket should be disarmed");
-        // lbState.setText("No Go State");simula
     }
 
     /**
