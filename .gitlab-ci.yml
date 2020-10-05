@@ -134,8 +134,7 @@ checkstyle:
 unittest:
   stage: UnitTests
   tags:
-    - nathan
-    - linux
+    - shell
   before_script:
     - *build_keys
   script:
@@ -211,8 +210,7 @@ pages:
 package:
   stage: BuildPackage
   tags:
-    - nathan
-    - linux
+    - shell
   before_script:
     - *build_keys
   dependencies:
