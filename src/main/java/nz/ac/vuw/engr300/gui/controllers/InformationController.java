@@ -1,6 +1,5 @@
 package nz.ac.vuw.engr300.gui.controllers;
 
-import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -10,11 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nz.ac.vuw.engr300.communications.model.RocketEvent;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
-import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.importers.JsonExporter;
 import nz.ac.vuw.engr300.model.LaunchParameters;
 
