@@ -20,6 +20,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nz.ac.vuw.engr300.communications.importers.MonteCarloImporter;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
@@ -52,6 +53,8 @@ public class LaunchParameterView implements View {
     private final LaunchParameters parameters;
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
+
+    private final MonteCarloImporter monteCarloImporter = new MonteCarloImporter();
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
@@ -86,7 +89,7 @@ public class LaunchParameterView implements View {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Launch Parameters");
         GridPane root = UiUtil.createGridPane(0, 0, Insets.EMPTY);
-        Scene scene = new Scene(root, 500, 550);
+        Scene scene = new Scene(root, 500, 600);
 
         popupwindow.setResizable(false);
         LaunchParameterView l = new LaunchParameterView(root, callBack);
@@ -141,9 +144,11 @@ public class LaunchParameterView implements View {
 
         Button pullData = new Button("Save and Pull data");
         Button exportSimulationParameters = new Button("Export Simulation Parameters");
-        Button save = new Button("Save");
+        Button importMonteCarlo = new Button("Import Monte Carlo");
+        importMonteCarlo.setId("importMonteCarloBtn");
         pullData.setId("pullDataBtn");
         exportSimulationParameters.setId("exportSimulationParametersBtn");
+        Button save = new Button("Save");
         save.setId("saveBtn");
 
         pullData.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
@@ -151,6 +156,8 @@ public class LaunchParameterView implements View {
         save.setBackground(new Background(new BackgroundFill(Color.PALEVIOLETRED,
                 CornerRadii.EMPTY, Insets.EMPTY)));
         exportSimulationParameters.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+                CornerRadii.EMPTY, Insets.EMPTY)));
+        importMonteCarlo.setBackground(new Background(new BackgroundFill(Color.THISTLE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
 
         save.setOnAction(e -> saveLaunchParameters());
@@ -179,8 +186,9 @@ public class LaunchParameterView implements View {
             }
         });
 
+        importMonteCarlo.setOnAction(e -> importMonteCarlo());
         VBox vbox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), pullDataDescription,
-                pullData, save, exportSimulationParameters);
+                pullData, save, exportSimulationParameters, importMonteCarlo);
         // Literally just for setting background colour
         vbox.setBackground(new Background(new BackgroundFill(Color.CADETBLUE,
                 CornerRadii.EMPTY, Insets.EMPTY)));
@@ -189,6 +197,30 @@ public class LaunchParameterView implements View {
         GridPane.setValignment(vbox, VPos.TOP);
 
         contentPane.add(vbox, 0, 1);
+    }
+
+    /**
+     * Imports Monte Carlo.
+     */
+    private void importMonteCarlo() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a place to save the file.");
+        fileChooser.setInitialDirectory(new File(BASE_FILE_DIRECTORY));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile == null) {
+            displayPopup(Alert.AlertType.WARNING,
+                    "File was not selected.", "Please select a valid file", "");
+            return;
+        }
+
+        try {
+            monteCarloImporter.importData(selectedFile.getAbsolutePath());
+        } catch (Exception e) {
+            displayPopup(Alert.AlertType.ERROR, "Failed to load Monte Carlo", "", e.getMessage());
+        }
     }
 
     /**
