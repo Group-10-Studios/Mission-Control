@@ -1,5 +1,7 @@
 package nz.ac.vuw.engr300.gui.views;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -7,6 +9,7 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.BackgroundFill;
@@ -16,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.gui.components.RocketBattery;
 import nz.ac.vuw.engr300.gui.controllers.InformationController;
 import nz.ac.vuw.engr300.gui.controllers.WarningsController;
@@ -37,7 +41,6 @@ public class InformationView implements View {
     public Label goIndicator = new Label("Not safe to launch"); // (warnings/errors exist)
     public Label armIndicator = new Label("Disarmed");
 
-    public WarningsController warnC;
     public InformationController infController;
 
     public Button armButton = new Button("  Arm   ");
@@ -78,8 +81,26 @@ public class InformationView implements View {
         pnWarnings.setId("pnWarnings");
         addNodeToGrid(pnWarnings, root, 2, 0);
         // For the warnings controller
-        infController = new InformationController(pnWarnings);
+        infController = new InformationController();
+
+        ListView<RocketAlert> list = new ListView<>();
+        list.setId("rocketEventList");
+        list.setStyle("-fx-background-insets: 0 ;");
+        pnWarnings.heightProperty().addListener((observableValue, number, t1) -> {
+            list.setPrefHeight(t1.doubleValue());
+        });
+        pnWarnings.widthProperty().addListener((observableValue, number, t1) -> {
+            list.setPrefWidth(t1.doubleValue());
+        });
+        ObservableList<RocketAlert> items = FXCollections.observableArrayList();
+        list.setItems(items);
+
+        pnWarnings.getChildren().add(list);
+
+        WarningsController.getInstance().setAlertList(items);
         infController.subscribeToSimulation();
+        WarningsController.getInstance().setDataForWarnings();
+        WarningsController.getInstance().checkAllData();
     }
 
     /**
