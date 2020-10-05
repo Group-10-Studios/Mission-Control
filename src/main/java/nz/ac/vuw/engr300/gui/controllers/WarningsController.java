@@ -38,10 +38,17 @@ public class WarningsController {
 
     }
 
+    /**
+     * Gets the only instance of the Controller created (Singleton approach).
+     * @return WarningsController controllerInstance.
+     */
     public static WarningsController getInstance() {
         return controllerInstance;
     }
 
+    /**
+     * Pulling the Weather Data from the Weather Controller for the Warnings Pane.
+     */
     public void setDataForWarnings() {
         if (checkItemsExist()) {
             this.weatherData = WeatherController.getInstance().getWeatherData();
