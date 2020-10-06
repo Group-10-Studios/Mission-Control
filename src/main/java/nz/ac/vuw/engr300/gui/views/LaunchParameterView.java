@@ -38,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Represents the popup window that appears when Launch Configurations button is pressed.
@@ -52,6 +53,7 @@ public class LaunchParameterView implements View {
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
 
     private final MonteCarloImporter monteCarloImporter;
+    private Runnable monteCarloCallback;
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
@@ -63,9 +65,10 @@ public class LaunchParameterView implements View {
      * @param callBack Callback function to accept LaunchParameters.
      * @param monteCarloImporter
      */
-    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack, MonteCarloImporter monteCarloImporter) {
+    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack, MonteCarloImporter monteCarloImporter, Runnable monteCarloCallback) {
         this.root = root;
         this.monteCarloImporter = monteCarloImporter;
+        this.monteCarloCallback = monteCarloCallback;
         this.parameters = LaunchParameters.getInstance();
         this.callBack = callBack;
 
@@ -197,6 +200,8 @@ public class LaunchParameterView implements View {
 
         try {
             monteCarloImporter.importData(selectedFile.getAbsolutePath());
+            monteCarloCallback.run();
+
         } catch (Exception e) {
             displayPopup(Alert.AlertType.ERROR, "Failed to load Monte Carlo", "", e.getMessage());
         }

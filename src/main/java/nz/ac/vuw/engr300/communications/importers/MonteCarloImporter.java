@@ -68,4 +68,8 @@ public class MonteCarloImporter implements RocketDataImporter<List<Object>> {
     public void unsubscribeAllObservers() {
         this.observers.clear();
     }
+
+    public CsvTableDefinition getTable() {
+        return table;
+    }
 }
