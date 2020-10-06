@@ -106,7 +106,7 @@ public class InformationView implements View {
 
         armButton.setOnAction(e -> infController.onArmDisarm(e, armIndicator, armButton));
 
-        launchConfigButton.setOnAction(e -> LaunchParameterView.display((parameters -> {
+        launchConfigButton.setOnAction(e -> ConfigurationView.display((parameters -> {
             infController.saveLaunchParameters(parameters);
         })));
 
