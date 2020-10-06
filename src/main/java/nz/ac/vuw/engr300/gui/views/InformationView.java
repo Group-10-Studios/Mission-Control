@@ -71,6 +71,7 @@ public class InformationView implements View {
         if (infController.hasWarningsOrErrors() == false) {
             goIndicator.setText("No errors exist! (Safe to launch)");
         }
+        WarningsController.getInstance().setWarningCheckStatus(goIndicator);
     }
 
     /**

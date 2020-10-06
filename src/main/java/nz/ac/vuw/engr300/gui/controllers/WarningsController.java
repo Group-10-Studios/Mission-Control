@@ -4,12 +4,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import nz.ac.vuw.engr300.gui.components.RocketAlert;
 import nz.ac.vuw.engr300.weather.model.WeatherData;
+import org.apache.commons.lang3.ObjectUtils;
 
 public class WarningsController {
 
@@ -45,6 +47,12 @@ public class WarningsController {
     public static WarningsController getInstance() {
         return controllerInstance;
     }
+
+    public void setWarningCheckStatus(Label warningCheckStatus) {
+        this.warningCheckStatus = warningCheckStatus;
+    }
+    private Label warningCheckStatus;
+
 
     /**
      * Pulling the Weather Data from the Weather Controller for the Warnings Pane.
@@ -86,6 +94,13 @@ public class WarningsController {
             if (weatherData != null) {
                 checkWeatherCondition();
                 checkWindSpeed();
+            }
+            if (this.warningCheckStatus != null) {
+                if (hasWarnings() || hasErrors()) {
+                    warningCheckStatus.setText("Errors exist! (Not safe to launch)");
+                } else {
+                    warningCheckStatus.setText("No errors exist! (Safe to launch)");
+                }
             }
         }
     }
