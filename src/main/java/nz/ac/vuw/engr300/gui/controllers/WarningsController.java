@@ -25,6 +25,8 @@ public class WarningsController {
     private static final Paint colourRed = Color.web("#ff0000", 0.8);
     private WeatherData weatherData;
 
+    private static final WarningsController controllerInstance = new WarningsController();
+
     @FXML
     private Pane pnWarnings;
 
@@ -32,32 +34,25 @@ public class WarningsController {
 
     private ObservableList<RocketAlert> items;
 
-    /**
-     * Warnings controller will create a list of Rocket Alerts.
-     * E.g for weather or for simulation runs.
-     *
-     * @param p the pane we want to append warnings to.
-     */
-    public WarningsController(Pane p) {
-        this.pnWarnings = p;
-        // anyWarnings = false;
-        ListView<RocketAlert> list = new ListView<>();
-        list.setId("rocketEventList");
-        list.setStyle("-fx-background-insets: 0 ;");
-        p.heightProperty().addListener((observableValue, number, t1) -> {
-            list.setPrefHeight(t1.doubleValue());
-        });
-        p.widthProperty().addListener((observableValue, number, t1) -> {
-            list.setPrefWidth(t1.doubleValue());
-        });
-        items = FXCollections.observableArrayList();
-        list.setItems(items);
+    private WarningsController() {
 
-        pnWarnings.getChildren().add(list);
     }
 
+    /**
+     * Gets the only instance of the Controller created (Singleton approach).
+     * @return WarningsController controllerInstance.
+     */
+    public static WarningsController getInstance() {
+        return controllerInstance;
+    }
+
+    /**
+     * Pulling the Weather Data from the Weather Controller for the Warnings Pane.
+     */
     public void setDataForWarnings() {
-        this.weatherData = WeatherController.getInstance().getWeatherData();
+        if (checkItemsExist()) {
+            this.weatherData = WeatherController.getInstance().getWeatherData();
+        }
     }
 
     /**
@@ -87,11 +82,11 @@ public class WarningsController {
      *
      */
     public void checkAllData() {
-        if (weatherData != null) {
-            checkWeatherCondition();
-            checkWindSpeed();
-        } else {
-            return;
+        if (checkItemsExist()) {
+            if (weatherData != null) {
+                checkWeatherCondition();
+                checkWindSpeed();
+            }
         }
     }
 
@@ -122,14 +117,17 @@ public class WarningsController {
      * @return True if there were any warnings.
      */
     public boolean checkForAnyWarnings() {
-        //ensures that the warnings start off as false before running this method
-        anyWarnings = false;
-        checkWindSpeed();
-        checkWeatherCondition();
+        if (checkItemsExist()) {
+            //ensures that the warnings start off as false before running this method
+            anyWarnings = false;
+            checkWindSpeed();
+            checkWeatherCondition();
 
-        //if there are any warnings after running the check methods, then this returns true
-        //if there were not it returns false.
-        return anyWarnings;
+            //if there are any warnings after running the check methods, then this returns true
+            //if there were not it returns false.
+            return anyWarnings;
+        }
+        return false;
     }
 
     /**
@@ -140,7 +138,9 @@ public class WarningsController {
      * @param description The description of the rocket alert.
      */
     public void addRocketAlert(RocketAlert.AlertLevel alert, String title, String... description) {
-        Platform.runLater(() -> items.add(0, new RocketAlert(alert, title, description)));
+        if (checkItemsExist()) {
+            Platform.runLater(() -> items.add(0, new RocketAlert(alert, title, description)));
+        }
     }
 
     /**
@@ -149,9 +149,11 @@ public class WarningsController {
      * @return True if there were any warnings.
      */
     public boolean hasWarnings() {
-        for (RocketAlert r : items) {
-            if (r.getAlertLevel() == RocketAlert.AlertLevel.WARNING) {
-                return true;
+        if (checkItemsExist()) {
+            for (RocketAlert r : items) {
+                if (r.getAlertLevel() == RocketAlert.AlertLevel.WARNING) {
+                    return true;
+                }
             }
         }
         return false;
@@ -163,12 +165,22 @@ public class WarningsController {
      * @return True if there were any errors.
      */
     public boolean hasErrors() {
-        for (RocketAlert r : items) {
-            if (r.getAlertLevel() == RocketAlert.AlertLevel.ERROR) {
-                return true;
+        if (checkItemsExist()) {
+            for (RocketAlert r : items) {
+                if (r.getAlertLevel() == RocketAlert.AlertLevel.ERROR) {
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    public void setAlertList(ObservableList<RocketAlert> items) {
+        this.items = items;
+    }
+
+    public boolean checkItemsExist() {
+        return items != null;
     }
 }
 
