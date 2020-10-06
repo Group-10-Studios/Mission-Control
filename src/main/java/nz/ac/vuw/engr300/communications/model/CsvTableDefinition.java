@@ -177,6 +177,28 @@ public class CsvTableDefinition {
     }
 
     /**
+     * Gets a list of objects representing the contents within a col specified.
+     * @param colIndex Index of the col to retrieve data from.
+     * @return List of objects store in this col.
+     */
+    public List<Object> getColumnData(int colIndex) {
+        List<Object> data = new ArrayList<>();
+        for (List<Object> list : this.contentRows ) {
+            data.add(list.get(colIndex));
+        }
+        return data;
+    }
+
+    /**
+     * Gets a list of objects representing the contents within a col specified.
+     * @param col Name of the col to retrieve data from.
+     * @return List of objects store in this col.
+     */
+    public List<Object> getColumnData(String col){
+        return getColumnData(getCsvIndexOf(col));
+    }
+
+    /**
      * Get a column instance containing its' name, and type.
      *
      * @param columnName Name of the column to be retrieved.
