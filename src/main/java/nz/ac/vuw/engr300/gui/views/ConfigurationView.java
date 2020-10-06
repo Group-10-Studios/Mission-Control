@@ -2,7 +2,6 @@ package nz.ac.vuw.engr300.gui.views;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -11,6 +10,7 @@ import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.MonteCarloImporter;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
 import nz.ac.vuw.engr300.model.LaunchParameters;
+
 import java.util.function.Consumer;
 
 /**
@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  */
 public class ConfigurationView implements View {
 
-    private static MonteCarloImporter monteCarloImporter = new MonteCarloImporter();
+    private static final MonteCarloImporter monteCarloImporter = new MonteCarloImporter();
     private static MonteCarloView monteCarloView;
     private static Tab monteCarloTab;
 
@@ -45,7 +45,6 @@ public class ConfigurationView implements View {
         Tab launchParameterTab = new Tab("Launch Parameters", launchParametersGrid);
         monteCarloTab = new Tab("Monte Carlo", monteCarloGrid);
 
-        LaunchParameterView l = new LaunchParameterView(launchParametersGrid, callBack, monteCarloImporter, ConfigurationView::setMonteCarloTabEnabled);
 
         monteCarloView = new MonteCarloView(monteCarloGrid, monteCarloImporter);
 
@@ -56,9 +55,12 @@ public class ConfigurationView implements View {
         popupwindow.setResizable(false);
 
         popupwindow.setScene(scene);
+
+        LaunchParameterView l = new LaunchParameterView(launchParametersGrid, callBack, monteCarloImporter,
+                ConfigurationView::setMonteCarloTabEnabled);
         l.initialize();
 
-        if (monteCarloImporter.getTable().size() == 0){
+        if (monteCarloImporter.getTable().size() == 0) {
             monteCarloTab.setDisable(true);
         } else {
             monteCarloView.initialize();
@@ -69,7 +71,7 @@ public class ConfigurationView implements View {
     /**
      * Callback function for enabling and populating the monte carlo tab.
      */
-    private static void setMonteCarloTabEnabled(){
+    private static void setMonteCarloTabEnabled() {
         monteCarloTab.setDisable(false);
         monteCarloView.initialize();
     }

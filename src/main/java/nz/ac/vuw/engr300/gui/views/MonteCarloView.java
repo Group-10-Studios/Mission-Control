@@ -21,6 +21,7 @@ public class MonteCarloView implements View {
 
 
     /**
+     *  Constructor for monte carlo view.
      *
      * @param root                  The root tab to populate.
      * @param monteCarloImporter    The monte carlo importer.
@@ -40,12 +41,12 @@ public class MonteCarloView implements View {
         RocketDataHistogram altitudeHistogram = new RocketDataHistogram(
                 new GraphType("Monte Carlo Max Altitude", "histogram"),
                 monteCarloImporter.getTable().getColumnData("Max Altitude").stream().mapToDouble(object
-                        -> (Double)object).boxed().collect(Collectors.toList()));
+                    -> (Double) object).boxed().collect(Collectors.toList()));
 
         RocketDataHistogram groundHitSpeedHistogram = new RocketDataHistogram(
                 new GraphType("Monte Carlo Ground Hit Velocity", "histogram"),
                 monteCarloImporter.getTable().getColumnData("Ground Hit Velocity").stream().mapToDouble(object
-                        -> (Double)object).boxed().collect(Collectors.toList()));
+                    -> (Double) object).boxed().collect(Collectors.toList()));
 
         root.add(altitudeHistogram, 0, 0);
         root.add(groundHitSpeedHistogram, 0, 1);

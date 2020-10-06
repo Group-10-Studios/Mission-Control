@@ -26,7 +26,7 @@ public class CsvTableDefinition {
      * Create a new Table definition from the provided JSON object mapping provided (as defined in the config)
      * and with the set column separator for this instance.
      *
-     * @param mapping JsonObject extracted from the config containing a mapping of headings to data types.
+     * @param mapping         JsonObject extracted from the config containing a mapping of headings to data types.
      * @param columnSeparator String column separator to delimit this CSV inputted.
      */
     public CsvTableDefinition(JsonElement mapping, String columnSeparator) {
@@ -55,7 +55,7 @@ public class CsvTableDefinition {
     /**
      * Define defaults for incoming data shortcuts within the CSV definition.
      *
-     * @param headerKey The name of the data column.
+     * @param headerKey  The name of the data column.
      * @param headerType The string representation of the column type. It either matches a pre-determined set
      *                   or it is custom set to the data type the value is.
      * @return Column instance containing the set data types for the header.
@@ -144,7 +144,7 @@ public class CsvTableDefinition {
      * Parse the content into the appropriate object based on the header definition.
      *
      * @param content String content extracted from the CSV to be set.
-     * @param index Index of the column to match this content against.
+     * @param index   Index of the column to match this content against.
      * @return Formatted object containing the value from the content.
      */
     private Object parseObject(String content, int index) {
@@ -178,12 +178,13 @@ public class CsvTableDefinition {
 
     /**
      * Gets a list of objects representing the contents within a col specified.
+     *
      * @param colIndex Index of the col to retrieve data from.
      * @return List of objects store in this col.
      */
     public List<Object> getColumnData(int colIndex) {
         List<Object> data = new ArrayList<>();
-        for (List<Object> list : this.contentRows ) {
+        for (List<Object> list : this.contentRows) {
             data.add(list.get(colIndex));
         }
         return data;
@@ -191,10 +192,11 @@ public class CsvTableDefinition {
 
     /**
      * Gets a list of objects representing the contents within a col specified.
+     *
      * @param col Name of the col to retrieve data from.
      * @return List of objects store in this col.
      */
-    public List<Object> getColumnData(String col){
+    public List<Object> getColumnData(String col) {
         return getColumnData(getCsvIndexOf(col));
     }
 
@@ -263,10 +265,10 @@ public class CsvTableDefinition {
      * Match a value to the column and cast the object. This is designed to be a safe method to cast the
      * returning objects to their corresponding types without causing too many difficulties.
      *
-     * @param rawObject Raw Object extracted from the list of objects retrieved for the row.
+     * @param rawObject  Raw Object extracted from the list of objects retrieved for the row.
      * @param columnName Name of the column the value belongs to.
-     * @param typeCast The expected class this should be typed to.
-     * @param <T> The type of the class e.g. Float,String which casts the object.
+     * @param typeCast   The expected class this should be typed to.
+     * @param <T>        The type of the class e.g. Float,String which casts the object.
      * @return The object casted to the type provided.
      */
     public <T> T matchValueToColumn(Object rawObject, String columnName, Class<T> typeCast) {
@@ -300,9 +302,9 @@ public class CsvTableDefinition {
         /**
          * Create a new column.
          *
-         * @param name String friendly name of the column
-         * @param type String data type stored within this column
-         * @param dataUnit String dataUnit to display within the graph axis'.
+         * @param name      String friendly name of the column
+         * @param type      String data type stored within this column
+         * @param dataUnit  String dataUnit to display within the graph axis'.
          * @param graphType String type of graph this column should create if one (e.g. lineChart/angle)
          */
         public Column(String name, String type, String dataUnit, String graphType) {
@@ -314,6 +316,7 @@ public class CsvTableDefinition {
 
         /**
          * Get the name of this column.
+         *
          * @return Friendly name to define this column.
          */
         public String getName() {
@@ -322,6 +325,7 @@ public class CsvTableDefinition {
 
         /**
          * Get the corresponding class which refers to the datatype stored within this column.
+         *
          * @return Class which the data should be a type of in this column.
          */
         public Class<?> getCorrespondingClass() {
@@ -359,7 +363,7 @@ public class CsvTableDefinition {
          * Get the type of graph which this data should be displayed on versus time.
          *
          * @return String containing the type of graph this data should be displayed on versus time,
-         *         this will return null if this data shouldn't be on a graph.
+         *          this will return null if this data shouldn't be on a graph.
          */
         public String getGraphType() {
             return this.graphType;
