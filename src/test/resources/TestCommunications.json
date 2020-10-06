@@ -32,5 +32,16 @@
       "accValue": "line-accel",
       "altitudeValue": "height"
     }
+  },
+  "monte-carlo": {
+    "headers": {
+      "Flight Time": "double",
+      "Max Altitude": "double",
+      "Ground Hit Velocity": "double",
+      "Landing Latitude": "double",
+      "Landing Longitude": "double",
+      "Optimise Launch Angle": "double"
+    },
+    "col_split": ", "
   }
 }
