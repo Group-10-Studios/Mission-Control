@@ -66,9 +66,11 @@ The simulation communication is expected to be performed using a Software interf
 **What is the product?**
  The product that we are creating is a Mission Control Software for rocket simulations. Our product will be portable, and accessible offline, so that we are able to access it while launching rockets on a field. The software will display real time data of a flight simulation if it is taking place, as well as details of previous flight simulations. This data is crucial for flight simulations as is explained further. 
 
-**“Go/No Go” functionality:**
- The “Go/No go” functionality takes all the details available before a launch and makes a decision on whether or not the rocket is safe to launch. We would mainly look at two things, the local current weather conditions and the Monte Carlo Rocket Simulations. Our program would look at the current weather forecast, and decide if it is still safe to launch. I.e it is not raining, hailing, snowing or too windy to launch.  Our program would also look at the results from the Monte Carlo Rocket Simulations and decide if it is safe to launch. There should be a certain percentages of simulations passing for the program to determine if it is still safe to launch. Both of these details are highlighted further. 
-Even though the program gives the "Go/No go" call, we will have a "Ready" button which a member of the mission control team would have to press manually. This is in place to ensure safety for only when we are ready to launch.
+**"Go/No Go” recommendation:**
+ The "Go/No Go” recommendation takes all the details available before a launch and makes a decision on recommending whether or not the rocket is safe to launch. We would mainly look at two things, the local current weather conditions and the Monte Carlo Rocket Simulations. Our program would look at the current weather forecast, and decide if it is still safe to launch. I.e it is not raining, hailing, snowing or too windy to launch.  Our program would also look at the results from the Monte Carlo Rocket Simulations and decide if it is safe to launch. There should be a certain percentages of simulations passing for the program to determine if it is still safe to launch. Both of these details are highlighted further.
+
+ **"Arm/Disarm” functionality:**
+ The "Arm/Disarm” functionality takes allows the user to decide whether or not the rocket should be ready to launch or not. The user will have recommendations on the top right hand side of the screen. This will show if the user is recommended to go or not go. It will also show if the rocket is currently in the arm or the disarm state. The user will be able to press one button (which alternates). This button will Arm the rocket if it is disarmed at that instance, or Disarm the rocket if it is Armed at that instance. Only when the rocket is armed is when the user should be able to launch the rocket. The user will get a pop up asking if they want to arm the rocket, and will let them know if it is recommended or not. 
 
 **Current software state:**
  Our product will show the current software state, which shows what the rocket is currently doing. The software will also need to show if the rocket is about to launch so that the avionics can arm the parachute ejection charges. It will show the current altitude of the rocket in real time to show how high the rocket gets. 
@@ -77,7 +79,7 @@ Even though the program gives the "Go/No go" call, we will have a "Ready" button
  As we said before, as an extension we may like to use the wind speed and the monte-carlo simulation to determine an upward trajectory so that we do not veer too far away from the launch site. For this we would also use a GPS tracker for the rocket to determine its location during a real time flight and calculate if we need to make any changes to our calculations. 
 
 **Adding local current weather conditions:**
- For our rocket launch we would need to take the local current weather conditions into consideration. This does not only include the forecast and checking if it is raining for the “Go/No Go” functionality, but also heavily looks at the wind speed, and how this would affect the in flight calculations. 
+ For our rocket launch we would need to take the local current weather conditions into consideration. This does not only include the forecast and checking if it is raining for the “Arm/Disarm” functionality, but also heavily looks at the wind speed, and how this would affect the in flight calculations. 
 Our software could potentially go a step further using its wind speed. We expect to use this wind speed into our calculations, so that the rocket does not veer too far away from the exact spot it was launched from. We also expect to use the Monte Carlo Simulation, to determine an upward trajectory, which will be discussed later on. 
 We will be looking at the weather using OpenWeatherMap, and their free 3 hour API. This means that we can only access the weather every 3 hours.
 
@@ -147,23 +149,20 @@ rectangle mission-control {
 @enduml
 ```
 
-#### Go/No go Functionality
+#### Arm/Disarm Functionality
 ```plantuml
-@startuml
 left to right direction
 skinparam packageStyle rectangle
 actor user
 actor rocket
 rectangle mission-control {
   user -- (Prepare Launch)
-  user -> (Click Go) : Click Go Button
-  (Prepare Launch) .> (Click Go)
-  (Click Go) -> (Arm Rocket)
-  (Arm Rocket) -> rocket
-  (Arm Rocket) .> (Countdown 10 seconds)
-  (Countdown 10 seconds) .> user : Click No Go Button
-  (Countdown 10 seconds) -> (Launch Rocket)
-  (Launch Rocket) -> rocket
+  user <-> (Arm Rocket) : Click Arm/Disarm Button
+  (Prepare Launch) -> (Arm Rocket)    
+  (Arm Rocket) .> (Countdown 10 seconds) : User Manually Launches Rocket  
+  (Countdown 10 seconds) -> (Rocket in flight) : Rocket Launches
+  (Countdown 10 seconds) .> user : Click Disarm Button
+  (Rocket in flight) -> rocket
 }
 @enduml
 ```
