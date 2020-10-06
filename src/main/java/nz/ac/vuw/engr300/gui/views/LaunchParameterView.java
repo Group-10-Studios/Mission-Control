@@ -22,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.MonteCarloImporter;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
+import nz.ac.vuw.engr300.gui.controllers.WarningsController;
 import nz.ac.vuw.engr300.gui.controllers.WeatherController;
 import nz.ac.vuw.engr300.gui.util.Colours;
 import nz.ac.vuw.engr300.gui.util.UiUtil;
@@ -177,6 +178,11 @@ public class LaunchParameterView implements View {
                 WeatherController.getInstance().setWeatherData(
                         WeatherController.getInstance().buildWeatherFileFromLocation(
                                 parameters.getLatitude().getValue(), parameters.getLongitude().getValue()));
+
+                // Update Warnings/Errors with new weather data.
+                WarningsController.getInstance().clearAllEvents();
+                WarningsController.getInstance().setDataForWarnings();
+                WarningsController.getInstance().checkAllData();
             } catch (Exception exception) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error fetching Data");

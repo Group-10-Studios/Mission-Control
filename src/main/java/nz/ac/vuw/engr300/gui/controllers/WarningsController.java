@@ -175,12 +175,29 @@ public class WarningsController {
         return false;
     }
 
+    /**
+     * Set the alert list for the RocketAlert.
+     *
+     * @param items Observable RocketAlert list which draws out alerts to the GUI.
+     */
     public void setAlertList(ObservableList<RocketAlert> items) {
         this.items = items;
     }
 
+    /**
+     * Check if the RocketAlert list exists.
+     *
+     * @return boolean indicating it exists.
+     */
     public boolean checkItemsExist() {
         return items != null;
+    }
+
+    /**
+     * Clear all of the events in the RocketAlert list.
+     */
+    public void clearAllEvents() {
+        this.items.clear();
     }
 }
 
