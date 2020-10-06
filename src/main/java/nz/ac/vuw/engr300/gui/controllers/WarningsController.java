@@ -48,10 +48,16 @@ public class WarningsController {
         return controllerInstance;
     }
 
+    private Label warningCheckStatus;
+
+    /**
+     * Set the go/no go warning status label to be updated on warnings.
+     *
+     * @param warningCheckStatus Warning label to be updated when errors/warnings arrive.
+     */
     public void setWarningCheckStatus(Label warningCheckStatus) {
         this.warningCheckStatus = warningCheckStatus;
     }
-    private Label warningCheckStatus;
 
 
     /**

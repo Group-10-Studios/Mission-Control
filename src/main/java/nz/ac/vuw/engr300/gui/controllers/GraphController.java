@@ -30,6 +30,7 @@ import nz.ac.vuw.engr300.gui.model.GraphMasterList;
 import nz.ac.vuw.engr300.gui.model.GraphType;
 import nz.ac.vuw.engr300.gui.views.GraphView;
 import nz.ac.vuw.engr300.gui.views.View;
+import nz.ac.vuw.engr300.model.LaunchParameters;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -444,6 +445,38 @@ public class GraphController {
         }
 
         LOGGER.debug("Past flight started");
+    }
+
+    /**
+     * Update the map location to the new value within the LaunchParameters. Deletes the old
+     * map from the graphs to update.
+     */
+    public void updateMapLocation() {
+        GraphType gt = new GraphType("Location", "map");
+        // Must unregister first in case location is popped out
+        GraphMasterList.getInstance().unRegisterGraph(gt);
+        GraphMasterList.getInstance().registerGraph(gt);
+        // Create a new RocketDataLocation graph - Uses the current lat/long from LaunchParameters
+        // Defaulting to image width/height of 400 as we don't specify this elsewhere and is default.
+        RocketDataLocation newGraph = new RocketDataLocation(
+                LaunchParameters.getInstance().getLatitude().getValue(),
+                LaunchParameters.getInstance().getLongitude().getValue(),
+                400, 400,
+                gt
+        );
+
+        int oldPos = 0;
+        // Remove the old graph
+        for (int i = 0; i < this.graphs.size(); i++) {
+            if (this.graphs.get(i).getGraphType().getLabel().equals("Location")) {
+                this.graphs.remove(i);
+                oldPos = i;
+                break;
+            }
+        }
+
+        this.graphs.add(oldPos, newGraph);
+        setGraphs(this.graphs);
     }
 
     /**
