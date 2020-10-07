@@ -67,7 +67,7 @@ public class InformationView implements View {
      */
     private void setupIndicator() {
         VBox indicatorBox = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), goIndicator, armIndicator);
-        addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(indicatorBox, root, 0, 0, Pos.CENTER, Color.LIGHTGREY, Insets.EMPTY);
         if (infController.hasWarningsOrErrors() == false) {
             goIndicator.setText("No errors exist! (Safe to launch)");
         }
@@ -112,7 +112,7 @@ public class InformationView implements View {
         // Create and populate batteries in a HBox
         batteryHBox = UiUtil.createMinimumHorizontalSizeHBox(5, new Insets(10),
                 BatteryMasterList.getInstance().allBatteries());
-        addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(batteryHBox, root, 1, 0, Pos.CENTER, Color.LIGHTGREY, Insets.EMPTY);
     }
 
     /**
