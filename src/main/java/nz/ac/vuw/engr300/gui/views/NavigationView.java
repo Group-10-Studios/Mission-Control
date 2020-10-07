@@ -78,7 +78,7 @@ public class NavigationView implements View {
 
         weatherInformation = UiUtil.createMinimumVerticalSizeVBox(5, new Insets(10), l1, l2, l3, l4, l5);
         weatherInformation.setId("weatherInformation");
-        addNodeToGrid(weatherInformation, root, 0, 0, Pos.CENTER, Color.TURQUOISE, Insets.EMPTY);
+        addNodeToGrid(weatherInformation, root, 0, 0, Pos.CENTER, Color.LIGHTGREY, Insets.EMPTY);
     }
 
     /**
