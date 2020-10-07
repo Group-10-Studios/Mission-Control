@@ -41,7 +41,7 @@ public class CsvConfigurationTests {
     @Test
     public void test_loadConfig() {
         // Must be updated to the number of configurations within the TestCommunications.json file.
-        assertEquals(4, CsvConfiguration.getInstance().getNumberOfTables());
+        assertEquals(5, CsvConfiguration.getInstance().getNumberOfTables());
     }
 
     /**
