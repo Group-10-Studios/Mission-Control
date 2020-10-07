@@ -6,7 +6,7 @@
 
 Hobby rockets are very common worldwide, they are typically flown with off the shelf rocket motors with widely available propellant reloads. These hobby rockets can reach the altitude between 30 meters and 760 meters, with velocities exceeding the speed of sound. Uncontrolled rockets are stable based on passive aerodynamic features.
 This project will however focus on a controlled rocket, primarily the Mission Control software system. The rocket hardware is designed and built upon the idea of self-stabilization from the Avionics and Control team. The Mission Control software will consider external environmental factors potentially affect the launch such as wind speed, temperature, humidity, rain to decide whether it is safe to launch. On top of that, the simulation software component will be able to statistically predict the rockets flight and the control parameters for the avionics.
-The mission control software will run on a laptop at the launch site, display the current software state as well as other associated data with the rocket and the launch. The software also requires a Go/No Go functionality, when a Go signal is given, avionics will be notified in order to start the launch sequence. With the local weather data collected, the mission control software will integrate with the Monte-Carlo rocket simulation to determine if the rocket will land within the defined bounds of the landing area. If not, the software can suggest changing the launch rod angle into the wind to ensure the rocket will land in a permitted landing zone.
+The mission control software will run on a laptop at the launch site, display the current software state as well as other associated data with the rocket and the launch. The software also requires a Arm/Disarm  functionality. When a Arm signal is given, avionics will be notified and will arm the rocket, so that it is ready to be manually launched. The user will also be recommended if they should go through with a launch with the Go/No Go recommendation based on the local weather data and other factors. With the local weather data collected, the mission control software will integrate with the Monte-Carlo rocket simulation to determine if the rocket will land within the defined bounds of the landing area. If not, the software can suggest changing the launch rod angle into the wind to ensure the rocket will land in a permitted landing zone.
 
 
 ### Client
@@ -22,7 +22,7 @@ The purpose of the system is to create a mission control software centre to coll
 
 The Mission Control software will:
 * Provide a GUI (Graphical User Interface) to display real-time data from the rocket pre-flight as well as during flight.
-* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to determine the launch status (Go/No Go).
+* Extend communication channels with the Open Rocket Simulation Software, and with collected weather conditions to recommend the flight to go or not (whether or not they should arm the rocket).
 * If a Go is given, communication will be made with the Avionics to fire the thruster and charge the parachute.
 * Record and log all incoming data from the rocket.
 
@@ -229,26 +229,22 @@ actor user
 actor rocket
 rectangle mission-control {
   user -- (Prepare Launch)
-  user -> (Click Go) : Click Go Button
-  (Prepare Launch) .> (Click Go)
-  (Click Go) -> (Arm Rocket)
-  (Arm Rocket) -> rocket
-  (Arm Rocket) .> (Countdown 10 seconds)
-  (Countdown 10 seconds) .> user : Click No Go Button
-  (Countdown 10 seconds) -> (Launch Rocket)
-  (Launch Rocket) -> rocket
+  user <-> (Arm Rocket) : Click Arm/Disarm Button
+  (Prepare Launch) -> (Arm Rocket)    
+  (Arm Rocket) .> (Countdown 10 seconds) : User Manually Launches Rocket  
+  (Countdown 10 seconds) -> (Rocket in flight) : Rocket Launches
+  (Countdown 10 seconds) .> user : Click Disarm Button
+  (Rocket in flight) -> rocket
 }
 @enduml
 ```
 
-*Go/No go functionality*
+*Arm/Disarm functionality*
 
-Another important purpose of our mission control software is to provide the option for the user to enable/disable the rocket based on when it is ready to launch. In this scenario we are taking into account
-the resulting communications within the **simulation** package as outlined in the logical architecture to determine whether the rocket is safe to launch. This combined with a manual button to arm the rocket
-can provide the protection required to ensure that the rocket does not launch early or present danger to anybody on the launch site. This has influenced our physical architecture as it means we need to be able
-to also send radio signals to the rocket to arm the charges and allow the rocket to be ready for launch.
-As outlined in the process architecture we also expect that the rocket will have a countdown in which there will be a limited amount of time which a user will be able to abort the launch. This requires the signal
-to be able to be reverted in the case of an emergency to stop the rocket from being armed and ensure we can safely handle the rocket after it has been shut off.
+Another important purpose of our mission control software is to provide the option for the user to arm or disarm the rocket based on when it is ready to launch. In this scenario we are taking into account the resulting communications within the **simulation** package (as outlined in the logical architecture) to determine whether the rocket is safe to launch. This is shown as a recommendation in the top right hand corner. 
+This recommendation will hopefully help a user to make an informed decision on whether or not it is safe to arm a rocket, before launching it manually. 
+The recommendation and the button provide the protection required to ensure that the rocket does not launch early or present danger to anybody on the launch site. This has influenced our physical architecture as it means we need to be able to also send radio signals to the rocket to arm the charges and allow the rocket to be ready for launch.
+As outlined in the process architecture we also expect that the rocket will have a countdown in which there will be a limited amount of time which a user will be able to abort the launch. This requires the signal to be able to be reverted in the case of an emergency to stop the rocket from being armed and ensure we can safely handle the rocket after it has been shut off.
 
 ## 5. Development Schedule
 
@@ -288,7 +284,7 @@ We do not expect any expenditure for our project.
 | Product/Service | Source | Why we need this |
 | :-------------: | :----: | :--------------- |
 | LoRaWAN base station | Teams 1-6 (Hardware teams) | The goal of the Mission Control software is to communicate with the rocket and provide visualisation of what is going on. The choice of connection between the rocket and the mission control software is using LoRaWAN. The hardware teams are expected to create a base station which will contain a LoRaWAN radio which our software will be able to interface with via USB serial. This is our main form of communication to the rocket and is such a necessary part for a successful launch. We expect this to be made available on the day of launch during collaboration with the other teams. |
-| SimulationListener | Teams 12-18 (Simulation teams) | A core functionality of the mission control software is to provide a go/no go functionality based on whether we are safe to fly. The simulation teams are expected to provide a Monte Carlo simulation which will allow multiple simulations to be run to check the landing zones and test if we are safe to launch. This is important information in our software's decision on whether it is safe to allow the rocket to fly. We rely on having a SimulationListener or a connection between the two different applications to communicate the results and safely determine if we can fly the rocket. |
+| SimulationListener | Teams 12-18 (Simulation teams) | A core functionality of the mission control software is to provide a go/no go recommendation based on whether we are safe to fly. The simulation teams are expected to provide a Monte Carlo simulation which will allow multiple simulations to be run to check the landing zones and test if we are safe to launch. This is important information in our software's decision on whether it is safe to recommend the rocket to fly. We rely on having a SimulationListener or a connection between the two different applications to communicate the results and safely determine if we can fly the rocket. |
 | Log4j | External Library (Maven) | Log4j is expected to be used to provide our logging services to output debug logs from our software and the rocket combined. This will allow us to monitor and track what is going on throughout the entire process so that we can record and monitor results at a later time. |
 | JavaFX | External Library (Maven) | JavaFX is our Graphics framework which will provide us with a GUI for the customer to interact with our software. This is an open source project which provides a Java based UI implementation so that we can visualize the data. |
 | Medusa | External Library (Maven) | Medusa is an open source framework which helps to provide visualizations within JavaFX. These are necessary to provide dials to show angles, compasses and our battery charges. This helps to provide a cleaner graph interface which we can use within the GUI. |

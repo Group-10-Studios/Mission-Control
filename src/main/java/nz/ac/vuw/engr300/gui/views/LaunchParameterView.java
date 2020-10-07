@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,8 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import nz.ac.vuw.engr300.communications.importers.MonteCarloImporter;
 import nz.ac.vuw.engr300.gui.components.LaunchParameterInputField;
 import nz.ac.vuw.engr300.gui.controllers.GraphController;
@@ -43,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Represents the popup window that appears when Launch Configurations button is pressed.
@@ -56,7 +54,8 @@ public class LaunchParameterView implements View {
     private final Consumer<LaunchParameters> callBack;
     private final List<LaunchParameterInputField> inputFields = new ArrayList<>();
 
-    private final MonteCarloImporter monteCarloImporter = new MonteCarloImporter();
+    private final MonteCarloImporter monteCarloImporter;
+    private Runnable monteCarloCallback;
 
     private static String WEATHER_SAVE_FILE_DIR = "src/main/resources/weather-data/";
     private static String MAP_SAVE_FILE_DIR = "src/main/resources/map-data/";
@@ -64,12 +63,15 @@ public class LaunchParameterView implements View {
 
     /**
      * Creates a LaunchParameterView Object.
-     *
-     * @param root     The root GridPane where we will be adding nodes to.
+     *  @param root     The root GridPane where we will be adding nodes to.
      * @param callBack Callback function to accept LaunchParameters.
+     * @param monteCarloImporter    The monte carlo importer.
      */
-    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack) {
+    public LaunchParameterView(GridPane root, Consumer<LaunchParameters> callBack,
+                               MonteCarloImporter monteCarloImporter, Runnable monteCarloCallback) {
         this.root = root;
+        this.monteCarloImporter = monteCarloImporter;
+        this.monteCarloCallback = monteCarloCallback;
         this.parameters = LaunchParameters.getInstance();
         this.callBack = callBack;
 
@@ -79,25 +81,6 @@ public class LaunchParameterView implements View {
                 CornerRadii.EMPTY, Insets.EMPTY)));
         UiUtil.addPercentRows(this.contentPane, 70, 30);
         UiUtil.addNodeToGrid(this.contentPane, this.root, 1, 0);
-    }
-
-    /**
-     * Display the Launch Configurations popup window.
-     *
-     * @param callBack Callback function to accept LaunchParameters.
-     */
-    public static void display(Consumer<LaunchParameters> callBack) {
-        Stage popupwindow = new Stage();
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Launch Parameters");
-        GridPane root = UiUtil.createGridPane(0, 0, Insets.EMPTY);
-        Scene scene = new Scene(root, 500, 600);
-
-        popupwindow.setResizable(false);
-        LaunchParameterView l = new LaunchParameterView(root, callBack);
-        popupwindow.setScene(scene);
-        l.initialize();
-        popupwindow.showAndWait();
     }
 
     private static void displayPopup(Alert.AlertType alertType, String title, String subtitle, String body) {
@@ -111,7 +94,7 @@ public class LaunchParameterView implements View {
     /**
      * Initialize buttons and fields for popup window.
      */
-    private void initialize() {
+    public void initialize() {
         this.initializeButtons();
         this.initializeFields();
         this.initializeHeader();
@@ -228,6 +211,8 @@ public class LaunchParameterView implements View {
 
         try {
             monteCarloImporter.importData(selectedFile.getAbsolutePath());
+            monteCarloCallback.run();
+
         } catch (Exception e) {
             displayPopup(Alert.AlertType.ERROR, "Failed to load Monte Carlo", "", e.getMessage());
         }
