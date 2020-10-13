@@ -2,6 +2,14 @@
 
 Our application has been designed to be built around the graphs and information you require. This information can be defined within the file `src/main/resources/config/communications.json`. This JSON file contains all of the basis for expected communications between avionics and with simulation providers. These definitions are for supporting incoming data from these sources.
 
+
+## Important Notes
+The application includes a default `communications.json` file which features default functionality for different features in the application.
+
+- `incoming-avionics` this table is the default table used for all incoming serial communications. This is built around the specification laid out by the rocket teams for Victoria University ENGR301/ENGR302 rocket communications.
+- `previousSimulation` this table is the default table used for simulation files created in OpenRocket which are built for the application stored within `src/resources/test-data`
+- `monte-carlo` this table is defined for the monte-carlo support within Launch Parameters. This table is built with support for incoming monte-carlo data from the monte-carlo simulation software developed by teams at Victoria University ENGR301/ENGR302 for simulation software.
+
 ## Basic Outline
 
 `communications.json` is built with a slightly modified default JSON structure. Each incoming definition is defined as a key with an object connected.
@@ -52,6 +60,10 @@ The order of the headers is determined by the order of the incoming data within 
 - **line-accel**: This represents a value to be graphed on a line chart. This is set for acceleration values which are of type double, and measured in m/s^2.
 - **line-vel**: This represents a value to be graphed on a line chart. This is set for velocity values which are of type double, and measured in m/s.
 - **height**: This represents an altitude reading which will be graphed on a line chart. This is of type double and measured in m.
+- **battery**: This represents an entry for battery data in the right hand panel. This supports as many batteries as you have values for to be displayed against a 12V expected reading.
+
+**Work In Progress/Not fully implemented**:
+- **histogram** This type of graph can currently be defined using the configuration file but does not yet support updating values as they come in from the serial connection. This can be later added with further methods for creating the histograms.
 
 #### Supported Primitive Data Types
 - **string**
@@ -63,8 +75,7 @@ The order of the headers is determined by the order of the incoming data within 
 Primitive types are only supported when using default keywords for specific functions within the application.
 
 This includes:
-- "lat"/"long" (Rocket positions)
-- "battery_status"
+- "lat"/"long" (Rocket positions this requires both values to be present in double format to draw the location)
 - "rocket_status"
 - "internal_temp"
 
